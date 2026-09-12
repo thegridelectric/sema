@@ -5,9 +5,9 @@ title: "dac.output.config"
 type: object
 description: >
   Control config for one 0-10V output: the channel it reports on, the actor
-  that commands it, which DAC channel it drives, and the EEPROM power-on
-  defaults (output code, reference, gain) the channel loads at power-up. The
-  analog of relay.control.config for an analog actuator.
+  that commands it, and which DAC channel it drives. The analog of
+  relay.control.config for an analog actuator. The power-on level is
+  operational (zero.ten.power.on in operational-params), not wiring.
 
 properties:
 
@@ -26,21 +26,6 @@ properties:
     description: >
       The DAC output channel this config applies to.
 
-  PowerOnRawValue:
-    $ref: "https://schemas.electricity.works/formats/non.negative.int"
-    description: >
-      The raw output code the channel drives at power-up.
-
-  PowerOnVref:
-    $ref: "https://schemas.electricity.works/enums/i2c.dac.vref/000"
-    description: >
-      The voltage reference the channel converts against at power-up.
-
-  PowerOnGain:
-    $ref: "https://schemas.electricity.works/formats/positive.int"
-    description: >
-      The output gain the channel applies at power-up.
-
   TypeName:
     const: "dac.output.config"
 
@@ -51,9 +36,6 @@ required:
   - ChannelName
   - ActorName
   - DacChannel
-  - PowerOnRawValue
-  - PowerOnVref
-  - PowerOnGain
   - TypeName
   - Version
 
@@ -65,18 +47,9 @@ examples:
       "ChannelName": "secondary-010v",
       "ActorName": "secondary-010v",
       "DacChannel": "C",
-      "PowerOnRawValue": 3020,
-      "PowerOnVref": "Internal",
-      "PowerOnGain": 1,
       "TypeName": "dac.output.config",
       "Version": "000"
     }
 
 x-gridworks:
   owner: "gridworks-energy"
-  axioms:
-    - number: 1
-      name: "EepromRanges"
-      statement: >
-        a. PowerOnRawValue SHALL be less than 4096.
-        b. PowerOnGain SHALL be 1 or 2.

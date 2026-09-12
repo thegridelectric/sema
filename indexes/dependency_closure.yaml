@@ -177,10 +177,7 @@ types:
     '000':
       enums:
       - i2c.dac.channel:000
-      - i2c.dac.vref:000
       formats:
-      - non.negative.int
-      - positive.int
       - spaceheat.name
       types: []
       versionless_types: []
@@ -875,7 +872,6 @@ types:
       - i2c.adc.type:000
       - i2c.dac.channel:000
       - i2c.dac.type:000
-      - i2c.dac.vref:000
       - i2c.expander.type:000
       - i2c.mux.type:000
       - relay.closed.or.open:000
@@ -908,8 +904,6 @@ types:
       - data.channel.gt:003
       - derived.channel.gt:002
       - device.component.gt:000
-      - dfr.component.gt:000
-      - dfr.config:000
       - egauge.register.config:000
       - electric.meter.channel.config:000
       - electric.meter.component.gt:001
@@ -976,6 +970,7 @@ types:
       - cop.curve:000
       - gw.tou.window:000
       - heating.curve:000
+      - zero.ten.power.on:000
       versionless_types: []
   gw.hydronic:
     '000':
@@ -1022,7 +1017,6 @@ types:
       - i2c.adc.type:000
       - i2c.dac.channel:000
       - i2c.dac.type:000
-      - i2c.dac.vref:000
       - i2c.expander.type:000
       - i2c.mux.type:000
       - relay.closed.or.open:000
@@ -1109,6 +1103,7 @@ types:
       - cop.curve:000
       - gw.tou.window:000
       - heating.curve:000
+      - zero.ten.power.on:000
       versionless_types: []
   gw.readings:
     '000':
@@ -1555,11 +1550,8 @@ types:
     '000':
       enums:
       - i2c.dac.channel:000
-      - i2c.dac.vref:000
       formats:
-      - non.negative.int
       - pascal.case
-      - positive.int
       - spaceheat.name
       - uuid4.str
       types:
@@ -3219,6 +3211,14 @@ types:
       formats:
       - pascal.case
       - uuid4.str
+      types: []
+      versionless_types: []
+  zero.ten.power.on:
+    '000':
+      enums: []
+      formats:
+      - non.negative.int
+      - spaceheat.name
       types: []
       versionless_types: []
   zone.circuit.governance.cmd:

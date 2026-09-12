@@ -71,9 +71,6 @@ examples:
           "ChannelName": "secondary-010v",
           "ActorName": "secondary-010v",
           "DacChannel": "C",
-          "PowerOnRawValue": 3020,
-          "PowerOnVref": "Internal",
-          "PowerOnGain": 1,
           "TypeName": "dac.output.config",
           "Version": "000"
         }

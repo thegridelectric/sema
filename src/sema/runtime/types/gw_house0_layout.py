@@ -6,7 +6,6 @@ from sema.runtime.types.ads111x_based_device_type_gt import Ads111xBasedDeviceTy
 from sema.runtime.types.data_channel_gt import DataChannelGt
 from sema.runtime.types.derived_channel_gt import DerivedChannelGt
 from sema.runtime.types.device_component_gt import DeviceComponentGt
-from sema.runtime.types.dfr_component_gt import DfrComponentGt
 from sema.runtime.types.electric_meter_component_gt import ElectricMeterComponentGt
 from sema.runtime.types.electric_meter_device_type_gt import ElectricMeterDeviceTypeGt
 from sema.runtime.types.g_node_gt import GNodeGt
@@ -55,7 +54,6 @@ class GwHouse0Layout(SemaType):
         | I2cMultichannelDtRelayComponentGt
         | I2cRelayComponentGt
         | I2cThermistorReaderComponentGt
-        | DfrComponentGt
         | PicoBtuMeterComponentGt
         | PicoFlowModuleComponentGt
         | PicoTankModuleComponentGt

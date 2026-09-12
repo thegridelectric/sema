@@ -10,6 +10,7 @@ description: >
 enum:
   - "Mcp4728"
   - "Mcp4725"
+  - "Gp8403"
 
 default: "Mcp4728"
 
@@ -21,3 +22,6 @@ x-gridworks:
       Microchip MCP4728, a 12-bit 4-channel I²C digital-to-analog converter.
     "Mcp4725": >
       Microchip MCP4725, a 12-bit single-channel I²C digital-to-analog converter.
+    "Gp8403": >
+      Guestgood GP8403, a 12-bit two-channel I²C digital-to-analog converter with
+      a 0-10V output range (the DFRobot DFR0971 module).

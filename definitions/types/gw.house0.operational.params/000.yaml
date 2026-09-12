@@ -33,6 +33,13 @@ properties:
     description: >
       Per-channel capture/report tuning, one entry per captured channel.
 
+  ZeroTenPowerOnList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/zero.ten.power.on/000"
+    description: >
+      The power-on level of each 0-10V output, one entry per output node.
+
   ActuationAuthority:
     $ref: "https://schemas.electricity.works/enums/gw1.actuation.authority/000"
     description: >
@@ -115,6 +122,7 @@ properties:
 required:
   - ScadaAlias
   - CaptureTuningList
+  - ZeroTenPowerOnList
   - ActuationAuthority
   - ServiceMode
   - SeasonalStorageMode
@@ -144,6 +152,14 @@ examples:
           "AsyncCapture": true,
           "AsyncCaptureDelta": 250,
           "TypeName": "capture.tuning",
+          "Version": "000"
+        }
+      ],
+      "ZeroTenPowerOnList": [
+        {
+          "NodeName": "dist-010v",
+          "PowerOnVoltsTimesTen": 20,
+          "TypeName": "zero.ten.power.on",
           "Version": "000"
         }
       ],
@@ -202,6 +218,11 @@ x-gridworks:
         ChannelName SHALL be unique across CaptureTuningList.
 
     - number: 2
+      name: "ZeroTenPowerOnNodeUniqueness"
+      statement: >
+        NodeName SHALL be unique across ZeroTenPowerOnList.
+
+    - number: 3
       name: "PerDayWindowNonOverlap"
       statement: >
         For each day of the week, the windows in OnPeakWindows whose Days

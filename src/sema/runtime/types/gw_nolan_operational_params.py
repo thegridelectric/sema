@@ -12,6 +12,7 @@ from sema.runtime.types.capture_tuning import CaptureTuning
 from sema.runtime.types.cop_curve import CopCurve
 from sema.runtime.types.gw_tou_window import GwTouWindow
 from sema.runtime.types.heating_curve import HeatingCurve
+from sema.runtime.types.zero_ten_power_on import ZeroTenPowerOn
 
 
 class GwNolanOperationalParams(SemaType):
@@ -19,6 +20,7 @@ class GwNolanOperationalParams(SemaType):
 
     scada_alias: LeftRightDot
     capture_tuning_list: list[CaptureTuning]
+    zero_ten_power_on_list: list[ZeroTenPowerOn]
     actuation_authority: Gw1ActuationAuthority
     service_mode: Gw1ServiceMode
     cop_curve: CopCurve
@@ -51,7 +53,21 @@ class GwNolanOperationalParams(SemaType):
     @model_validator(mode="after")
     def check_axiom_2(self) -> "GwNolanOperationalParams":
         """
-        Axiom 2: PerDayWindowNonOverlap
+        Axiom 2: ZeroTenPowerOnNodeUniqueness
+        NodeName SHALL be unique across ZeroTenPowerOnList.
+        """
+        names = [z.node_name for z in self.zero_ten_power_on_list]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                "Axiom 2 (ZeroTenPowerOnNodeUniqueness) failed: NodeName "
+                "must be unique across ZeroTenPowerOnList."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> "GwNolanOperationalParams":
+        """
+        Axiom 3: PerDayWindowNonOverlap
         For each day of the week, the windows in OnPeakWindows whose Days include that day
         SHALL NOT overlap one another.
         """
@@ -64,7 +80,7 @@ class GwNolanOperationalParams(SemaType):
             for earlier, later in zip(todays, todays[1:]):
                 if later.start < earlier.end:
                     raise ValueError(
-                        "Axiom 2 (PerDayWindowNonOverlap) failed: on "
+                        "Axiom 3 (PerDayWindowNonOverlap) failed: on "
                         f"{day} window {later.start}-{later.end} overlaps "
                         f"{earlier.start}-{earlier.end}."
                     )

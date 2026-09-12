@@ -7,9 +7,6 @@
       "ChannelName": "secondary-010v",
       "ActorName": "secondary-010v",
       "DacChannel": "C",
-      "PowerOnRawValue": 3020,
-      "PowerOnVref": "Internal",
-      "PowerOnGain": 1,
       "TypeName": "dac.output.config",
       "Version": "000"
     },
@@ -17,9 +14,6 @@
       "ChannelName": "primary-010v",
       "ActorName": "primary-010v",
       "DacChannel": "D",
-      "PowerOnRawValue": 3020,
-      "PowerOnVref": "Internal",
-      "PowerOnGain": 1,
       "TypeName": "dac.output.config",
       "Version": "000"
     }

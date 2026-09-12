@@ -1,0 +1,12 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ zero_ten_power_on_000_class_name }}":
+        """
+        Axiom 1: TenVoltCeiling
+        PowerOnVoltsTimesTen SHALL be at most 100.
+        """
+        if self.power_on_volts_times_ten > 100:
+            raise ValueError(
+                "Axiom 1 (TenVoltCeiling) failed: PowerOnVoltsTimesTen "
+                f"{self.power_on_volts_times_ten} exceeds 100."
+            )
+        return self

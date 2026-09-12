@@ -205,6 +205,7 @@ from sema.runtime.types.ticklist_reed_report import TicklistReedReport
 from sema.runtime.types.weather import Weather
 from sema.runtime.types.weather_forecast import WeatherForecast
 from sema.runtime.types.web_server_component_gt import WebServerComponentGt
+from sema.runtime.types.zero_ten_power_on import ZeroTenPowerOn
 from sema.runtime.types.zone_circuit_governance_cmd import ZoneCircuitGovernanceCmd
 
 __all__ = [
@@ -389,5 +390,6 @@ __all__ = [
     "Weather",
     "WeatherForecast",
     "WebServerComponentGt",
+    "ZeroTenPowerOn",
     "ZoneCircuitGovernanceCmd",
 ]

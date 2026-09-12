@@ -994,6 +994,11 @@ types:
     versioning_strategy: literal
     versions:
       '001': definitions/types/web.server.component.gt/001.yaml
+  zero.ten.power.on:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/zero.ten.power.on/000.yaml
   zone.circuit.governance.cmd:
     latest_version: '000'
     versioning_strategy: literal
