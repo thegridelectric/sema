@@ -231,6 +231,9 @@ x-gridworks:
         b. Hydronic.ZoneCallCircuits SHALL be non-empty, and each circuit's
         FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in ShNodes with
         ActorClass "Relay".
+        c. Each of "dist-010v", "primary-010v" and "store-010v" SHALL have a
+        ComponentId equal to the ComponentId of an i2c.dac.output.component.gt
+        in Components.
     - number: 11
       name: "RequiredHeatpumpEquipment"
       statement: >
@@ -269,3 +272,10 @@ x-gridworks:
         ActorClass "LocalControl".
         a. Every actuator SHALL have a dotted effective handle and SHALL be a leaf.
         b. Every leaf SHALL be an actuator or a command node.
+    - number: 15
+      name: "ComponentBinding"
+      statement: >
+        Every Component in Components SHALL have its ComponentId referenced by exactly one
+        ShNode in ShNodes. The node's Name is the component's identity within the house;
+        the ComponentId is the replaceable instance under it (a swapped part keeps the
+        name and gets a fresh id).
