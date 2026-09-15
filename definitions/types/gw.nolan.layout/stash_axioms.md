@@ -115,8 +115,8 @@ when porting, don't re-enable the stale forms verbatim:
           - "heat-pump"
           - "buffer-top-elt"
           - "buffer-bottom-elt"
-          - "store-top-elt"
-          - "store-bottom-elt"
+          - "tank1-top-elt"
+          - "tank1-bottom-elt"
         # Pump nodes:
           - "dist-pump"
           - "store-pump"
@@ -232,8 +232,8 @@ when porting, don't re-enable the stale forms verbatim:
             - "store-pump-pwr"
             - "buffer-top-elt-pwr"
             - "buffer-bottom-elt-pwr"
-            - "store-top-elt-pwr"
-            - "store-bottom-elt-pwr"
+            - "tank1-top-elt-pwr"
+            - "tank1-bottom-elt-pwr"
           # Effective pipe temperature channels
             - "dist-swt"
             - "dist-rwt"
@@ -393,8 +393,8 @@ when porting, don't re-enable the stale forms verbatim:
           - "heat-pump-pwr"
           - "buffer-top-elt-pwr"
           - "buffer-bottom-elt-pwr"
-          - "store-top-elt-pwr"
-          - "store-bottom-elt-pwr"
+          - "tank1-top-elt-pwr"
+          - "tank1-bottom-elt-pwr"
         the following SHALL hold:
           - InPowerMetering SHALL be true.
           - AboutNodeName SHALL equal the channel Name with the suffix "-pwr"
