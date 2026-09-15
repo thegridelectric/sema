@@ -1,0 +1,65 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
+
+title: "gw.house.alert.kind"
+type: "string"
+description: >
+  The condition a house alert is about, named for what a human acts on
+  rather than for the detector's mechanism. One value per detector.
+  Thresholds live in the value descriptions and in the alerter's
+  configuration, never in the name, so a tuned threshold does not rename
+  a kind.
+
+enum:
+  - "Unknown"
+  - "NoData"
+  - "ScadaRebootLoop"
+  - "CriticalGlitch"
+  - "ZoneBelowSetpoint"
+  - "ZoneFreezeRisk"
+  - "NoDistFlow"
+  - "NoStoreFlow"
+  - "HpNotResponding"
+  - "HpRunningOnpeak"
+  - "LocalControlActive"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      A kind this decoder does not know. Never raised; a decoder on an
+      older enum version falls back to it when it meets a value added in a
+      later version, and a manager that decodes it logs and drops the
+      alert rather than paging.
+    "NoData": >
+      A registered, live house has sent no readings for longer than the
+      silence threshold (10 minutes).
+    "ScadaRebootLoop": >
+      The scada has booted repeatedly in a short span (more than 5 layout
+      reports in 5 minutes).
+    "CriticalGlitch": >
+      The scada reported a glitch at Critical level; the alert's Summary
+      carries the glitch's summary.
+    "ZoneBelowSetpoint": >
+      A critical zone's temperature is more than the tolerance (2 F) below
+      its setpoint, and the setpoint was not just raised. Suppressed while
+      the house is in Standby. The zone rides in the evidence channel names.
+    "ZoneFreezeRisk": >
+      A zone's temperature is below the freeze-risk threshold (40 F).
+    "NoDistFlow": >
+      A sustained heat call ended and no distribution flow was seen since
+      before it started, on three cycles running.
+    "NoStoreFlow": >
+      The store pump has been commanded on for more than 10 minutes with no
+      store flow.
+    "HpNotResponding": >
+      The heat pump has been commanded on for more than 15 minutes and
+      draws no power.
+    "HpRunningOnpeak": >
+      The heat pump drew power during a weekday on-peak hour.
+    "LocalControlActive": >
+      The house has fallen back to local control; its LeafTransactiveNode
+      is not dispatching it.

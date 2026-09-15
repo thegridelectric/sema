@@ -1,0 +1,75 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.house.alert.cleared/000"
+
+title: "gw.house.alert.cleared"
+type: object
+description: >
+  An alerting service's report that a previously raised house alert no
+  longer holds, with the readings that cleared it.
+
+properties:
+
+  AlertId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      AlertId of the gw.house.alert this clears.
+
+  Src:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the alerting service that cleared the alert.
+
+  AboutGNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the house's terminal asset the alert was about.
+
+  Kind:
+    $ref: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
+    description: >
+      The condition that no longer holds.
+
+  ClearedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      Time at which the alerting service cleared the alert.
+
+  Evidence:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/channel.readings/002"
+    description: >
+      The readings that showed the condition had ended. Empty for kinds
+      whose evidence is not readings.
+
+  TypeName:
+    const: "gw.house.alert.cleared"
+
+  Version:
+    const: "000"
+
+required:
+  - AlertId
+  - Src
+  - AboutGNodeAlias
+  - Kind
+  - ClearedMs
+  - Evidence
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "TerminalAssetAliasConstraint"
+      statement: >
+        AboutGNodeAlias SHALL identify a TerminalAsset and therefore
+        SHALL end with the suffix ".ta".
+  extended_description: >
+    Separate from gw.house.alert because a manager and an alert history
+    treat the two differently and neither needs the other's fields. The
+    Src, AboutGNodeAlias and Kind repeat what the alert carried so the
+    cleared message reads on its own.

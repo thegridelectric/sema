@@ -1,0 +1,90 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.house.alert/000"
+
+title: "gw.house.alert"
+type: object
+description: >
+  An alerting service's report that a condition needing human attention
+  has been detected at a house, with the readings that fired it.
+
+properties:
+
+  Src:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the alerting service that raised the alert.
+
+  AboutGNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the house's terminal asset the alert is about.
+
+  Kind:
+    $ref: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
+    description: >
+      The condition detected.
+
+  AlertId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Identifier of this alert instance; the gw.house.alert.cleared that
+      ends it carries the same AlertId.
+
+  RaisedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      Time at which the alerting service raised the alert.
+
+  Summary:
+    type: string
+    description: >
+      One human-readable line stating the condition and the value that
+      fired it.
+
+  Evidence:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/channel.readings/002"
+    description: >
+      The readings the detector fired on, so a reader can see the values
+      without a second lookup. Empty for kinds whose evidence is not
+      readings. A zone or hour the condition concerns rides in the channel
+      names.
+
+  TypeName:
+    const: "gw.house.alert"
+
+  Version:
+    const: "000"
+
+required:
+  - Src
+  - AboutGNodeAlias
+  - Kind
+  - AlertId
+  - RaisedMs
+  - Summary
+  - Evidence
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "TerminalAssetAliasConstraint"
+      statement: >
+        AboutGNodeAlias SHALL identify a TerminalAsset and therefore
+        SHALL end with the suffix ".ta".
+  extended_description: >
+    An alert is about the house, and the scada is one reporter on it: a
+    house whose scada is replaced keeps its alert history under the same
+    AboutGNodeAlias. A terminal asset's alias ends in ".ta" (g.node.gt
+    axiom), which is what the runtime checks.
+
+    glitch is a node reporting on itself; gw.house.alert is a service
+    reporting on a house from the evidence the house's scada sent. A
+    raised alert stands until a gw.house.alert.cleared with the same
+    AlertId arrives.

@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-09-15T14:00:00Z"
+  last_updated: "2026-09-15T19:35:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -324,6 +324,18 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw.g.node.class/000"
         created: "2026-02-23T17:08:00Z"
         status: "published"
+
+  gw.house.alert.kind:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "The condition a house alert is about, one value per detector, named for what a human acts on rather than the detector's mechanism."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
+        created: "2026-09-15T19:35:00Z"
+        status: "staging"
 
   gw.house0.primary.flow.source:
     latest_version: "000"
@@ -2817,6 +2829,46 @@ types:
             - "non.empty.string"
             - "spaceheat.name"
             - "utc.milliseconds"
+
+  gw.house.alert:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "An alerting service's report that a condition needing human attention has been detected at a house, with the readings that fired it."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.house.alert/000"
+        created: "2026-09-15T19:35:00Z"
+        status: "staging"
+        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint: AboutGNodeAlias names the house's terminal asset (suffix .ta), never its scada."
+        direct_dependencies:
+          structural:
+            - "channel.readings:002"
+            - "gw.house.alert.kind:000"
+            - "left.right.dot"
+            - "utc.milliseconds"
+            - "uuid4.str"
+
+  gw.house.alert.cleared:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "An alerting service's report that a previously raised house alert no longer holds, with the readings that cleared it."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.house.alert.cleared/000"
+        created: "2026-09-15T19:35:00Z"
+        status: "staging"
+        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint as on gw.house.alert."
+        direct_dependencies:
+          structural:
+            - "channel.readings:002"
+            - "gw.house.alert.kind:000"
+            - "left.right.dot"
+            - "utc.milliseconds"
+            - "uuid4.str"
 
   gw.house0.layout:
     latest_version: "000"

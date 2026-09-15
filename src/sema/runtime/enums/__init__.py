@@ -43,6 +43,7 @@ from sema.runtime.enums.gw1_system_mode import Gw1SystemMode
 from sema.runtime.enums.gw1_unit import Gw1Unit
 from sema.runtime.enums.gw_g_node_class import GwGNodeClass
 from sema.runtime.enums.gw_house0_primary_flow_source import GwHouse0PrimaryFlowSource
+from sema.runtime.enums.gw_house_alert_kind import GwHouseAlertKind
 from sema.runtime.enums.gw_market_product_name import GwMarketProductName
 from sema.runtime.enums.gw_scada_cmd_refusal_reason import GwScadaCmdRefusalReason
 from sema.runtime.enums.gw_weather_forecast_fidelity import GwWeatherForecastFidelity
@@ -128,6 +129,7 @@ __all__ = [
     "Gw1Unit",
     "GwGNodeClass",
     "GwHouse0PrimaryFlowSource",
+    "GwHouseAlertKind",
     "GwMarketProductName",
     "GwScadaCmdRefusalReason",
     "GwWeatherForecastFidelity",

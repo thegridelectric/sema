@@ -549,6 +549,20 @@ types:
       "000":
         summary: "Initial version."
 
+  gw.house.alert:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint: AboutGNodeAlias names the house's terminal asset (suffix .ta), never its scada."
+
+  gw.house.alert.cleared:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint as on gw.house.alert."
+
   gw.house0.layout:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -1677,6 +1691,12 @@ enums:
       "000": {}
 
   gw.g.node.class:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.house.alert.kind:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
