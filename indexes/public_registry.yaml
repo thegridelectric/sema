@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-15T19:35:00Z'
+  last_updated: '2026-09-16T17:45:00Z'
   maintainer: gridworks-energy
 formats:
   handle.name:
@@ -296,6 +296,36 @@ enums:
         schema_url: https://schemas.electricity.works/enums/gpm.from.hz.method/000
         created: '2024-10-23T19:32:00Z'
         status: published
+  gw.alert.category:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'What kind of subject an alert is about: a house, the fleet, or a
+      platform service; decides the kind enum and the subject field.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.alert.category/000
+        created: '2026-09-16T17:45:00Z'
+        status: staging
+  gw.alert.state:
+    owner: gridworks-energy
+    enum_type: literal
+    description: Whether an alert record raises the alert (Firing) or resolves it
+      (Resolved).
+    schema_url: https://schemas.electricity.works/enums/gw.alert.state/000
+    created: '2026-09-16T17:45:00Z'
+    status: staging
+  gw.fleet.alert.kind:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: The condition a fleet alert is about, one value per detector, named
+      for what a human acts on.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.fleet.alert.kind/000
+        created: '2026-09-16T17:45:00Z'
+        status: staging
   gw.g.node.class:
     latest_version: '000'
     owner: gridworks-energy
@@ -316,7 +346,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.house.alert.kind/000
         created: '2026-09-15T19:35:00Z'
-        status: staging
+        status: published
   gw.house0.primary.flow.source:
     latest_version: '000'
     owner: gridworks-energy
@@ -339,6 +369,17 @@ enums:
         schema_url: https://schemas.electricity.works/enums/gw.market.product.name/000
         created: '2026-06-08T00:00:00Z'
         status: published
+  gw.platform.alert.kind:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: The condition a platform-service alert is about, one value per check,
+      named for what a human acts on.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.platform.alert.kind/000
+        created: '2026-09-16T17:45:00Z'
+        status: staging
   gw.scada.cmd.refusal.reason:
     latest_version: '000'
     owner: gridworks-energy
@@ -2418,6 +2459,32 @@ types:
           - positive.int
           - utc.milliseconds
           - uuid4.str
+  gw.alert:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: An alerting service's report that a condition needing human attention
+      has started (Firing) or stopped (Resolved) holding, about a house, the fleet,
+      or a platform service.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.alert/000
+        created: '2026-09-16T17:45:00Z'
+        status: staging
+        summary: Initial Sema version. One word for both transitions (State), a Category
+          choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias
+          (axiom 2), ResolvedMs iff Resolved (axiom 3).
+        direct_dependencies:
+          structural:
+          - channel.readings:002
+          - gw.alert.category:000
+          - gw.alert.state:000
+          - gw.fleet.alert.kind:000
+          - gw.house.alert.kind:000
+          - gw.platform.alert.kind:000
+          - left.right.dot
+          - utc.milliseconds
+          - uuid4.str
   gw.channel.gap.stats:
     latest_version: '000'
     owner: gridworks-energy
@@ -2574,46 +2641,6 @@ types:
           - non.empty.string
           - spaceheat.name
           - utc.milliseconds
-  gw.house.alert:
-    latest_version: '000'
-    owner: gridworks-energy
-    versioning_strategy: literal
-    description: An alerting service's report that a condition needing human attention
-      has been detected at a house, with the readings that fired it.
-    versions:
-      '000':
-        schema_url: https://schemas.electricity.works/types/gw.house.alert/000
-        created: '2026-09-15T19:35:00Z'
-        status: staging
-        summary: 'Initial Sema version. Axiom 1 TerminalAssetAliasConstraint: AboutGNodeAlias
-          names the house''s terminal asset (suffix .ta), never its scada.'
-        direct_dependencies:
-          structural:
-          - channel.readings:002
-          - gw.house.alert.kind:000
-          - left.right.dot
-          - utc.milliseconds
-          - uuid4.str
-  gw.house.alert.cleared:
-    latest_version: '000'
-    owner: gridworks-energy
-    versioning_strategy: literal
-    description: An alerting service's report that a previously raised house alert
-      no longer holds, with the readings that cleared it.
-    versions:
-      '000':
-        schema_url: https://schemas.electricity.works/types/gw.house.alert.cleared/000
-        created: '2026-09-15T19:35:00Z'
-        status: staging
-        summary: Initial Sema version. Axiom 1 TerminalAssetAliasConstraint as on
-          gw.house.alert.
-        direct_dependencies:
-          structural:
-          - channel.readings:002
-          - gw.house.alert.kind:000
-          - left.right.dot
-          - utc.milliseconds
-          - uuid4.str
   gw.house0.layout:
     latest_version: '000'
     owner: gridworks-energy

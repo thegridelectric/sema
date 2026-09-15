@@ -1,0 +1,29 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.platform.alert.kind/000"
+
+title: "gw.platform.alert.kind"
+type: "string"
+description: >
+  The condition a platform-service alert is about, named for what a human
+  acts on rather than for the prober's mechanism. One value per check.
+
+enum:
+  - "Unknown"
+  - "BrokerUnreachable"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      A kind this decoder does not know. Never raised; a decoder on an
+      older enum version falls back to it when it meets a value added in a
+      later version, and a notifier that decodes it logs and drops the
+      alert rather than paging.
+    "BrokerUnreachable": >
+      A prober outside the broker's own path could not open a connection
+      to the message broker named in Subject. Raised by a check that never
+      rides the broker, since an alert about the broker cannot travel over
+      it.

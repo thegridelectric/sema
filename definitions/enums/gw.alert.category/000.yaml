@@ -1,0 +1,36 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.alert.category/000"
+
+title: "gw.alert.category"
+type: "string"
+description: >
+  What kind of subject an alert is about. The category decides which kind
+  enum the alert's Kind belongs to and which fields name the subject; a
+  notifier routes on it.
+
+enum:
+  - "Unknown"
+  - "House"
+  - "Fleet"
+  - "PlatformService"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      A category this decoder does not know. Never emitted; a decoder on
+      an older enum version falls back to it when it meets a value added
+      in a later version, and a notifier that decodes it logs and drops
+      the alert rather than paging.
+    "House": >
+      One house, named by its terminal asset's GNode alias; the condition
+      is drawn from that house's own reports.
+    "Fleet": >
+      A set of houses taken together, where the condition is about the
+      set rather than any one member (every tracked house silent at once).
+    "PlatformService": >
+      A cloud service or host the fleet depends on (the broker, the
+      registry, the ear), named in Subject.

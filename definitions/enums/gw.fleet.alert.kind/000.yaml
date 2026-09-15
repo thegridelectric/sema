@@ -1,0 +1,30 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.fleet.alert.kind/000"
+
+title: "gw.fleet.alert.kind"
+type: "string"
+description: >
+  The condition a fleet alert is about: something true of the tracked
+  houses taken together, named for what a human acts on rather than for
+  the detector's mechanism. One value per detector.
+
+enum:
+  - "Unknown"
+  - "AllHousesSilent"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      A kind this decoder does not know. Never raised; a decoder on an
+      older enum version falls back to it when it meets a value added in a
+      later version, and a notifier that decodes it logs and drops the
+      alert rather than paging.
+    "AllHousesSilent": >
+      Every tracked house has gone silent inside the same silence
+      threshold. Six houses do not fail together; the suspect is the path
+      they share (the broker, the ear), and the per-house NoData alerts
+      are consequences of this one.

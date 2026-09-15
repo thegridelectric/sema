@@ -766,6 +766,22 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+  gw.alert:
+    '000':
+      enums:
+      - gw.alert.category:000
+      - gw.alert.state:000
+      - gw.fleet.alert.kind:000
+      - gw.house.alert.kind:000
+      - gw.platform.alert.kind:000
+      formats:
+      - left.right.dot
+      - spaceheat.name
+      - utc.milliseconds
+      - uuid4.str
+      types:
+      - channel.readings:002
+      versionless_types: []
   gw.channel.gap.stats:
     '000':
       enums: []
@@ -852,30 +868,6 @@ types:
       - spaceheat.name
       - utc.milliseconds
       types: []
-      versionless_types: []
-  gw.house.alert:
-    '000':
-      enums:
-      - gw.house.alert.kind:000
-      formats:
-      - left.right.dot
-      - spaceheat.name
-      - utc.milliseconds
-      - uuid4.str
-      types:
-      - channel.readings:002
-      versionless_types: []
-  gw.house.alert.cleared:
-    '000':
-      enums:
-      - gw.house.alert.kind:000
-      formats:
-      - left.right.dot
-      - spaceheat.name
-      - utc.milliseconds
-      - uuid4.str
-      types:
-      - channel.readings:002
       versionless_types: []
   gw.house0.layout:
     '000':

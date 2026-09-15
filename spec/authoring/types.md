@@ -147,6 +147,14 @@ A `oneOf` MAY include multiple versions of the same versioned type
 instances from a bounded set of versions during version-transition
 windows.
 
+A `oneOf` whose branches are enums SHALL be discriminated: a sibling
+enum-valued property of the type SHALL select the branch, and an axiom
+SHALL state the selection. Implementations SHALL decode the branch the
+discriminator selects, never by trying branches in order: an enum
+decodes a value it does not know to its `default` (see
+[enums.md](enums.md) "Required Fields"), so the first branch of an
+undiscriminated union would accept every value.
+
 Type schemas SHALL NOT use `oneOf` with inline schemas, primitive
 schemas, `const`, `enum`, formats, or constraint-bearing JSON Schema
 constructs. Type schemas SHALL NOT define inline enums with the JSON

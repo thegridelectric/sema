@@ -1,0 +1,26 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.alert.state/000"
+
+title: "gw.alert.state"
+type: "string"
+description: >
+  Whether an alert record says the condition started to hold or stopped
+  holding. An alert emits transitions only: one Firing record and, when
+  the condition ends, one Resolved record carrying the same AlertId.
+
+enum:
+  - "Firing"
+  - "Resolved"
+
+default: "Firing"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Firing": >
+      The condition has started to hold; the record carries the time it
+      was raised and the evidence that fired it.
+    "Resolved": >
+      The condition no longer holds; the record carries the time it was
+      resolved and, when there is one, the evidence that cleared it.

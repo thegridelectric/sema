@@ -318,6 +318,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.adc.waveform/000.yaml
+  gw.alert:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.alert/000.yaml
   gw.channel.gap.stats:
     latest_version: '000'
     versioning_strategy: literal
@@ -358,16 +363,6 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.experiment.run/000.yaml
-  gw.house.alert:
-    latest_version: '000'
-    versioning_strategy: literal
-    versions:
-      '000': definitions/types/gw.house.alert/000.yaml
-  gw.house.alert.cleared:
-    latest_version: '000'
-    versioning_strategy: literal
-    versions:
-      '000': definitions/types/gw.house.alert.cleared/000.yaml
   gw.house0.layout:
     latest_version: '000'
     versioning_strategy: literal
@@ -1084,6 +1079,19 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gpm.from.hz.method/000.yaml
+  gw.alert.category:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.alert.category/000.yaml
+  gw.alert.state:
+    enum_type: literal
+    schema: definitions/enums/gw.alert.state/000.yaml
+  gw.fleet.alert.kind:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.fleet.alert.kind/000.yaml
   gw.g.node.class:
     enum_type: versioned
     latest_version: '000'
@@ -1104,6 +1112,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw.market.product.name/000.yaml
+  gw.platform.alert.kind:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.platform.alert.kind/000.yaml
   gw.scada.cmd.refusal.reason:
     enum_type: versioned
     latest_version: '000'

@@ -31,8 +31,7 @@ types:
   channel.readings:
     '002':
       used_by:
-      - gw.house.alert.cleared:000
-      - gw.house.alert:000
+      - gw.alert:000
       - gw.readings:000
       - report:001
       - report:002
@@ -688,15 +687,30 @@ enums:
       - pico.btu.meter.component.gt:000
       - pico.flow.module.component.gt:000
       - pico.flow.module.component.gt:001
+  gw.alert.category:
+    '000':
+      used_by:
+      - gw.alert:000
+  gw.alert.state:
+    '000':
+      used_by:
+      - gw.alert:000
+  gw.fleet.alert.kind:
+    '000':
+      used_by:
+      - gw.alert:000
   gw.house.alert.kind:
     '000':
       used_by:
-      - gw.house.alert.cleared:000
-      - gw.house.alert:000
+      - gw.alert:000
   gw.house0.primary.flow.source:
     '000':
       used_by:
       - gw.hydronic:000
+  gw.platform.alert.kind:
+    '000':
+      used_by:
+      - gw.alert:000
   gw.scada.cmd.refusal.reason:
     '000':
       used_by:
@@ -1051,13 +1065,12 @@ formats:
     - gridworks.event.shutdown:001
     - gridworks.header:001
     - gw.adc.waveform:000
+    - gw.alert:000
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
     - gw.command.interface:000
     - gw.experiment.run:000
-    - gw.house.alert.cleared:000
-    - gw.house.alert:000
     - gw.house0.operational.params:000
     - gw.nolan.operational.params:000
     - gw.readings:000
@@ -1448,14 +1461,13 @@ formats:
     - gridworks.event.problem:001
     - gridworks.event.shutdown:001
     - gw.adc.waveform:000
+    - gw.alert:000
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
     - gw.experiment.run:000
-    - gw.house.alert.cleared:000
-    - gw.house.alert:000
     - gw.readings:000
     - gw.weather.forecast:000
     - i2c.result:000
@@ -1582,10 +1594,9 @@ formats:
     - gridworks.event.problem:001
     - gridworks.event.shutdown:001
     - gw.adc.waveform:000
+    - gw.alert:000
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
-    - gw.house.alert.cleared:000
-    - gw.house.alert:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000

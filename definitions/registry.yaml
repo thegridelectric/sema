@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-09-15T19:35:00Z"
+  last_updated: "2026-09-16T17:45:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -218,7 +218,6 @@ enums:
         created: "2026-09-04T14:40:00Z"
         status: "published"
 
-
   fis.authorization.reason:
     latest_version: "000"
     owner: jessica-millar
@@ -263,7 +262,6 @@ enums:
         created: "2026-03-04T17:00:00Z"
         status: "published"
 
-
   g.node.instance.transport:
     latest_version: "000"
     owner: gridworks-energy
@@ -275,7 +273,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/g.node.instance.transport/000"
         created: "2026-03-03T17:00:00Z"
         status: "published"
-
 
   g.node.status:
     latest_version: "000"
@@ -313,6 +310,38 @@ enums:
         created: "2024-10-23T19:32:00Z"
         status: "published"
 
+  gw.alert.category:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "What kind of subject an alert is about: a house, the fleet, or a platform service; decides the kind enum and the subject field."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.alert.category/000"
+        created: "2026-09-16T17:45:00Z"
+        status: "staging"
+
+  gw.alert.state:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Whether an alert record raises the alert (Firing) or resolves it (Resolved)."
+    schema_url: "https://schemas.electricity.works/enums/gw.alert.state/000"
+    created: "2026-09-16T17:45:00Z"
+    status: "staging"
+
+  gw.fleet.alert.kind:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "The condition a fleet alert is about, one value per detector, named for what a human acts on."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.fleet.alert.kind/000"
+        created: "2026-09-16T17:45:00Z"
+        status: "staging"
+
   gw.g.node.class:
     latest_version: "000"
     owner: gridworks-energy
@@ -335,7 +364,7 @@ enums:
       "000":
         schema_url: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
         created: "2026-09-15T19:35:00Z"
-        status: "staging"
+        status: "published"
 
   gw.house0.primary.flow.source:
     latest_version: "000"
@@ -360,6 +389,18 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw.market.product.name/000"
         created: "2026-06-08T00:00:00Z"
         status: "published"
+
+  gw.platform.alert.kind:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "The condition a platform-service alert is about, one value per check, named for what a human acts on."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.platform.alert.kind/000"
+        created: "2026-09-16T17:45:00Z"
+        status: "staging"
 
   gw.scada.cmd.refusal.reason:
     latest_version: "000"
@@ -479,7 +520,6 @@ enums:
         created: "2026-03-16T14:14:00Z"
         status: "published"
 
-
   gw1.lc.top.state:
     latest_version: "001"
     owner: gridworks-energy
@@ -588,7 +628,6 @@ enums:
         created: "2026-02-17T19:54:00Z"
         status: "published"
 
-
   gw1.seasonal.storage.mode:
     latest_version: "000"
     owner: gridworks-energy
@@ -600,7 +639,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw1.seasonal.storage.mode/000"
         created: "2026-01-14T18:04:00Z"
         status: "published"
-
 
   gw1.service.mode:
     latest_version: "000"
@@ -641,7 +679,6 @@ enums:
         created: "2026-01-14T18:04:00Z"
         status: "published"
 
-
   gw1.unit:
     latest_version: "002"
     owner: gridworks-energy
@@ -668,7 +705,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw1.unit/000"
         created: "2025-12-25T22:18:00Z"
         status: "published"
-
 
   heatcall.source:
     owner: gridworks-energy
@@ -821,7 +857,6 @@ enums:
         created: "2024-12-05T19:25:00Z"
         status: "published"
 
-
   market.quantity.unit:
     latest_version: "000"
     owner: gridworks-energy
@@ -833,7 +868,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/market.quantity.unit/000"
         created: "2024-12-05T19:25:00Z"
         status: "published"
-
 
   market.type.name:
     latest_version: "000"
@@ -931,7 +965,6 @@ enums:
         created: "2024-09-17T19:18:00Z"
         status: "published"
 
-
   setpoint.phase:
     latest_version: "000"
     owner: gridworks-energy
@@ -944,7 +977,6 @@ enums:
         created: "2026-08-11T15:55:00Z"
         status: "staging"
 
-
   single.pico.state:
     latest_version: "000"
     owner: gridworks-energy
@@ -956,7 +988,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/single.pico.state/000"
         created: "2026-09-07T16:45:00Z"
         status: "published"
-
 
   spaceheat.make.model:
     latest_version: "008"
@@ -990,7 +1021,6 @@ enums:
         created: "2024-10-18T15:21:00Z"
         status: "published"
 
-
   spaceheat.telemetry.name:
     latest_version: "007"
     owner: gridworks-energy
@@ -1009,7 +1039,6 @@ enums:
         created: "2024-11-24T00:00:00Z"
         status: "published"
 
-
   spaceheat.unit:
     latest_version: "001"
     owner: gridworks-energy
@@ -1021,7 +1050,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/spaceheat.unit/001"
         created: "2024-09-02T15:00:00Z"
         status: "published"
-
 
   ta.validation.state:
     latest_version: "000"
@@ -1059,7 +1087,6 @@ enums:
         created: "2026-06-14T12:00:00Z"
         status: "staging"
 
-
   thermostat.kind:
     latest_version: "000"
     owner: gridworks-energy
@@ -1071,7 +1098,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/thermostat.kind/000"
         created: "2026-08-11T15:55:00Z"
         status: "staging"
-
 
   turn.5v.on.off:
     latest_version: "000"
@@ -1101,7 +1127,6 @@ enums:
     created: "2026-08-11T21:05:00Z"
     status: "staging"
 
-
   zone.actuator.kind:
     latest_version: "000"
     owner: gridworks-energy
@@ -1113,7 +1138,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/zone.actuator.kind/000"
         created: "2026-08-11T15:55:00Z"
         status: "staging"
-
 
   zone.call.circuit.event:
     latest_version: "000"
@@ -1127,7 +1151,6 @@ enums:
         created: "2026-08-11T15:55:00Z"
         status: "staging"
 
-
   zone.call.circuit.state:
     latest_version: "000"
     owner: gridworks-energy
@@ -1140,7 +1163,6 @@ enums:
         created: "2026-08-11T15:55:00Z"
         status: "staging"
 
-
   zone.call.source:
     owner: gridworks-energy
     enum_type: "literal"
@@ -1148,7 +1170,6 @@ enums:
     schema_url: "https://schemas.electricity.works/enums/zone.call.source/000"
     created: "2026-08-11T15:55:00Z"
     status: "staging"
-
 
   zone.circuit.governance.event:
     latest_version: "000"
@@ -1162,7 +1183,6 @@ enums:
         created: "2026-08-11T15:55:00Z"
         status: "staging"
 
-
   zone.circuit.governance.state:
     latest_version: "000"
     owner: gridworks-energy
@@ -1174,7 +1194,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/zone.circuit.governance.state/000"
         created: "2026-08-11T15:55:00Z"
         status: "staging"
-
 
   zone.circuit.role:
     latest_version: "000"
@@ -1188,7 +1207,6 @@ enums:
         created: "2026-08-11T15:55:00Z"
         status: "staging"
 
-
   zone.setpoint.source:
     latest_version: "000"
     owner: gridworks-energy
@@ -1200,8 +1218,6 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/zone.setpoint.source/000"
         created: "2026-08-11T15:55:00Z"
         status: "staging"
-
-
 
 types:
 
@@ -2671,6 +2687,30 @@ types:
             - "utc.milliseconds"
             - "uuid4.str"
 
+  gw.alert:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "An alerting service's report that a condition needing human attention has started (Firing) or stopped (Resolved) holding, about a house, the fleet, or a platform service."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.alert/000"
+        created: "2026-09-16T17:45:00Z"
+        status: "staging"
+        summary: "Initial Sema version. One word for both transitions (State), a Category choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias (axiom 2), ResolvedMs iff Resolved (axiom 3)."
+        direct_dependencies:
+          structural:
+            - "channel.readings:002"
+            - "gw.alert.category:000"
+            - "gw.alert.state:000"
+            - "gw.fleet.alert.kind:000"
+            - "gw.house.alert.kind:000"
+            - "gw.platform.alert.kind:000"
+            - "left.right.dot"
+            - "utc.milliseconds"
+            - "uuid4.str"
+
   gw.channel.gap.stats:
     latest_version: "000"
     owner: gridworks-energy
@@ -2829,46 +2869,6 @@ types:
             - "non.empty.string"
             - "spaceheat.name"
             - "utc.milliseconds"
-
-  gw.house.alert:
-    latest_version: "000"
-    owner: gridworks-energy
-    versioning_strategy: "literal"
-    description: "An alerting service's report that a condition needing human attention has been detected at a house, with the readings that fired it."
-
-    versions:
-      "000":
-        schema_url: "https://schemas.electricity.works/types/gw.house.alert/000"
-        created: "2026-09-15T19:35:00Z"
-        status: "staging"
-        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint: AboutGNodeAlias names the house's terminal asset (suffix .ta), never its scada."
-        direct_dependencies:
-          structural:
-            - "channel.readings:002"
-            - "gw.house.alert.kind:000"
-            - "left.right.dot"
-            - "utc.milliseconds"
-            - "uuid4.str"
-
-  gw.house.alert.cleared:
-    latest_version: "000"
-    owner: gridworks-energy
-    versioning_strategy: "literal"
-    description: "An alerting service's report that a previously raised house alert no longer holds, with the readings that cleared it."
-
-    versions:
-      "000":
-        schema_url: "https://schemas.electricity.works/types/gw.house.alert.cleared/000"
-        created: "2026-09-15T19:35:00Z"
-        status: "staging"
-        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint as on gw.house.alert."
-        direct_dependencies:
-          structural:
-            - "channel.readings:002"
-            - "gw.house.alert.kind:000"
-            - "left.right.dot"
-            - "utc.milliseconds"
-            - "uuid4.str"
 
   gw.house0.layout:
     latest_version: "000"

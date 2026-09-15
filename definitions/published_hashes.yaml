@@ -132,6 +132,8 @@ enums:
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
   pico.board.variant:
     '000': sha256:793376e9c13e4c9791f5de3a73a2f04905f80b4fd8e488898e99edc4ac56bca2
+  gw.house.alert.kind:
+    '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1

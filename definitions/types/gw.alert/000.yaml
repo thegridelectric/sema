@@ -1,0 +1,130 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.alert/000"
+
+title: "gw.alert"
+type: object
+description: >
+  An alerting service's report that a condition needing human attention
+  has started to hold (Firing) or stopped holding (Resolved), about a
+  house, the fleet, or a platform service.
+
+properties:
+
+  Src:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the alerting service that emitted the record.
+
+  Category:
+    $ref: "https://schemas.electricity.works/enums/gw.alert.category/000"
+    description: >
+      What kind of subject the alert is about. Decides which kind enum
+      Kind belongs to and which field names the subject.
+
+  Kind:
+    oneOf:
+      - $ref: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
+      - $ref: "https://schemas.electricity.works/enums/gw.fleet.alert.kind/000"
+      - $ref: "https://schemas.electricity.works/enums/gw.platform.alert.kind/000"
+    description: >
+      The condition detected, from the kind enum that Category selects.
+
+  State:
+    $ref: "https://schemas.electricity.works/enums/gw.alert.state/000"
+    description: >
+      Whether this record raises the alert or resolves it.
+
+  AlertId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Identifier of this alert instance; the Resolved record that ends it
+      carries the same AlertId as the Firing record that opened it.
+
+  AboutGNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the house's terminal asset the alert is about.
+
+  Subject:
+    type: string
+    description: >
+      What the alert is about when it is not a GNode: a service or a host,
+      named as the people who answer the page know it.
+
+  RaisedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      Time at which the alerting service raised the alert.
+
+  ResolvedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      Time at which the alerting service resolved the alert.
+
+  Summary:
+    type: string
+    description: >
+      One human-readable line stating the condition and the value that
+      fired or cleared it.
+
+  Evidence:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/channel.readings/002"
+    description: >
+      The readings the detector fired or cleared on, so a reader can see
+      the values without a second lookup. A zone or hour the condition
+      concerns rides in the channel names.
+
+  TypeName:
+    const: "gw.alert"
+
+  Version:
+    const: "000"
+
+required:
+  - Src
+  - Category
+  - Kind
+  - State
+  - AlertId
+  - RaisedMs
+  - Summary
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "CategoryKindConsistency"
+      statement: >
+        Category SHALL determine the enum Kind belongs to:
+        a. If Category is House, Kind SHALL be a value of gw.house.alert.kind.
+        b. If Category is Fleet, Kind SHALL be a value of gw.fleet.alert.kind.
+        c. If Category is PlatformService, Kind SHALL be a value of gw.platform.alert.kind.
+    - number: 2
+      name: "HouseSubject"
+      statement: >
+        a. If Category is House, AboutGNodeAlias SHALL be present.
+        b. If AboutGNodeAlias is present, it SHALL identify a TerminalAsset
+        and therefore SHALL end with the suffix ".ta".
+    - number: 3
+      name: "ResolvedTime"
+      statement: >
+        a. If State is Resolved, ResolvedMs SHALL be present.
+        b. If State is Firing, ResolvedMs SHALL be absent.
+  extended_description: >
+    One word carries both transitions of an alert, so a journal holds one
+    table, a notifier decodes one type, and a Resolved record maps onto a
+    notifier's end time. A raised alert stands until a Resolved record
+    with the same AlertId arrives; nothing repeats from the alerting
+    service, and repeat cadence, escalation and acknowledgement belong to
+    the notifier.
+
+    An alert is about the house, and the scada is one reporter on it: a
+    house whose scada is replaced keeps its alert history under the same
+    AboutGNodeAlias. glitch is a node reporting on itself; gw.alert is a
+    service reporting on something from the evidence it received.

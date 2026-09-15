@@ -493,6 +493,13 @@ types:
       "000":
         summary: "Initial version."
 
+  gw.alert:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. One word for both transitions (State), a Category choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias (axiom 2), ResolvedMs iff Resolved (axiom 3)."
+
   gw.channel.gap.stats:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -548,20 +555,6 @@ types:
     versions:
       "000":
         summary: "Initial version."
-
-  gw.house.alert:
-    latest_version: "000"
-    versioning_strategy: "literal"
-    versions:
-      "000":
-        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint: AboutGNodeAlias names the house's terminal asset (suffix .ta), never its scada."
-
-  gw.house.alert.cleared:
-    latest_version: "000"
-    versioning_strategy: "literal"
-    versions:
-      "000":
-        summary: "Initial Sema version. Axiom 1 TerminalAssetAliasConstraint as on gw.house.alert."
 
   gw.house0.layout:
     latest_version: "000"
@@ -1690,6 +1683,24 @@ enums:
     versions:
       "000": {}
 
+  gw.alert.category:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.alert.state:
+    enum_type: "literal"
+    note: "This enum is literal; version 000 is immutable and exclusive."
+    versions:
+      "000": {}
+
+  gw.fleet.alert.kind:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
   gw.g.node.class:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
@@ -1709,6 +1720,12 @@ enums:
       "000": {}
 
   gw.market.product.name:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.platform.alert.kind:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

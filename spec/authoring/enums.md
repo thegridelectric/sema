@@ -65,6 +65,12 @@ x-gridworks:
 
 - `default`
   - SHALL be one of the declared enum values
+  - Is the forward-compatibility fallback: a decoder on this version that
+    meets a value it does not know SHALL decode it to `default` rather
+    than reject it, so a value appended in a later version reaches an
+    older consumer as the default (by convention a first value named
+    `Unknown` that means "drop, do not act"). A consumer that must act
+    on a value therefore treats `default` as "not known here".
 
 ## String Enum Value Constraints — values are Python identifiers
 
