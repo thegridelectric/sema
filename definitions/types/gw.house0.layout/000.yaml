@@ -194,7 +194,6 @@ x-gridworks:
         For each of the names
           "sieg-cold",
           "sieg-flow",
-          "sieg-flow-hz",
           "hp-loop-on-off-relay",
           and "hp-loop-keep-send-relay":
         a channel with that Name SHALL exist in DataChannels or in

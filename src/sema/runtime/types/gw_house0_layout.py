@@ -344,7 +344,7 @@ class GwHouse0Layout(SemaType):
     def check_axiom_8(self) -> Self:
         """
         Axiom 8: SiegManifoldChannels
-        For each of the names "sieg-cold", "sieg-flow", "sieg-flow-hz", "hp-loop-on-off-relay",
+        For each of the names "sieg-cold", "sieg-flow", "hp-loop-on-off-relay",
         and "hp-loop-keep-send-relay": a channel with that Name SHALL exist in DataChannels or in
         DerivedChannels — the siegenthaler loop cannot be controlled or observed without its
         sensing and valve-observation channels.
@@ -357,7 +357,6 @@ class GwHouse0Layout(SemaType):
         required = {
             "sieg-cold",
             "sieg-flow",
-            "sieg-flow-hz",
             "hp-loop-on-off-relay",
             "hp-loop-keep-send-relay",
         }
