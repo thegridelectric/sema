@@ -61,14 +61,14 @@ properties:
         - $ref: "https://schemas.electricity.works/types/gpio.sensor.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/gpio.relay.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/i2c.dac.output.component.gt/000"
-        - $ref: "https://schemas.electricity.works/types/i2c.multichannel.dt.relay.component.gt/004"
         - $ref: "https://schemas.electricity.works/types/i2c.relay.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/i2c.thermistor.reader.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/scada.board.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/pico.btu.meter.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/pico.tank.module.component.gt/012"
+        - $ref: "https://schemas.electricity.works/types/sim.pico.btu.meter.component.gt/000"
+        - $ref: "https://schemas.electricity.works/types/sim.pico.flow.module.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/sim.pico.tank.module.component.gt/001"
-        - $ref: "https://schemas.electricity.works/types/sim.relay.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/sim.sensor.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/web.server.component.gt/001"
 
@@ -127,14 +127,15 @@ x-gridworks:
     - number: 2
       name: "BoardResolution"
       statement: >
-        For every board-resident component in Components (gpio.sensor.component.gt,
-        gpio.relay.component.gt, i2c.thermistor.reader.component.gt): its
-        BoardComponentId SHALL equal the ComponentId of a scada.board.component.gt in
-        Components; that board component's DeviceType SHALL match the DeviceType of a
-        gw1.scada.device.type.gt record in DeviceTypes; and the component's board name
-        (GpioName against NativeGpioInputs for sensors, GpioName against
-        NativeGpioOutputs for relays, AdcName against the ThermistorAdcs Names for
-        thermistor readers) SHALL match a Name in that record.
+        For every component in Components carrying a BoardComponentId (board-resident by
+        that fact alone, whatever its TypeName): its BoardComponentId SHALL equal the
+        ComponentId of a scada.board.component.gt in Components; that board component's
+        DeviceType SHALL match the DeviceType of a gw1.scada.device.type.gt record in
+        DeviceTypes; and the component's board name (GpioName against NativeGpioInputs for
+        sensors, GpioName against NativeGpioOutputs for relays, AdcName against the
+        ThermistorAdcs Names for thermistor readers, RelayName against the I2cRelays
+        RelayNames for i2c relays, DacName against the Dacs DacNames for DAC outputs) SHALL
+        match a Name in that record.
 
     - number: 3
       name: "CoreShNodesExistenceAndActorClass"

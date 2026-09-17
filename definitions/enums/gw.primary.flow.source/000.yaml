@@ -1,14 +1,14 @@
 $schema: "https://json-schema.org/draft/2020-12/schema"
-$id: "https://schemas.electricity.works/enums/gw.house0.primary.flow.source/000"
+$id: "https://schemas.electricity.works/enums/gw.primary.flow.source/000"
 
-title: "gw.house0.primary.flow.source"
+title: "gw.primary.flow.source"
 type: "string"
 description: >
-  How the House0 hydronic layout's primary-loop flow ("primary-flow") is
-  obtained. This is a physical-topology fact: whether a flow meter sits at the
-  primary pump (measured) or the primary flow is reconstructed from the
-  Siegenthaler loop's sensors (derived). It selects whether "primary-flow" is a
-  measured DataChannel or a derived (sum) DerivedChannel.
+  How a hydronic layout's primary-loop flow ("primary-flow") is obtained.
+  This is a physical-topology fact: whether a flow meter sits at the primary
+  pump (measured) or the primary flow is reconstructed from other sensors
+  (derived). It selects whether "primary-flow" is a measured DataChannel or a
+  derived DerivedChannel.
 
 enum:
   - "Measured"

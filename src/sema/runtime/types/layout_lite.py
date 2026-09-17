@@ -35,7 +35,7 @@ class LayoutLite(SemaType):
     actuation_authority: Gw1ActuationAuthority
     service_mode: Gw1ServiceMode
     seasonal_storage_mode: Gw1SeasonalStorageMode
-    buffer_short_cycling: bool
+    keep_buffer_full: bool
     zone_list: list[str]
     critical_zone_list: list[str]
     total_store_tanks: PositiveInt

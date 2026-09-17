@@ -1,6 +1,7 @@
 from typing import Literal
 from pydantic import ConfigDict, StrictInt, model_validator
 from sema.runtime.base import SemaType
+from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.enums import TempCalcMethod
 from sema.runtime.property_format import PascalCase
 from sema.runtime.property_format import PositiveInt
@@ -27,6 +28,8 @@ class PicoTankModuleComponentGt(SemaType):
     serial_number: str
     async_capture_delta_micro_volts: StrictInt
     sensor_order: list[StrictInt] | None = None
+    pico_board_variant: PicoBoardVariant
+    micropython_version: str | None = None
     type_name: Literal["pico.tank.module.component.gt"] = (
         "pico.tank.module.component.gt"
     )

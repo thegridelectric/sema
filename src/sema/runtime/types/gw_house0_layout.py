@@ -17,9 +17,6 @@ from sema.runtime.types.hp_device_type_gt import HpDeviceTypeGt
 from sema.runtime.types.hubitat_component_gt import HubitatComponentGt
 from sema.runtime.types.hubitat_poller_component_gt import HubitatPollerComponentGt
 from sema.runtime.types.i2c_dac_output_component_gt import I2cDacOutputComponentGt
-from sema.runtime.types.i2c_multichannel_dt_relay_component_gt import (
-    I2cMultichannelDtRelayComponentGt,
-)
 from sema.runtime.types.i2c_relay_component_gt import I2cRelayComponentGt
 from sema.runtime.types.i2c_thermistor_reader_component_gt import (
     I2cThermistorReaderComponentGt,
@@ -28,10 +25,15 @@ from sema.runtime.types.pico_btu_meter_component_gt import PicoBtuMeterComponent
 from sema.runtime.types.pico_flow_module_component_gt import PicoFlowModuleComponentGt
 from sema.runtime.types.pico_tank_module_component_gt import PicoTankModuleComponentGt
 from sema.runtime.types.scada_board_component_gt import ScadaBoardComponentGt
+from sema.runtime.types.sim_pico_btu_meter_component_gt import (
+    SimPicoBtuMeterComponentGt,
+)
+from sema.runtime.types.sim_pico_flow_module_component_gt import (
+    SimPicoFlowModuleComponentGt,
+)
 from sema.runtime.types.sim_pico_tank_module_component_gt import (
     SimPicoTankModuleComponentGt,
 )
-from sema.runtime.types.sim_relay_component_gt import SimRelayComponentGt
 from sema.runtime.types.sim_sensor_component_gt import SimSensorComponentGt
 from sema.runtime.types.spaceheat_node_gt import SpaceheatNodeGt
 from sema.runtime.types.web_server_component_gt import WebServerComponentGt
@@ -51,7 +53,6 @@ class GwHouse0Layout(SemaType):
         | GpioRelayComponentGt
         | GpioSensorComponentGt
         | I2cDacOutputComponentGt
-        | I2cMultichannelDtRelayComponentGt
         | I2cRelayComponentGt
         | I2cThermistorReaderComponentGt
         | PicoBtuMeterComponentGt
@@ -59,7 +60,8 @@ class GwHouse0Layout(SemaType):
         | PicoTankModuleComponentGt
         | ScadaBoardComponentGt
         | SimPicoTankModuleComponentGt
-        | SimRelayComponentGt
+        | SimPicoFlowModuleComponentGt
+        | SimPicoBtuMeterComponentGt
         | SimSensorComponentGt
         | HubitatComponentGt
         | HubitatPollerComponentGt
@@ -686,5 +688,84 @@ class GwHouse0Layout(SemaType):
             raise ValueError(
                 "Axiom 15 (ComponentBinding) failed: components not referenced by exactly "
                 f"one ShNode (id: reference count) {violations}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_16(self) -> Self:
+        """
+        Axiom 16: BoardResolution
+        For every board-resident component in Components (i2c.relay.component.gt,
+        i2c.dac.output.component.gt): its BoardComponentId SHALL equal the ComponentId
+        of a scada.board.component.gt in Components; that board component's DeviceType
+        SHALL match the DeviceType of a gw1.scada.device.type.gt record in DeviceTypes;
+        and the component's board name (RelayName against the I2cRelays RelayNames for
+        relays, DacName against the Dacs DacNames for DAC outputs) SHALL match a name in
+        that record.
+        """
+        boards = {
+            c.component_id: c
+            for c in (self.components or [])
+            if c.type_name == "scada.board.component.gt"
+        }
+        records = {
+            r.device_type: r
+            for r in (self.device_types or [])
+            if r.type_name == "gw1.scada.device.type.gt"
+        }
+        kinds = {
+            "i2c.relay.component.gt": ("relay_name", "i2c_relays", "relay_name"),
+            "i2c.dac.output.component.gt": ("dac_name", "dacs", "dac_name"),
+        }
+        for c in self.components or []:
+            kind = kinds.get(c.type_name)
+            if kind is None:
+                continue
+            attr, list_name, entry_attr = kind
+            board = boards.get(c.board_component_id)
+            if board is None:
+                raise ValueError(
+                    "Axiom 16 (BoardResolution) failed: BoardComponentId "
+                    f"'{c.board_component_id}' of component '{c.component_id}' does "
+                    "not resolve to a scada.board.component.gt."
+                )
+            record = records.get(board.device_type)
+            if record is None:
+                raise ValueError(
+                    "Axiom 16 (BoardResolution) failed: board DeviceType "
+                    f"'{board.device_type}' has no gw1.scada.device.type.gt record."
+                )
+            wanted = getattr(c, attr)
+            names = {getattr(e, entry_attr) for e in (getattr(record, list_name) or [])}
+            if wanted not in names:
+                raise ValueError(
+                    "Axiom 16 (BoardResolution) failed: name "
+                    f"'{wanted}' of component '{c.component_id}' is not in the "
+                    f"board record's {list_name}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_17(self) -> Self:
+        """
+        Axiom 17: BufferTank
+        A House0 home has a buffer tank. ShNodes SHALL include a node named "buffer",
+        and for each depth i in 1..3 a channel named "buffer-depth{i}" SHALL exist in
+        DataChannels or in DerivedChannels. (The family invariant lives here, in the
+        word; scada code asks the layout and assumes nothing.)
+        """
+        if "buffer" not in {n.name for n in self.sh_nodes or []}:
+            raise ValueError("Axiom 17 (BufferTank) failed: no ShNode named 'buffer'.")
+        channel_names = {c.name for c in (self.data_channels or [])} | {
+            c.name for c in (self.derived_channels or [])
+        }
+        missing = [
+            f"buffer-depth{i}"
+            for i in (1, 2, 3)
+            if f"buffer-depth{i}" not in channel_names
+        ]
+        if missing:
+            raise ValueError(
+                f"Axiom 17 (BufferTank) failed: missing buffer channels {missing}."
             )
         return self

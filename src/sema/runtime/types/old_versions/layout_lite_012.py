@@ -135,6 +135,7 @@ class LayoutLite012(SemaType):
         - TankModuleComponents / FlowModuleComponents / I2cRelayComponent: cac-carrying component versions -> cac-free DeviceType versions (pico.tank.module 011->012, sim.pico.tank.module 000->001, pico.flow.module 000->001, i2c.multichannel.dt.relay 003->004). Context-dependent: the embedded components' DeviceType lives on their cac, not the component.
         - SystemMode -> ActuationAuthority x ServiceMode split (Heating -> Active/Heating, Standby -> Standby/Heating, MonitorOnly -> MonitorOnly/Heating; mechanical, not the blocking reason for context).
         - Strategy (free manifold-variant string) -> HardwareLayoutTypeName (left.right.dot): the loaded layout word's TypeName is the family; a format, not an enum of layout words, so this word publishes independently of the layout words' status.
+        - BufferShortCycling -> KeepBufferFull: the running scada's KeepBufferFull setting, named for what the flag does.
         """
         raise SemaType.upgrade_requires_context(
             "LayoutLite012 cannot be upgraded to "

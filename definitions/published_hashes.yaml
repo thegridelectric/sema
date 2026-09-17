@@ -8,6 +8,7 @@ formats:
   handle.name: sha256:8766362cd0940fa5451273dc0866f11f4a09e3496fe502e82ea448ffaab75c4f
   hex.char: sha256:855097c34bc9ac8bddbfe7cf1934f666e18229ce564e5f9575fa0577aaff1ef1
   hh.mm: sha256:ffb589d03b164cc0a3b6e19cffd8ad75f6121cf98325eb0a938816d559dc151d
+  iana.timezone.str: sha256:dbf102398f50a3161a27e424c1d159d6563aaa592ea19026fee85e61cd392dd4
   left.right.dot: sha256:095da668f40e14bd806ae04c56eed0ebbb2f71c8ccfb2d82488226e73d901acf
   mac.address: sha256:dfa51f397bc5fd0487d187b1f0a58b63e0ba22357874d46dd7e5caabf39daef7
   market.slot.name: sha256:75c347c8cfa8e3b50decc66d724ee2012798994b84a2e2841868530aa04ecca8
@@ -48,6 +49,8 @@ enums:
     '000': sha256:cd987e3452dd431563b404dd4b0c7043f6dec40b274815f2db2240574cae5c2d
   gw.g.node.class:
     '000': sha256:492ac9defec62dc025adc0dccf8d2198acd9fb22d1c21f56ac33f07c06fbbee2
+  gw.house.alert.kind:
+    '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
   gw.market.product.name:
     '000': sha256:b1c91cdca4978f783c836abd6e1e646df2fd940c2cd240cc4f852788e4046324
   gw.scada.cmd.refusal.reason:
@@ -104,6 +107,8 @@ enums:
     '000': sha256:af16ab9e45c4a60c9026b46ae64e004b2bfb3319e5f16a8778780a0e0b0eabae
   market.type.name:
     '000': sha256:8eebaee538a7b5ba69d52ba0ad6439d56ef7014d892dc359fcf04a487a9f1d2b
+  pico.board.variant:
+    '000': sha256:793376e9c13e4c9791f5de3a73a2f04905f80b4fd8e488898e99edc4ac56bca2
   pico.cycler.event:
     '000': sha256:9154b7a840064c97fd0f7dcee563bdd8d7c99716162adeff187cde5eec514589
   pico.cycler.state:
@@ -130,19 +135,17 @@ enums:
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
-  pico.board.variant:
-    '000': sha256:793376e9c13e4c9791f5de3a73a2f04905f80b4fd8e488898e99edc4ac56bca2
-  gw.house.alert.kind:
-    '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
   async.btu.params:
     '000': sha256:f47e4ce8d96f41da1ed8b7ea788f76b55b6e3170c942778a18125b64c1ca4864
-    '100': sha256:cb2ba8b40bc010744f772d6c518afa88a998891706a19021ca34b7082ebe5c5e
+    '100': sha256:db951bdb2524f820284dfec0017fa5aaa3161f86aff902ba92a3b7a4deb87105
   atn.bid:
     '001': sha256:6de266f87e83d36a4899862aa169755977c38f84c47850de0c6ab40cdec13214
     '002': sha256:8f93f00ce2f19d2d8dd40d224926fecda4b378d47ae5ac6dee31626adee79679
+  baseurl.failure.alert:
+    '100': sha256:c984d6341e3b65037066cdead1ddb0aa850cb8abcd8112b140b00427eaca29e0
   bid:
     '000': sha256:fdbf94c2b786e17856c363ed20328c2280c3ec2f26f4bc8f0abace159f8e5502
   channel.config:
@@ -181,6 +184,10 @@ types:
     '005': sha256:c7b885dc47a82c6f325fe163821ee745cafc18abb1cd0e290786f102549d7c18
     '006': sha256:92419603aa11d932176ee8600dfd477199a508aedcc546b4d10bcd853ffbbb13
     '007': sha256:f6815669324c9da51f9b5cd6bcc89c38f301d4667f64f456f350461bf18c80e6
+  flow.hall.params:
+    '101': sha256:2f05115bf057337b71d5335a6e70e2b073f3ed4bf1c05065f9d8e8e2b987709d
+  flow.reed.params:
+    '101': sha256:aa4ec28c5145051719cdfb604a24e9efefc2668773ad94fecb1d44e25c0fd493
   fsm.atomic.report:
     '000': sha256:d394b1840408b17d8dbc3cd029916ebba67c7280b56548661cf657ab0f9439d2
     '001': sha256:5a911731e555d89da1bbb487bc8fa88a06ce340e2763e47d2cd24645d30076ec
@@ -415,7 +422,7 @@ types:
     '000': sha256:c8d7ac0ad56e4797302e1d4389e143439277a549bfd67f8c322a6d43dffca9bb
   tank.module.params:
     '110': sha256:5ab1d5a4a1acec0a7314bf461af370bdf04f55c3a2e82ac857293b0f8053ccaa
-    '200': sha256:33b1b2e0edabbca34ea4523d70cb5a5e595243358aa07418de691219adfa80ea
+    '200': sha256:1f6924ad517bab10c9fe06d774974675ad18071e58a79e48a2a0c50b9c546d33
   ticklist.hall:
     '101': sha256:06e78b373868c1d4bade376c9bc80d4fb6d74582faa212de5fe4d1a088ea2028
   ticklist.hall.report:
@@ -428,5 +435,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  baseurl.failure.alert:
-    '100': sha256:c984d6341e3b65037066cdead1ddb0aa850cb8abcd8112b140b00427eaca29e0

@@ -1,12 +1,12 @@
 $schema: "https://json-schema.org/draft/2020-12/schema"
-$id: "https://schemas.electricity.works/types/pico.btu.meter.component.gt/000"
+$id: "https://schemas.electricity.works/types/sim.pico.btu.meter.component.gt/000"
 
-title: "pico.btu.meter.component.gt"
+title: "sim.pico.btu.meter.component.gt"
 type: object
 description: >
-  A Pico BTU-meter component (one installed device instance): a flow meter plus hot
-  and cold thermistors (and optionally a CT voltage reading) that a Pico samples to
-  compute thermal power. Flat — the shared component fields are spelled out here.
+  A simulated pico BTU-meter component: mirrors pico.btu.meter.component.gt
+  (SimulatesTypeName / SimulatesVersion) so a simulated layout drives the real
+  scada BTU-meter code path with simulated hardware input.
 
 properties:
 
@@ -84,19 +84,27 @@ properties:
   HwUid:
     type: string
 
-  PicoBoardVariant:
-    $ref: "https://schemas.electricity.works/enums/pico.board.variant/000"
+  SimLifeS:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
     description: >
-      The physical board this pico was provisioned on.
+      Seconds the simulated pico posts readings after each boot before
+      it goes silent. Absent means it never dies on a schedule.
 
-  MicropythonVersion:
-    type: string
+  SimRebootS:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
     description: >
-      The MicroPython release this pico was provisioned with, as
-      `os.uname().release` reports it.
+      Seconds after the vdc relay closes, following an open, before the
+      simulated pico boots and posts again. Absent means a dead pico
+      stays dead.
+
+  SimulatesTypeName:
+    const: "pico.btu.meter.component.gt"
+
+  SimulatesVersion:
+    const: "000"
 
   TypeName:
-    const: "pico.btu.meter.component.gt"
+    const: "sim.pico.btu.meter.component.gt"
 
   Version:
     const: "000"
@@ -119,11 +127,12 @@ required:
   - GallonsPerPulse
   - AsyncCaptureDeltaGpmX100
   - AsyncCaptureDeltaCelsiusX100
-  - PicoBoardVariant
+  - SimulatesTypeName
+  - SimulatesVersion
   - TypeName
   - Version
 
-additionalProperties: false
+additionalProperties: true
 
 examples:
   - |
@@ -145,22 +154,20 @@ examples:
       "GallonsPerPulse": 1,
       "AsyncCaptureDeltaGpmX100": 0,
       "AsyncCaptureDeltaCelsiusX100": 0,
-      "PicoBoardVariant": "PicoRaspberryWifi2040",
-      "TypeName": "pico.btu.meter.component.gt",
+      "SimulatesTypeName": "pico.btu.meter.component.gt",
+      "SimulatesVersion": "000",
+      "TypeName": "sim.pico.btu.meter.component.gt",
       "Version": "000"
     }
+
 x-gridworks:
   owner: "gridworks-energy"
 
   extended_description: >
-    `DeviceType` and `FlowMeterType` are open `pascal.case` strings. The device-type
-    enum (the device-category vocabulary) whose membership they must satisfy is
-    articulated by any hardware layout for which this type is a sub-type — the layout
-    enforces it, so this component type stays version-stable as device types are added.
-    DeviceType values come from the `gw1.device.type` vocabulary; the hardware layout
-    enforces membership.
+    The component-faithful facet of simulation: the field set of
+    `pico.btu.meter.component.gt` plus the liveness script (SimLifeS,
+    SimRebootS), so a simulated layout drives the real scada pico code path with
+    simulated hardware input. DeviceType values come from the `gw1.device.type`
+    vocabulary; the hardware layout enforces membership.
 
-    The `.gt` suffix declares that this type is coupled bijectively with a table in
-    a canonical seed database (here, the terminalasset registry): the table's rows are
-    instances of this type. Sema is the authority over what a row means; the seed
-    table is the authority over which instances are currently asserted.
+    Simulates `pico.btu.meter.component.gt`. Kin: `sim.pico.tank.module.component.gt`.

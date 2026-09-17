@@ -15,6 +15,8 @@ HEX_CHAR_PATTERN = re.compile(r"^[0-9a-fA-F]$")
 
 HH_MM_PATTERN = re.compile(r"^([01][0-9]|2[0-3]):[0-5][0-9]$")
 
+IANA_TIMEZONE_STR_PATTERN = re.compile(r"^[A-Za-z_]+(/[A-Za-z0-9_+-]+){0,2}$")
+
 LEFT_RIGHT_DOT_PATTERN = re.compile(r"^[a-z][a-z0-9]*(\.[a-z0-9]+)*$")
 
 MAC_ADDRESS_PATTERN = re.compile(r"^([0-9a-f]{2}:){5}[0-9a-f]{2}$")
@@ -71,6 +73,16 @@ def is_hh_mm(v: str) -> str:
 
     if not HH_MM_PATTERN.fullmatch(v):
         raise ValueError(f"<{v}>: Fails hh.mm format.")
+
+    return v
+
+
+def is_iana_timezone_str(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: iana.timezone.str must be a string.")
+
+    if not IANA_TIMEZONE_STR_PATTERN.fullmatch(v):
+        raise ValueError(f"<{v}>: Fails iana.timezone.str format.")
 
     return v
 
@@ -255,6 +267,11 @@ HexChar = Annotated[
 HhMm = Annotated[
     str,
     BeforeValidator(is_hh_mm),
+]
+
+IanaTimezoneStr = Annotated[
+    str,
+    BeforeValidator(is_iana_timezone_str),
 ]
 
 LeftRightDot = Annotated[

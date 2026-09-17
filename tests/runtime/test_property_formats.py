@@ -14,6 +14,7 @@ RUNTIME_FORMAT_TYPES: dict[str, Any] = {
     "handle.name": property_format.HandleName,
     "hex.char": property_format.HexChar,
     "hh.mm": property_format.HhMm,
+    "iana.timezone.str": property_format.IanaTimezoneStr,
     "left.right.dot": property_format.LeftRightDot,
     "market.slot.name": property_format.MarketSlotName,
     "non.empty.string": property_format.NonEmptyString,

@@ -18,8 +18,7 @@ types:
   capture.tuning:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
   channel.config:
     '000':
       used_by:
@@ -50,8 +49,7 @@ types:
   cop.curve:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
   dac.output.config:
     '000':
       used_by:
@@ -177,6 +175,10 @@ types:
     '000':
       used_by:
       - gw.command.interface:000
+  gw.house0.family.params:
+    '000':
+      used_by:
+      - gw.operational.params:000
   gw.hydronic:
     '000':
       used_by:
@@ -186,11 +188,18 @@ types:
     '000':
       used_by:
       - gw1.scada.device.type.gt:000
+  gw.nolan.family.params:
+    '000':
+      used_by:
+      - gw.operational.params:000
+  gw.tou.tariff:
+    '000':
+      used_by:
+      - gw.operational.params:000
   gw.tou.window:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.tou.tariff:000
   gw.weather.channel.gt:
     '000':
       used_by:
@@ -299,8 +308,7 @@ types:
   heating.curve:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
   hp.control.box.device.type.gt:
     '000':
       used_by:
@@ -380,8 +388,6 @@ types:
       - layout.lite:012
     '004':
       used_by:
-      - gw.house0.layout:000
-      - gw.nolan.layout:000
       - layout.lite:013
   i2c.mux:
     '000':
@@ -522,6 +528,16 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
+  sim.pico.btu.meter.component.gt:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
+  sim.pico.flow.module.component.gt:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
   sim.pico.tank.module.component.gt:
     '000':
       used_by:
@@ -535,11 +551,6 @@ types:
       - gw.house0.layout:000
       - gw.nolan.layout:000
       - layout.lite:013
-  sim.relay.component.gt:
-    '000':
-      used_by:
-      - gw.house0.layout:000
-      - gw.nolan.layout:000
   sim.sensor.component.gt:
     '000':
       used_by:
@@ -620,8 +631,7 @@ types:
   zero.ten.power.on:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
 enums:
   base.g.node.class:
     '000':
@@ -687,6 +697,8 @@ enums:
       - pico.btu.meter.component.gt:000
       - pico.flow.module.component.gt:000
       - pico.flow.module.component.gt:001
+      - sim.pico.btu.meter.component.gt:000
+      - sim.pico.flow.module.component.gt:000
   gw.alert.category:
     '000':
       used_by:
@@ -703,14 +715,14 @@ enums:
     '000':
       used_by:
       - gw.alert:000
-  gw.house0.primary.flow.source:
-    '000':
-      used_by:
-      - gw.hydronic:000
   gw.platform.alert.kind:
     '000':
       used_by:
       - gw.alert:000
+  gw.primary.flow.source:
+    '000':
+      used_by:
+      - gw.hydronic:000
   gw.scada.cmd.refusal.reason:
     '000':
       used_by:
@@ -745,8 +757,7 @@ enums:
   gw1.actuation.authority:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
       - layout.lite:013
   gw1.emission.method:
     '000':
@@ -771,8 +782,8 @@ enums:
   gw1.seasonal.storage.mode:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.house0.family.params:000
+      - gw.nolan.family.params:000
       - layout.lite:008
       - layout.lite:009
       - layout.lite:010
@@ -782,8 +793,7 @@ enums:
   gw1.service.mode:
     '000':
       used_by:
-      - gw.house0.operational.params:000
-      - gw.nolan.operational.params:000
+      - gw.operational.params:000
       - layout.lite:013
   gw1.system.mode:
     '000':
@@ -818,6 +828,8 @@ enums:
       - pico.btu.meter.component.gt:000
       - pico.flow.module.component.gt:000
       - pico.flow.module.component.gt:001
+      - sim.pico.btu.meter.component.gt:000
+      - sim.pico.flow.module.component.gt:000
   i2c.adc.channel:
     '000':
       used_by:
@@ -887,6 +899,10 @@ enums:
     '000':
       used_by:
       - async.btu.params:100
+      - flow.hall.params:200
+      - pico.btu.meter.component.gt:000
+      - pico.flow.module.component.gt:001
+      - pico.tank.module.component.gt:012
       - tank.module.params:200
   pico.cycler.state:
     '000':
@@ -968,6 +984,7 @@ enums:
       - pico.tank.module.component.gt:010
       - pico.tank.module.component.gt:011
       - pico.tank.module.component.gt:012
+      - sim.pico.btu.meter.component.gt:000
       - sim.pico.tank.module.component.gt:000
       - sim.pico.tank.module.component.gt:001
   thermistor.data.method:
@@ -1022,6 +1039,9 @@ formats:
   hh.mm:
     used_by:
     - gw.tou.window:000
+  iana.timezone.str:
+    used_by:
+    - gw.tou.tariff:000
   left.right.dot:
     used_by:
     - analog.dispatch:000
@@ -1071,9 +1091,9 @@ formats:
     - gw.channel.noise.stats:000
     - gw.command.interface:000
     - gw.experiment.run:000
-    - gw.house0.operational.params:000
-    - gw.nolan.operational.params:000
+    - gw.operational.params:000
     - gw.readings:000
+    - gw.tou.tariff:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000
@@ -1169,10 +1189,9 @@ formats:
     used_by:
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
-    - gw.house0.operational.params:000
     - gw.hydronic:000
     - gw.native.gpio.pin:000
-    - gw.nolan.operational.params:000
+    - gw.operational.params:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw1.scada.device.type.gt:000
@@ -1232,6 +1251,8 @@ formats:
     - pico.tank.module.component.gt:012
     - scada.board.component.gt:000
     - sim.dac.writer.component.gt:000
+    - sim.pico.btu.meter.component.gt:000
+    - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
     - sim.relay.component.gt:000
     - sim.sensor.component.gt:000
@@ -1242,14 +1263,14 @@ formats:
     - async.btu.params:100
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
-    - gw.house0.operational.params:000
-    - gw.nolan.operational.params:000
+    - gw.operational.params:000
     - heating.curve:000
     - hp.control.box.device.type.gt:000
     - hp.device.type.gt:000
     - i2c.ct.interface.capability:000
     - i2c.thermistor.interface.capability:000
     - pico.btu.meter.component.gt:000
+    - sim.pico.btu.meter.component.gt:000
   positive.int:
     used_by:
     - ads.channel.config:000
@@ -1276,12 +1297,14 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - flow.hall.params:101
+    - flow.hall.params:200
+    - flow.reed.params:101
     - gw.adc.waveform:000
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
-    - gw.house0.operational.params:000
-    - gw.nolan.operational.params:000
+    - gw.operational.params:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000
@@ -1327,6 +1350,8 @@ formats:
     - report:001
     - report:002
     - report:003
+    - sim.pico.btu.meter.component.gt:000
+    - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
     - spaceheat.node.gt:200
@@ -1363,6 +1388,9 @@ formats:
     - derived.channel.gt:002
     - dfr.config:000
     - electric.meter.channel.config:000
+    - flow.hall.params:101
+    - flow.hall.params:200
+    - flow.reed.params:101
     - fsm.full.report:000
     - fsm.full.report:001
     - glitch:000
@@ -1401,6 +1429,8 @@ formats:
     - scada.params:004
     - scada.params:005
     - send.layout:000
+    - sim.pico.btu.meter.component.gt:000
+    - sim.pico.flow.module.component.gt:000
     - sim.plant.actuation:000
     - sim.plant.flux:000
     - single.reading:000
@@ -1661,6 +1691,8 @@ formats:
     - scada.params:004
     - scada.params:005
     - sim.dac.writer.component.gt:000
+    - sim.pico.btu.meter.component.gt:000
+    - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
     - sim.ready:000

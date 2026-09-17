@@ -64,6 +64,17 @@ properties:
     items:
       type: integer
 
+  PicoBoardVariant:
+    $ref: "https://schemas.electricity.works/enums/pico.board.variant/000"
+    description: >
+      The physical board this pico was provisioned on.
+
+  MicropythonVersion:
+    type: string
+    description: >
+      The MicroPython release this pico was provisioned with, as
+      `os.uname().release` reports it.
+
   TypeName:
     const: "pico.tank.module.component.gt"
 
@@ -81,6 +92,7 @@ required:
   - NumSampleAverages
   - SerialNumber
   - AsyncCaptureDeltaMicroVolts
+  - PicoBoardVariant
   - TypeName
   - Version
 
@@ -99,6 +111,7 @@ examples:
       "NumSampleAverages": 1,
       "SerialNumber": "example",
       "AsyncCaptureDeltaMicroVolts": 0,
+      "PicoBoardVariant": "PicoRaspberryWifi2040",
       "TypeName": "pico.tank.module.component.gt",
       "Version": "012",
       "PicoHwUid": "pico_a1b2c3"

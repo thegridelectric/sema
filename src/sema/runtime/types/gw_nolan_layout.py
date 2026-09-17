@@ -15,9 +15,6 @@ from sema.runtime.types.gw_hydronic import GwHydronic
 from sema.runtime.types.hp_control_box_device_type_gt import HpControlBoxDeviceTypeGt
 from sema.runtime.types.hp_device_type_gt import HpDeviceTypeGt
 from sema.runtime.types.i2c_dac_output_component_gt import I2cDacOutputComponentGt
-from sema.runtime.types.i2c_multichannel_dt_relay_component_gt import (
-    I2cMultichannelDtRelayComponentGt,
-)
 from sema.runtime.types.i2c_relay_component_gt import I2cRelayComponentGt
 from sema.runtime.types.i2c_thermistor_reader_component_gt import (
     I2cThermistorReaderComponentGt,
@@ -25,10 +22,15 @@ from sema.runtime.types.i2c_thermistor_reader_component_gt import (
 from sema.runtime.types.pico_btu_meter_component_gt import PicoBtuMeterComponentGt
 from sema.runtime.types.pico_tank_module_component_gt import PicoTankModuleComponentGt
 from sema.runtime.types.scada_board_component_gt import ScadaBoardComponentGt
+from sema.runtime.types.sim_pico_btu_meter_component_gt import (
+    SimPicoBtuMeterComponentGt,
+)
+from sema.runtime.types.sim_pico_flow_module_component_gt import (
+    SimPicoFlowModuleComponentGt,
+)
 from sema.runtime.types.sim_pico_tank_module_component_gt import (
     SimPicoTankModuleComponentGt,
 )
-from sema.runtime.types.sim_relay_component_gt import SimRelayComponentGt
 from sema.runtime.types.sim_sensor_component_gt import SimSensorComponentGt
 from sema.runtime.types.spaceheat_node_gt import SpaceheatNodeGt
 from sema.runtime.types.web_server_component_gt import WebServerComponentGt
@@ -47,14 +49,14 @@ class GwNolanLayout(SemaType):
         | GpioSensorComponentGt
         | GpioRelayComponentGt
         | I2cDacOutputComponentGt
-        | I2cMultichannelDtRelayComponentGt
         | I2cRelayComponentGt
         | I2cThermistorReaderComponentGt
         | ScadaBoardComponentGt
         | PicoBtuMeterComponentGt
         | PicoTankModuleComponentGt
+        | SimPicoBtuMeterComponentGt
+        | SimPicoFlowModuleComponentGt
         | SimPicoTankModuleComponentGt
-        | SimRelayComponentGt
         | SimSensorComponentGt
         | WebServerComponentGt
     ]
@@ -117,14 +119,15 @@ class GwNolanLayout(SemaType):
     def check_axiom_2(self) -> "GwNolanLayout":
         """
         Axiom 2: BoardResolution
-        For every board-resident component in Components (gpio.sensor.component.gt,
-        gpio.relay.component.gt, i2c.thermistor.reader.component.gt): its
-        BoardComponentId SHALL equal the ComponentId of a scada.board.component.gt in
-        Components; that board component's DeviceType SHALL match the DeviceType of a
-        gw1.scada.device.type.gt record in DeviceTypes; and the component's board name
-        (GpioName against NativeGpioInputs for sensors, GpioName against
-        NativeGpioOutputs for relays, AdcName against the ThermistorAdcs Names for
-        thermistor readers) SHALL match a Name in that record.
+        For every component in Components carrying a BoardComponentId (board-resident by
+        that fact alone, whatever its TypeName): its BoardComponentId SHALL equal the
+        ComponentId of a scada.board.component.gt in Components; that board component's
+        DeviceType SHALL match the DeviceType of a gw1.scada.device.type.gt record in
+        DeviceTypes; and the component's board name (GpioName against NativeGpioInputs for
+        sensors, GpioName against NativeGpioOutputs for relays, AdcName against the
+        ThermistorAdcs Names for thermistor readers, RelayName against the I2cRelays
+        RelayNames for i2c relays, DacName against the Dacs DacNames for DAC outputs) SHALL
+        match a Name in that record.
         """
         boards = {
             c.component_id: c
@@ -137,15 +140,27 @@ class GwNolanLayout(SemaType):
             if r.type_name == "gw1.scada.device.type.gt"
         }
         kinds = {
-            "gpio.sensor.component.gt": ("gpio_name", "native_gpio_inputs"),
-            "gpio.relay.component.gt": ("gpio_name", "native_gpio_outputs"),
-            "i2c.thermistor.reader.component.gt": ("adc_name", "thermistor_adcs"),
+            "gpio.sensor.component.gt": ("gpio_name", "native_gpio_inputs", "name"),
+            "gpio.relay.component.gt": ("gpio_name", "native_gpio_outputs", "name"),
+            "i2c.thermistor.reader.component.gt": (
+                "adc_name",
+                "thermistor_adcs",
+                "name",
+            ),
+            "i2c.relay.component.gt": ("relay_name", "i2c_relays", "relay_name"),
+            "i2c.dac.output.component.gt": ("dac_name", "dacs", "dac_name"),
         }
         for c in self.components or []:
+            if "board_component_id" not in type(c).model_fields:
+                continue
             kind = kinds.get(c.type_name)
             if kind is None:
-                continue
-            attr, list_name = kind
+                raise ValueError(
+                    "Axiom 2 (BoardResolution) failed: component "
+                    f"'{c.component_id}' ({c.type_name}) carries a BoardComponentId "
+                    "but the board-name table has no entry for its kind."
+                )
+            attr, list_name, entry_attr = kind
             board = boards.get(c.board_component_id)
             if board is None:
                 raise ValueError(
@@ -160,8 +175,7 @@ class GwNolanLayout(SemaType):
                     f"'{board.device_type}' has no gw1.scada.device.type.gt record."
                 )
             wanted = getattr(c, attr)
-            entries = getattr(record, list_name) or []
-            names = {e.name for e in entries}
+            names = {getattr(e, entry_attr) for e in (getattr(record, list_name) or [])}
             if wanted not in names:
                 raise ValueError(
                     "Axiom 2 (BoardResolution) failed: name "

@@ -181,6 +181,17 @@ types:
       '002': definitions/types/flo.params.house0/002.yaml
       '001': definitions/types/flo.params.house0/001.yaml
       '000': definitions/types/flo.params.house0/000.yaml
+  flow.hall.params:
+    latest_version: '200'
+    versioning_strategy: literal
+    versions:
+      '200': definitions/types/flow.hall.params/200.yaml
+      '101': definitions/types/flow.hall.params/101.yaml
+  flow.reed.params:
+    latest_version: '101'
+    versioning_strategy: literal
+    versions:
+      '101': definitions/types/flow.reed.params/101.yaml
   fsm.atomic.report:
     latest_version: '001'
     versioning_strategy: literal
@@ -363,16 +374,16 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.experiment.run/000.yaml
+  gw.house0.family.params:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.house0.family.params/000.yaml
   gw.house0.layout:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.house0.layout/000.yaml
-  gw.house0.operational.params:
-    latest_version: '000'
-    versioning_strategy: literal
-    versions:
-      '000': definitions/types/gw.house0.operational.params/000.yaml
   gw.hydronic:
     latest_version: '000'
     versioning_strategy: literal
@@ -383,21 +394,31 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.native.gpio.pin/000.yaml
+  gw.nolan.family.params:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.nolan.family.params/000.yaml
   gw.nolan.layout:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.nolan.layout/000.yaml
-  gw.nolan.operational.params:
+  gw.operational.params:
     latest_version: '000'
     versioning_strategy: literal
     versions:
-      '000': definitions/types/gw.nolan.operational.params/000.yaml
+      '000': definitions/types/gw.operational.params/000.yaml
   gw.readings:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.readings/000.yaml
+  gw.tou.tariff:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.tou.tariff/000.yaml
   gw.tou.window:
     latest_version: '000'
     versioning_strategy: literal
@@ -864,6 +885,16 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/sim.dac.writer.component.gt/000.yaml
+  sim.pico.btu.meter.component.gt:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/sim.pico.btu.meter.component.gt/000.yaml
+  sim.pico.flow.module.component.gt:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/sim.pico.flow.module.component.gt/000.yaml
   sim.pico.tank.module.component.gt:
     latest_version: '001'
     versioning_strategy: literal
@@ -1102,11 +1133,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw.house.alert.kind/000.yaml
-  gw.house0.primary.flow.source:
+  gw.primary.flow.source:
     enum_type: versioned
     latest_version: '000'
     versions:
-      '000': definitions/enums/gw.house0.primary.flow.source/000.yaml
+      '000': definitions/enums/gw.primary.flow.source/000.yaml
   gw.market.product.name:
     enum_type: versioned
     latest_version: '000'
@@ -1429,6 +1460,7 @@ formats:
   handle.name: definitions/formats/handle.name.yaml
   hex.char: definitions/formats/hex.char.yaml
   hh.mm: definitions/formats/hh.mm.yaml
+  iana.timezone.str: definitions/formats/iana.timezone.str.yaml
   left.right.dot: definitions/formats/left.right.dot.yaml
   mac.address: definitions/formats/mac.address.yaml
   market.slot.name: definitions/formats/market.slot.name.yaml

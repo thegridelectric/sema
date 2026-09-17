@@ -1,0 +1,27 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_operational_params_000_class_name }}":
+        """
+        Axiom 1: CaptureTuningChannelUniqueness
+        ChannelName SHALL be unique across CaptureTuningList.
+        """
+        names = [ct.channel_name for ct in self.capture_tuning_list]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                "Axiom 1 (CaptureTuningChannelUniqueness) failed: ChannelName "
+                "must be unique across CaptureTuningList."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ gw_operational_params_000_class_name }}":
+        """
+        Axiom 2: ZeroTenPowerOnNodeUniqueness
+        NodeName SHALL be unique across ZeroTenPowerOnList.
+        """
+        names = [z.node_name for z in self.zero_ten_power_on_list]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                "Axiom 2 (ZeroTenPowerOnNodeUniqueness) failed: NodeName "
+                "must be unique across ZeroTenPowerOnList."
+            )
+        return self

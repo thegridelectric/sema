@@ -2,13 +2,13 @@
     def check_axiom_1(self) -> Self:
         """
         Axiom 1: Cardinality
-        a. TotalStoreTanks SHALL be between 1 and 6 inclusive.
+        a. TotalStoreTanks SHALL be at most 6.
         b. The number of Zones SHALL be between 1 and 6 inclusive.
         """
-        if not 1 <= self.total_store_tanks <= 6:
+        if self.total_store_tanks > 6:
             raise ValueError(
                 "Axiom 1 (Cardinality) failed: TotalStoreTanks "
-                f"({self.total_store_tanks}) must be between 1 and 6 inclusive."
+                f"({self.total_store_tanks}) must be at most 6."
             )
         if not 1 <= len(self.zones) <= 6:
             raise ValueError(

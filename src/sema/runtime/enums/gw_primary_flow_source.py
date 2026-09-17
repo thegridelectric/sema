@@ -3,14 +3,14 @@ from enum import auto
 from sema.runtime.enums.gw_str_enum import SemaEnum
 
 
-class GwHouse0PrimaryFlowSource(SemaEnum):
-    """Sema: https://schemas.electricity.works/enums/gw.house0.primary.flow.source/000"""
+class GwPrimaryFlowSource(SemaEnum):
+    """Sema: https://schemas.electricity.works/enums/gw.primary.flow.source/000"""
 
     Measured = auto()
     DerivedSiegSum = auto()
 
     @classmethod
-    def default(cls) -> "GwHouse0PrimaryFlowSource":
+    def default(cls) -> "GwPrimaryFlowSource":
         return cls.Measured
 
     @classmethod
@@ -19,7 +19,7 @@ class GwHouse0PrimaryFlowSource(SemaEnum):
 
     @classmethod
     def enum_name(cls) -> str:
-        return "gw.house0.primary.flow.source"
+        return "gw.primary.flow.source"
 
     @classmethod
     def enum_version(cls) -> str:

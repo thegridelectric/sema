@@ -138,6 +138,27 @@ HhMm = Annotated[
 """,
     },
 
+    "iana.timezone.str": {
+        "class_name": "IanaTimezoneStr",
+        "pattern": r"^[A-Za-z_]+(/[A-Za-z0-9_+-]+){0,2}$",
+        "methods": """
+def is_iana_timezone_str(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: iana.timezone.str must be a string.")
+
+    if not IANA_TIMEZONE_STR_PATTERN.fullmatch(v):
+        raise ValueError(f"<{v}>: Fails iana.timezone.str format.")
+
+    return v
+""",
+        "annotated_type": """
+IanaTimezoneStr = Annotated[
+    str,
+    BeforeValidator(is_iana_timezone_str),
+]
+""",
+    },
+
     "market.slot.name": {
         "class_name": "MarketSlotName",
         # Self-contained leaf (no enum, no other-format calls):

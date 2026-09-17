@@ -1,18 +1,18 @@
 from typing import Literal
-from pydantic import StrictInt
+from pydantic import ConfigDict, StrictInt
 from sema.runtime.base import SemaType
 from sema.runtime.enums import GpmFromHzMethod
 from sema.runtime.enums import HzCalcMethod
-from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.enums import TempCalcMethod
 from sema.runtime.property_format import PascalCase
 from sema.runtime.property_format import PositiveFloat
+from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UUID4Str
 
 
-class PicoBtuMeterComponentGt(SemaType):
-    """Sema: https://schemas.electricity.works/types/pico.btu.meter.component.gt/000"""
+class SimPicoBtuMeterComponentGt(SemaType):
+    """Sema: https://schemas.electricity.works/types/sim.pico.btu.meter.component.gt/000"""
 
     component_id: UUID4Str
     device_type: PascalCase
@@ -35,7 +35,15 @@ class PicoBtuMeterComponentGt(SemaType):
     async_capture_delta_ct_volts_x100: StrictInt | None = None
     display_name: str | None = None
     hw_uid: str | None = None
-    pico_board_variant: PicoBoardVariant
-    micropython_version: str | None = None
-    type_name: Literal["pico.btu.meter.component.gt"] = "pico.btu.meter.component.gt"
+    sim_life_s: PositiveInt | None = None
+    sim_reboot_s: PositiveInt | None = None
+    simulates_type_name: Literal["pico.btu.meter.component.gt"] = (
+        "pico.btu.meter.component.gt"
+    )
+    simulates_version: Literal["000"] = "000"
+    type_name: Literal["sim.pico.btu.meter.component.gt"] = (
+        "sim.pico.btu.meter.component.gt"
+    )
     version: Literal["000"] = "000"
+
+    model_config = ConfigDict(**(SemaType.model_config | {"extra": "allow"}))

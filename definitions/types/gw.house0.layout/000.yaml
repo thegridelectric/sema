@@ -63,7 +63,6 @@ properties:
         - $ref: "https://schemas.electricity.works/types/gpio.relay.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/gpio.sensor.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/i2c.dac.output.component.gt/000"
-        - $ref: "https://schemas.electricity.works/types/i2c.multichannel.dt.relay.component.gt/004"
         - $ref: "https://schemas.electricity.works/types/i2c.relay.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/i2c.thermistor.reader.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/pico.btu.meter.component.gt/000"
@@ -71,7 +70,8 @@ properties:
         - $ref: "https://schemas.electricity.works/types/pico.tank.module.component.gt/012"
         - $ref: "https://schemas.electricity.works/types/scada.board.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/sim.pico.tank.module.component.gt/001"
-        - $ref: "https://schemas.electricity.works/types/sim.relay.component.gt/000"
+        - $ref: "https://schemas.electricity.works/types/sim.pico.flow.module.component.gt/000"
+        - $ref: "https://schemas.electricity.works/types/sim.pico.btu.meter.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/sim.sensor.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/hubitat.component.gt/000"
         - $ref: "https://schemas.electricity.works/types/hubitat.poller.component.gt/000"
@@ -278,3 +278,19 @@ x-gridworks:
         ShNode in ShNodes. The node's Name is the component's identity within the house;
         the ComponentId is the replaceable instance under it (a swapped part keeps the
         name and gets a fresh id).
+    - number: 16
+      name: "BoardResolution"
+      statement: >
+        For every board-resident component in Components (i2c.relay.component.gt,
+        i2c.dac.output.component.gt): its BoardComponentId SHALL equal the ComponentId of a
+        scada.board.component.gt in Components; that board component's DeviceType SHALL match
+        the DeviceType of a gw1.scada.device.type.gt record in DeviceTypes; and the component's
+        board name (RelayName against the I2cRelays RelayNames for relays, DacName against the
+        Dacs DacNames for DAC outputs) SHALL match a name in that record.
+    - number: 17
+      name: "BufferTank"
+      statement: >
+        A House0 home has a buffer tank. ShNodes SHALL include a node named "buffer", and for
+        each depth i in 1..3 a channel named "buffer-depth{i}" SHALL exist in DataChannels or in
+        DerivedChannels. (The family invariant lives here, in the word; scada code asks the
+        layout and assumes nothing.)

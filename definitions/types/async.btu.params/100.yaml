@@ -96,15 +96,13 @@ properties:
     $ref: "https://schemas.electricity.works/enums/pico.board.variant/000"
     description: >
       The physical board this pico runs on, as the firmware determines it
-      at boot. The scada can hold it against the board the hardware layout
-      claims.
+      at boot.
 
   MicropythonVersion:
     type: string
     description: >
       The MicroPython release the firmware is running on, read live from
-      the interpreter at each post. Telemetry, never persisted and never a
-      layout fact.
+      the interpreter at each post.
 
   TypeName:
     const: "async.btu.params"

@@ -45,10 +45,10 @@ from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
 from sema.runtime.enums.gw_fleet_alert_kind import GwFleetAlertKind
 from sema.runtime.enums.gw_g_node_class import GwGNodeClass
-from sema.runtime.enums.gw_house0_primary_flow_source import GwHouse0PrimaryFlowSource
 from sema.runtime.enums.gw_house_alert_kind import GwHouseAlertKind
 from sema.runtime.enums.gw_market_product_name import GwMarketProductName
 from sema.runtime.enums.gw_platform_alert_kind import GwPlatformAlertKind
+from sema.runtime.enums.gw_primary_flow_source import GwPrimaryFlowSource
 from sema.runtime.enums.gw_scada_cmd_refusal_reason import GwScadaCmdRefusalReason
 from sema.runtime.enums.gw_weather_forecast_fidelity import GwWeatherForecastFidelity
 from sema.runtime.enums.heatcall_source import HeatcallSource
@@ -135,10 +135,10 @@ __all__ = [
     "GwAlertState",
     "GwFleetAlertKind",
     "GwGNodeClass",
-    "GwHouse0PrimaryFlowSource",
     "GwHouseAlertKind",
     "GwMarketProductName",
     "GwPlatformAlertKind",
+    "GwPrimaryFlowSource",
     "GwScadaCmdRefusalReason",
     "GwWeatherForecastFidelity",
     "HeatcallSource",

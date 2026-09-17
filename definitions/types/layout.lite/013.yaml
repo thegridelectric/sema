@@ -56,10 +56,11 @@ properties:
     description: >
       Active seasonal storage mode for the running SCADA deployment.
 
-  BufferShortCycling:
+  KeepBufferFull:
     type: boolean
     description: >
-      Whether buffer short cycling behavior is enabled.
+      The running scada's KeepBufferFull setting; the LTN counts no buffer
+      energy when true.
 
   ZoneList:
     type: array
@@ -148,7 +149,7 @@ required:
   - ActuationAuthority
   - ServiceMode
   - SeasonalStorageMode
-  - BufferShortCycling
+  - KeepBufferFull
   - ZoneList
   - CriticalZoneList
   - TotalStoreTanks

@@ -1,7 +1,7 @@
 from typing import Literal, Self
 from pydantic import model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums import GwHouse0PrimaryFlowSource
+from sema.runtime.enums import GwPrimaryFlowSource
 from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.gw1_hvac_zone import Gw1HvacZone
@@ -12,9 +12,9 @@ class GwHydronic(SemaType):
     """Sema: https://schemas.electricity.works/types/gw.hydronic/000"""
 
     zones: list[Gw1HvacZone]
-    zone_call_circuits: list[Gw1ZoneCallCircuit] | None = None
+    zone_call_circuits: list[Gw1ZoneCallCircuit]
     total_store_tanks: NonNegativeInt
-    primary_flow_source: GwHouse0PrimaryFlowSource
+    primary_flow_source: GwPrimaryFlowSource
     hp_command_node_name: SpaceheatName | None = None
     type_name: Literal["gw.hydronic"] = "gw.hydronic"
     version: Literal["000"] = "000"
@@ -23,13 +23,13 @@ class GwHydronic(SemaType):
     def check_axiom_1(self) -> Self:
         """
         Axiom 1: Cardinality
-        a. TotalStoreTanks SHALL be between 1 and 6 inclusive.
+        a. TotalStoreTanks SHALL be at most 6.
         b. The number of Zones SHALL be between 1 and 6 inclusive.
         """
-        if not 1 <= self.total_store_tanks <= 6:
+        if self.total_store_tanks > 6:
             raise ValueError(
                 "Axiom 1 (Cardinality) failed: TotalStoreTanks "
-                f"({self.total_store_tanks}) must be between 1 and 6 inclusive."
+                f"({self.total_store_tanks}) must be at most 6."
             )
         if not 1 <= len(self.zones) <= 6:
             raise ValueError(

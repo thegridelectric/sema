@@ -29,17 +29,16 @@ properties:
     description: >
       The zone-call circuits, each binding a wall thermostat, call wire,
       relay pair, and actuator to the zone it serves. A zone may be served
-      by more than one circuit. Absent when the layout does not yet declare
-      its circuits.
+      by more than one circuit.
 
   TotalStoreTanks:
     $ref: "https://schemas.electricity.works/formats/non.negative.int"
     description: >
-      Number of thermal-storage tanks (buffer excluded). House0 homes carry 1..6
-      (enforced by the Cardinality axiom).
+      Number of thermal-storage tanks (buffer excluded); zero for a layout
+      whose store is not water tanks. At most 6 (the Cardinality axiom).
 
   PrimaryFlowSource:
-    $ref: "https://schemas.electricity.works/enums/gw.house0.primary.flow.source/000"
+    $ref: "https://schemas.electricity.works/enums/gw.primary.flow.source/000"
     description: >
       Whether "primary-flow" is a measured DataChannel (a meter at the primary
       pump) or a derived sum over the Siegenthaler loop sensors.
@@ -61,6 +60,7 @@ properties:
 
 required:
   - Zones
+  - ZoneCallCircuits
   - TotalStoreTanks
   - PrimaryFlowSource
   - TypeName
@@ -72,8 +72,24 @@ examples:
   - |
     {
       "Zones": [
-        {"Name": "down", "Critical": true, "KwhPerDegF": 1, "TypeName": "gw1.hvac.zone", "Version": "000"},
+        {"Name": "down", "Critical": true, "KwhPerDegF": 1, "TempChannelName": "zone1-down-temp", "TypeName": "gw1.hvac.zone", "Version": "000"},
         {"Name": "up", "Critical": true, "KwhPerDegF": 0, "TypeName": "gw1.hvac.zone", "Version": "000"}
+      ],
+      "ZoneCallCircuits": [
+        {
+          "CircuitPosition": 1,
+          "ServesZone": "down",
+          "ActuatorKind": "FloorLoop",
+          "Role": "Baseload",
+          "CanCool": false,
+          "SetpointSource": "Learned",
+          "Thermostat": {"Kind": "MechanicalDial", "TypeName": "gw1.zone.thermostat", "Version": "000"},
+          "WhitewireChannelName": "zone1-down-opto-input",
+          "FailsafeRelayNode": "zone1-down-failsafe-relay",
+          "OpsRelayNode": "zone1-down-ops-relay",
+          "TypeName": "gw1.zone.call.circuit",
+          "Version": "000"
+        }
       ],
       "TotalStoreTanks": 3,
       "PrimaryFlowSource": "Measured",
@@ -87,7 +103,7 @@ x-gridworks:
     - number: 1
       name: "Cardinality"
       statement: >
-        a. TotalStoreTanks SHALL be between 1 and 6 inclusive.
+        a. TotalStoreTanks SHALL be at most 6.
         b. The number of Zones SHALL be between 1 and 6 inclusive.
     - number: 2
       name: "CircuitResolution"
