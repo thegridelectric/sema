@@ -1,5 +1,5 @@
 from typing import Literal
-from pydantic import ConfigDict, StrictInt
+from pydantic import ConfigDict, StrictInt, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import GpmFromHzMethod
 from sema.runtime.enums import HzCalcMethod
@@ -47,3 +47,31 @@ class SimPicoBtuMeterComponentGt(SemaType):
     version: Literal["000"] = "000"
 
     model_config = ConfigDict(**(SemaType.model_config | {"extra": "allow"}))
+
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "SimPicoBtuMeterComponentGt":
+        """
+        Axiom 1: ReadCtVoltageIffCtVoltsDelta
+        ReadCtVoltage SHALL be true iff AsyncCaptureDeltaCtVoltsX100 is present.
+        """
+        if bool(self.read_ct_voltage) != (
+            self.async_capture_delta_ct_volts_x100 is not None
+        ):
+            raise ValueError(
+                "Axiom 1: ReadCtVoltage must be true exactly when "
+                "AsyncCaptureDeltaCtVoltsX100 is present."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "SimPicoBtuMeterComponentGt":
+        """
+        Axiom 2: ReadCtVoltageIffCtChannelName
+        ReadCtVoltage SHALL be true iff CtChannelName is present.
+        """
+        if bool(self.read_ct_voltage) != (self.ct_channel_name is not None):
+            raise ValueError(
+                "Axiom 2: ReadCtVoltage must be true exactly when "
+                "CtChannelName is present."
+            )
+        return self

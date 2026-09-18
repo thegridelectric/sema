@@ -163,6 +163,16 @@ examples:
 x-gridworks:
   owner: "gridworks-energy"
 
+  axioms:
+    - number: 1
+      name: "ReadCtVoltageIffCtVoltsDelta"
+      statement: >
+        ReadCtVoltage SHALL be true iff AsyncCaptureDeltaCtVoltsX100 is present.
+    - number: 2
+      name: "ReadCtVoltageIffCtChannelName"
+      statement: >
+        ReadCtVoltage SHALL be true iff CtChannelName is present.
+
   extended_description: >
     The component-faithful facet of simulation: the field set of
     `pico.btu.meter.component.gt` plus the liveness script (SimLifeS,
