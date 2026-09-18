@@ -730,7 +730,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "- New shared zone type (Name, Critical, KwhPerDegF, optional TempChannelName) replacing the former parallel ZoneList / CriticalZoneList / ZoneKwhPerDegFList in the hydronic block."
+        summary: "- New shared zone type (Name, Critical, KwhPerDegF, TempChannelName) replacing the former parallel ZoneList / CriticalZoneList / ZoneKwhPerDegFList in the hydronic block."
 
   gw1.scada.device.type.gt:
     latest_version: "000"

@@ -73,7 +73,7 @@ examples:
     {
       "Zones": [
         {"Name": "down", "Critical": true, "KwhPerDegF": 1, "TempChannelName": "zone1-down-temp", "TypeName": "gw1.hvac.zone", "Version": "000"},
-        {"Name": "up", "Critical": true, "KwhPerDegF": 0, "TypeName": "gw1.hvac.zone", "Version": "000"}
+        {"Name": "up", "Critical": true, "KwhPerDegF": 0, "TempChannelName": "zone2-up-temp", "TypeName": "gw1.hvac.zone", "Version": "000"}
       ],
       "ZoneCallCircuits": [
         {

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-18T00:35:00Z'
+  last_updated: '2026-09-18T19:25:00Z'
   maintainer: gridworks-energy
 formats:
   handle.name:
@@ -3211,7 +3211,7 @@ types:
         schema_url: https://schemas.electricity.works/types/gw1.hvac.zone/000
         created: '2026-06-15T17:30:00Z'
         status: staging
-        summary: '- New shared zone type (Name, Critical, KwhPerDegF, optional TempChannelName)
+        summary: '- New shared zone type (Name, Critical, KwhPerDegF, TempChannelName)
           replacing the former parallel ZoneList / CriticalZoneList / ZoneKwhPerDegFList
           in the hydronic block.'
         direct_dependencies:
