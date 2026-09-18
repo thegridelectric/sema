@@ -14,6 +14,7 @@ class Gw1SimDeviceType(SemaEnum):
     SimHpOdu = auto()
     SimHpIdu = auto()
     SimKridaDoubleRelayBoard16 = auto()
+    SimDac = auto()
 
     @classmethod
     def default(cls) -> "Gw1SimDeviceType":

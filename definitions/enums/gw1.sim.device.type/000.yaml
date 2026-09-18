@@ -18,6 +18,7 @@ enum:
   - "SimHpOdu"
   - "SimHpIdu"
   - "SimKridaDoubleRelayBoard16"
+  - "SimDac"
 default: "SimSensor"
 x-gridworks:
   owner: "gridworks-energy"
@@ -52,3 +53,6 @@ x-gridworks:
       KridaDoubleRelayBoard16. Carries the same board record shape
       (gw1.scada.device.type.gt), so expander and relay address resolution runs
       unchanged against simulated PCF8575 ports.
+    "SimDac": >
+      GridWorks simulated DAC — the device type of a standalone simulated DAC writer
+      component.

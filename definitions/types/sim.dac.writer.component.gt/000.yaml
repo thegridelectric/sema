@@ -55,7 +55,7 @@ examples:
   - |
     {
       "ComponentId": "6b2e9f10-1c47-4d2a-9f88-3a1e7c5d904b",
-      "DeviceType": "GridworksSimDac",
+      "DeviceType": "SimDac",
       "ConfigList": [
         {
           "DacChannel": "C",
