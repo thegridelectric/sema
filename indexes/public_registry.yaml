@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-18T22:00:00Z'
+  last_updated: '2026-09-18T22:45:00Z'
   maintainer: gridworks-energy
 formats:
   handle.name:
@@ -2730,16 +2730,16 @@ types:
           \ tank + sim-tank / Hubitat + poller / web-server over the DeviceType record\
           \ model. Axioms cover id uniqueness, the core and command-node Name/ActorClass\
           \ contracts (sieg-loop and hp-boss unconditional command nodes, dormant\
-          \ when unused), per-zone heat-call channels, primary-flow source agreement,\
-          \ the transactive-power boundary, required flow sensing, the unconditional\
-          \ sieg manifold surface, the system-model energy channels and the models\
-          \ that produce them, the unconditional actuators (plant relays, 0-10V outputs\
-          \ each bound to an i2c.dac.output.component.gt, zone-circuit relay pairs),\
-          \ and the split-system heat-pump parts (hp-odu, hp-idu) with their components.\
-          \ 12 CommandableHeatPump (biconditional: Hydronic.HpCommandNodeName \u21D2\
-          \ hp-odu/hp-idu/hp-ctrl-box with ComponentId, ActorClass HpTwin, handle\
-          \ under hp-boss; every HpTwin node is the declared one); 11's NoActor clause\
-          \ defers to it. 13 PrefixClosedHandles + 14 ActuatorLeaves: the layout's\
+          \ when unused), a heat-call channel per zone-call circuit, primary-flow\
+          \ source agreement, the transactive-power boundary, required flow sensing,\
+          \ the unconditional sieg manifold surface, the system-model energy channels\
+          \ and the models that produce them, the unconditional actuators (plant relays,\
+          \ 0-10V outputs each bound to an i2c.dac.output.component.gt, zone-circuit\
+          \ relay pairs), and the split-system heat-pump parts (hp-odu, hp-idu) with\
+          \ their components. 12 CommandableHeatPump (biconditional: Hydronic.HpCommandNodeName\
+          \ \u21D2 hp-odu/hp-idu/hp-ctrl-box with ComponentId, ActorClass HpTwin,\
+          \ handle under hp-boss; every HpTwin node is the declared one); 11's NoActor\
+          \ clause defers to it. 13 PrefixClosedHandles + 14 ActuatorLeaves: the layout's\
           \ authored handles are the initial command tree, so the tree word's two\
           \ axioms hold here too (identical wording). 15 ComponentBinding (every component\
           \ referenced by exactly one node). 16 BoardResolution (every i2c relay and\
@@ -2749,8 +2749,9 @@ types:
           \ home has a buffer tank: the buffer node and its three depth channels).\
           \ 18 ZoneTempChannelResolution (every zone's TempChannelName names a DataChannel\
           \ or DerivedChannel whose quantity is Temperature; identical wording across\
-          \ layout words). Sim pico flow-module and BTU-meter components join the\
-          \ union."
+          \ layout words). 19 CircuitWhitewireChannelResolution (every circuit's WhitewireChannelName\
+          \ names a DataChannel; identical wording across layout words). Sim pico\
+          \ flow-module and BTU-meter components join the union."
         direct_dependencies:
           structural:
           - ads111x.based.component.gt:000
@@ -2880,7 +2881,10 @@ types:
           \ authored handles are the initial command tree, so the tree word's two\
           \ axioms hold here too (identical wording). 13 ZoneTempChannelResolution\
           \ (every zone's TempChannelName names a DataChannel or DerivedChannel whose\
-          \ quantity is Temperature; identical wording across layout words). sim.pico.flow.module.component.gt\
+          \ quantity is Temperature; identical wording across layout words). 14 CircuitWhitewireChannelResolution\
+          \ (every circuit's WhitewireChannelName names a DataChannel) + 15 CircuitHeatCallChannel\
+          \ (exactly one heat-call DerivedChannel takes each circuit's whitewire channel\
+          \ as its input); identical wording across layout words. sim.pico.flow.module.component.gt\
           \ and sim.pico.btu.meter.component.gt join the union, completing the sim\
           \ pico triple alongside sim.pico.tank.module.component.gt."
         direct_dependencies:

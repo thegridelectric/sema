@@ -636,3 +636,47 @@ class GwNolanLayout(SemaType):
                     f"quantity is {quantity}, not Temperature."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_14(self) -> Self:
+        """
+        Axiom 14: CircuitWhitewireChannelResolution
+        Every circuit's WhitewireChannelName in Hydronic.ZoneCallCircuits SHALL equal the Name
+        of a channel in DataChannels.
+        """
+        if self.hydronic is None:
+            return self
+        data_names = {d.name for d in (self.data_channels or [])}
+        for circuit in self.hydronic.zone_call_circuits or []:
+            if circuit.whitewire_channel_name not in data_names:
+                raise ValueError(
+                    "Axiom 14 (CircuitWhitewireChannelResolution) failed: circuit "
+                    f"{circuit.circuit_position} names WhitewireChannelName "
+                    f"{circuit.whitewire_channel_name!r}, which is not a channel in DataChannels."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_15(self) -> Self:
+        """
+        Axiom 15: CircuitHeatCallChannel
+        For each circuit in Hydronic.ZoneCallCircuits, exactly one channel in DerivedChannels
+        SHALL have Strategy "heat-call" and InputChannelNames equal to [the circuit's
+        WhitewireChannelName].
+        """
+        if self.hydronic is None:
+            return self
+        for circuit in self.hydronic.zone_call_circuits or []:
+            heat_calls = [
+                d.name
+                for d in (self.derived_channels or [])
+                if d.strategy == "heat-call"
+                and list(d.input_channel_names) == [circuit.whitewire_channel_name]
+            ]
+            if len(heat_calls) != 1:
+                raise ValueError(
+                    "Axiom 15 (CircuitHeatCallChannel) failed: circuit "
+                    f"{circuit.circuit_position} needs exactly one heat-call DerivedChannel whose "
+                    f"InputChannelNames is [{circuit.whitewire_channel_name!r}], found {heat_calls}."
+                )
+        return self

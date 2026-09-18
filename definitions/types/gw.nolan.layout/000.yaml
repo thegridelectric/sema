@@ -280,5 +280,16 @@ x-gridworks:
         channel in DataChannels or in DerivedChannels.
         b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
         DerivedChannel's OutputQuantity, SHALL be Temperature.
+    - number: 14
+      name: "CircuitWhitewireChannelResolution"
+      statement: >
+        Every circuit's WhitewireChannelName in Hydronic.ZoneCallCircuits SHALL equal the Name
+        of a channel in DataChannels.
+    - number: 15
+      name: "CircuitHeatCallChannel"
+      statement: >
+        For each circuit in Hydronic.ZoneCallCircuits, exactly one channel in DerivedChannels
+        SHALL have Strategy "heat-call" and InputChannelNames equal to [the circuit's
+        WhitewireChannelName].
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

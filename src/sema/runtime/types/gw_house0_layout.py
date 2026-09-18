@@ -204,37 +204,25 @@ class GwHouse0Layout(SemaType):
     @model_validator(mode="after")
     def check_axiom_4(self) -> Self:
         """
-        Axiom 4: ZoneHeatCallChannel
-        For each zone at 1-based index i in Hydronic.Zones, a DerivedChannel named
-        "zone{i}-{Zone.Name}-heat-call" (lowercased) with Strategy "heat-call" SHALL exist, and a
-        source DataChannel SHALL exist for that zone — either "zone{i}-{Zone.Name}-whitewire-pwr"
-        (power-sourced, e.g. an eGauge whitewire reading) or "zone{i}-{Zone.Name}-opto-input"
-        (opto-sourced, e.g. a gw108 reading the thermostat opto-coupler). The choice of source is
-        per-zone.
+        Axiom 4: CircuitHeatCallChannel
+        For each circuit in Hydronic.ZoneCallCircuits, exactly one channel in DerivedChannels
+        SHALL have Strategy "heat-call" and InputChannelNames equal to [the circuit's
+        WhitewireChannelName].
         """
         if self.hydronic is None:
             return self
-        derived_by_name = {d.name: d for d in (self.derived_channels or [])}
-        data_names = {d.name for d in (self.data_channels or [])}
-        for i, zone in enumerate(self.hydronic.zones or [], start=1):
-            base = f"zone{i}-{zone.name}".lower()
-            heat_call = f"{base}-heat-call"
-            dc = derived_by_name.get(heat_call)
-            if dc is None:
+        for circuit in self.hydronic.zone_call_circuits or []:
+            heat_calls = [
+                d.name
+                for d in (self.derived_channels or [])
+                if d.strategy == "heat-call"
+                and list(d.input_channel_names) == [circuit.whitewire_channel_name]
+            ]
+            if len(heat_calls) != 1:
                 raise ValueError(
-                    f"Axiom 4 (ZoneHeatCallChannel) failed: missing DerivedChannel '{heat_call}'."
-                )
-            if dc.strategy != "heat-call":
-                raise ValueError(
-                    f"Axiom 4 (ZoneHeatCallChannel) failed: DerivedChannel '{heat_call}' must have "
-                    f"Strategy 'heat-call', got '{dc.strategy}'."
-                )
-            whitewire = f"{base}-whitewire-pwr"
-            opto = f"{base}-opto-input"
-            if whitewire not in data_names and opto not in data_names:
-                raise ValueError(
-                    f"Axiom 4 (ZoneHeatCallChannel) failed: heat-call for zone {i} needs a source "
-                    f"DataChannel — '{whitewire}' (power) or '{opto}' (opto)."
+                    "Axiom 4 (CircuitHeatCallChannel) failed: circuit "
+                    f"{circuit.circuit_position} needs exactly one heat-call DerivedChannel whose "
+                    f"InputChannelNames is [{circuit.whitewire_channel_name!r}], found {heat_calls}."
                 )
         return self
 
@@ -798,5 +786,24 @@ class GwHouse0Layout(SemaType):
                     "Axiom 18 (ZoneTempChannelResolution) failed: zone "
                     f"{zone.name!r} names {zone.temp_channel_name!r}, whose "
                     f"quantity is {quantity}, not Temperature."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_19(self) -> Self:
+        """
+        Axiom 19: CircuitWhitewireChannelResolution
+        Every circuit's WhitewireChannelName in Hydronic.ZoneCallCircuits SHALL equal the Name
+        of a channel in DataChannels.
+        """
+        if self.hydronic is None:
+            return self
+        data_names = {d.name for d in (self.data_channels or [])}
+        for circuit in self.hydronic.zone_call_circuits or []:
+            if circuit.whitewire_channel_name not in data_names:
+                raise ValueError(
+                    "Axiom 19 (CircuitWhitewireChannelResolution) failed: circuit "
+                    f"{circuit.circuit_position} names WhitewireChannelName "
+                    f"{circuit.whitewire_channel_name!r}, which is not a channel in DataChannels."
                 )
         return self

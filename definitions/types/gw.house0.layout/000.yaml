@@ -152,14 +152,11 @@ x-gridworks:
         siegenthaler loop; whether the loop is USED is operational, so sieg-loop and hp-boss are
         unconditional command nodes, dormant when unused.)
     - number: 4
-      name: "ZoneHeatCallChannel"
+      name: "CircuitHeatCallChannel"
       statement: >
-        For each zone at 1-based index i in Hydronic.Zones, a DerivedChannel named
-        "zone{i}-{Zone.Name}-heat-call" (lowercased) with Strategy "heat-call" SHALL exist, and a
-        source DataChannel SHALL exist for that zone — either "zone{i}-{Zone.Name}-whitewire-pwr"
-        (power-sourced, e.g. an eGauge whitewire reading) or "zone{i}-{Zone.Name}-opto-input"
-        (opto-sourced, e.g. a gw108 reading the thermostat opto-coupler). The choice of source is
-        per-zone.
+        For each circuit in Hydronic.ZoneCallCircuits, exactly one channel in DerivedChannels
+        SHALL have Strategy "heat-call" and InputChannelNames equal to [the circuit's
+        WhitewireChannelName].
     - number: 5
       name: "PrimaryFlowSourceChannelAgreement"
       statement: >
@@ -301,3 +298,8 @@ x-gridworks:
         channel in DataChannels or in DerivedChannels.
         b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
         DerivedChannel's OutputQuantity, SHALL be Temperature.
+    - number: 19
+      name: "CircuitWhitewireChannelResolution"
+      statement: >
+        Every circuit's WhitewireChannelName in Hydronic.ZoneCallCircuits SHALL equal the Name
+        of a channel in DataChannels.
