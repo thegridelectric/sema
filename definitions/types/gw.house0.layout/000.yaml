@@ -294,3 +294,10 @@ x-gridworks:
         each depth i in 1..3 a channel named "buffer-depth{i}" SHALL exist in DataChannels or in
         DerivedChannels. (The family invariant lives here, in the word; scada code asks the
         layout and assumes nothing.)
+    - number: 18
+      name: "ZoneTempChannelResolution"
+      statement: >
+        a. Every zone's TempChannelName in Hydronic.Zones SHALL equal the Name of a
+        channel in DataChannels or in DerivedChannels.
+        b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
+        DerivedChannel's OutputQuantity, SHALL be Temperature.

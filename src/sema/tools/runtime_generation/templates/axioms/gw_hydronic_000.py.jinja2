@@ -39,28 +39,3 @@
                 f"{positions} are not distinct."
             )
         return self
-
-    @model_validator(mode="after")
-    def check_axiom_3(self) -> Self:
-        """
-        Axiom 3: LearnedNeedsTempChannel
-        For every circuit whose SetpointSource is Learned, the zone named
-        by its ServesZone SHALL carry a TempChannelName.
-        """
-        # String comparison, not an enum import: ZoneSetpointSource is not a
-        # field enum of this type, and an absolute sema.runtime import would
-        # break inside a restricted snapshot package.
-        zones_by_name = {z.name: z for z in self.zones}
-        for c in self.zone_call_circuits or []:
-            zone = zones_by_name.get(c.serves_zone)
-            if (
-                c.setpoint_source == "Learned"
-                and zone is not None
-                and zone.temp_channel_name is None
-            ):
-                raise ValueError(
-                    "Axiom 3 (LearnedNeedsTempChannel) failed: circuit at "
-                    f"position {c.circuit_position} is Learned but zone "
-                    f"{c.serves_zone!r} has no TempChannelName."
-                )
-        return self

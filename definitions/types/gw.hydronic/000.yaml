@@ -110,8 +110,3 @@ x-gridworks:
       statement: >
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
         Zones. b. No two circuits SHALL share a CircuitPosition.
-    - number: 3
-      name: "LearnedNeedsTempChannel"
-      statement: >
-        For every circuit whose SetpointSource is Learned, the zone named
-        by its ServesZone SHALL carry a TempChannelName.

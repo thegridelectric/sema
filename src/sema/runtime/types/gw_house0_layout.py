@@ -769,3 +769,34 @@ class GwHouse0Layout(SemaType):
                 f"Axiom 17 (BufferTank) failed: missing buffer channels {missing}."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_18(self) -> Self:
+        """
+        Axiom 18: ZoneTempChannelResolution
+        a. Every zone's TempChannelName in Hydronic.Zones SHALL equal the Name of a
+        channel in DataChannels or in DerivedChannels.
+        b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
+        DerivedChannel's OutputQuantity, SHALL be Temperature.
+        """
+        if self.hydronic is None:
+            return self
+        quantity_by_name = {d.name: str(d.quantity) for d in (self.data_channels or [])}
+        quantity_by_name.update(
+            {d.name: str(d.output_quantity) for d in (self.derived_channels or [])}
+        )
+        for zone in self.hydronic.zones or []:
+            if zone.temp_channel_name not in quantity_by_name:
+                raise ValueError(
+                    "Axiom 18 (ZoneTempChannelResolution) failed: zone "
+                    f"{zone.name!r} names TempChannelName {zone.temp_channel_name!r}, "
+                    "which is not a channel in DataChannels or DerivedChannels."
+                )
+            quantity = quantity_by_name[zone.temp_channel_name]
+            if quantity != "Temperature":
+                raise ValueError(
+                    "Axiom 18 (ZoneTempChannelResolution) failed: zone "
+                    f"{zone.name!r} names {zone.temp_channel_name!r}, whose "
+                    f"quantity is {quantity}, not Temperature."
+                )
+        return self

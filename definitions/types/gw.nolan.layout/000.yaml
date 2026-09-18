@@ -273,5 +273,12 @@ x-gridworks:
         ActorClass "LocalControl".
         a. Every actuator SHALL have a dotted effective handle and SHALL be a leaf.
         b. Every leaf SHALL be an actuator or a command node.
+    - number: 13
+      name: "ZoneTempChannelResolution"
+      statement: >
+        a. Every zone's TempChannelName in Hydronic.Zones SHALL equal the Name of a
+        channel in DataChannels or in DerivedChannels.
+        b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
+        DerivedChannel's OutputQuantity, SHALL be Temperature.
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

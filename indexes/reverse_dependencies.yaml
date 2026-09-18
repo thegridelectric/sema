@@ -774,6 +774,8 @@ enums:
     '001':
       used_by:
       - derived.channel.gt:002
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
       - gw1.unit.quantity.projection:000
     '002':
       used_by:
