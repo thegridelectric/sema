@@ -680,3 +680,123 @@ class GwNolanLayout(SemaType):
                     f"InputChannelNames is [{circuit.whitewire_channel_name!r}], found {heat_calls}."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_16(self) -> Self:
+        """
+        Axiom 16: DerivedChannelCreatorResolution
+        a. Every channel's CreatedByNodeName in DerivedChannels SHALL equal the Name of a
+        ShNode in ShNodes.
+        b. The ShNode named by a channel's CreatedByNodeName SHALL NOT have ActorClass
+        "NoActor".
+        """
+        actor_class_by_name = {
+            n.name: str(n.actor_class) for n in (self.sh_nodes or [])
+        }
+        for d in self.derived_channels or []:
+            if d.created_by_node_name not in actor_class_by_name:
+                raise ValueError(
+                    "Axiom 16 (DerivedChannelCreatorResolution) failed (a): DerivedChannel "
+                    f"{d.name!r} names CreatedByNodeName {d.created_by_node_name!r}, "
+                    "which is not a ShNode in ShNodes."
+                )
+            if actor_class_by_name[d.created_by_node_name] == "NoActor":
+                raise ValueError(
+                    "Axiom 16 (DerivedChannelCreatorResolution) failed (b): DerivedChannel "
+                    f"{d.name!r} is created by {d.created_by_node_name!r}, "
+                    "whose ActorClass is NoActor."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_17(self) -> Self:
+        """
+        Axiom 17: DataChannelNodeResolution
+        a. Every channel's AboutNodeName in DataChannels SHALL equal the Name of a ShNode in
+        ShNodes.
+        b. Every channel's CapturedByNodeName in DataChannels SHALL equal the Name of a ShNode
+        in ShNodes.
+        c. The ShNode named by a channel's CapturedByNodeName SHALL NOT have ActorClass
+        "NoActor".
+        """
+        actor_class_by_name = {
+            n.name: str(n.actor_class) for n in (self.sh_nodes or [])
+        }
+        for ch in self.data_channels or []:
+            if ch.about_node_name not in actor_class_by_name:
+                raise ValueError(
+                    "Axiom 17 (DataChannelNodeResolution) failed (a): DataChannel "
+                    f"{ch.name!r} names AboutNodeName {ch.about_node_name!r}, "
+                    "which is not a ShNode in ShNodes."
+                )
+            if ch.captured_by_node_name not in actor_class_by_name:
+                raise ValueError(
+                    "Axiom 17 (DataChannelNodeResolution) failed (b): DataChannel "
+                    f"{ch.name!r} names CapturedByNodeName {ch.captured_by_node_name!r}, "
+                    "which is not a ShNode in ShNodes."
+                )
+            if actor_class_by_name[ch.captured_by_node_name] == "NoActor":
+                raise ValueError(
+                    "Axiom 17 (DataChannelNodeResolution) failed (c): DataChannel "
+                    f"{ch.name!r} is captured by {ch.captured_by_node_name!r}, "
+                    "whose ActorClass is NoActor."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_18(self) -> Self:
+        """
+        Axiom 18: DerivedChannelInputsAcyclic
+        a. Every name in a channel's InputChannelNames in DerivedChannels SHALL equal the Name
+        of a channel in DataChannels or in DerivedChannels.
+        b. No channel in DerivedChannels SHALL be reachable from itself by following
+        InputChannelNames.
+        """
+        data_names = {ch.name for ch in (self.data_channels or [])}
+        inputs_by_name = {
+            d.name: list(d.input_channel_names) for d in (self.derived_channels or [])
+        }
+        for name, inputs in inputs_by_name.items():
+            for input_name in inputs:
+                if input_name not in data_names and input_name not in inputs_by_name:
+                    raise ValueError(
+                        "Axiom 18 (DerivedChannelInputsAcyclic) failed (a): DerivedChannel "
+                        f"{name!r} names input {input_name!r}, which is not a channel in "
+                        "DataChannels or DerivedChannels."
+                    )
+        for start in inputs_by_name:
+            seen: set[str] = set()
+            frontier = [n for n in inputs_by_name[start] if n in inputs_by_name]
+            while frontier:
+                current = frontier.pop()
+                if current == start:
+                    raise ValueError(
+                        "Axiom 18 (DerivedChannelInputsAcyclic) failed (b): DerivedChannel "
+                        f"{start!r} is reachable from itself through InputChannelNames."
+                    )
+                if current in seen:
+                    continue
+                seen.add(current)
+                frontier.extend(
+                    n for n in inputs_by_name[current] if n in inputs_by_name
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_19(self) -> Self:
+        """
+        Axiom 19: ChannelNameUniqueness
+        The Names of the channels in DataChannels and DerivedChannels, taken together, SHALL be
+        pairwise distinct.
+        """
+        seen: set[str] = set()
+        for name in [ch.name for ch in (self.data_channels or [])] + [
+            d.name for d in (self.derived_channels or [])
+        ]:
+            if name in seen:
+                raise ValueError(
+                    "Axiom 19 (ChannelNameUniqueness) failed: more than one channel in "
+                    f"DataChannels and DerivedChannels is named {name!r}."
+                )
+            seen.add(name)
+        return self

@@ -303,3 +303,31 @@ x-gridworks:
       statement: >
         Every circuit's WhitewireChannelName in Hydronic.ZoneCallCircuits SHALL equal the Name
         of a channel in DataChannels.
+    - number: 20
+      name: "DerivedChannelCreatorResolution"
+      statement: >
+        a. Every channel's CreatedByNodeName in DerivedChannels SHALL equal the Name of a
+        ShNode in ShNodes.
+        b. The ShNode named by a channel's CreatedByNodeName SHALL NOT have ActorClass
+        "NoActor".
+    - number: 21
+      name: "DataChannelNodeResolution"
+      statement: >
+        a. Every channel's AboutNodeName in DataChannels SHALL equal the Name of a ShNode in
+        ShNodes.
+        b. Every channel's CapturedByNodeName in DataChannels SHALL equal the Name of a ShNode
+        in ShNodes.
+        c. The ShNode named by a channel's CapturedByNodeName SHALL NOT have ActorClass
+        "NoActor".
+    - number: 22
+      name: "DerivedChannelInputsAcyclic"
+      statement: >
+        a. Every name in a channel's InputChannelNames in DerivedChannels SHALL equal the Name
+        of a channel in DataChannels or in DerivedChannels.
+        b. No channel in DerivedChannels SHALL be reachable from itself by following
+        InputChannelNames.
+    - number: 23
+      name: "ChannelNameUniqueness"
+      statement: >
+        The Names of the channels in DataChannels and DerivedChannels, taken together, SHALL be
+        pairwise distinct.
