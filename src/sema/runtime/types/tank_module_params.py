@@ -2,12 +2,13 @@ from typing import Literal
 from pydantic import StrictFloat, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import PicoBoardVariant
+from sema.runtime.property_format import FirmwareCommit
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 
 
 class TankModuleParams(SemaType):
-    """Sema: https://schemas.electricity.works/types/tank.module.params/200"""
+    """Sema: https://schemas.electricity.works/types/tank.module.params/210"""
 
     hw_uid: str
     actor_node_name: SpaceheatName
@@ -19,8 +20,9 @@ class TankModuleParams(SemaType):
     capture_offset_s: StrictFloat | None = None
     pico_board_variant: PicoBoardVariant
     micropython_version: str
+    firmware_commit: FirmwareCommit
     type_name: Literal["tank.module.params"] = "tank.module.params"
-    version: Literal["200"] = "200"
+    version: Literal["210"] = "210"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "TankModuleParams":

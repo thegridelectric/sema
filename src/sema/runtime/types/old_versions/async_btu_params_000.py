@@ -4,7 +4,7 @@ from sema.runtime.base import SemaType
 from sema.runtime.property_format import PositiveFloat
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
-from sema.runtime.types.async_btu_params import AsyncBtuParams
+from sema.runtime.types.old_versions.async_btu_params_100 import AsyncBtuParams100
 
 
 class AsyncBtuParams000(SemaType):
@@ -45,14 +45,14 @@ class AsyncBtuParams000(SemaType):
             )
         return self
 
-    def upgrade(self) -> AsyncBtuParams:
+    def upgrade(self) -> AsyncBtuParams100:
         """
         - PicoBoardVariant: add
         - MicropythonVersion: add
         """
         raise SemaType.upgrade_requires_context(
             "AsyncBtuParams000 cannot be upgraded to "
-            "AsyncBtuParams without context: v100 adds "
+            "AsyncBtuParams100 without context: v100 adds "
             "PicoBoardVariant and MicropythonVersion, which only the posting "
             "pico knows, and they SHALL NOT be fabricated."
         )

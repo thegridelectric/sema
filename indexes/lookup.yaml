@@ -37,9 +37,10 @@ types:
     versions:
       '000': definitions/types/analog.dispatch/000.yaml
   async.btu.params:
-    latest_version: '100'
+    latest_version: '110'
     versioning_strategy: literal
     versions:
+      '110': definitions/types/async.btu.params/110.yaml
       '100': definitions/types/async.btu.params/100.yaml
       '000': definitions/types/async.btu.params/000.yaml
   atn.bid:
@@ -990,9 +991,10 @@ types:
     versions:
       '000': definitions/types/ta.deed/000.yaml
   tank.module.params:
-    latest_version: '200'
+    latest_version: '210'
     versioning_strategy: literal
     versions:
+      '210': definitions/types/tank.module.params/210.yaml
       '200': definitions/types/tank.module.params/200.yaml
       '110': definitions/types/tank.module.params/110.yaml
   ticklist.hall:
@@ -1457,6 +1459,7 @@ enums:
     versions:
       '000': definitions/enums/zone.setpoint.source/000.yaml
 formats:
+  firmware.commit: definitions/formats/firmware.commit.yaml
   handle.name: definitions/formats/handle.name.yaml
   hex.char: definitions/formats/hex.char.yaml
   hh.mm: definitions/formats/hh.mm.yaml

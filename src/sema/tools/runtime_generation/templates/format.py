@@ -220,6 +220,30 @@ MacAddress = Annotated[
 """,
     },
 
+    "firmware.commit": {
+        "class_name": "FirmwareCommit",
+        "pattern": r"^([0-9a-f]{40}(-dirty)?|unstamped)$",
+        "methods": """
+def is_firmware_commit(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: firmware.commit must be a string.")
+
+    if not FIRMWARE_COMMIT_PATTERN.fullmatch(v):
+        raise ValueError(
+            f"<{v}>: Fails firmware.commit format (a 40-character lowercase "
+            "git hash, optionally suffixed -dirty, or the literal unstamped)."
+        )
+
+    return v
+""",
+        "annotated_type": """
+FirmwareCommit = Annotated[
+    str,
+    BeforeValidator(is_firmware_commit),
+]
+""",
+    },
+
     "non.empty.string": {
         "class_name": "NonEmptyString",
         "imports": ["from pydantic import Field"],

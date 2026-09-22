@@ -1,6 +1,7 @@
 from typing import Literal
 from sema.runtime.base import SemaType
 from sema.runtime.enums import PicoBoardVariant
+from sema.runtime.property_format import FirmwareCommit
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 
@@ -15,5 +16,6 @@ class FlowHallParams(SemaType):
     publish_empty_ticklist_after_s: PositiveInt
     pico_board_variant: PicoBoardVariant
     micropython_version: str
+    firmware_commit: FirmwareCommit
     type_name: Literal["flow.hall.params"] = "flow.hall.params"
     version: Literal["200"] = "200"

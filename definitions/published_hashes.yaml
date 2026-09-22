@@ -5,6 +5,7 @@
 # the fix is a NEW version, never an in-place change.
 
 formats:
+  firmware.commit: sha256:0fc43e5fdadcd236b7d396e7d3d9c26305fe8ce05ee80aff6aee0c3c1a188268
   handle.name: sha256:8766362cd0940fa5451273dc0866f11f4a09e3496fe502e82ea448ffaab75c4f
   hex.char: sha256:855097c34bc9ac8bddbfe7cf1934f666e18229ce564e5f9575fa0577aaff1ef1
   hh.mm: sha256:ffb589d03b164cc0a3b6e19cffd8ad75f6121cf98325eb0a938816d559dc151d

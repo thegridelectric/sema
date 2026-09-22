@@ -20,10 +20,11 @@ class FlowHallParams101(SemaType):
         """
         - PicoBoardVariant: add
         - MicropythonVersion: add
+        - FirmwareCommit: add
         """
         raise SemaType.upgrade_requires_context(
             "FlowHallParams101 cannot be upgraded to "
             "FlowHallParams without context: v200 adds "
-            "PicoBoardVariant and MicropythonVersion, which only the posting "
-            "pico knows, and they SHALL NOT be fabricated."
+            "PicoBoardVariant, MicropythonVersion and FirmwareCommit, which "
+            "only the posting pico knows, and they SHALL NOT be fabricated."
         )

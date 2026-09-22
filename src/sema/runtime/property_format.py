@@ -7,6 +7,8 @@ from pydantic import BeforeValidator, Field, StrictFloat, StrictInt
 
 
 # --- patterns ---
+FIRMWARE_COMMIT_PATTERN = re.compile(r"^([0-9a-f]{40}(-dirty)?|unstamped)$")
+
 HANDLE_NAME_PATTERN = re.compile(
     r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
 )
@@ -47,6 +49,19 @@ UUID4_STR_PATTERN = re.compile(
 
 
 # --- methods ---
+def is_firmware_commit(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: firmware.commit must be a string.")
+
+    if not FIRMWARE_COMMIT_PATTERN.fullmatch(v):
+        raise ValueError(
+            f"<{v}>: Fails firmware.commit format (a 40-character lowercase "
+            "git hash, optionally suffixed -dirty, or the literal unstamped)."
+        )
+
+    return v
+
+
 def is_handle_name(v: str) -> str:
     if not isinstance(v, str):
         raise ValueError(f"<{v}>: HandleName must be a string.")
@@ -254,6 +269,11 @@ def is_uuid4_str(v: str) -> str:
 
 
 # --- annotated types ---
+FirmwareCommit = Annotated[
+    str,
+    BeforeValidator(is_firmware_commit),
+]
+
 HandleName = Annotated[
     str,
     BeforeValidator(is_handle_name),

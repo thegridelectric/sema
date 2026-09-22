@@ -5,6 +5,7 @@ from sema.runtime.enums import GpmFromHzMethod
 from sema.runtime.enums import HzCalcMethod
 from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.enums import TempCalcMethod
+from sema.runtime.property_format import FirmwareCommit
 from sema.runtime.property_format import PascalCase
 from sema.runtime.property_format import PositiveFloat
 from sema.runtime.property_format import SpaceheatName
@@ -37,6 +38,7 @@ class PicoBtuMeterComponentGt(SemaType):
     hw_uid: str | None = None
     pico_board_variant: PicoBoardVariant
     micropython_version: str | None = None
+    firmware_commit: FirmwareCommit | None = None
     type_name: Literal["pico.btu.meter.component.gt"] = "pico.btu.meter.component.gt"
     version: Literal["000"] = "000"
 

@@ -2,14 +2,14 @@ from typing import Literal
 from pydantic import StrictFloat, StrictInt, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import PicoBoardVariant
-from sema.runtime.property_format import FirmwareCommit
 from sema.runtime.property_format import PositiveFloat
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
+from sema.runtime.types.async_btu_params import AsyncBtuParams
 
 
-class AsyncBtuParams(SemaType):
-    """Sema: https://schemas.electricity.works/types/async.btu.params/110"""
+class AsyncBtuParams100(SemaType):
+    """Sema: https://schemas.electricity.works/types/async.btu.params/100"""
 
     hw_uid: str
     actor_node_name: SpaceheatName
@@ -28,12 +28,11 @@ class AsyncBtuParams(SemaType):
     capture_offset_s: StrictFloat | None = None
     pico_board_variant: PicoBoardVariant
     micropython_version: str
-    firmware_commit: FirmwareCommit
     type_name: Literal["async.btu.params"] = "async.btu.params"
-    version: Literal["110"] = "110"
+    version: Literal["100"] = "100"
 
     @model_validator(mode="after")
-    def check_axiom_1(self) -> "AsyncBtuParams":
+    def check_axiom_1(self) -> "AsyncBtuParams100":
         """
         Axiom 1: ReadCtVoltageIffCtChannelName
         ReadCtVoltage is true iff CtChannelName is present.
@@ -48,3 +47,14 @@ class AsyncBtuParams(SemaType):
                 "set/present (True/nonnull) or BOTH be unset/absent."
             )
         return self
+
+    def upgrade(self) -> AsyncBtuParams:
+        """
+        - FirmwareCommit: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "AsyncBtuParams100 cannot be upgraded to "
+            "AsyncBtuParams without context: v110 adds "
+            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "NOT be fabricated."
+        )

@@ -2,10 +2,11 @@
         """
         - PicoBoardVariant: add
         - MicropythonVersion: add
+        - FirmwareCommit: add
         """
         raise SemaType.upgrade_requires_context(
             "{{ flow_hall_params_101_class_name }} cannot be upgraded to "
             "{{ flow_hall_params_200_class_name }} without context: v200 adds "
-            "PicoBoardVariant and MicropythonVersion, which only the posting "
-            "pico knows, and they SHALL NOT be fabricated."
+            "PicoBoardVariant, MicropythonVersion and FirmwareCommit, which "
+            "only the posting pico knows, and they SHALL NOT be fabricated."
         )

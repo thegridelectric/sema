@@ -62,6 +62,16 @@ types:
       - spaceheat.name
       types: []
       versionless_types: []
+    '110':
+      enums:
+      - pico.board.variant:000
+      formats:
+      - firmware.commit
+      - positive.float
+      - positive.int
+      - spaceheat.name
+      types: []
+      versionless_types: []
   atn.bid:
     '001':
       enums:
@@ -449,6 +459,7 @@ types:
       enums:
       - pico.board.variant:000
       formats:
+      - firmware.commit
       - positive.int
       - spaceheat.name
       types: []
@@ -933,6 +944,7 @@ types:
       - zone.circuit.role:000
       - zone.setpoint.source:000
       formats:
+      - firmware.commit
       - handle.name
       - left.right.dot
       - mac.address
@@ -1062,6 +1074,7 @@ types:
       - zone.circuit.role:000
       - zone.setpoint.source:000
       formats:
+      - firmware.commit
       - handle.name
       - left.right.dot
       - non.empty.string
@@ -2325,6 +2338,7 @@ types:
       - spaceheat.telemetry.name:007
       - temp.calc.method:000
       formats:
+      - firmware.commit
       - handle.name
       - left.right.dot
       - non.empty.string
@@ -2456,6 +2470,7 @@ types:
       - pico.board.variant:000
       - temp.calc.method:000
       formats:
+      - firmware.commit
       - pascal.case
       - positive.float
       - spaceheat.name
@@ -2482,6 +2497,7 @@ types:
       - hz.calc.method:001
       - pico.board.variant:000
       formats:
+      - firmware.commit
       - pascal.case
       - spaceheat.name
       - uuid4.str
@@ -2526,6 +2542,7 @@ types:
       - pico.board.variant:000
       - temp.calc.method:000
       formats:
+      - firmware.commit
       - pascal.case
       - positive.int
       - uuid4.str
@@ -3230,6 +3247,15 @@ types:
       enums:
       - pico.board.variant:000
       formats:
+      - positive.int
+      - spaceheat.name
+      types: []
+      versionless_types: []
+    '210':
+      enums:
+      - pico.board.variant:000
+      formats:
+      - firmware.commit
       - positive.int
       - spaceheat.name
       types: []

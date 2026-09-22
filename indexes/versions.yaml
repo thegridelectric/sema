@@ -32,9 +32,11 @@ types:
         summary: "Initial Sema version"
 
   async.btu.params:
-    latest_version: "100"
+    latest_version: "110"
     versioning_strategy: "literal"
     versions:
+      "110":
+        summary: "- FirmwareCommit: add"
       "100":
         summary: >
           - PicoBoardVariant: add
@@ -302,6 +304,7 @@ types:
         summary: >
           - PicoBoardVariant: add
           - MicropythonVersion: add
+          - FirmwareCommit: add
       "101":
         summary: "Initial Sema version (registered from the shipped gwsproto FlowHallParams wire shape, version 101)."
 
@@ -1555,9 +1558,11 @@ types:
         summary: "Initial Sema version"
 
   tank.module.params:
-    latest_version: "200"
+    latest_version: "210"
     versioning_strategy: "literal"
     versions:
+      "210":
+        summary: "- FirmwareCommit: add"
       "200":
         summary: >
           - PicoBoardVariant: add

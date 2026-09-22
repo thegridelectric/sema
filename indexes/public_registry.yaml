@@ -9,9 +9,17 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-20T13:20:00Z'
+  last_updated: '2026-09-21T19:50:00Z'
   maintainer: gridworks-energy
 formats:
+  firmware.commit:
+    owner: gridworks-energy
+    schema_url: https://schemas.electricity.works/formats/firmware.commit
+    created: '2026-09-21T19:50:00Z'
+    status: published
+    description: 'The gridworks-pico commit a board''s firmware was generated from:
+      a 40-character lowercase git hash, optionally suffixed -dirty, or the literal
+      unstamped'
   handle.name:
     owner: gridworks-energy
     schema_url: https://schemas.electricity.works/formats/handle.name
@@ -1216,13 +1224,25 @@ types:
           - utc.milliseconds
           - uuid4.str
   async.btu.params:
-    latest_version: '100'
+    latest_version: '110'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'The params handshake between an async-btu pico and its scada: the
       pico posts its parameters at boot and the scada answers with the values to run
       with.'
     versions:
+      '110':
+        schema_url: https://schemas.electricity.works/types/async.btu.params/110
+        created: '2026-09-21T19:50:00Z'
+        status: staging
+        summary: '- FirmwareCommit: add'
+        direct_dependencies:
+          structural:
+          - firmware.commit
+          - pico.board.variant:000
+          - positive.float
+          - positive.int
+          - spaceheat.name
       '100':
         schema_url: https://schemas.electricity.works/types/async.btu.params/100
         created: '2026-09-11T00:30:00Z'
@@ -1916,11 +1936,13 @@ types:
     versions:
       '200':
         schema_url: https://schemas.electricity.works/types/flow.hall.params/200
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
-        summary: '- PicoBoardVariant: add - MicropythonVersion: add'
+        summary: '- PicoBoardVariant: add - MicropythonVersion: add - FirmwareCommit:
+          add'
         direct_dependencies:
           structural:
+          - firmware.commit
           - pico.board.variant:000
           - positive.int
           - spaceheat.name
@@ -2720,7 +2742,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: "The complete deployable artifact for a House0-fleet home: every\
           \ collection and Hydronic required. The word MEANS has-a-siegenthaler-loop\
@@ -2857,7 +2879,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: "Axioms mirror the names tiers: 1 TransactivePowerChannel, 2 BoardResolution\
           \ (gpio sensors/relays, i2c thermistor readers, i2c relays, and DAC outputs\
@@ -4240,7 +4262,7 @@ types:
     versions:
       '013':
         schema_url: https://schemas.electricity.works/types/layout.lite/013
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: '- ShNodes: spaceheat.node.gt:301 -> 303 - DataChannels: data.channel.gt:002
           -> 003 - TankModuleComponents / FlowModuleComponents / I2cRelayComponent:
@@ -4697,7 +4719,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/pico.btu.meter.component.gt/000
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: 'Initial Sema version (flattened from the scada PicoBtuMeterComponentGt
           runtime). ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type
@@ -4707,6 +4729,7 @@ types:
           layout. ConfigList dropped.'
         direct_dependencies:
           structural:
+          - firmware.commit
           - gpm.from.hz.method:000
           - hz.calc.method:001
           - pascal.case
@@ -4723,7 +4746,7 @@ types:
     versions:
       '001':
         schema_url: https://schemas.electricity.works/types/pico.flow.module.component.gt/001
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: '- ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type
           value, pascal.case). Context-dependent: the device type lived on the referenced
@@ -4732,6 +4755,7 @@ types:
           by the hardware layout.'
         direct_dependencies:
           structural:
+          - firmware.commit
           - gpm.from.hz.method:000
           - hz.calc.method:001
           - pascal.case
@@ -4759,13 +4783,14 @@ types:
     versions:
       '012':
         schema_url: https://schemas.electricity.works/types/pico.tank.module.component.gt/012
-        created: '2026-09-18T00:35:00Z'
+        created: '2026-09-21T19:50:00Z'
         status: staging
         summary: '- ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type
           value, pascal.case). Context-dependent: the device type lived on the referenced
           cac, not the component.'
         direct_dependencies:
           structural:
+          - firmware.commit
           - pascal.case
           - pico.board.variant:000
           - positive.int
@@ -5745,13 +5770,24 @@ types:
           - utc.seconds
           - uuid4.str
   tank.module.params:
-    latest_version: '200'
+    latest_version: '210'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'The params handshake between a tank-module pico and its scada: the
       pico posts its parameters at boot and the scada answers with the values to run
       with.'
     versions:
+      '210':
+        schema_url: https://schemas.electricity.works/types/tank.module.params/210
+        created: '2026-09-21T19:50:00Z'
+        status: staging
+        summary: '- FirmwareCommit: add'
+        direct_dependencies:
+          structural:
+          - firmware.commit
+          - pico.board.variant:000
+          - positive.int
+          - spaceheat.name
       '200':
         schema_url: https://schemas.electricity.works/types/tank.module.params/200
         created: '2026-09-08T00:30:00Z'

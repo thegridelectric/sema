@@ -3,6 +3,7 @@ from pydantic import ConfigDict, StrictInt, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.enums import TempCalcMethod
+from sema.runtime.property_format import FirmwareCommit
 from sema.runtime.property_format import PascalCase
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UUID4Str
@@ -30,6 +31,7 @@ class PicoTankModuleComponentGt(SemaType):
     sensor_order: list[StrictInt] | None = None
     pico_board_variant: PicoBoardVariant
     micropython_version: str | None = None
+    firmware_commit: FirmwareCommit | None = None
     type_name: Literal["pico.tank.module.component.gt"] = (
         "pico.tank.module.component.gt"
     )

@@ -901,11 +901,13 @@ enums:
     '000':
       used_by:
       - async.btu.params:100
+      - async.btu.params:110
       - flow.hall.params:200
       - pico.btu.meter.component.gt:000
       - pico.flow.module.component.gt:001
       - pico.tank.module.component.gt:012
       - tank.module.params:200
+      - tank.module.params:210
   pico.cycler.state:
     '000':
       used_by:
@@ -1019,6 +1021,14 @@ enums:
       used_by:
       - gw1.zone.call.circuit:000
 formats:
+  firmware.commit:
+    used_by:
+    - async.btu.params:110
+    - flow.hall.params:200
+    - pico.btu.meter.component.gt:000
+    - pico.flow.module.component.gt:001
+    - pico.tank.module.component.gt:012
+    - tank.module.params:210
   handle.name:
     used_by:
     - analog.dispatch:000
@@ -1263,6 +1273,7 @@ formats:
     used_by:
     - async.btu.params:000
     - async.btu.params:100
+    - async.btu.params:110
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.operational.params:000
@@ -1279,6 +1290,7 @@ formats:
     - ads111x.based.device.type.gt:000
     - async.btu.params:000
     - async.btu.params:100
+    - async.btu.params:110
     - capture.tuning:000
     - channel.config:000
     - channel.config:001
@@ -1364,6 +1376,7 @@ formats:
     - synth.channel.gt:000
     - tank.module.params:110
     - tank.module.params:200
+    - tank.module.params:210
   positive.int.as.str:
     used_by:
     - gw1.tank.temp.calibration.map:000
@@ -1374,6 +1387,7 @@ formats:
     - analog.dispatch:000
     - async.btu.params:000
     - async.btu.params:100
+    - async.btu.params:110
     - baseurl.failure.alert:100
     - capture.tuning:000
     - channel.config:000
@@ -1446,6 +1460,7 @@ formats:
     - synth.channel.gt:000
     - tank.module.params:110
     - tank.module.params:200
+    - tank.module.params:210
     - ticklist.hall.report:000
     - ticklist.reed.report:000
     - zero.ten.power.on:000

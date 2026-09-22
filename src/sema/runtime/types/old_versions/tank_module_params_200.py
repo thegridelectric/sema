@@ -1,13 +1,14 @@
 from typing import Literal
 from pydantic import StrictFloat, model_validator
 from sema.runtime.base import SemaType
+from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
-from sema.runtime.types.old_versions.tank_module_params_200 import TankModuleParams200
+from sema.runtime.types.tank_module_params import TankModuleParams
 
 
-class TankModuleParams110(SemaType):
-    """Sema: https://schemas.electricity.works/types/tank.module.params/110"""
+class TankModuleParams200(SemaType):
+    """Sema: https://schemas.electricity.works/types/tank.module.params/200"""
 
     hw_uid: str
     actor_node_name: SpaceheatName
@@ -17,11 +18,13 @@ class TankModuleParams110(SemaType):
     num_sample_averages: PositiveInt
     async_capture_delta_micro_volts: PositiveInt
     capture_offset_s: StrictFloat | None = None
+    pico_board_variant: PicoBoardVariant
+    micropython_version: str
     type_name: Literal["tank.module.params"] = "tank.module.params"
-    version: Literal["110"] = "110"
+    version: Literal["200"] = "200"
 
     @model_validator(mode="after")
-    def check_axiom_1(self) -> "TankModuleParams110":
+    def check_axiom_1(self) -> "TankModuleParams200":
         """
         Axiom 1: PicoABIsAOrB
         If PicoAB is present it SHALL be "a" or "b".
@@ -32,14 +35,13 @@ class TankModuleParams110(SemaType):
             )
         return self
 
-    def upgrade(self) -> TankModuleParams200:
+    def upgrade(self) -> TankModuleParams:
         """
-        - PicoBoardVariant: add
-        - MicropythonVersion: add
+        - FirmwareCommit: add
         """
         raise SemaType.upgrade_requires_context(
-            "TankModuleParams110 cannot be upgraded to "
-            "TankModuleParams200 without context: v200 adds "
-            "PicoBoardVariant and MicropythonVersion, which only the posting "
-            "pico knows, and they SHALL NOT be fabricated."
+            "TankModuleParams200 cannot be upgraded to "
+            "TankModuleParams without context: v210 adds "
+            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "NOT be fabricated."
         )

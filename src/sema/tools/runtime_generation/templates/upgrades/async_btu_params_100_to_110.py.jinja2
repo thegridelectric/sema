@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ async_btu_params_110_class_name }}:
+        """
+        - FirmwareCommit: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ async_btu_params_100_class_name }} cannot be upgraded to "
+            "{{ async_btu_params_110_class_name }} without context: v110 adds "
+            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "NOT be fabricated."
+        )
