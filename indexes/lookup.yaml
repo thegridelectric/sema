@@ -1420,11 +1420,6 @@ enums:
   valve.open.or.closed:
     enum_type: literal
     schema: definitions/enums/valve.open.or.closed/000.yaml
-  zone.actuator.kind:
-    enum_type: versioned
-    latest_version: '000'
-    versions:
-      '000': definitions/enums/zone.actuator.kind/000.yaml
   zone.call.circuit.event:
     enum_type: versioned
     latest_version: '000'
@@ -1448,11 +1443,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/zone.circuit.governance.state/000.yaml
-  zone.circuit.role:
+  zone.emitter.type:
     enum_type: versioned
     latest_version: '000'
     versions:
-      '000': definitions/enums/zone.circuit.role/000.yaml
+      '000': definitions/enums/zone.emitter.type/000.yaml
   zone.setpoint.source:
     enum_type: versioned
     latest_version: '000'

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-21T19:50:00Z'
+  last_updated: '2026-09-23T15:05:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -1062,16 +1062,6 @@ enums:
     schema_url: https://schemas.electricity.works/enums/valve.open.or.closed/000
     created: '2026-08-11T21:05:00Z'
     status: staging
-  zone.actuator.kind:
-    latest_version: '000'
-    owner: gridworks-energy
-    enum_type: versioned
-    description: Kind of emitter a zone-call circuit actuates.
-    versions:
-      '000':
-        schema_url: https://schemas.electricity.works/enums/zone.actuator.kind/000
-        created: '2026-08-11T15:55:00Z'
-        status: staging
   zone.call.circuit.event:
     latest_version: '000'
     owner: gridworks-energy
@@ -1124,15 +1114,15 @@ enums:
         schema_url: https://schemas.electricity.works/enums/zone.circuit.governance.state/000
         created: '2026-08-11T15:55:00Z'
         status: staging
-  zone.circuit.role:
+  zone.emitter.type:
     latest_version: '000'
     owner: gridworks-energy
     enum_type: versioned
-    description: Thermal role a zone-call circuit plays for the zone it serves.
+    description: Type of emitter a zone-call circuit drives.
     versions:
       '000':
-        schema_url: https://schemas.electricity.works/enums/zone.circuit.role/000
-        created: '2026-08-11T15:55:00Z'
+        schema_url: https://schemas.electricity.works/enums/zone.emitter.type/000
+        created: '2026-09-23T15:05:00Z'
         status: staging
   zone.setpoint.source:
     latest_version: '000'
@@ -2742,38 +2732,35 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-09-21T19:50:00Z'
+        created: '2026-09-23T15:05:00Z'
         status: staging
-        summary: "The complete deployable artifact for a House0-fleet home: every\
-          \ collection and Hydronic required. The word MEANS has-a-siegenthaler-loop\
-          \ (beech, maple); sieg-less homes are the coming gw.house0.no.sieg. Component\
-          \ set is eGauge / ADS111x TSnap / the House0 board record (Krida expanders\
-          \ + GP8403 DACs) with per-relay and per-output components / pico flow /\
-          \ tank + sim-tank / Hubitat + poller / web-server over the DeviceType record\
-          \ model. Axioms cover id uniqueness, the core and command-node Name/ActorClass\
-          \ contracts (sieg-loop and hp-boss unconditional command nodes, dormant\
-          \ when unused), a heat-call channel per zone-call circuit, primary-flow\
-          \ source agreement, the transactive-power boundary, required flow sensing,\
-          \ the unconditional sieg manifold surface, the system-model energy channels\
-          \ and the models that produce them, the unconditional actuators (plant relays,\
-          \ 0-10V outputs each bound to an i2c.dac.output.component.gt, zone-circuit\
-          \ relay pairs), and the split-system heat-pump parts (hp-odu, hp-idu) with\
-          \ their components. 12 CommandableHeatPump (biconditional: Hydronic.HpCommandNodeName\
-          \ \u21D2 hp-odu/hp-idu/hp-ctrl-box with ComponentId, ActorClass HpTwin,\
-          \ handle under hp-boss; every HpTwin node is the declared one); 11's NoActor\
-          \ clause defers to it. 13 PrefixClosedHandles + 14 ActuatorLeaves: the layout's\
-          \ authored handles are the initial command tree, so the tree word's two\
-          \ axioms hold here too (identical wording). 15 ComponentBinding (every component\
-          \ referenced by exactly one node). 16 BoardResolution (every i2c relay and\
-          \ DAC output resolves through its board component to a name in the board's\
-          \ gw1.scada.device.type.gt record; the multichannel relay component and\
-          \ the generic sim relay leave the Components union). 17 BufferTank (a House0\
-          \ home has a buffer tank: the buffer node and its three depth channels).\
-          \ 18 ZoneTempChannelResolution (every zone's TempChannelName names a DataChannel\
-          \ or DerivedChannel whose quantity is Temperature; identical wording across\
-          \ layout words). 19 CircuitWhitewireChannelResolution (every circuit's WhitewireChannelName\
-          \ names a DataChannel; identical wording across layout words). Sim pico\
-          \ flow-module and BTU-meter components join the union."
+        summary: 'The complete deployable artifact for a House0-fleet home: every
+          collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
+          (beech, maple); sieg-less homes are gw.house0.no.sieg. Components: eGauge,
+          ADS111x thermistor snaps, the House0 board record (Krida expanders and GP8403
+          DACs) with per-relay and per-output components, pico flow and BTU meters,
+          tank modules real and sim, Hubitat with poller, web-server, all over the
+          DeviceType record model. Axioms: 1 GlobalIdUniqueness; 2 CoreShNodesExistenceAndActorClass;
+          3 CommandNodesExistenceAndActorClass (n, backup, scada-blind, five-v-boss,
+          pico-cycler, hp-boss, sieg-loop); 4 CircuitHeatCallChannel; 5 PrimaryFlowSourceChannelAgreement;
+          6 TransactivePowerChannel; 7 RequiredSensing (heat-pump and pump power,
+          plant pipe temperatures, dist and store flow); 8 SiegManifoldChannels (sieg-cold,
+          sieg-hot, sieg-flow, sieg-send-flow, the two hp-loop relays); 9 SystemModelEnergyChannels;
+          10 RequiredActuators (plant relays, the three 0-10V outputs each bound to
+          a DAC output component, zone-circuit relay pairs); 11 RequiredHeatpumpEquipment
+          (hp-odu, hp-idu); 12 CommandableHeatPump (biconditional on Hydronic.HpCommandNodeName;
+          11''s NoActor clause defers to it); 13 PrefixClosedHandles and 14 ActuatorLeaves
+          (the authored handles are the initial command tree); 15 ComponentBinding;
+          16 BoardResolution; 17 BufferTank (three buffer depth readings, no node);
+          18 ZoneTempChannelResolution; 19 CircuitWhitewireChannelResolution; 20 DerivedChannelCreatorResolution;
+          21 DataChannelNodeResolution; 22 DerivedChannelInputsAcyclic; 23 ChannelNameUniqueness;
+          24 StoreTankTemps; 25 WebServerNode; 26 FloorLoopCircuitTemp (a RadiantSlab
+          or StoreUnderFloor circuit names its floor temperature channel). Wording
+          is identical across layout words where the axiom name is shared. 27 DisabledNamesResolve,
+          28 DisabledNodesAreSensors (a disabled node captures DataChannels, all of
+          them disabled), 29 EnabledDerivedChannelsHaveLiveInputs; DisabledNodeNames
+          and DisabledChannelNames list required names currently unavailable pending
+          a field visit.'
         direct_dependencies:
           structural:
           - ads111x.based.component.gt:000
@@ -2802,6 +2789,7 @@ types:
           - sim.pico.flow.module.component.gt:000
           - sim.pico.tank.module.component.gt:001
           - sim.sensor.component.gt:000
+          - spaceheat.name
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
@@ -2809,6 +2797,7 @@ types:
           - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
+          - zone.emitter.type:000
   gw.hydronic:
     latest_version: '000'
     owner: gridworks-energy
@@ -2818,7 +2807,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-09-17T23:55:00Z'
+        created: '2026-09-23T15:05:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -2879,36 +2868,33 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-09-21T19:50:00Z'
+        created: '2026-09-23T15:05:00Z'
         status: staging
-        summary: "Axioms mirror the names tiers: 1 TransactivePowerChannel, 2 BoardResolution\
-          \ (gpio sensors/relays, i2c thermistor readers, i2c relays, and DAC outputs\
-          \ each resolve through their board component to a name in the board's gw1.scada.device.type.gt\
-          \ record), 3 CoreShNodesExistenceAndActorClass (identical wording across\
-          \ layout words), 4 CommandNodesExistenceAndActorClass (n, five-v-boss, pico-cycler,\
-          \ hp-boss), 5 RequiredActuators (plant relays incl. the per-tank tank1 element\
-          \ relays + circuit relay binding), 6 RequiredHeatpumpEquipment (hp-odu,\
-          \ hp-ctrl-box with components; a Nolan home is a monobloc), 7 ComponentBinding\
-          \ (every component referenced by exactly one node), 8 RequiredSensing (kind-agnostic\
-          \ names incl. HP and resistive-element power channels), 9 SingleStoreTank.\
-          \ Components are the cac-free DeviceType versions; DeviceTypes holds the\
-          \ specialized <family>.device.type.gt records; the multichannel relay component\
-          \ and the generic sim relay leave the union (the scada builds Nolan relays\
-          \ on per-relay i2c.relay.component.gt against the board record, same as\
-          \ House0); nodes/channels ride spaceheat.node.gt/303 + data.channel.gt/003.\
-          \ 10 CommandableHeatPump (biconditional: Hydronic.HpCommandNodeName \u21D2\
-          \ hp-odu/hp-idu/hp-ctrl-box with ComponentId, ActorClass HpTwin, handle\
-          \ under hp-boss; every HpTwin node is the declared one); 6's NoActor clause\
-          \ defers to it. 11 PrefixClosedHandles + 12 ActuatorLeaves: the layout's\
-          \ authored handles are the initial command tree, so the tree word's two\
-          \ axioms hold here too (identical wording). 13 ZoneTempChannelResolution\
-          \ (every zone's TempChannelName names a DataChannel or DerivedChannel whose\
-          \ quantity is Temperature; identical wording across layout words). 14 CircuitWhitewireChannelResolution\
-          \ (every circuit's WhitewireChannelName names a DataChannel) + 15 CircuitHeatCallChannel\
-          \ (exactly one heat-call DerivedChannel takes each circuit's whitewire channel\
-          \ as its input); identical wording across layout words. sim.pico.flow.module.component.gt\
-          \ and sim.pico.btu.meter.component.gt join the union, completing the sim\
-          \ pico triple alongside sim.pico.tank.module.component.gt."
+        summary: 'The complete deployable artifact for a Nolan home: monobloc heat
+          pump, one store tank, the gw108 board. Components are the cac-free DeviceType
+          versions; DeviceTypes holds the per-family device-type records; every relay
+          is a per-relay component against the board record. Axioms: 1 TransactivePowerChannel;
+          2 BoardResolution (gpio sensors and relays, i2c thermistor readers, i2c
+          relays and DAC outputs each resolve through their board component to a name
+          in the board record); 3 CoreShNodesExistenceAndActorClass; 4 CommandNodesExistenceAndActorClass
+          (n, backup, scada-blind, five-v-boss, pico-cycler, hp-boss); 5 RequiredActuators
+          (plant relays including vdc-relay and the tank1 element relays, secondary-010v,
+          zone-circuit relay pairs); 6 RequiredHeatpumpEquipment (hp-odu, hp-ctrl-box);
+          7 ComponentBinding; 8 RequiredSensing (heat-pump, element and pump power,
+          plant, secondary and circuit supply/return temperatures, buffer-hot-pipe,
+          four flows); 9 SingleStoreTank; 10 CommandableHeatPump (biconditional on
+          Hydronic.HpCommandNodeName; 6''s NoActor clause defers to it); 11 PrefixClosedHandles
+          and 12 ActuatorLeaves; 13 ZoneTempChannelResolution; 14 CircuitWhitewireChannelResolution;
+          15 CircuitHeatCallChannel; 16 DerivedChannelCreatorResolution; 17 DataChannelNodeResolution;
+          18 DerivedChannelInputsAcyclic; 19 ChannelNameUniqueness; 20 BufferTank
+          (three buffer depth readings, no node); 21 StoreTankTemps; 22 SystemModelEnergyChannels;
+          23 WebServerNode; 24 FloorLoopCircuitTemp (a RadiantSlab or StoreUnderFloor
+          circuit names its floor temperature channel). Wording is identical across
+          layout words where the axiom name is shared. 25 DisabledNamesResolve, 26
+          DisabledNodesAreSensors (a disabled node captures DataChannels, all of them
+          disabled), 27 EnabledDerivedChannelsHaveLiveInputs; DisabledNodeNames and
+          DisabledChannelNames list required names currently unavailable pending a
+          field visit.'
         direct_dependencies:
           structural:
           - ads111x.based.device.type.gt:000
@@ -2934,11 +2920,15 @@ types:
           - sim.pico.flow.module.component.gt:000
           - sim.pico.tank.module.component.gt:001
           - sim.sensor.component.gt:000
+          - spaceheat.name
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
+          - gw0.required.energy.layered:000
+          - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
+          - zone.emitter.type:000
   gw.operational.params:
     latest_version: '000'
     owner: gridworks-energy
@@ -3380,22 +3370,22 @@ types:
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One zone-call circuit: the chain from wall thermostat through call
-      wire and relay pair to an actuator, serving one zone.'
+      wire and relay pair to an emitter, serving one zone.'
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw1.zone.call.circuit/000
-        created: '2026-08-11T15:55:00Z'
+        created: '2026-09-23T15:05:00Z'
         status: staging
-        summary: Circuit record (CircuitPosition, ServesZone, ActuatorKind, Role,
-          CanCool, SetpointSource, Thermostat, WhitewireChannelName, FailsafeRelayNode,
-          OpsRelayNode); FloorLoopsCannotCool and ReadSetpointNeedsCommsStat axioms.
+        summary: Circuit record (CircuitPosition, ServesZone, EmitterType, CanCool,
+          SetpointSource, Thermostat, WhitewireChannelName, optional FloorTempChannelName,
+          FailsafeRelayNode, OpsRelayNode); OnlyFanCoilsCool and ReadSetpointNeedsCommsStat
+          axioms.
         direct_dependencies:
           structural:
           - gw1.zone.thermostat:000
           - positive.int
           - spaceheat.name
-          - zone.actuator.kind:000
-          - zone.circuit.role:000
+          - zone.emitter.type:000
           - zone.setpoint.source:000
           axiom:
           - thermostat.kind:000

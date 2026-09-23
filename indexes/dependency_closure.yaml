@@ -940,8 +940,7 @@ types:
       - temp.calc.method:000
       - thermistor.data.method:000
       - thermostat.kind:000
-      - zone.actuator.kind:000
-      - zone.circuit.role:000
+      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - firmware.commit
@@ -1015,8 +1014,7 @@ types:
       enums:
       - gw.primary.flow.source:000
       - thermostat.kind:000
-      - zone.actuator.kind:000
-      - zone.circuit.role:000
+      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - non.negative.int
@@ -1070,8 +1068,7 @@ types:
       - spaceheat.telemetry.name:007
       - temp.calc.method:000
       - thermostat.kind:000
-      - zone.actuator.kind:000
-      - zone.circuit.role:000
+      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - firmware.commit
@@ -1100,6 +1097,8 @@ types:
       - gpio.sensor.component.gt:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
+      - gw0.required.energy.layered:000
+      - gw0.usable.energy.layered:000
       - gw1.hvac.zone:000
       - gw1.scada.device.type.gt:000
       - gw1.unit.quantity.projection:000
@@ -1389,8 +1388,7 @@ types:
     '000':
       enums:
       - thermostat.kind:000
-      - zone.actuator.kind:000
-      - zone.circuit.role:000
+      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - positive.int

@@ -1,8 +1,7 @@
 from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums import ZoneActuatorKind
-from sema.runtime.enums import ZoneCircuitRole
+from sema.runtime.enums import ZoneEmitterType
 from sema.runtime.enums import ZoneSetpointSource
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
@@ -14,12 +13,12 @@ class Gw1ZoneCallCircuit(SemaType):
 
     circuit_position: PositiveInt
     serves_zone: SpaceheatName
-    actuator_kind: ZoneActuatorKind
-    role: ZoneCircuitRole
+    emitter_type: ZoneEmitterType
     can_cool: bool
     setpoint_source: ZoneSetpointSource
     thermostat: Gw1ZoneThermostat
     whitewire_channel_name: SpaceheatName
+    floor_temp_channel_name: SpaceheatName | None = None
     failsafe_relay_node: SpaceheatName
     ops_relay_node: SpaceheatName
     type_name: Literal["gw1.zone.call.circuit"] = "gw1.zone.call.circuit"
@@ -28,21 +27,20 @@ class Gw1ZoneCallCircuit(SemaType):
     @model_validator(mode="after")
     def check_axiom_1(self) -> "Gw1ZoneCallCircuit":
         """
-        Axiom 1: FloorLoopsCannotCool
-        If ActuatorKind is FloorLoop, CanCool SHALL be false.
+        Axiom 1: OnlyFanCoilsCool If EmitterType is not FanCoil, CanCool SHALL be false.
         """
-        if self.actuator_kind == ZoneActuatorKind.FloorLoop and self.can_cool:
+        if self.emitter_type != ZoneEmitterType.FanCoil and self.can_cool:
             raise ValueError(
-                "Axiom 1 (FloorLoopsCannotCool) failed: ActuatorKind is "
-                "FloorLoop, so CanCool SHALL be false."
+                f"Axiom 1 (OnlyFanCoilsCool) failed: EmitterType is "
+                f"{self.emitter_type}, so CanCool SHALL be false."
             )
         return self
 
     @model_validator(mode="after")
     def check_axiom_2(self) -> "Gw1ZoneCallCircuit":
         """
-        Axiom 2: ReadSetpointNeedsCommsStat
-        If SetpointSource is FromThermostat, Thermostat.Kind SHALL NOT be MechanicalDial.
+        Axiom 2: ReadSetpointNeedsCommsStat If SetpointSource is FromThermostat,
+        Thermostat.Kind SHALL NOT be MechanicalDial.
         """
         # String comparison, not an enum import: ThermostatKind is not a field
         # enum of this type, and an absolute sema.runtime import would break

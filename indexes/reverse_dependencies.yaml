@@ -222,10 +222,12 @@ types:
     '000':
       used_by:
       - gw.house0.layout:000
+      - gw.nolan.layout:000
   gw0.usable.energy.layered:
     '000':
       used_by:
       - gw.house0.layout:000
+      - gw.nolan.layout:000
   gw1.hvac.zone:
     '000':
       used_by:
@@ -1004,17 +1006,15 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
-  zone.actuator.kind:
-    '000':
-      used_by:
-      - gw1.zone.call.circuit:000
   zone.circuit.governance.event:
     '000':
       used_by:
       - zone.circuit.governance.cmd:000
-  zone.circuit.role:
+  zone.emitter.type:
     '000':
       used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
       - gw1.zone.call.circuit:000
   zone.setpoint.source:
     '000':
@@ -1415,7 +1415,9 @@ formats:
     - gw.channel.noise.stats:000
     - gw.command.interface:000
     - gw.experiment.run:000
+    - gw.house0.layout:000
     - gw.hydronic:000
+    - gw.nolan.layout:000
     - gw1.hvac.zone:000
     - gw1.zone.call.circuit:000
     - i2c.multichannel.dt.relay.component.gt:003

@@ -90,6 +90,24 @@ properties:
   Hydronic:
     $ref: "https://schemas.electricity.works/types/gw.hydronic/000"
 
+  DisabledNodeNames:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Names of sensing nodes this word requires and the layout declares
+      whose readings are currently unavailable, pending a field visit.
+      Empty when every required node is available.
+
+  DisabledChannelNames:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Names of channels this word requires and the layout declares whose
+      readings are currently unavailable, pending a field visit. Empty
+      when every required channel is available.
+
   TypeName:
     const: "gw.nolan.layout"
 
@@ -104,6 +122,8 @@ required:
   - DataChannels
   - DerivedChannels
   - Hydronic
+  - DisabledNodeNames
+  - DisabledChannelNames
   - TypeName
   - Version
 
@@ -160,6 +180,8 @@ x-gridworks:
         ShNodes SHALL contain a node with each of the following Name / ActorClass pairs, and no
         additional ShNode with any of these Names SHALL exist:
           "n"           → ActorClass "NoActor"
+          "backup"      → ActorClass "NoActor"
+          "scada-blind" → ActorClass "NoActor"
           "five-v-boss" → ActorClass "FiveVBoss"
           "pico-cycler" → ActorClass "PicoCycler"
           "hp-boss"     → ActorClass "HpBoss"
@@ -171,6 +193,7 @@ x-gridworks:
       name: "RequiredActuators"
       statement: >
         a. ShNodes SHALL include nodes named
+          "vdc-relay",
           "iso-valve-relay",
           "secondary-pump-relay",
           "hp-scada-ops-relay",
@@ -216,26 +239,29 @@ x-gridworks:
           "store-cold-pipe",
           "secondary-lwt",
           "secondary-ewt",
+          "buffer-hot-pipe",
+          "fancoil-swt",
+          "fancoil-rwt",
+          "floor-swt",
+          "floor-rwt",
           "dist-flow",
           "primary-flow",
           "store-flow",
           "secondary-flow",
-          "buffer-depth1-device",
-          "buffer-depth2-device",
-          "buffer-depth3-device",
-          "tank1-depth1-device",
-          "tank1-depth2-device",
-          "tank1-depth3-device",
           "hp-odu-pwr",
           "hp-ctrl-box-pwr",
+          "primary-pump-pwr",
+          "store-pump-pwr",
+          "dist-pump-pwr",
+          "secondary-pump-pwr",
           "buffer-top-elt-pwr",
           "buffer-bottom-elt-pwr",
           "tank1-top-elt-pwr",
           and "tank1-bottom-elt-pwr":
         a channel with that Name SHALL exist in
         DataChannels or in DerivedChannels. (Kind-agnostic by design: a name
-        may migrate from raw DataChannel to same-name DerivedChannel — as tank
-        temperatures did — without touching this contract.)
+        may migrate from raw DataChannel to same-name DerivedChannel without
+        touching this contract.)
 
     - number: 9
       name: "SingleStoreTank"
@@ -319,5 +345,52 @@ x-gridworks:
       statement: >
         The Names of the channels in DataChannels and DerivedChannels, taken together, SHALL be
         pairwise distinct.
+    - number: 20
+      name: "BufferTank"
+      statement: >
+        A Nolan home has a buffer tank. For each depth i in 1..3 a channel named
+        "buffer-depth{i}" SHALL exist in DataChannels or in DerivedChannels. (The family
+        invariant lives here, in the word; scada code asks the layout and assumes nothing.)
+    - number: 21
+      name: "StoreTankTemps"
+      statement: >
+        For each tank index N in 1..Hydronic.TotalStoreTanks and each depth i in 1..3, a channel
+        named "tank{N}-depth{i}" SHALL exist in DataChannels or in DerivedChannels.
+    - number: 22
+      name: "SystemModelEnergyChannels"
+      statement: >
+        DerivedChannels SHALL include channels named "usable-energy" and "required-energy", each
+        with CreatedByNodeName "derived-generator" and Strategy "system-model".
+        Parameters.EnergyModel.TypeName SHALL be gw0.usable.energy.layered on "usable-energy" and
+        gw0.required.energy.layered on "required-energy".
+    - number: 23
+      name: "WebServerNode"
+      statement: >
+        ShNodes SHALL contain exactly one node named "web-server", with ActorClass "NoActor".
+    - number: 24
+      name: "FloorLoopCircuitTemp"
+      statement: >
+        a. Every circuit in Hydronic.ZoneCallCircuits whose EmitterType is "RadiantSlab" or
+        "StoreUnderFloor" SHALL carry FloorTempChannelName.
+        b. Where a circuit carries FloorTempChannelName, it SHALL equal the Name of a channel in
+        DataChannels or in DerivedChannels, and that channel SHALL carry temperature: a
+        DataChannel's Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.
+    - number: 25
+      name: "DisabledNamesResolve"
+      statement: >
+        Every name in DisabledNodeNames SHALL equal the Name of an ShNode in ShNodes, and every
+        name in DisabledChannelNames SHALL equal the Name of a channel in DataChannels or in
+        DerivedChannels.
+    - number: 26
+      name: "DisabledNodesAreSensors"
+      statement: >
+        Every name in DisabledNodeNames SHALL be the CapturedByNodeName of at least one
+        DataChannel, and every DataChannel whose CapturedByNodeName is in DisabledNodeNames SHALL
+        have its Name in DisabledChannelNames.
+    - number: 27
+      name: "EnabledDerivedChannelsHaveLiveInputs"
+      statement: >
+        Every DerivedChannel whose Name is not in DisabledChannelNames SHALL have no name in its
+        InputChannelNames that is in DisabledChannelNames.
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

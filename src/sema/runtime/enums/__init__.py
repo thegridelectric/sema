@@ -86,13 +86,12 @@ from sema.runtime.enums.thermostat_kind import ThermostatKind
 from sema.runtime.enums.turn_5v_on_off import Turn5vOnOff
 from sema.runtime.enums.turn_hp_on_off import TurnHpOnOff
 from sema.runtime.enums.valve_open_or_closed import ValveOpenOrClosed
-from sema.runtime.enums.zone_actuator_kind import ZoneActuatorKind
 from sema.runtime.enums.zone_call_circuit_event import ZoneCallCircuitEvent
 from sema.runtime.enums.zone_call_circuit_state import ZoneCallCircuitState
 from sema.runtime.enums.zone_call_source import ZoneCallSource
 from sema.runtime.enums.zone_circuit_governance_event import ZoneCircuitGovernanceEvent
 from sema.runtime.enums.zone_circuit_governance_state import ZoneCircuitGovernanceState
-from sema.runtime.enums.zone_circuit_role import ZoneCircuitRole
+from sema.runtime.enums.zone_emitter_type import ZoneEmitterType
 from sema.runtime.enums.zone_setpoint_source import ZoneSetpointSource
 
 __all__ = [
@@ -176,12 +175,11 @@ __all__ = [
     "Turn5vOnOff",
     "TurnHpOnOff",
     "ValveOpenOrClosed",
-    "ZoneActuatorKind",
     "ZoneCallCircuitEvent",
     "ZoneCallCircuitState",
     "ZoneCallSource",
     "ZoneCircuitGovernanceEvent",
     "ZoneCircuitGovernanceState",
-    "ZoneCircuitRole",
+    "ZoneEmitterType",
     "ZoneSetpointSource",
 ]

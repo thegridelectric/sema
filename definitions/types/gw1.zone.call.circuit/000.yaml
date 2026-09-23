@@ -5,7 +5,7 @@ title: "gw1.zone.call.circuit"
 type: object
 description: >
   One zone-call circuit: the chain from wall thermostat through call
-  wire and relay pair to an actuator, serving one zone. A zone may be
+  wire and relay pair to an emitter, serving one zone. A zone may be
   served by more than one circuit.
 
 properties:
@@ -19,11 +19,8 @@ properties:
     description: >
       Name of the hvac zone this circuit serves.
 
-  ActuatorKind:
-    $ref: "https://schemas.electricity.works/enums/zone.actuator.kind/000"
-
-  Role:
-    $ref: "https://schemas.electricity.works/enums/zone.circuit.role/000"
+  EmitterType:
+    $ref: "https://schemas.electricity.works/enums/zone.emitter.type/000"
 
   CanCool:
     type: boolean
@@ -40,6 +37,11 @@ properties:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
       Name of the channel sensing the thermostat call wire.
+
+  FloorTempChannelName:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Name of the channel sensing the circuit's floor temperature.
 
   FailsafeRelayNode:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
@@ -60,8 +62,7 @@ properties:
 required:
   - CircuitPosition
   - ServesZone
-  - ActuatorKind
-  - Role
+  - EmitterType
   - CanCool
   - SetpointSource
   - Thermostat
@@ -77,9 +78,9 @@ x-gridworks:
   owner: "gridworks-energy"
   axioms:
     - number: 1
-      name: "FloorLoopsCannotCool"
+      name: "OnlyFanCoilsCool"
       statement: >
-        If ActuatorKind is FloorLoop, CanCool SHALL be false.
+        If EmitterType is not FanCoil, CanCool SHALL be false.
     - number: 2
       name: "ReadSetpointNeedsCommsStat"
       statement: >

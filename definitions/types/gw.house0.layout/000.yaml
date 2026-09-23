@@ -93,6 +93,24 @@ properties:
   Hydronic:
     $ref: "https://schemas.electricity.works/types/gw.hydronic/000"
 
+  DisabledNodeNames:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Names of sensing nodes this word requires and the layout declares
+      whose readings are currently unavailable, pending a field visit.
+      Empty when every required node is available.
+
+  DisabledChannelNames:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Names of channels this word requires and the layout declares whose
+      readings are currently unavailable, pending a field visit. Empty
+      when every required channel is available.
+
   TypeName:
     const: "gw.house0.layout"
 
@@ -107,6 +125,8 @@ required:
   - Components
   - DeviceTypes
   - Hydronic
+  - DisabledNodeNames
+  - DisabledChannelNames
   - TypeName
   - Version
 
@@ -179,18 +199,31 @@ x-gridworks:
       name: "RequiredSensing"
       statement: >
         For each of the names
-          "dist-flow"
+          "hp-odu-pwr",
+          "hp-idu-pwr",
+          "primary-pump-pwr",
+          "store-pump-pwr",
+          "dist-pump-pwr",
+          "hp-lwt",
+          "hp-ewt",
+          "dist-swt",
+          "dist-rwt",
+          "store-hot-pipe",
+          "store-cold-pipe",
+          "buffer-hot-pipe",
+          "dist-flow",
           and "store-flow":
         a channel with that Name SHALL exist
         in DataChannels or in DerivedChannels. (Kind-agnostic by design — a name may migrate from
-        raw DataChannel to same-name DerivedChannel without touching this contract. This list
-        grows with the fixture surface.)
+        raw DataChannel to same-name DerivedChannel without touching this contract.)
     - number: 8
       name: "SiegManifoldChannels"
       statement: >
         For each of the names
           "sieg-cold",
+          "sieg-hot",
           "sieg-flow",
+          "sieg-send-flow",
           "hp-loop-on-off-relay",
           and "hp-loop-keep-send-relay":
         a channel with that Name SHALL exist in DataChannels or in
@@ -199,11 +232,10 @@ x-gridworks:
     - number: 9
       name: "SystemModelEnergyChannels"
       statement: >
-        DerivedChannels SHALL include channels named "usable-energy" and "required-energy". Each
-        SHALL have CreatedByNodeName "derived-generator" and Strategy "system-model", and SHALL
-        carry Parameters.EnergyModel.TypeName. Across the two channels those TypeNames SHALL be
-        exactly gw0.usable.energy.layered and gw0.required.energy.layered — one of each, so the
-        layout states which model produces each figure.
+        DerivedChannels SHALL include channels named "usable-energy" and "required-energy", each
+        with CreatedByNodeName "derived-generator" and Strategy "system-model".
+        Parameters.EnergyModel.TypeName SHALL be gw0.usable.energy.layered on "usable-energy" and
+        gw0.required.energy.layered on "required-energy".
     - number: 10
       name: "RequiredActuators"
       statement: >
@@ -287,10 +319,9 @@ x-gridworks:
     - number: 17
       name: "BufferTank"
       statement: >
-        A House0 home has a buffer tank. ShNodes SHALL include a node named "buffer", and for
-        each depth i in 1..3 a channel named "buffer-depth{i}" SHALL exist in DataChannels or in
-        DerivedChannels. (The family invariant lives here, in the word; scada code asks the
-        layout and assumes nothing.)
+        A House0 home has a buffer tank. For each depth i in 1..3 a channel named
+        "buffer-depth{i}" SHALL exist in DataChannels or in DerivedChannels. (The family
+        invariant lives here, in the word; scada code asks the layout and assumes nothing.)
     - number: 18
       name: "ZoneTempChannelResolution"
       statement: >
@@ -331,3 +362,37 @@ x-gridworks:
       statement: >
         The Names of the channels in DataChannels and DerivedChannels, taken together, SHALL be
         pairwise distinct.
+    - number: 24
+      name: "StoreTankTemps"
+      statement: >
+        For each tank index N in 1..Hydronic.TotalStoreTanks and each depth i in 1..3, a channel
+        named "tank{N}-depth{i}" SHALL exist in DataChannels or in DerivedChannels.
+    - number: 25
+      name: "WebServerNode"
+      statement: >
+        ShNodes SHALL contain exactly one node named "web-server", with ActorClass "NoActor".
+    - number: 26
+      name: "FloorLoopCircuitTemp"
+      statement: >
+        a. Every circuit in Hydronic.ZoneCallCircuits whose EmitterType is "RadiantSlab" or
+        "StoreUnderFloor" SHALL carry FloorTempChannelName.
+        b. Where a circuit carries FloorTempChannelName, it SHALL equal the Name of a channel in
+        DataChannels or in DerivedChannels, and that channel SHALL carry temperature: a
+        DataChannel's Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.
+    - number: 27
+      name: "DisabledNamesResolve"
+      statement: >
+        Every name in DisabledNodeNames SHALL equal the Name of an ShNode in ShNodes, and every
+        name in DisabledChannelNames SHALL equal the Name of a channel in DataChannels or in
+        DerivedChannels.
+    - number: 28
+      name: "DisabledNodesAreSensors"
+      statement: >
+        Every name in DisabledNodeNames SHALL be the CapturedByNodeName of at least one
+        DataChannel, and every DataChannel whose CapturedByNodeName is in DisabledNodeNames SHALL
+        have its Name in DisabledChannelNames.
+    - number: 29
+      name: "EnabledDerivedChannelsHaveLiveInputs"
+      statement: >
+        Every DerivedChannel whose Name is not in DisabledChannelNames SHALL have no name in its
+        InputChannelNames that is in DisabledChannelNames.
