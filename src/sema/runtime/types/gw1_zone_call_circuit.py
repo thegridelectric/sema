@@ -29,7 +29,9 @@ class Gw1ZoneCallCircuit(SemaType):
         """
         Axiom 1: OnlyFanCoilsCool If EmitterType is not FanCoil, CanCool SHALL be false.
         """
-        if self.emitter_type != GwZoneEmitterType.FanCoil and self.can_cool:
+        # String comparison: the enum class name differs under a snapshot's
+        # local names.
+        if str(self.emitter_type) != "FanCoil" and self.can_cool:
             raise ValueError(
                 f"Axiom 1 (OnlyFanCoilsCool) failed: EmitterType is "
                 f"{self.emitter_type}, so CanCool SHALL be false."
