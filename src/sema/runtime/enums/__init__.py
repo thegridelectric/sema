@@ -51,6 +51,7 @@ from sema.runtime.enums.gw_platform_alert_kind import GwPlatformAlertKind
 from sema.runtime.enums.gw_primary_flow_source import GwPrimaryFlowSource
 from sema.runtime.enums.gw_scada_cmd_refusal_reason import GwScadaCmdRefusalReason
 from sema.runtime.enums.gw_weather_forecast_fidelity import GwWeatherForecastFidelity
+from sema.runtime.enums.gw_zone_emitter_type import GwZoneEmitterType
 from sema.runtime.enums.heatcall_source import HeatcallSource
 from sema.runtime.enums.hp_boss_state import HpBossState
 from sema.runtime.enums.hz_calc_method import HzCalcMethod
@@ -91,7 +92,6 @@ from sema.runtime.enums.zone_call_circuit_state import ZoneCallCircuitState
 from sema.runtime.enums.zone_call_source import ZoneCallSource
 from sema.runtime.enums.zone_circuit_governance_event import ZoneCircuitGovernanceEvent
 from sema.runtime.enums.zone_circuit_governance_state import ZoneCircuitGovernanceState
-from sema.runtime.enums.zone_emitter_type import ZoneEmitterType
 from sema.runtime.enums.zone_setpoint_source import ZoneSetpointSource
 
 __all__ = [
@@ -140,6 +140,7 @@ __all__ = [
     "GwPrimaryFlowSource",
     "GwScadaCmdRefusalReason",
     "GwWeatherForecastFidelity",
+    "GwZoneEmitterType",
     "HeatcallSource",
     "HpBossState",
     "HzCalcMethod",
@@ -180,6 +181,5 @@ __all__ = [
     "ZoneCallSource",
     "ZoneCircuitGovernanceEvent",
     "ZoneCircuitGovernanceState",
-    "ZoneEmitterType",
     "ZoneSetpointSource",
 ]

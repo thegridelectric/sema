@@ -973,9 +973,9 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
-      "Name": "buffer-hot-pipe",
+      "Name": "buffer-cold-pipe",
       "ActorClass": "NoActor",
-      "DisplayName": "Buffer Hot Pipe",
+      "DisplayName": "Buffer Cold Pipe",
       "ShNodeId": "21a51f71-116f-423f-a671-bf61b8144480"
     },
     {
@@ -2069,9 +2069,9 @@
     {
       "TypeName": "data.channel.gt",
       "Version": "003",
-      "Name": "buffer-hot-pipe",
-      "DisplayName": "Buffer Hot Pipe Celsius X 100",
-      "AboutNodeName": "buffer-hot-pipe",
+      "Name": "buffer-cold-pipe",
+      "DisplayName": "Buffer Cold Pipe Celsius X 100",
+      "AboutNodeName": "buffer-cold-pipe",
       "CapturedByNodeName": "store-btu",
       "TelemetryName": "CelsiusTimes100",
       "Quantity": "Temperature",

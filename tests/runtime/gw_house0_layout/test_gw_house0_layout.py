@@ -170,19 +170,6 @@ def test_axiom_26_a_slab_circuit_without_a_floor_channel(
     reject(vanilla, mutate, "Axiom 26")
 
 
-def test_axiom_26_a_store_under_floor_circuit_without_a_floor_channel(
-    vanilla: dict[str, Any],
-) -> None:
-    """A StoreUnderFloor circuit carries the same obligation."""
-
-    def mutate(d: dict[str, Any]) -> None:
-        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
-        circuit["EmitterType"] = "StoreUnderFloor"
-        circuit.pop("FloorTempChannelName", None)
-
-    reject(vanilla, mutate, "Axiom 26")
-
-
 def test_axiom_26_b_floor_channel_does_not_resolve(vanilla: dict[str, Any]) -> None:
     """A FloorTempChannelName naming no channel fails."""
 

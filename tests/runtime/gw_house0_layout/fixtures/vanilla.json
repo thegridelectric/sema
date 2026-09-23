@@ -3565,7 +3565,7 @@
         "WhitewireChannelName": "zone1-living-rm-whitewire-pwr",
         "FailsafeRelayNode": "zone1-living-rm-failsafe-relay",
         "OpsRelayNode": "zone1-living-rm-ops-relay",
-        "EmitterType": "FinTube"
+        "EmitterType": "Other"
       },
       {
         "TypeName": "gw1.zone.call.circuit",
@@ -3583,7 +3583,7 @@
         "WhitewireChannelName": "zone2-bedroom-whitewire-pwr",
         "FailsafeRelayNode": "zone2-bedroom-failsafe-relay",
         "OpsRelayNode": "zone2-bedroom-ops-relay",
-        "EmitterType": "FinTube"
+        "EmitterType": "Other"
       }
     ],
     "TotalStoreTanks": 3,

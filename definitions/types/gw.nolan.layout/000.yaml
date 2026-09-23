@@ -239,7 +239,7 @@ x-gridworks:
           "store-cold-pipe",
           "secondary-lwt",
           "secondary-ewt",
-          "buffer-hot-pipe",
+          "buffer-cold-pipe",
           "fancoil-swt",
           "fancoil-rwt",
           "floor-swt",
@@ -370,8 +370,8 @@ x-gridworks:
     - number: 24
       name: "FloorLoopCircuitTemp"
       statement: >
-        a. Every circuit in Hydronic.ZoneCallCircuits whose EmitterType is "RadiantSlab" or
-        "StoreUnderFloor" SHALL carry FloorTempChannelName.
+        a. Every circuit in Hydronic.ZoneCallCircuits whose EmitterType is "RadiantSlab" SHALL
+        carry FloorTempChannelName.
         b. Where a circuit carries FloorTempChannelName, it SHALL equal the Name of a channel in
         DataChannels or in DerivedChannels, and that channel SHALL carry temperature: a
         DataChannel's Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.

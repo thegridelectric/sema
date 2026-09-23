@@ -1443,11 +1443,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/zone.circuit.governance.state/000.yaml
-  zone.emitter.type:
+  gw.zone.emitter.type:
     enum_type: versioned
     latest_version: '000'
     versions:
-      '000': definitions/enums/zone.emitter.type/000.yaml
+      '000': definitions/enums/gw.zone.emitter.type/000.yaml
   zone.setpoint.source:
     enum_type: versioned
     latest_version: '000'

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-23T15:05:00Z'
+  last_updated: '2026-09-23T22:25:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -1114,15 +1114,16 @@ enums:
         schema_url: https://schemas.electricity.works/enums/zone.circuit.governance.state/000
         created: '2026-08-11T15:55:00Z'
         status: staging
-  zone.emitter.type:
+  gw.zone.emitter.type:
     latest_version: '000'
     owner: gridworks-energy
     enum_type: versioned
-    description: Type of emitter a zone-call circuit drives.
+    description: 'The emitter a zone-call circuit drives, as far as GridWorks needs
+      to know: FanCoil (can cool), RadiantSlab (needs a floor temperature), else Other.'
     versions:
       '000':
-        schema_url: https://schemas.electricity.works/enums/zone.emitter.type/000
-        created: '2026-09-23T15:05:00Z'
+        schema_url: https://schemas.electricity.works/enums/gw.zone.emitter.type/000
+        created: '2026-09-23T22:25:00Z'
         status: staging
   zone.setpoint.source:
     latest_version: '000'
@@ -2732,7 +2733,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-09-23T15:05:00Z'
+        created: '2026-09-23T22:25:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -2793,11 +2794,11 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
+          - gw.zone.emitter.type:000
           - gw0.required.energy.layered:000
           - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
-          - zone.emitter.type:000
   gw.hydronic:
     latest_version: '000'
     owner: gridworks-energy
@@ -2807,7 +2808,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-09-23T15:05:00Z'
+        created: '2026-09-23T22:25:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -2868,7 +2869,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-09-23T15:05:00Z'
+        created: '2026-09-23T22:25:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType
@@ -2924,11 +2925,11 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
+          - gw.zone.emitter.type:000
           - gw0.required.energy.layered:000
           - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
-          - zone.emitter.type:000
   gw.operational.params:
     latest_version: '000'
     owner: gridworks-energy
@@ -3374,7 +3375,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw1.zone.call.circuit/000
-        created: '2026-09-23T15:05:00Z'
+        created: '2026-09-23T22:25:00Z'
         status: staging
         summary: Circuit record (CircuitPosition, ServesZone, EmitterType, CanCool,
           SetpointSource, Thermostat, WhitewireChannelName, optional FloorTempChannelName,
@@ -3382,10 +3383,10 @@ types:
           axioms.
         direct_dependencies:
           structural:
+          - gw.zone.emitter.type:000
           - gw1.zone.thermostat:000
           - positive.int
           - spaceheat.name
-          - zone.emitter.type:000
           - zone.setpoint.source:000
           axiom:
           - thermostat.kind:000

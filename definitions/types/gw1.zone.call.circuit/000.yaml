@@ -20,7 +20,7 @@ properties:
       Name of the hvac zone this circuit serves.
 
   EmitterType:
-    $ref: "https://schemas.electricity.works/enums/zone.emitter.type/000"
+    $ref: "https://schemas.electricity.works/enums/gw.zone.emitter.type/000"
 
   CanCool:
     type: boolean

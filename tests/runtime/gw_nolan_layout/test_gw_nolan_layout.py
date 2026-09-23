@@ -88,7 +88,7 @@ def test_axiom_5_vdc_relay_is_required(vanilla: dict[str, Any]) -> None:
         "store-cold-pipe",
         "secondary-lwt",
         "secondary-ewt",
-        "buffer-hot-pipe",
+        "buffer-cold-pipe",
         "fancoil-swt",
         "fancoil-rwt",
         "floor-swt",
@@ -207,20 +207,6 @@ def test_axiom_24_a_slab_circuit_without_a_floor_channel(
 
     def mutate(d: dict[str, Any]) -> None:
         d["Hydronic"]["ZoneCallCircuits"][0].pop("FloorTempChannelName", None)
-
-    reject(vanilla, mutate, "Axiom 24")
-
-
-def test_axiom_24_a_store_under_floor_circuit_without_a_floor_channel(
-    vanilla: dict[str, Any],
-) -> None:
-    """A StoreUnderFloor circuit carries the same obligation."""
-
-    def mutate(d: dict[str, Any]) -> None:
-        circuit = d["Hydronic"]["ZoneCallCircuits"][2]
-        circuit["EmitterType"] = "StoreUnderFloor"
-        circuit["CanCool"] = False
-        circuit.pop("FloorTempChannelName", None)
 
     reject(vanilla, mutate, "Axiom 24")
 

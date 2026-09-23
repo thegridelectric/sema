@@ -920,6 +920,7 @@ types:
       - gpio.sense.mode:000
       - gpm.from.hz.method:000
       - gw.primary.flow.source:000
+      - gw.zone.emitter.type:000
       - gw1.actor.class:014
       - gw1.emission.method:000
       - gw1.quantity:000
@@ -940,7 +941,6 @@ types:
       - temp.calc.method:000
       - thermistor.data.method:000
       - thermostat.kind:000
-      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - firmware.commit
@@ -1013,8 +1013,8 @@ types:
     '000':
       enums:
       - gw.primary.flow.source:000
+      - gw.zone.emitter.type:000
       - thermostat.kind:000
-      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - non.negative.int
@@ -1050,6 +1050,7 @@ types:
       - gpio.sense.mode:000
       - gpm.from.hz.method:000
       - gw.primary.flow.source:000
+      - gw.zone.emitter.type:000
       - gw1.actor.class:014
       - gw1.emission.method:000
       - gw1.quantity:000
@@ -1068,7 +1069,6 @@ types:
       - spaceheat.telemetry.name:007
       - temp.calc.method:000
       - thermostat.kind:000
-      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - firmware.commit
@@ -1387,8 +1387,8 @@ types:
   gw1.zone.call.circuit:
     '000':
       enums:
+      - gw.zone.emitter.type:000
       - thermostat.kind:000
-      - zone.emitter.type:000
       - zone.setpoint.source:000
       formats:
       - positive.int

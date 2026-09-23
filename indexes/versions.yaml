@@ -2196,7 +2196,7 @@ enums:
     versions:
       "000": {}
 
-  zone.emitter.type:
+  gw.zone.emitter.type:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

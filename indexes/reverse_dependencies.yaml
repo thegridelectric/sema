@@ -733,6 +733,12 @@ enums:
     '000':
       used_by:
       - gw.weather.forecast:000
+  gw.zone.emitter.type:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
+      - gw1.zone.call.circuit:000
   gw1.actor.class:
     009:
       used_by:
@@ -1010,12 +1016,6 @@ enums:
     '000':
       used_by:
       - zone.circuit.governance.cmd:000
-  zone.emitter.type:
-    '000':
-      used_by:
-      - gw.house0.layout:000
-      - gw.nolan.layout:000
-      - gw1.zone.call.circuit:000
   zone.setpoint.source:
     '000':
       used_by:

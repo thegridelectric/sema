@@ -52,13 +52,7 @@ def test_vanilla_circuit_is_a_gw1_zone_call_circuit(vanilla: dict[str, Any]) -> 
 
 @pytest.mark.parametrize(
     "emitter_type",
-    [
-        "FinTube",
-        "CastIronBaseboard",
-        "CastIronRadiator",
-        "RadiantSlab",
-        "StoreUnderFloor",
-    ],
+    ["Other", "RadiantSlab"],
 )
 def test_axiom_1_only_fan_coils_cool(
     vanilla: dict[str, Any], emitter_type: str

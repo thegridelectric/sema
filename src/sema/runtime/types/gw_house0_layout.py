@@ -958,7 +958,7 @@ class GwHouse0Layout(SemaType):
     def check_axiom_26(self) -> Self:
         """
         Axiom 26: FloorLoopCircuitTemp a. Every circuit in Hydronic.ZoneCallCircuits
-        whose EmitterType is "RadiantSlab" or "StoreUnderFloor" SHALL carry
+        whose EmitterType is "RadiantSlab" SHALL carry
         FloorTempChannelName. b. Where a circuit carries FloorTempChannelName, it SHALL
         equal the Name of a channel in DataChannels or in DerivedChannels, and that
         channel SHALL carry temperature: a DataChannel's Quantity, or a DerivedChannel's
@@ -976,7 +976,7 @@ class GwHouse0Layout(SemaType):
         for circuit in self.hydronic.zone_call_circuits or []:
             floor_channel = circuit.floor_temp_channel_name
             if floor_channel is None:
-                if str(circuit.emitter_type) in ("RadiantSlab", "StoreUnderFloor"):
+                if str(circuit.emitter_type) == "RadiantSlab":
                     raise ValueError(
                         f"Axiom 26 (FloorLoopCircuitTemp) failed: circuit at position "
                         f"{circuit.circuit_position} has EmitterType "

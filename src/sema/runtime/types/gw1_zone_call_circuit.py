@@ -1,7 +1,7 @@
 from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums import ZoneEmitterType
+from sema.runtime.enums import GwZoneEmitterType
 from sema.runtime.enums import ZoneSetpointSource
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
@@ -13,7 +13,7 @@ class Gw1ZoneCallCircuit(SemaType):
 
     circuit_position: PositiveInt
     serves_zone: SpaceheatName
-    emitter_type: ZoneEmitterType
+    emitter_type: GwZoneEmitterType
     can_cool: bool
     setpoint_source: ZoneSetpointSource
     thermostat: Gw1ZoneThermostat
@@ -29,7 +29,7 @@ class Gw1ZoneCallCircuit(SemaType):
         """
         Axiom 1: OnlyFanCoilsCool If EmitterType is not FanCoil, CanCool SHALL be false.
         """
-        if self.emitter_type != ZoneEmitterType.FanCoil and self.can_cool:
+        if self.emitter_type != GwZoneEmitterType.FanCoil and self.can_cool:
             raise ValueError(
                 f"Axiom 1 (OnlyFanCoilsCool) failed: EmitterType is "
                 f"{self.emitter_type}, so CanCool SHALL be false."

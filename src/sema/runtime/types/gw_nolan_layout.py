@@ -409,7 +409,7 @@ class GwNolanLayout(SemaType):
         """
         Axiom 8: RequiredSensing For each of the names "hp-lwt", "hp-ewt", "dist-swt",
         "dist-rwt", "store-hot-pipe", "store-cold-pipe", "secondary-lwt",
-        "secondary-ewt", "buffer-hot-pipe", "fancoil-swt", "fancoil-rwt", "floor-swt",
+        "secondary-ewt", "buffer-cold-pipe", "fancoil-swt", "fancoil-rwt", "floor-swt",
         "floor-rwt", "dist-flow", "primary-flow", "store-flow", "secondary-flow",
         "hp-odu-pwr", "hp-ctrl-box-pwr", "primary-pump-pwr", "store-pump-pwr",
         "dist-pump-pwr", "secondary-pump-pwr", "buffer-top-elt-pwr",
@@ -432,7 +432,7 @@ class GwNolanLayout(SemaType):
                 "store-cold-pipe",
                 "secondary-lwt",
                 "secondary-ewt",
-                "buffer-hot-pipe",
+                "buffer-cold-pipe",
                 "fancoil-swt",
                 "fancoil-rwt",
                 "floor-swt",
@@ -906,7 +906,7 @@ class GwNolanLayout(SemaType):
     def check_axiom_24(self) -> "GwNolanLayout":
         """
         Axiom 24: FloorLoopCircuitTemp a. Every circuit in Hydronic.ZoneCallCircuits
-        whose EmitterType is "RadiantSlab" or "StoreUnderFloor" SHALL carry
+        whose EmitterType is "RadiantSlab" SHALL carry
         FloorTempChannelName. b. Where a circuit carries FloorTempChannelName, it SHALL
         equal the Name of a channel in DataChannels or in DerivedChannels, and that
         channel SHALL carry temperature: a DataChannel's Quantity, or a DerivedChannel's
@@ -924,7 +924,7 @@ class GwNolanLayout(SemaType):
         for circuit in self.hydronic.zone_call_circuits or []:
             floor_channel = circuit.floor_temp_channel_name
             if floor_channel is None:
-                if str(circuit.emitter_type) in ("RadiantSlab", "StoreUnderFloor"):
+                if str(circuit.emitter_type) == "RadiantSlab":
                     raise ValueError(
                         f"Axiom 24 (FloorLoopCircuitTemp) failed: circuit at position "
                         f"{circuit.circuit_position} has EmitterType "
