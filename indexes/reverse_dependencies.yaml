@@ -911,6 +911,7 @@ enums:
       - async.btu.params:100
       - async.btu.params:110
       - flow.hall.params:200
+      - flow.hall.params:210
       - pico.btu.meter.component.gt:000
       - pico.flow.module.component.gt:001
       - pico.tank.module.component.gt:012
@@ -1024,7 +1025,7 @@ formats:
   firmware.commit:
     used_by:
     - async.btu.params:110
-    - flow.hall.params:200
+    - flow.hall.params:210
     - pico.btu.meter.component.gt:000
     - pico.flow.module.component.gt:001
     - pico.tank.module.component.gt:012
@@ -1313,6 +1314,7 @@ formats:
     - flo.params.house0:007
     - flow.hall.params:101
     - flow.hall.params:200
+    - flow.hall.params:210
     - flow.reed.params:101
     - gw.adc.waveform:000
     - gw.channel.gap.stats:000
@@ -1406,6 +1408,7 @@ formats:
     - electric.meter.channel.config:000
     - flow.hall.params:101
     - flow.hall.params:200
+    - flow.hall.params:210
     - flow.reed.params:101
     - fsm.full.report:000
     - fsm.full.report:001

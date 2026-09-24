@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flow_hall_params_210_class_name }}:
+        """
+        - FirmwareCommit: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ flow_hall_params_200_class_name }} cannot be upgraded to "
+            "{{ flow_hall_params_210_class_name }} without context: v210 adds "
+            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "NOT be fabricated."
+        )

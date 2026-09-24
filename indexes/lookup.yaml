@@ -183,9 +183,10 @@ types:
       '001': definitions/types/flo.params.house0/001.yaml
       '000': definitions/types/flo.params.house0/000.yaml
   flow.hall.params:
-    latest_version: '200'
+    latest_version: '210'
     versioning_strategy: literal
     versions:
+      '210': definitions/types/flow.hall.params/210.yaml
       '200': definitions/types/flow.hall.params/200.yaml
       '101': definitions/types/flow.hall.params/101.yaml
   flow.reed.params:

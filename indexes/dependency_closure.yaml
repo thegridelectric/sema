@@ -459,6 +459,14 @@ types:
       enums:
       - pico.board.variant:000
       formats:
+      - positive.int
+      - spaceheat.name
+      types: []
+      versionless_types: []
+    '210':
+      enums:
+      - pico.board.variant:000
+      formats:
       - firmware.commit
       - positive.int
       - spaceheat.name

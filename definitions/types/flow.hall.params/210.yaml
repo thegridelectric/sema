@@ -1,5 +1,5 @@
 $schema: "https://json-schema.org/draft/2020-12/schema"
-$id: "https://schemas.electricity.works/types/flow.hall.params/200"
+$id: "https://schemas.electricity.works/types/flow.hall.params/210"
 
 title: "flow.hall.params"
 type: object
@@ -47,11 +47,17 @@ properties:
       The MicroPython release the firmware is running on, read live from
       the interpreter at each post.
 
+  FirmwareCommit:
+    $ref: "https://schemas.electricity.works/formats/firmware.commit"
+    description: >
+      The gridworks-pico commit the firmware was generated from, stamped
+      into the code by the provisioner generator.
+
   TypeName:
     const: "flow.hall.params"
 
   Version:
-    const: "200"
+    const: "210"
 
 required:
   - HwUid
@@ -61,6 +67,7 @@ required:
   - PublishEmptyTicklistAfterS
   - PicoBoardVariant
   - MicropythonVersion
+  - FirmwareCommit
   - TypeName
   - Version
 
@@ -76,8 +83,9 @@ examples:
       "PublishEmptyTicklistAfterS": 60,
       "PicoBoardVariant": "PicoRaspberryWifi2040",
       "MicropythonVersion": "1.24.1",
+      "FirmwareCommit": "9f4c1d2e7a8b0c3d5e6f70819a2b3c4d5e6f7081",
       "TypeName": "flow.hall.params",
-      "Version": "200"
+      "Version": "210"
     }
 
 x-gridworks:

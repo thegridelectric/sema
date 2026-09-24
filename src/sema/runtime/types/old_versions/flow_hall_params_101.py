@@ -2,7 +2,7 @@ from typing import Literal
 from sema.runtime.base import SemaType
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
-from sema.runtime.types.flow_hall_params import FlowHallParams
+from sema.runtime.types.old_versions.flow_hall_params_200 import FlowHallParams200
 
 
 class FlowHallParams101(SemaType):
@@ -16,15 +16,14 @@ class FlowHallParams101(SemaType):
     type_name: Literal["flow.hall.params"] = "flow.hall.params"
     version: Literal["101"] = "101"
 
-    def upgrade(self) -> FlowHallParams:
+    def upgrade(self) -> FlowHallParams200:
         """
         - PicoBoardVariant: add
         - MicropythonVersion: add
-        - FirmwareCommit: add
         """
         raise SemaType.upgrade_requires_context(
             "FlowHallParams101 cannot be upgraded to "
-            "FlowHallParams without context: v200 adds "
-            "PicoBoardVariant, MicropythonVersion and FirmwareCommit, which "
-            "only the posting pico knows, and they SHALL NOT be fabricated."
+            "FlowHallParams200 without context: v200 adds "
+            "PicoBoardVariant and MicropythonVersion, which only the posting "
+            "pico knows, and they SHALL NOT be fabricated."
         )

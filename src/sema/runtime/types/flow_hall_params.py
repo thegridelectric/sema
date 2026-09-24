@@ -7,7 +7,7 @@ from sema.runtime.property_format import SpaceheatName
 
 
 class FlowHallParams(SemaType):
-    """Sema: https://schemas.electricity.works/types/flow.hall.params/200"""
+    """Sema: https://schemas.electricity.works/types/flow.hall.params/210"""
 
     hw_uid: str
     actor_node_name: SpaceheatName
@@ -18,4 +18,4 @@ class FlowHallParams(SemaType):
     micropython_version: str
     firmware_commit: FirmwareCommit
     type_name: Literal["flow.hall.params"] = "flow.hall.params"
-    version: Literal["200"] = "200"
+    version: Literal["210"] = "210"

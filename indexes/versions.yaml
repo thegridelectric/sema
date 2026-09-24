@@ -297,14 +297,15 @@ types:
         summary: "Earliest wire shape (single shape, seen 2025-01-04 to 2025-01-06), back-filled from S3 evidence. As v001 but without CopMin, CopMinOatF, HpIsOff, HpTurnOnMinutes and the v001-era optional fields (BufferAvailableKwh, HouseAvailableKwh, InitialBottomTempF, DischargingDdDeltaTF)."
 
   flow.hall.params:
-    latest_version: "200"
+    latest_version: "210"
     versioning_strategy: "literal"
     versions:
+      "210":
+        summary: "- FirmwareCommit: add"
       "200":
         summary: >
           - PicoBoardVariant: add
           - MicropythonVersion: add
-          - FirmwareCommit: add
       "101":
         summary: "Initial Sema version (registered from the shipped gwsproto FlowHallParams wire shape, version 101)."
 

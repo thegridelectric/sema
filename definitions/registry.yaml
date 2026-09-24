@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-09-23T22:25:00Z"
+  last_updated: "2026-09-24T17:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -2064,23 +2064,33 @@ types:
             - "uuid4.str"
 
   flow.hall.params:
-    latest_version: "200"
+    latest_version: "210"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "The params handshake between a hall-effect flow pico and its scada: the pico posts its parameters at boot and the scada answers with the values to run with."
 
     versions:
-      "200":
-        schema_url: "https://schemas.electricity.works/types/flow.hall.params/200"
-        created: "2026-09-21T19:50:00Z"
+      "210":
+        schema_url: "https://schemas.electricity.works/types/flow.hall.params/210"
+        created: "2026-09-24T17:00:00Z"
         status: "staging"
         summary: >-
-          - PicoBoardVariant: add
-          - MicropythonVersion: add
           - FirmwareCommit: add
         direct_dependencies:
           structural:
             - "firmware.commit"
+            - "pico.board.variant:000"
+            - "positive.int"
+            - "spaceheat.name"
+      "200":
+        schema_url: "https://schemas.electricity.works/types/flow.hall.params/200"
+        created: "2026-09-21T19:50:00Z"
+        status: "published"
+        summary: >-
+          - PicoBoardVariant: add
+          - MicropythonVersion: add
+        direct_dependencies:
+          structural:
             - "pico.board.variant:000"
             - "positive.int"
             - "spaceheat.name"
