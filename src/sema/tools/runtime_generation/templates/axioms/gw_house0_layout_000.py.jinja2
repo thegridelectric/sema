@@ -334,14 +334,13 @@
         Axiom 10: RequiredActuators a. ShNodes SHALL include nodes named "vdc-relay",
         "tstat-common-relay", "charge-discharge-relay", "hp-failsafe-relay",
         "hp-scada-ops-relay", "aquastat-ctrl-relay", "store-pump-relay",
-        "primary-pump-failsafe-relay", "primary-pump-scada-ops-relay",
         "hp-loop-on-off-relay", and "hp-loop-keep-send-relay", each with ActorClass
-        "Relay", and nodes named "dist-010v", "primary-010v", and "store-010v", each
-        with ActorClass "ZeroTenOutputer". b. Hydronic.ZoneCallCircuits SHALL be
-        non-empty, and each circuit's FailsafeRelayNode and OpsRelayNode SHALL name a
-        ShNode in ShNodes with ActorClass "Relay". c. Each of "dist-010v",
-        "primary-010v" and "store-010v" SHALL have a ComponentId equal to the
-        ComponentId of an i2c.dac.output.component.gt in Components.
+        "Relay", and nodes named "dist-010v" and "store-010v", each with ActorClass
+        "ZeroTenOutputer". b. Hydronic.ZoneCallCircuits SHALL be non-empty, and each
+        circuit's FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in ShNodes with
+        ActorClass "Relay". c. Each of "dist-010v" and "store-010v" SHALL have a
+        ComponentId equal to the ComponentId of an i2c.dac.output.component.gt in
+        Components.
         """
         actor_class_by_name = {n.name: str(n.actor_class) for n in (self.sh_nodes or [])}
 
@@ -365,13 +364,11 @@
             "hp-scada-ops-relay",
             "aquastat-ctrl-relay",
             "store-pump-relay",
-            "primary-pump-failsafe-relay",
-            "primary-pump-scada-ops-relay",
             "hp-loop-on-off-relay",
             "hp-loop-keep-send-relay",
         ):
             class_or_raise(required, "Relay", "plant relay")
-        for required in ("dist-010v", "primary-010v", "store-010v"):
+        for required in ("dist-010v", "store-010v"):
             class_or_raise(required, "ZeroTenOutputer", "0-10V output")
         circuits = self.hydronic.zone_call_circuits or []
         if not circuits:
@@ -387,7 +384,7 @@
             if isinstance(c, I2cDacOutputComponentGt)
         }
         component_id_by_name = {n.name: n.component_id for n in self.sh_nodes or []}
-        for output in ("dist-010v", "primary-010v", "store-010v"):
+        for output in ("dist-010v", "store-010v"):
             if component_id_by_name.get(output) not in dac_output_ids:
                 raise ValueError(
                     f"Axiom 10 (RequiredActuators) failed: {output} ComponentId "
@@ -400,11 +397,10 @@
     def check_axiom_11(self) -> Self:
         """
         Axiom 11: RequiredHeatpumpEquipment ShNodes SHALL include nodes named "hp-odu"
-        and "hp-idu" (a House0 home is a split system: the indoor unit does the
-        refrigerant-to-water exchange), each with a ComponentId equal to the ComponentId
-        of a Component in Components, and each with ActorClass "NoActor" unless it is
-        the node Hydronic.HpCommandNodeName names, whose ActorClass CommandableHeatPump
-        governs.
+        and "hp-idu" (the indoor unit exchanges refrigerant heat with the water), each
+        with a ComponentId equal to the ComponentId of a Component in Components, and
+        each with ActorClass "NoActor" unless it is the node Hydronic.HpCommandNodeName
+        names, whose ActorClass CommandableHeatPump governs.
         """
         component_ids = {c.component_id for c in (self.components or [])}
         nodes = {n.name: n for n in (self.sh_nodes or [])}
@@ -974,14 +970,12 @@
             "hp-scada-ops-relay",
             "aquastat-ctrl-relay",
             "store-pump-relay",
-            "primary-pump-failsafe-relay",
-            "primary-pump-scada-ops-relay",
             "hp-loop-on-off-relay",
             "hp-loop-keep-send-relay",
         ]
         for circuit in self.hydronic.zone_call_circuits or []:
             relays.extend((circuit.failsafe_relay_node, circuit.ops_relay_node))
-        outputs = ["dist-010v", "primary-010v", "store-010v"]
+        outputs = ["dist-010v", "store-010v"]
         channel_by_name = {c.name: c for c in (self.data_channels or [])}
         for name, telemetry in [(r, "RelayState") for r in relays] + [
             (o, "VoltsTimesTen") for o in outputs
@@ -1002,5 +996,94 @@
                 raise ValueError(
                     f"Axiom 30 (ActuatorChannels) failed: channel '{name}' has "
                     f"TelemetryName {channel.telemetry_name}, not {telemetry}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_31(self) -> Self:
+        """
+        Axiom 31: PrimaryPumpActuators If Hydronic.PrimaryPumpOwner is "Scada",
+        ShNodes SHALL include "primary-pump-failsafe-relay" and
+        "primary-pump-scada-ops-relay" with ActorClass "Relay" and "primary-010v" with
+        ActorClass "ZeroTenOutputer" and a ComponentId resolving to an
+        i2c.dac.output.component.gt in Components, and each of the three SHALL have a
+        DataChannel of its own Name in the ActuatorChannels shape. If it is "HeatPump",
+        no ShNode and no DataChannel SHALL carry any of those three Names.
+        """
+        wanted = {
+            "primary-pump-failsafe-relay": ("Relay", "RelayState"),
+            "primary-pump-scada-ops-relay": ("Relay", "RelayState"),
+            "primary-010v": ("ZeroTenOutputer", "VoltsTimesTen"),
+        }
+        nodes = {n.name: n for n in (self.sh_nodes or [])}
+        channels = {c.name: c for c in (self.data_channels or [])}
+        if str(self.hydronic.primary_pump_owner) == "HeatPump":
+            present = sorted(
+                name for name in wanted if name in nodes or name in channels
+            )
+            if present:
+                raise ValueError(
+                    "Axiom 31 (PrimaryPumpActuators) failed: PrimaryPumpOwner is "
+                    f"HeatPump but {present} exist as ShNodes or DataChannels."
+                )
+            return self
+        dac_output_ids = {
+            c.component_id
+            for c in (self.components or [])
+            if isinstance(c, I2cDacOutputComponentGt)
+        }
+        for name, (actor_class, telemetry) in wanted.items():
+            node = nodes.get(name)
+            if node is None or str(node.actor_class) != actor_class:
+                raise ValueError(
+                    "Axiom 31 (PrimaryPumpActuators) failed: PrimaryPumpOwner is "
+                    f"Scada but no ShNode named {name!r} with ActorClass {actor_class}."
+                )
+            if actor_class == "ZeroTenOutputer" and node.component_id not in dac_output_ids:
+                raise ValueError(
+                    "Axiom 31 (PrimaryPumpActuators) failed: primary-010v ComponentId "
+                    f"{node.component_id} is not an i2c.dac.output.component.gt."
+                )
+            channel = channels.get(name)
+            if (
+                channel is None
+                or channel.about_node_name != name
+                or channel.captured_by_node_name != name
+                or str(channel.telemetry_name) != telemetry
+            ):
+                raise ValueError(
+                    "Axiom 31 (PrimaryPumpActuators) failed: actuator "
+                    f"{name!r} has no DataChannel of its own Name about and captured "
+                    f"by itself with TelemetryName {telemetry}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_32(self) -> Self:
+        """
+        Axiom 32: PrimaryPumpRecordAgreement Let the joined records be the
+        hp.device.type.gt records in DeviceTypes whose DeviceType equals the DeviceType
+        of the Component that "hp-odu" or "hp-idu" binds. If
+        Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
+        PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
+        ships inside the unit and cannot be overridden is under the unit's control.
+        """
+        if str(self.hydronic.primary_pump_owner) != "Scada":
+            return self
+        component_by_id = {c.component_id: c for c in (self.components or [])}
+        device_types = set()
+        for n in self.sh_nodes or []:
+            if n.name in ("hp-odu", "hp-idu") and n.component_id in component_by_id:
+                device_type = getattr(component_by_id[n.component_id], "device_type", None)
+                if device_type is not None:
+                    device_types.add(device_type)
+        for r in self.device_types or []:
+            if not isinstance(r, HpDeviceTypeGt) or r.device_type not in device_types:
+                continue
+            if r.primary_pump_factory_installed and not r.primary_pump_overridable:
+                raise ValueError(
+                    "Axiom 32 (PrimaryPumpRecordAgreement) failed: PrimaryPumpOwner "
+                    f"is Scada but record {r.device_type!r} ships its primary pump "
+                    "inside the unit with no override."
                 )
         return self

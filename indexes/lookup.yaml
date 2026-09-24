@@ -1141,6 +1141,16 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw.primary.flow.source/000.yaml
+  gw.primary.pump.owner:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.primary.pump.owner/000.yaml
+  gw.refrigerant.cycle:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.refrigerant.cycle/000.yaml
   gw.market.product.name:
     enum_type: versioned
     latest_version: '000'

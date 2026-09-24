@@ -6,10 +6,11 @@ type: object
 description: >
   The hydronic / flow-topology configuration of a hydronic space-heating
   layout (House0 and Nolan strategies alike): its zones, zone-call
-  circuits, store-tank count, and how primary-loop flow is obtained. The
-  measured-vs-derived "primary-flow" choice is a
-  physical-topology fact carried here so the layout states it rather than it
-  being inferred from channel presence.
+  circuits, store-tank count, how primary-loop flow is obtained, who runs
+  the primary pump, and the heat pump's refrigerant cycle. These are
+  physical facts of the installed house, carried here so the layout states
+  them rather than code inferring them from channel presence or from
+  device records.
 
 properties:
   Zones:
@@ -43,6 +44,21 @@ properties:
       Whether "primary-flow" is a measured DataChannel (a meter at the primary
       pump) or a derived sum over the Siegenthaler loop sensors.
 
+  PrimaryPumpOwner:
+    $ref: "https://schemas.electricity.works/enums/gw.primary.pump.owner/000"
+    description: >
+      Who runs the primary pump: the heat pump under its own control, or the
+      scada through a failsafe relay, a scada-ops relay and a 0-10V output.
+      The layout word's PrimaryPumpActuators axiom ties the actuator nodes
+      to this value.
+
+  RefrigerantCycle:
+    $ref: "https://schemas.electricity.works/enums/gw.refrigerant.cycle/000"
+    description: >
+      Whether the heat pump is a single-compressor unit or a two-compressor
+      cascade. Stated once for the system; a cascade split carries a
+      compressor in each of its two units.
+
   HpCommandNodeName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
@@ -63,6 +79,8 @@ required:
   - ZoneCallCircuits
   - TotalStoreTanks
   - PrimaryFlowSource
+  - PrimaryPumpOwner
+  - RefrigerantCycle
   - TypeName
   - Version
 
@@ -93,6 +111,8 @@ examples:
       ],
       "TotalStoreTanks": 3,
       "PrimaryFlowSource": "Measured",
+      "PrimaryPumpOwner": "Scada",
+      "RefrigerantCycle": "Cascade",
       "TypeName": "gw.hydronic",
       "Version": "000"
     }

@@ -245,29 +245,25 @@ x-gridworks:
           "hp-scada-ops-relay",
           "aquastat-ctrl-relay",
           "store-pump-relay",
-          "primary-pump-failsafe-relay",
-          "primary-pump-scada-ops-relay",
           "hp-loop-on-off-relay",
           and "hp-loop-keep-send-relay",
         each with ActorClass "Relay", and nodes named
-          "dist-010v",
-          "primary-010v",
+          "dist-010v"
           and "store-010v",
         each with ActorClass "ZeroTenOutputer".
         b. Hydronic.ZoneCallCircuits SHALL be non-empty, and each circuit's
         FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in ShNodes with
         ActorClass "Relay".
-        c. Each of "dist-010v", "primary-010v" and "store-010v" SHALL have a
-        ComponentId equal to the ComponentId of an i2c.dac.output.component.gt
-        in Components.
+        c. Each of "dist-010v" and "store-010v" SHALL have a ComponentId equal
+        to the ComponentId of an i2c.dac.output.component.gt in Components.
     - number: 11
       name: "RequiredHeatpumpEquipment"
       statement: >
-        ShNodes SHALL include nodes named "hp-odu" and "hp-idu" (a House0 home is a split
-        system: the indoor unit does the refrigerant-to-water exchange), each with a
-        ComponentId equal to the ComponentId of a Component in Components, and each with
-        ActorClass "NoActor" unless it is the node Hydronic.HpCommandNodeName names, whose
-        ActorClass CommandableHeatPump governs.
+        ShNodes SHALL include nodes named "hp-odu" and "hp-idu" (the indoor unit exchanges
+        refrigerant heat with the water), each with a ComponentId equal to the ComponentId
+        of a Component in Components, and each with ActorClass "NoActor" unless it is the
+        node Hydronic.HpCommandNodeName names, whose ActorClass CommandableHeatPump
+        governs.
     - number: 12
       name: "CommandableHeatPump"
       statement: >
@@ -402,3 +398,20 @@ x-gridworks:
         Name SHALL exist, with AboutNodeName and CapturedByNodeName equal to that Name.
         b. That channel's TelemetryName SHALL be "RelayState" for a node with ActorClass
         "Relay" and "VoltsTimesTen" for a node with ActorClass "ZeroTenOutputer".
+    - number: 31
+      name: "PrimaryPumpActuators"
+      statement: >
+        If Hydronic.PrimaryPumpOwner is "Scada", ShNodes SHALL include
+        "primary-pump-failsafe-relay" and "primary-pump-scada-ops-relay" with ActorClass
+        "Relay" and "primary-010v" with ActorClass "ZeroTenOutputer" and a ComponentId
+        resolving to an i2c.dac.output.component.gt in Components, and each of the three
+        SHALL have a DataChannel of its own Name in the ActuatorChannels shape. If it is
+        "HeatPump", no ShNode and no DataChannel SHALL carry any of those three Names.
+    - number: 32
+      name: "PrimaryPumpRecordAgreement"
+      statement: >
+        Let the joined records be the hp.device.type.gt records in DeviceTypes whose
+        DeviceType equals the DeviceType of the Component that "hp-odu" or "hp-idu" binds.
+        If Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
+        PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
+        ships inside the unit and cannot be overridden is under the unit's control.

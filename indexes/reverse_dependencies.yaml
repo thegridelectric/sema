@@ -725,6 +725,14 @@ enums:
     '000':
       used_by:
       - gw.hydronic:000
+  gw.primary.pump.owner:
+    '000':
+      used_by:
+      - gw.hydronic:000
+  gw.refrigerant.cycle:
+    '000':
+      used_by:
+      - gw.hydronic:000
   gw.scada.cmd.refusal.reason:
     '000':
       used_by:

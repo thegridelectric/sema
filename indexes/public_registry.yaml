@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-24T17:15:00Z'
+  last_updated: '2026-09-24T17:50:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -374,6 +374,29 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.primary.flow.source/000
         created: '2026-09-17T23:55:00Z'
+        status: staging
+  gw.primary.pump.owner:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Who owns a hydronic layout''s primary pump: the heat pump itself
+      (HeatPump) or the scada through its own actuators (Scada); an install fact,
+      distinct from the primary.pump.control relay state.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.primary.pump.owner/000
+        created: '2026-09-24T17:50:00Z'
+        status: staging
+  gw.refrigerant.cycle:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Refrigerant-cycle topology of a layout''s heat pump: one compressor
+      (Single) or two in series (Cascade, a flatter COP curve).'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.refrigerant.cycle/000
+        created: '2026-09-24T17:50:00Z'
         status: staging
   gw.market.product.name:
     latest_version: '000'
@@ -2742,7 +2765,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-09-23T22:25:00Z'
+        created: '2026-09-24T17:50:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -2756,8 +2779,8 @@ types:
           6 TransactivePowerChannel; 7 RequiredSensing (heat-pump and pump power,
           plant pipe temperatures, dist and store flow); 8 SiegManifoldChannels (sieg-cold,
           sieg-hot, sieg-flow, sieg-send-flow, the two hp-loop relays); 9 SystemModelEnergyChannels;
-          10 RequiredActuators (plant relays, the three 0-10V outputs each bound to
-          a DAC output component, zone-circuit relay pairs); 11 RequiredHeatpumpEquipment
+          10 RequiredActuators (plant relays, dist-010v and store-010v each bound
+          to a DAC output component, zone-circuit relay pairs); 11 RequiredHeatpumpEquipment
           (hp-odu, hp-idu); 12 CommandableHeatPump (biconditional on Hydronic.HpCommandNodeName;
           11''s NoActor clause defers to it); 13 PrefixClosedHandles and 14 ActuatorLeaves
           (the authored handles are the initial command tree); 15 ComponentBinding;
@@ -2770,7 +2793,10 @@ types:
           28 DisabledNodesAreSensors (a disabled node captures DataChannels, all of
           them disabled), 29 EnabledDerivedChannelsHaveLiveInputs; DisabledNodeNames
           and DisabledChannelNames list required names currently unavailable pending
-          a field visit.'
+          a field visit. 30 ActuatorChannels; 31 PrimaryPumpActuators (the primary-pump
+          relay pair and primary-010v, nodes and channels, exist iff Hydronic.PrimaryPumpOwner
+          is Scada); 32 PrimaryPumpRecordAgreement (under Scada no hp.device.type.gt
+          record joined to hp-odu / hp-idu ships a non-overridable pump).'
         direct_dependencies:
           structural:
           - ads111x.based.component.gt:000
@@ -2813,11 +2839,11 @@ types:
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'House0-fleet hydronic / flow-topology config: zones, zone-call circuits,
-      store-tank count, primary-flow source.'
+      store-tank count, primary-flow source, primary-pump owner, refrigerant cycle.'
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-09-23T22:25:00Z'
+        created: '2026-09-24T17:50:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -2831,10 +2857,16 @@ types:
           dropped: the control family is the layout word''s own TypeName (invariant
           per word, so not a data field; the same rule that retired SiegLoopPlumbed).
           - TotalStoreTanks may be zero (a store that is not water tanks); the Cardinality
-          axiom keeps only the upper bound of 6.'
+          axiom keeps only the upper bound of 6. - PrimaryPumpOwner (gw.primary.pump.owner,
+          required): who runs the primary pump, the heat pump or the scada; the layout
+          words'' PrimaryPumpActuators axiom ties the actuator nodes to it. RefrigerantCycle
+          (gw.refrigerant.cycle, required): single compressor or two-compressor cascade,
+          for the optimizer''s COP model.'
         direct_dependencies:
           structural:
           - gw.primary.flow.source:000
+          - gw.primary.pump.owner:000
+          - gw.refrigerant.cycle:000
           - gw1.hvac.zone:000
           - gw1.zone.call.circuit:000
           - non.negative.int
@@ -2878,7 +2910,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-09-23T22:25:00Z'
+        created: '2026-09-24T17:50:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType
@@ -2904,7 +2936,9 @@ types:
           DisabledNodesAreSensors (a disabled node captures DataChannels, all of them
           disabled), 27 EnabledDerivedChannelsHaveLiveInputs; DisabledNodeNames and
           DisabledChannelNames list required names currently unavailable pending a
-          field visit.'
+          field visit. 28 ActuatorChannels; 29 PrimaryPumpRecordAgreement (under Hydronic.PrimaryPumpOwner
+          Scada no hp.device.type.gt or hp.control.box.device.type.gt record joined
+          to hp-odu / hp-ctrl-box ships a non-overridable pump).'
         direct_dependencies:
           structural:
           - ads111x.based.device.type.gt:000

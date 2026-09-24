@@ -3587,7 +3587,9 @@
       }
     ],
     "TotalStoreTanks": 3,
-    "PrimaryFlowSource": "DerivedSiegSum"
+    "PrimaryFlowSource": "DerivedSiegSum",
+    "PrimaryPumpOwner": "Scada",
+    "RefrigerantCycle": "Cascade"
   },
   "DisabledNodeNames": [],
   "DisabledChannelNames": []

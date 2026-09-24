@@ -400,5 +400,14 @@ x-gridworks:
         Name SHALL exist, with AboutNodeName and CapturedByNodeName equal to that Name.
         b. That channel's TelemetryName SHALL be "RelayState" for a node with ActorClass
         "Relay" and "VoltsTimesTen" for a node with ActorClass "ZeroTenOutputer".
+    - number: 29
+      name: "PrimaryPumpRecordAgreement"
+      statement: >
+        Let the joined records be the hp.device.type.gt and hp.control.box.device.type.gt
+        records in DeviceTypes whose DeviceType equals the DeviceType of the Component
+        that "hp-odu" or "hp-ctrl-box" binds. If Hydronic.PrimaryPumpOwner is "Scada",
+        no joined record SHALL have PrimaryPumpFactoryInstalled true with
+        PrimaryPumpOverridable false: a pump that ships inside the unit and cannot be
+        overridden is under the unit's control.
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

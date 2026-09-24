@@ -2,6 +2,8 @@ from typing import Literal, Self
 from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import GwPrimaryFlowSource
+from sema.runtime.enums import GwPrimaryPumpOwner
+from sema.runtime.enums import GwRefrigerantCycle
 from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.gw1_hvac_zone import Gw1HvacZone
@@ -15,6 +17,8 @@ class GwHydronic(SemaType):
     zone_call_circuits: list[Gw1ZoneCallCircuit]
     total_store_tanks: NonNegativeInt
     primary_flow_source: GwPrimaryFlowSource
+    primary_pump_owner: GwPrimaryPumpOwner
+    refrigerant_cycle: GwRefrigerantCycle
     hp_command_node_name: SpaceheatName | None = None
     type_name: Literal["gw.hydronic"] = "gw.hydronic"
     version: Literal["000"] = "000"

@@ -247,6 +247,7 @@ def test_axiom_29_enabled_derived_channel_has_no_disabled_input(
 
     reject(vanilla, mutate, "Axiom 29")
 
+
 def test_axiom_30_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != "vdc-relay"]
@@ -254,7 +255,9 @@ def test_axiom_30_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
     reject(vanilla, mutate, "Axiom 30")
 
 
-def test_axiom_30_a_actuator_channel_about_another_node(vanilla: dict[str, Any]) -> None:
+def test_axiom_30_a_actuator_channel_about_another_node(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         channel = next(c for c in d["DataChannels"] if c["Name"] == "vdc-relay")
         channel["AboutNodeName"] = "hp-scada-ops-relay"
@@ -272,7 +275,10 @@ def test_axiom_30_a_circuit_relay_without_a_channel(vanilla: dict[str, Any]) -> 
 
 @pytest.mark.parametrize(
     ("name", "telemetry", "quantity"),
-    [("vdc-relay", "VoltsTimesTen", "Voltage"), ("dist-010v", "RelayState", "Unitless")],
+    [
+        ("vdc-relay", "VoltsTimesTen", "Voltage"),
+        ("dist-010v", "RelayState", "Unitless"),
+    ],
 )
 def test_axiom_30_b_actuator_channel_telemetry(
     vanilla: dict[str, Any], name: str, telemetry: str, quantity: str
@@ -287,3 +293,108 @@ def test_axiom_30_b_actuator_channel_telemetry(
         channel["Quantity"] = quantity
 
     reject(vanilla, mutate, "Axiom 30")
+
+
+def drop_nodes(names: set[str]) -> Callable[[dict[str, Any]], None]:
+    """Drop nodes with the components they bind, so ComponentBinding stays quiet."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        component_ids = {
+            n.get("ComponentId") for n in d["ShNodes"] if n["Name"] in names
+        }
+        d["ShNodes"] = [n for n in d["ShNodes"] if n["Name"] not in names]
+        d["Components"] = [
+            c for c in d["Components"] if c["ComponentId"] not in component_ids
+        ]
+
+    return mutate
+
+
+def test_axiom_31_scada_control_without_primary_010v(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        drop_nodes({"primary-010v"})(d)
+        d["DataChannels"] = [
+            c for c in d["DataChannels"] if c["Name"] != "primary-010v"
+        ]
+
+    reject(vanilla, mutate, "Axiom 31")
+
+
+def test_axiom_31_scada_control_relay_without_a_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DataChannels"] = [
+            c for c in d["DataChannels"] if c["Name"] != "primary-pump-failsafe-relay"
+        ]
+
+    reject(vanilla, mutate, "Axiom 31")
+
+
+def test_axiom_31_heat_pump_control_with_primary_pump_actuators(
+    vanilla: dict[str, Any],
+) -> None:
+    """The vanilla fixture carries the three primary-pump actuators, so declaring
+    HeatPump control is refused until they leave."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "HeatPump"
+
+    reject(vanilla, mutate, "Axiom 31")
+
+
+def test_axiom_31_heat_pump_control_without_primary_pump_actuators_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    names = {
+        "primary-pump-failsafe-relay",
+        "primary-pump-scada-ops-relay",
+        "primary-010v",
+    }
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "HeatPump"
+        drop_nodes(names)(d)
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] not in names]
+
+    GwHouse0Layout.model_validate(mutated(vanilla, mutate))
+
+
+def hp_record(
+    device_type: str, factory_installed: bool, overridable: bool
+) -> dict[str, Any]:
+    return {
+        "TypeName": "hp.device.type.gt",
+        "Version": "000",
+        "DeviceType": device_type,
+        "DisplayName": "test record",
+        "MaxKwEl": 6.0,
+        "HeatingCapacityBtuHr": 48000,
+        "CoolingCapacityBtuHr": 48000,
+        "PrimaryPumpFactoryInstalled": factory_installed,
+        "PrimaryPumpOverridable": overridable,
+        "PrimaryPumpAlwaysOn": False,
+        "Refrigerant": "R32",
+        "CompressorRatedAmps": 20.0,
+        "Mca": 30.0,
+        "Mop": 40.0,
+        "ProductInfoUrl": "https://example.com",
+    }
+
+
+def test_axiom_32_scada_control_against_a_non_overridable_factory_pump(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DeviceTypes"].append(hp_record("MitsubishiWUZSA48NMZ", True, False))
+
+    reject(vanilla, mutate, "Axiom 32")
+
+
+def test_axiom_32_scada_control_against_an_overridable_factory_pump_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DeviceTypes"].append(hp_record("MitsubishiWUZSA48NMZ", True, True))
+
+    GwHouse0Layout.model_validate(mutated(vanilla, mutate))

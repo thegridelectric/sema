@@ -49,6 +49,8 @@ from sema.runtime.enums.gw_house_alert_kind import GwHouseAlertKind
 from sema.runtime.enums.gw_market_product_name import GwMarketProductName
 from sema.runtime.enums.gw_platform_alert_kind import GwPlatformAlertKind
 from sema.runtime.enums.gw_primary_flow_source import GwPrimaryFlowSource
+from sema.runtime.enums.gw_primary_pump_owner import GwPrimaryPumpOwner
+from sema.runtime.enums.gw_refrigerant_cycle import GwRefrigerantCycle
 from sema.runtime.enums.gw_scada_cmd_refusal_reason import GwScadaCmdRefusalReason
 from sema.runtime.enums.gw_weather_forecast_fidelity import GwWeatherForecastFidelity
 from sema.runtime.enums.gw_zone_emitter_type import GwZoneEmitterType
@@ -138,6 +140,8 @@ __all__ = [
     "GwMarketProductName",
     "GwPlatformAlertKind",
     "GwPrimaryFlowSource",
+    "GwPrimaryPumpOwner",
+    "GwRefrigerantCycle",
     "GwScadaCmdRefusalReason",
     "GwWeatherForecastFidelity",
     "GwZoneEmitterType",

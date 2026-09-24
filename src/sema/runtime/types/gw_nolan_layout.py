@@ -1067,3 +1067,40 @@ class GwNolanLayout(SemaType):
                     f"TelemetryName {channel.telemetry_name}, not {telemetry}."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_29(self) -> Self:
+        """
+        Axiom 29: PrimaryPumpRecordAgreement Let the joined records be the
+        hp.device.type.gt and hp.control.box.device.type.gt records in DeviceTypes whose
+        DeviceType equals the DeviceType of the Component that "hp-odu" or "hp-ctrl-box"
+        binds. If Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
+        PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
+        ships inside the unit and cannot be overridden is under the unit's control.
+        """
+        if str(self.hydronic.primary_pump_owner) != "Scada":
+            return self
+        component_by_id = {c.component_id: c for c in (self.components or [])}
+        device_types = set()
+        for n in self.sh_nodes or []:
+            if (
+                n.name in ("hp-odu", "hp-ctrl-box")
+                and n.component_id in component_by_id
+            ):
+                device_type = getattr(
+                    component_by_id[n.component_id], "device_type", None
+                )
+                if device_type is not None:
+                    device_types.add(device_type)
+        for r in self.device_types or []:
+            if not isinstance(r, (HpDeviceTypeGt, HpControlBoxDeviceTypeGt)):
+                continue
+            if r.device_type not in device_types:
+                continue
+            if r.primary_pump_factory_installed and not r.primary_pump_overridable:
+                raise ValueError(
+                    "Axiom 29 (PrimaryPumpRecordAgreement) failed: PrimaryPumpOwner "
+                    f"is Scada but record {r.device_type!r} ships its primary pump "
+                    "inside the unit with no override."
+                )
+        return self

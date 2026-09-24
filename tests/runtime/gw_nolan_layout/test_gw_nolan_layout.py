@@ -300,6 +300,7 @@ def test_axiom_27_enabled_derived_channel_has_no_disabled_input(
 
     reject(vanilla, mutate, "Axiom 27")
 
+
 def test_axiom_28_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != "vdc-relay"]
@@ -307,7 +308,9 @@ def test_axiom_28_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
     reject(vanilla, mutate, "Axiom 28")
 
 
-def test_axiom_28_a_actuator_channel_about_another_node(vanilla: dict[str, Any]) -> None:
+def test_axiom_28_a_actuator_channel_about_another_node(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         channel = next(c for c in d["DataChannels"] if c["Name"] == "vdc-relay")
         channel["AboutNodeName"] = "hp-scada-ops-relay"
@@ -325,7 +328,10 @@ def test_axiom_28_a_circuit_relay_without_a_channel(vanilla: dict[str, Any]) -> 
 
 @pytest.mark.parametrize(
     ("name", "telemetry", "quantity"),
-    [("vdc-relay", "VoltsTimesTen", "Voltage"), ("secondary-010v", "RelayState", "Unitless")],
+    [
+        ("vdc-relay", "VoltsTimesTen", "Voltage"),
+        ("secondary-010v", "RelayState", "Unitless"),
+    ],
 )
 def test_axiom_28_b_actuator_channel_telemetry(
     vanilla: dict[str, Any], name: str, telemetry: str, quantity: str
@@ -340,3 +346,30 @@ def test_axiom_28_b_actuator_channel_telemetry(
         channel["Quantity"] = quantity
 
     reject(vanilla, mutate, "Axiom 28")
+
+
+def test_axiom_29_scada_control_against_the_control_box_factory_pump(
+    vanilla: dict[str, Any],
+) -> None:
+    """Spruce's Samsung control box ships its pump with no override, so declaring
+    Scada control of the primary pump is refused."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "Scada"
+
+    reject(vanilla, mutate, "Axiom 29")
+
+
+def test_axiom_29_scada_control_with_an_overridable_control_box_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "Scada"
+        box = next(
+            r
+            for r in d["DeviceTypes"]
+            if r["TypeName"] == "hp.control.box.device.type.gt"
+        )
+        box["PrimaryPumpOverridable"] = True
+
+    GwNolanLayout.model_validate(mutated(vanilla, mutate))
