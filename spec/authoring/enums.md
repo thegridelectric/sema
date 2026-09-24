@@ -181,6 +181,9 @@ Enum evolution is determined by `enum_type`.
   - SHALL NOT remove or reorder existing values
   - SHALL NOT change the semantic meaning of existing values
   - SHALL NOT change the default
+  - A `staging` version is edited in place: it MAY drop or reorder values
+    it appended itself, and SHALL keep every value of its predecessor in
+    place, since a value in a published version is never removed
 
 ## Description Evolution
 

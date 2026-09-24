@@ -43,6 +43,14 @@ x-gridworks:
   owner: "gridworks-energy"
   version: "014"
   value_descriptions:
+    "I2cRelayMultiplexer": >
+      Defunct; no layout carries it, the relay actor addresses its board
+      through the I2cBus actor. Retained under additive-only enum
+      evolution.
+    "I2cZeroTenMultiplexer": >
+      Defunct; no layout carries it, the 0-10V output addresses its DAC
+      through the I2cBus actor. Retained under additive-only enum
+      evolution.
     "I2cRelayBoard": >
       Defunct; never realized by an actor. Retained under additive-only
       enum evolution.
