@@ -896,3 +896,51 @@
                     f"enabled but reads disabled inputs {dead}."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_28(self) -> Self:
+        """
+        Axiom 28: ActuatorChannels a. For every ShNode RequiredActuators names — the
+        listed relays and 0-10V outputs, and each circuit's FailsafeRelayNode and
+        OpsRelayNode — a DataChannel with the same Name SHALL exist, with AboutNodeName
+        and CapturedByNodeName equal to that Name. b. That channel's TelemetryName SHALL
+        be "RelayState" for a node with ActorClass "Relay" and "VoltsTimesTen" for a
+        node with ActorClass "ZeroTenOutputer".
+        """
+        relays = [
+            "vdc-relay",
+            "iso-valve-relay",
+            "secondary-pump-relay",
+            "hp-scada-ops-relay",
+            "charge-valve-relay",
+            "store-pump-relay",
+            "buffer-top-elt-relay",
+            "buffer-bottom-elt-relay",
+            "tank1-top-elt-relay",
+            "tank1-bottom-elt-relay",
+        ]
+        for circuit in self.hydronic.zone_call_circuits or []:
+            relays.extend((circuit.failsafe_relay_node, circuit.ops_relay_node))
+        outputs = ["secondary-010v"]
+        channel_by_name = {c.name: c for c in (self.data_channels or [])}
+        for name, telemetry in [(r, "RelayState") for r in relays] + [
+            (o, "VoltsTimesTen") for o in outputs
+        ]:
+            channel = channel_by_name.get(name)
+            if channel is None:
+                raise ValueError(
+                    f"Axiom 28 (ActuatorChannels) failed: actuator '{name}' has no "
+                    "DataChannel of the same Name."
+                )
+            if channel.about_node_name != name or channel.captured_by_node_name != name:
+                raise ValueError(
+                    f"Axiom 28 (ActuatorChannels) failed: channel '{name}' is about "
+                    f"'{channel.about_node_name}', captured by "
+                    f"'{channel.captured_by_node_name}'; both SHALL be '{name}'."
+                )
+            if str(channel.telemetry_name) != telemetry:
+                raise ValueError(
+                    f"Axiom 28 (ActuatorChannels) failed: channel '{name}' has "
+                    f"TelemetryName {channel.telemetry_name}, not {telemetry}."
+                )
+        return self

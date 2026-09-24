@@ -223,12 +223,10 @@ x-gridworks:
           "sieg-cold",
           "sieg-hot",
           "sieg-flow",
-          "sieg-send-flow",
-          "hp-loop-on-off-relay",
-          and "hp-loop-keep-send-relay":
+          and "sieg-send-flow":
         a channel with that Name SHALL exist in DataChannels or in
         DerivedChannels — the siegenthaler loop cannot be controlled or observed without its
-        sensing and valve-observation channels.
+        sensing channels.
     - number: 9
       name: "SystemModelEnergyChannels"
       statement: >
@@ -396,3 +394,11 @@ x-gridworks:
       statement: >
         Every DerivedChannel whose Name is not in DisabledChannelNames SHALL have no name in its
         InputChannelNames that is in DisabledChannelNames.
+    - number: 30
+      name: "ActuatorChannels"
+      statement: >
+        a. For every ShNode RequiredActuators names — the listed relays and 0-10V outputs,
+        and each circuit's FailsafeRelayNode and OpsRelayNode — a DataChannel with the same
+        Name SHALL exist, with AboutNodeName and CapturedByNodeName equal to that Name.
+        b. That channel's TelemetryName SHALL be "RelayState" for a node with ActorClass
+        "Relay" and "VoltsTimesTen" for a node with ActorClass "ZeroTenOutputer".

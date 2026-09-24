@@ -392,5 +392,13 @@ x-gridworks:
       statement: >
         Every DerivedChannel whose Name is not in DisabledChannelNames SHALL have no name in its
         InputChannelNames that is in DisabledChannelNames.
+    - number: 28
+      name: "ActuatorChannels"
+      statement: >
+        a. For every ShNode RequiredActuators names — the listed relays and 0-10V outputs,
+        and each circuit's FailsafeRelayNode and OpsRelayNode — a DataChannel with the same
+        Name SHALL exist, with AboutNodeName and CapturedByNodeName equal to that Name.
+        b. That channel's TelemetryName SHALL be "RelayState" for a node with ActorClass
+        "Relay" and "VoltsTimesTen" for a node with ActorClass "ZeroTenOutputer".
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

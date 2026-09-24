@@ -84,7 +84,7 @@ def test_axiom_7_required_sensing(vanilla: dict[str, Any], name: str) -> None:
 
 @pytest.mark.parametrize(
     "name",
-    ["sieg-cold", "sieg-hot", "sieg-flow", "sieg-send-flow", "hp-loop-on-off-relay"],
+    ["sieg-cold", "sieg-hot", "sieg-flow", "sieg-send-flow"],
 )
 def test_axiom_8_sieg_manifold_channels(vanilla: dict[str, Any], name: str) -> None:
     """The siegenthaler surface is unconditional: dropping any of it fails."""
@@ -246,3 +246,44 @@ def test_axiom_29_enabled_derived_channel_has_no_disabled_input(
         d["DisabledChannelNames"] = [derived["InputChannelNames"][0]]
 
     reject(vanilla, mutate, "Axiom 29")
+
+def test_axiom_30_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != "vdc-relay"]
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_a_actuator_channel_about_another_node(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        channel = next(c for c in d["DataChannels"] if c["Name"] == "vdc-relay")
+        channel["AboutNodeName"] = "hp-scada-ops-relay"
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_a_circuit_relay_without_a_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        relay = d["Hydronic"]["ZoneCallCircuits"][0]["OpsRelayNode"]
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != relay]
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+@pytest.mark.parametrize(
+    ("name", "telemetry", "quantity"),
+    [("vdc-relay", "VoltsTimesTen", "Voltage"), ("dist-010v", "RelayState", "Unitless")],
+)
+def test_axiom_30_b_actuator_channel_telemetry(
+    vanilla: dict[str, Any], name: str, telemetry: str, quantity: str
+) -> None:
+    """A relay channel carrying a voltage, or an output channel carrying a relay
+    state, is refused; the quantity moves with the telemetry so data.channel.gt's
+    own consistency axiom is not what fires."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        channel = next(c for c in d["DataChannels"] if c["Name"] == name)
+        channel["TelemetryName"] = telemetry
+        channel["Quantity"] = quantity
+
+    reject(vanilla, mutate, "Axiom 30")
