@@ -2225,11 +2225,11 @@
       "ComponentId": "39e088e7-cbb0-4f8e-8199-30b0e21878c0",
       "DeviceType": "AbstractWebServer",
       "WebServer": {
-        "Enabled": true,
         "Host": "0.0.0.0",
         "Name": "default",
         "Port": 8000,
-        "Kwargs": {}
+        "Kwargs": {},
+        "Serve": true
       },
       "DisplayName": "Web Server default"
     },
@@ -2257,13 +2257,13 @@
       "DeviceType": "HoneywellT6Thermostat",
       "Poller": {
         "TypeName": "hubitat.poller.gt",
-        "Version": "000",
+        "Version": "001",
         "HubitatComponentId": "506d847f-7aff-45cf-911e-8f9a00120122",
         "DeviceId": 1,
         "Attributes": [
           {
             "TypeName": "maker.api.attribute.gt",
-            "Version": "000",
+            "Version": "001",
             "AttributeName": "temperature",
             "ChannelName": "zone1-living-rm-temp",
             "NodeName": "zone1-living-rm",
@@ -2271,7 +2271,6 @@
             "Unit": "Fahrenheit",
             "Exponent": 3,
             "InterpretAsNumber": true,
-            "Enabled": true,
             "WebPollEnabled": true,
             "WebListenEnabled": true,
             "ReportMissing": true,
@@ -2279,7 +2278,7 @@
           },
           {
             "TypeName": "maker.api.attribute.gt",
-            "Version": "000",
+            "Version": "001",
             "AttributeName": "heatingSetpoint",
             "ChannelName": "zone1-living-rm-set",
             "NodeName": "zone1-living-rm-stat",
@@ -2287,14 +2286,12 @@
             "Unit": "Fahrenheit",
             "Exponent": 3,
             "InterpretAsNumber": true,
-            "Enabled": true,
             "WebPollEnabled": true,
             "WebListenEnabled": true,
             "ReportMissing": true,
             "ReportParseError": true
           }
         ],
-        "Enabled": true,
         "WebListenEnabled": true,
         "PollPeriodSeconds": 300.0
       },
@@ -2307,13 +2304,13 @@
       "DeviceType": "HoneywellT6Thermostat",
       "Poller": {
         "TypeName": "hubitat.poller.gt",
-        "Version": "000",
+        "Version": "001",
         "HubitatComponentId": "506d847f-7aff-45cf-911e-8f9a00120122",
         "DeviceId": 2,
         "Attributes": [
           {
             "TypeName": "maker.api.attribute.gt",
-            "Version": "000",
+            "Version": "001",
             "AttributeName": "temperature",
             "ChannelName": "zone2-bedroom-temp",
             "NodeName": "zone2-bedroom",
@@ -2321,7 +2318,6 @@
             "Unit": "Fahrenheit",
             "Exponent": 3,
             "InterpretAsNumber": true,
-            "Enabled": true,
             "WebPollEnabled": true,
             "WebListenEnabled": true,
             "ReportMissing": true,
@@ -2329,7 +2325,7 @@
           },
           {
             "TypeName": "maker.api.attribute.gt",
-            "Version": "000",
+            "Version": "001",
             "AttributeName": "heatingSetpoint",
             "ChannelName": "zone2-bedroom-set",
             "NodeName": "zone2-bedroom-stat",
@@ -2337,14 +2333,12 @@
             "Unit": "Fahrenheit",
             "Exponent": 3,
             "InterpretAsNumber": true,
-            "Enabled": true,
             "WebPollEnabled": true,
             "WebListenEnabled": true,
             "ReportMissing": true,
             "ReportParseError": true
           }
         ],
-        "Enabled": true,
         "WebListenEnabled": true,
         "PollPeriodSeconds": 300.0
       },
@@ -2712,7 +2706,6 @@
       "ComponentId": "ea909e82-477e-4bdf-8937-3ef54cf63bc5",
       "DeviceType": "GridworksTankModule3",
       "DisplayName": "buffer PicoTankModule",
-      "Enabled": true,
       "PicoHwUid": "pico_8f5530",
       "TempCalcMethod": "SimpleBeta",
       "ThermistorBeta": 3977,
@@ -2729,7 +2722,6 @@
       "ComponentId": "056ddd4f-96c6-4b0b-98ed-13acc18a5628",
       "DeviceType": "GridworksTankModule3",
       "DisplayName": "tank1 PicoTankModule",
-      "Enabled": true,
       "PicoHwUid": "pico_8a2a21",
       "TempCalcMethod": "SimpleBeta",
       "ThermistorBeta": 3977,
@@ -2746,7 +2738,6 @@
       "ComponentId": "5a32b73f-78c1-447d-a3f5-9fb8f00c941f",
       "DeviceType": "GridworksTankModule3",
       "DisplayName": "tank2 PicoTankModule",
-      "Enabled": true,
       "PicoHwUid": "pico_219530",
       "TempCalcMethod": "SimpleBeta",
       "ThermistorBeta": 3977,
@@ -2763,7 +2754,6 @@
       "ComponentId": "f2262841-890e-42e2-b060-b2ecd523bdc0",
       "DeviceType": "GridworksTankModule3",
       "DisplayName": "tank3 PicoTankModule",
-      "Enabled": true,
       "PicoHwUid": "pico_219430",
       "TempCalcMethod": "SimpleBeta",
       "ThermistorBeta": 3977,
@@ -2830,7 +2820,6 @@
       "Version": "000",
       "ComponentId": "d69f855c-6853-47a7-8db1-cd5a3f61a80b",
       "DeviceType": "Gw101",
-      "Enabled": true,
       "SerialNumber": "NA",
       "FlowChannelName": "sieg-flow",
       "HotChannelName": "sieg-hot",
@@ -2854,7 +2843,6 @@
       "Version": "000",
       "ComponentId": "ba9821f1-9c42-496e-ab5d-1e8fac184dac",
       "DeviceType": "Gw101",
-      "Enabled": true,
       "SerialNumber": "NA",
       "FlowChannelName": "store-flow",
       "HotChannelName": "store-hot-pipe",
@@ -2880,7 +2868,6 @@
       "DeviceType": "GridworksPicoFlowHall",
       "DisplayName": "Dist Flow HallFlowModule",
       "HwUid": "pico_497d35",
-      "Enabled": true,
       "SerialNumber": "1015",
       "FlowNodeName": "dist-flow",
       "FlowMeterType": "SaierFlowSensor",
@@ -2904,7 +2891,6 @@
       "DeviceType": "GridworksPicoFlowHall",
       "DisplayName": "Sieg Send Flow HallFlowModule",
       "HwUid": "pico_481731",
-      "Enabled": true,
       "SerialNumber": "1015",
       "FlowNodeName": "sieg-send-flow",
       "FlowMeterType": "SaierFlowSensor",

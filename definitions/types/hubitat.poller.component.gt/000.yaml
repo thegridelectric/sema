@@ -22,7 +22,7 @@ properties:
       pascal-case string.
 
   Poller:
-    $ref: "https://schemas.electricity.works/types/hubitat.poller.gt/000"
+    $ref: "https://schemas.electricity.works/types/hubitat.poller.gt/001"
     description: >
       The poller settings for this Hubitat device.
 
@@ -66,20 +66,18 @@ examples:
             "Unit": "Unknown",
             "Exponent": 0,
             "InterpretAsNumber": false,
-            "Enabled": false,
-            "WebPollEnabled": false,
+                        "WebPollEnabled": false,
             "WebListenEnabled": false,
             "ReportMissing": false,
             "ReportParseError": false,
             "TypeName": "maker.api.attribute.gt",
-            "Version": "000"
+            "Version": "001"
           }
         ],
-        "Enabled": false,
-        "WebListenEnabled": false,
+                "WebListenEnabled": false,
         "PollPeriodSeconds": 0.0,
         "TypeName": "hubitat.poller.gt",
-        "Version": "000"
+        "Version": "001"
       },
       "TypeName": "hubitat.poller.component.gt",
       "Version": "000"

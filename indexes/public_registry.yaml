@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-24T22:25:00Z'
+  last_updated: '2026-09-24T22:45:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -2787,7 +2787,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-09-24T17:50:00Z'
+        created: '2026-09-24T22:45:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -3691,22 +3691,34 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/hubitat.poller.component.gt/000
-        created: '2026-06-26T03:40:00Z'
+        created: '2026-09-24T22:45:00Z'
         status: staging
         summary: Initial Sema version (flattened from the scada HubitatPollerComponentGt
           runtime).
         direct_dependencies:
           structural:
-          - hubitat.poller.gt:000
+          - hubitat.poller.gt:001
           - pascal.case
           - uuid4.str
   hubitat.poller.gt:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: Poller settings for one Hubitat device (target component + device,
       mapped attributes, poll cadence).
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/hubitat.poller.gt/001
+        created: '2026-09-24T22:45:00Z'
+        status: staging
+        summary: 'Enabled dropped: whether a device is polled is the layout''s DisabledNodeNames,
+          not a per-poller flag; Attributes are maker.api.attribute.gt:001. WebListenEnabled
+          stays (it names the transport path).'
+        direct_dependencies:
+          structural:
+          - maker.api.attribute.gt:001
+          - positive.int
+          - uuid4.str
       '000':
         schema_url: https://schemas.electricity.works/types/hubitat.poller.gt/000
         created: '2026-06-14T15:30:00Z'
@@ -4611,12 +4623,24 @@ types:
           axiom:
           - relay.closed.or.open:000
   maker.api.attribute.gt:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: One Hubitat MakerAPI device attribute mapped onto a SCADA channel
       (telemetry name, unit, exponent, reporting flags).
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/maker.api.attribute.gt/001
+        created: '2026-09-24T22:45:00Z'
+        status: staging
+        summary: 'Enabled dropped: whether a channel is read is the layout''s DisabledChannelNames,
+          not a per-attribute flag. WebPollEnabled and WebListenEnabled stay (they
+          name the transport path).'
+        direct_dependencies:
+          structural:
+          - spaceheat.name
+          - spaceheat.telemetry.name:007
+          - spaceheat.unit:001
       '000':
         schema_url: https://schemas.electricity.works/types/maker.api.attribute.gt/000
         created: '2026-06-14T15:30:00Z'

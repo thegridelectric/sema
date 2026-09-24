@@ -77,14 +77,14 @@ class GwNolanLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwNolanLayout":
         """
-        Axiom 1: TransactivePowerChannel DerivedChannels SHALL contain exactly one
-        channel whose Strategy is "transactive-power" — the metered transactive
-        boundary, computed by the power-meter actor (not the derived-generator). Each
-        name in that channel's InputChannelNames SHALL resolve to an existing
-        DataChannel with TelemetryName "PowerW", and the AboutNode of each such
-        DataChannel SHALL carry a NameplatePowerW. (The metered set is declared once
-        here, replacing the former per-node InPowerMetering flag; the NameplatePowerW
-        obligation folds in spaceheat.node.gt's retired
+        Axiom 1: TransactivePowerChannel DerivedChannels SHALL contain exactly one channel
+        whose Strategy is "transactive-power" — the metered transactive boundary, computed by
+        the power-meter actor (not the derived-generator). Each name in that channel's
+        InputChannelNames SHALL resolve to an existing DataChannel with TelemetryName
+        "PowerW", and the AboutNode of each such DataChannel SHALL carry a NameplatePowerW. No
+        name in that channel's InputChannelNames SHALL be in DisabledChannelNames. (The
+        metered set is declared once here, replacing the former per-node InPowerMetering flag;
+        the NameplatePowerW obligation folds in spaceheat.node.gt's retired
         InPowerMetering-requires-nameplate axiom.)
         """
         transactive = [
@@ -115,6 +115,13 @@ class GwNolanLayout(SemaType):
                 raise ValueError(
                     f"Axiom 1 (TransactivePowerChannel) failed: about-node "
                     f"'{ch.about_node_name}' of input '{name}' has no NameplatePowerW."
+                )
+        disabled = set(self.disabled_channel_names)
+        for name in transactive[0].input_channel_names:
+            if name in disabled:
+                raise ValueError(
+                    f"Axiom 1 (TransactivePowerChannel) failed: input '{name}' is in "
+                    "DisabledChannelNames."
                 )
         return self
 
@@ -968,18 +975,31 @@ class GwNolanLayout(SemaType):
     def check_axiom_26(self) -> "GwNolanLayout":
         """
         Axiom 26: DisabledNodesAreSensors Every name in DisabledNodeNames SHALL be the
-        CapturedByNodeName of at least one DataChannel, and every DataChannel whose
+        CapturedByNodeName of at least one DataChannel and SHALL NOT be the Name of an ShNode
+        whose ActorClass is "Relay" or "ZeroTenOutputer"; every DataChannel whose
         CapturedByNodeName is in DisabledNodeNames SHALL have its Name in
-        DisabledChannelNames.
+        DisabledChannelNames; and no name in DisabledChannelNames SHALL be the Name of a
+        DataChannel whose CapturedByNodeName is such an ShNode. Disabling is a sensing
+        concept; an actuator is wired or absent.
         """
         disabled_nodes = set(self.disabled_node_names)
         disabled_channels = set(self.disabled_channel_names)
+        actuators = {
+            n.name
+            for n in (self.sh_nodes or [])
+            if str(n.actor_class) in ("Relay", "ZeroTenOutputer")
+        }
         capturing = {c.captured_by_node_name for c in (self.data_channels or [])}
         for name in disabled_nodes:
             if name not in capturing:
                 raise ValueError(
                     f"Axiom 26 (DisabledNodesAreSensors) failed: '{name}' captures no "
                     "DataChannel."
+                )
+            if name in actuators:
+                raise ValueError(
+                    f"Axiom 26 (DisabledNodesAreSensors) failed: '{name}' is an actuator; "
+                    "an actuator is wired or absent, never disabled."
                 )
         for c in self.data_channels or []:
             if (
@@ -990,6 +1010,11 @@ class GwNolanLayout(SemaType):
                     f"Axiom 26 (DisabledNodesAreSensors) failed: '{c.name}' is captured by "
                     f"disabled node '{c.captured_by_node_name}' but is not in "
                     "DisabledChannelNames."
+                )
+            if c.name in disabled_channels and c.captured_by_node_name in actuators:
+                raise ValueError(
+                    f"Axiom 26 (DisabledNodesAreSensors) failed: '{c.name}' is captured by "
+                    f"actuator '{c.captured_by_node_name}'; an actuator channel is never disabled."
                 )
         return self
 
@@ -1134,5 +1159,27 @@ class GwNolanLayout(SemaType):
                 raise ValueError(
                     f"Axiom 30 (CommandNodeHandles) failed: {n.name!r} has effective "
                     f"handle {effective!r}, expected {want!r}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_31(self) -> Self:
+        """
+        Axiom 31: HeatCallChannelBelongsToCircuit Every channel in DerivedChannels whose
+        Strategy is "heat-call" SHALL have InputChannelNames equal to [the
+        WhitewireChannelName of exactly one circuit in Hydronic.ZoneCallCircuits]. With
+        CircuitHeatCallChannel, the heat-call channels and the circuits are one to one.
+        """
+        whitewires = [
+            c.whitewire_channel_name for c in self.hydronic.zone_call_circuits
+        ]
+        for d in self.derived_channels or []:
+            if d.strategy != "heat-call":
+                continue
+            inputs = list(d.input_channel_names)
+            if len(inputs) != 1 or whitewires.count(inputs[0]) != 1:
+                raise ValueError(
+                    f"Axiom 31 (HeatCallChannelBelongsToCircuit) failed: heat-call channel "
+                    f"'{d.name}' has inputs {inputs}, not exactly one circuit's whitewire."
                 )
         return self

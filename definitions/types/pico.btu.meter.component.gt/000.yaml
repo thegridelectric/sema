@@ -19,8 +19,6 @@ properties:
       The device category this component is built on, an open
       pascal-case string.
 
-  Enabled:
-    type: boolean
 
   SerialNumber:
     type: string
@@ -109,7 +107,6 @@ properties:
 required:
   - ComponentId
   - DeviceType
-  - Enabled
   - SerialNumber
   - FlowChannelName
   - HotChannelName
@@ -135,7 +132,6 @@ examples:
     {
       "ComponentId": "7fc24a16-37e6-442b-83cb-9b5be5a3cce9",
       "DeviceType": "Gw101",
-      "Enabled": false,
       "SerialNumber": "example",
       "FlowChannelName": "scada",
       "HotChannelName": "scada",

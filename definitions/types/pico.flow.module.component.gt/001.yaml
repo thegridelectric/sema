@@ -39,8 +39,6 @@ properties:
   HwUid:
     type: string
 
-  Enabled:
-    type: boolean
 
   SerialNumber:
     type: string
@@ -126,7 +124,6 @@ properties:
 required:
   - ComponentId
   - DeviceType
-  - Enabled
   - SerialNumber
   - FlowNodeName
   - FlowMeterType
@@ -149,7 +146,6 @@ examples:
     {
       "ComponentId": "3702ecf7-32a5-4582-a073-13b8edc1154f",
       "DeviceType": "GridworksPicoFlowHall",
-      "Enabled": false,
       "SerialNumber": "example",
       "FlowNodeName": "scada",
       "FlowMeterType": "MakeModel",

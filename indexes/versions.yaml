@@ -904,9 +904,11 @@ types:
         summary: "Initial Sema version (flattened from the scada HubitatPollerComponentGt runtime)."
 
   hubitat.poller.gt:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "Enabled dropped: whether a device is polled is the layout's DisabledNodeNames, not a per-poller flag; Attributes are maker.api.attribute.gt:001. WebListenEnabled stays (it names the transport path)."
       "000":
         summary: "Initial Sema version (flattened from the scada HubitatPollerGt runtime)."
 
@@ -1172,9 +1174,11 @@ types:
         summary: "Initial Sema version"
 
   maker.api.attribute.gt:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "Enabled dropped: whether a channel is read is the layout's DisabledChannelNames, not a per-attribute flag. WebPollEnabled and WebListenEnabled stay (they name the transport path)."
       "000":
         summary: "Initial Sema version (flattened from the scada MakerAPIAttributeGt runtime; snake_case fields re-cased to CamelCase)."
 

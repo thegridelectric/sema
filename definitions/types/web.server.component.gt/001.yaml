@@ -24,8 +24,10 @@ properties:
     description: >
       The local HTTP server settings.
     properties:
-      Enabled:
+      Serve:
         type: boolean
+        description: >
+          Whether the scada runs this HTTP server.
       Host:
         type: string
       Name:
@@ -37,7 +39,7 @@ properties:
         description: >
           Free-form keyword arguments passed through to the server.
     required:
-      - Enabled
+      - Serve
       - Host
       - Name
       - Port
@@ -71,7 +73,7 @@ examples:
       "ComponentId": "f7dca1af-d89d-463d-b3ab-a1c1a4fec75b",
       "DeviceType": "AbstractWebServer",
       "WebServer": {
-        "Enabled": false,
+        "Serve": false,
         "Host": "example",
         "Name": "example",
         "Port": 0,

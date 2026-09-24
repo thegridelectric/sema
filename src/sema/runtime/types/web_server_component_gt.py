@@ -12,7 +12,7 @@ class WebServer(BaseModel):
         extra="forbid",
     )
 
-    enabled: bool
+    serve: bool
     host: str
     name: str
     port: StrictInt

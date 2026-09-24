@@ -17,7 +17,6 @@ class PicoBtuMeterComponentGt(SemaType):
 
     component_id: UUID4Str
     device_type: PascalCase
-    enabled: bool
     serial_number: str
     flow_channel_name: SpaceheatName
     hot_channel_name: SpaceheatName

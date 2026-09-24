@@ -1,0 +1,8 @@
+    def upgrade(self) -> "{{ maker_api_attribute_gt_001_class_name }}":
+        """
+        Enabled dropped: whether a channel is read is the layout's DisabledChannelNames, not a per-attribute flag. WebPollEnabled and WebListenEnabled stay (they name the transport path).
+        """
+        data = self.model_dump()
+        data.pop("enabled", None)
+        data["version"] = "001"
+        return {{ maker_api_attribute_gt_001_class_name }}.model_validate(data)

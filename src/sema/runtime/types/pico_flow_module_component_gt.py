@@ -17,7 +17,6 @@ class PicoFlowModuleComponentGt(SemaType):
     device_type: PascalCase
     display_name: str | None = None
     hw_uid: str | None = None
-    enabled: bool
     serial_number: str
     flow_node_name: SpaceheatName
     flow_meter_type: PascalCase

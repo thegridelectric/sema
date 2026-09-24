@@ -16,7 +16,6 @@ class PicoTankModuleComponentGt(SemaType):
     device_type: PascalCase
     display_name: str | None = None
     hw_uid: str | None = None
-    enabled: bool
     pico_hw_uid: str | None = None
     pico_a_hw_uid: str | None = None
     pico_b_hw_uid: str | None = None

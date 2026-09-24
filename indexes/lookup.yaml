@@ -595,9 +595,10 @@ types:
     versions:
       '000': definitions/types/hubitat.poller.component.gt/000.yaml
   hubitat.poller.gt:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/hubitat.poller.gt/001.yaml
       '000': definitions/types/hubitat.poller.gt/000.yaml
   i2c.bit.address:
     latest_version: '000'
@@ -761,9 +762,10 @@ types:
     versions:
       '000': definitions/types/machine.states/000.yaml
   maker.api.attribute.gt:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/maker.api.attribute.gt/001.yaml
       '000': definitions/types/maker.api.attribute.gt/000.yaml
   market.product:
     latest_version: '000'

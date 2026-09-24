@@ -254,6 +254,28 @@ def test_axiom_25_disabled_channel_name_must_resolve(vanilla: dict[str, Any]) ->
 
     reject(vanilla, mutate, "Axiom 25")
 
+def sensor_off_the_meter(d: dict[str, Any]) -> str:
+    """A node capturing channels that feed no transactive-power channel and
+    is not an actuator: the one a disabled-list test may disable without
+    tripping the transactive or actuator clauses."""
+    metered = {
+        n
+        for x in d["DerivedChannels"]
+        if x["Strategy"] == "transactive-power"
+        for n in x["InputChannelNames"]
+    }
+    actuators = {
+        n["Name"] for n in d["ShNodes"] if n["ActorClass"] in ("Relay", "ZeroTenOutputer")
+    }
+    captured: dict[str, set[str]] = {}
+    for c in d["DataChannels"]:
+        captured.setdefault(c["CapturedByNodeName"], set()).add(c["Name"])
+    return next(
+        node
+        for node, names in captured.items()
+        if not names & metered and node not in actuators
+    )
+
 
 def test_axiom_26_disabled_node_must_be_a_sensor(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
@@ -266,7 +288,7 @@ def test_axiom_26_disabled_sensor_disables_every_channel_it_captures(
     vanilla: dict[str, Any],
 ) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        sensor = d["DataChannels"][0]["CapturedByNodeName"]
+        sensor = sensor_off_the_meter(d)
         d["DisabledNodeNames"] = [sensor]
         d["DisabledChannelNames"] = []
 
@@ -277,7 +299,7 @@ def test_axiom_26_disabled_sensor_with_its_channels_disabled_is_accepted(
     vanilla: dict[str, Any],
 ) -> None:
     d = mutated(vanilla, lambda d: None)
-    sensor = d["DataChannels"][0]["CapturedByNodeName"]
+    sensor = sensor_off_the_meter(d)
     captured = [
         c["Name"] for c in d["DataChannels"] if c["CapturedByNodeName"] == sensor
     ]
@@ -295,7 +317,7 @@ def test_axiom_27_enabled_derived_channel_has_no_disabled_input(
     vanilla: dict[str, Any],
 ) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        derived = next(x for x in d["DerivedChannels"] if x.get("InputChannelNames"))
+        derived = next(x for x in d["DerivedChannels"] if x["Strategy"] == "heat-call")
         d["DisabledChannelNames"] = [derived["InputChannelNames"][0]]
 
     reject(vanilla, mutate, "Axiom 27")
@@ -401,3 +423,38 @@ def test_axiom_30_floating_actuator_declared_under_a_boss(
     vanilla: dict[str, Any],
 ) -> None:
     reject(vanilla, set_handle("store-pump-relay", "auto.lc.n.store-pump-relay"), "Axiom 30")
+
+
+def test_axiom_1_transactive_input_disabled(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledChannelNames"] = ["hp-odu-pwr"]
+
+    reject(vanilla, mutate, "Axiom 1")
+
+
+def test_axiom_26_disabled_actuator_node(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledNodeNames"] = ["store-pump-relay"]
+        d["DisabledChannelNames"] = ["store-pump-relay"]
+
+    reject(vanilla, mutate, "Axiom 26")
+
+
+def test_axiom_26_disabled_actuator_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledChannelNames"] = ["store-pump-relay"]
+
+    reject(vanilla, mutate, "Axiom 26")
+
+
+def test_axiom_31_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        stray = json.loads(json.dumps(
+            next(c for c in d["DerivedChannels"] if c["Strategy"] == "heat-call")
+        ))
+        stray["Name"] = "stray-heat-call"
+        stray["Id"] = "6f1e2d3c-4b5a-4c6d-8e9f-0a1b2c3d4e5f"
+        stray["InputChannelNames"] = ["hp-odu-pwr"]
+        d["DerivedChannels"].append(stray)
+
+    reject(vanilla, mutate, "Axiom 31")

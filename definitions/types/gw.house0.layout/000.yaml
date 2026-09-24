@@ -192,7 +192,8 @@ x-gridworks:
         the metered transactive boundary, computed by the power-meter actor (not the
         derived-generator). Each name in that channel's InputChannelNames SHALL resolve to an
         existing DataChannel with TelemetryName "PowerW", and the AboutNode of each such DataChannel
-        SHALL carry a NameplatePowerW. (The metered set is declared once here, replacing the former
+        SHALL carry a NameplatePowerW. No name in that channel's InputChannelNames SHALL be in
+        DisabledChannelNames. (The metered set is declared once here, replacing the former
         per-node InPowerMetering flag; the NameplatePowerW obligation folds in spaceheat.node.gt's
         retired InPowerMetering-requires-nameplate axiom.)
     - number: 7
@@ -383,8 +384,11 @@ x-gridworks:
       name: "DisabledNodesAreSensors"
       statement: >
         Every name in DisabledNodeNames SHALL be the CapturedByNodeName of at least one
-        DataChannel, and every DataChannel whose CapturedByNodeName is in DisabledNodeNames SHALL
-        have its Name in DisabledChannelNames.
+        DataChannel and SHALL NOT be the Name of an ShNode whose ActorClass is "Relay" or
+        "ZeroTenOutputer"; every DataChannel whose CapturedByNodeName is in DisabledNodeNames
+        SHALL have its Name in DisabledChannelNames; and no name in DisabledChannelNames SHALL be
+        the Name of a DataChannel whose CapturedByNodeName is such an ShNode. Disabling is a
+        sensing concept; an actuator is wired or absent.
     - number: 29
       name: "EnabledDerivedChannelsHaveLiveInputs"
       statement: >
@@ -436,3 +440,10 @@ x-gridworks:
           "hp-loop-keep-send-relay" → "auto.sieg-loop.hp-loop-keep-send-relay"
         Every other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
         effective handle "auto.<Name>".
+    - number: 34
+      name: "HeatCallChannelBelongsToCircuit"
+      statement: >
+        Every channel in DerivedChannels whose Strategy is "heat-call" SHALL have
+        InputChannelNames equal to [the WhitewireChannelName of exactly one circuit in
+        Hydronic.ZoneCallCircuits]. With CircuitHeatCallChannel, the heat-call channels and the
+        circuits are one to one.

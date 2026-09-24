@@ -23,8 +23,6 @@ properties:
   HwUid:
     type: string
 
-  Enabled:
-    type: boolean
 
   PicoHwUid:
     type: string
@@ -89,7 +87,6 @@ properties:
 required:
   - ComponentId
   - DeviceType
-  - Enabled
   - TempCalcMethod
   - ThermistorBeta
   - SendMicroVolts
@@ -108,7 +105,6 @@ examples:
     {
       "ComponentId": "b58df331-f649-4563-9e40-d3e500529679",
       "DeviceType": "GridworksTankModule3",
-      "Enabled": false,
       "TempCalcMethod": "SimpleBeta",
       "ThermistorBeta": 1,
       "SendMicroVolts": false,

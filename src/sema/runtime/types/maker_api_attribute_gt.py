@@ -7,7 +7,7 @@ from sema.runtime.property_format import SpaceheatName
 
 
 class MakerApiAttributeGt(SemaType):
-    """Sema: https://schemas.electricity.works/types/maker.api.attribute.gt/000"""
+    """Sema: https://schemas.electricity.works/types/maker.api.attribute.gt/001"""
 
     attribute_name: str
     channel_name: SpaceheatName
@@ -16,10 +16,9 @@ class MakerApiAttributeGt(SemaType):
     unit: SpaceheatUnit
     exponent: StrictInt
     interpret_as_number: bool
-    enabled: bool
     web_poll_enabled: bool
     web_listen_enabled: bool
     report_missing: bool
     report_parse_error: bool
     type_name: Literal["maker.api.attribute.gt"] = "maker.api.attribute.gt"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"

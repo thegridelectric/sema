@@ -1,0 +1,9 @@
+    def upgrade(self) -> "{{ hubitat_poller_gt_001_class_name }}":
+        """
+        Enabled dropped: whether a device is polled is the layout's DisabledNodeNames, not a per-poller flag; Attributes are maker.api.attribute.gt:001. WebListenEnabled stays (it names the transport path).
+        """
+        data = self.model_dump()
+        data.pop("enabled", None)
+        data["attributes"] = [a.upgrade().model_dump() for a in self.attributes]
+        data["version"] = "001"
+        return {{ hubitat_poller_gt_001_class_name }}.model_validate(data)

@@ -7,13 +7,12 @@ from sema.runtime.types.maker_api_attribute_gt import MakerApiAttributeGt
 
 
 class HubitatPollerGt(SemaType):
-    """Sema: https://schemas.electricity.works/types/hubitat.poller.gt/000"""
+    """Sema: https://schemas.electricity.works/types/hubitat.poller.gt/001"""
 
     hubitat_component_id: UUID4Str
     device_id: PositiveInt
     attributes: list[MakerApiAttributeGt]
-    enabled: bool
     web_listen_enabled: bool
     poll_period_seconds: StrictFloat
     type_name: Literal["hubitat.poller.gt"] = "hubitat.poller.gt"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
