@@ -158,10 +158,9 @@ class GwHouse0Layout(SemaType):
         of these Names SHALL exist: "n" → ActorClass "NoActor" "backup" → ActorClass
         "NoActor" "scada-blind" → ActorClass "NoActor" "five-v-boss" → ActorClass
         "FiveVBoss" "pico-cycler" → ActorClass "PicoCycler" "hp-boss" → ActorClass
-        "HpBoss" "sieg-loop" → ActorClass "SiegLoop" The effective handle of "n" SHALL
-        be "auto.lc.n". (A gw.house0.layout plant has a siegenthaler loop; whether the
-        loop is USED is operational, so sieg-loop and hp-boss are unconditional command
-        nodes, dormant when unused.)
+        "HpBoss" "sieg-loop" → ActorClass "SiegLoop" (A gw.house0.layout plant has a
+        siegenthaler loop; whether the loop is USED is operational, so sieg-loop and
+        hp-boss are unconditional command nodes, dormant when unused.)
         """
         if not self.sh_nodes:
             return self
@@ -184,13 +183,6 @@ class GwHouse0Layout(SemaType):
                     f"Axiom 3 (CommandNodesExistenceAndActorClass) failed: expected exactly one "
                     f"ShNode {name!r} with ActorClass {actor_class}."
                 )
-        n_node = nodes_by_name["n"][0]
-        effective = n_node.handle if n_node.handle is not None else n_node.name
-        if effective != "auto.lc.n":
-            raise ValueError(
-                f"Axiom 3 (CommandNodesExistenceAndActorClass) failed: 'n' effective handle is "
-                f"{effective!r}, expected 'auto.lc.n'."
-            )
         return self
 
     @model_validator(mode="after")
@@ -1203,5 +1195,50 @@ class GwHouse0Layout(SemaType):
                     "Axiom 32 (PrimaryPumpRecordAgreement) failed: PrimaryPumpOwner "
                     f"is Scada but record {r.device_type!r} ships its primary pump "
                     "inside the unit with no override."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_33(self) -> Self:
+        """
+        Axiom 33: CommandNodeHandles Let the effective handle of an ShNode be its Handle if
+        present, otherwise its Name. The authored tree is the plant with no one in charge:
+        "auto" is the root, the command nodes and every actuator hang directly under it, and a
+        fixed relay hangs under the interior node that owns it. The effective handles SHALL
+        be: "five-v-boss" → "auto.five-v-boss" "pico-cycler" → "auto.five-v-boss.pico-cycler"
+        "vdc-relay" → "auto.five-v-boss.pico-cycler.vdc-relay" "lc" → "auto.lc" "n" →
+        "auto.lc.n" "backup" → "auto.lc.backup" "scada-blind" → "auto.lc.scada-blind"
+        "hp-boss" → "auto.hp-boss" "hp-scada-ops-relay" → "auto.hp-boss.hp-scada-ops-relay"
+        "sieg-loop" → "auto.sieg-loop" "hp-loop-on-off-relay" →
+        "auto.sieg-loop.hp-loop-on-off-relay" "hp-loop-keep-send-relay" →
+        "auto.sieg-loop.hp-loop-keep-send-relay" Every other ShNode whose ActorClass is Relay
+        or ZeroTenOutputer SHALL have the effective handle "auto.<Name>".
+        """
+        expected = {
+            "five-v-boss": "auto.five-v-boss",
+            "pico-cycler": "auto.five-v-boss.pico-cycler",
+            "vdc-relay": "auto.five-v-boss.pico-cycler.vdc-relay",
+            "lc": "auto.lc",
+            "n": "auto.lc.n",
+            "backup": "auto.lc.backup",
+            "scada-blind": "auto.lc.scada-blind",
+            "hp-boss": "auto.hp-boss",
+            "hp-scada-ops-relay": "auto.hp-boss.hp-scada-ops-relay",
+            "sieg-loop": "auto.sieg-loop",
+            "hp-loop-on-off-relay": "auto.sieg-loop.hp-loop-on-off-relay",
+            "hp-loop-keep-send-relay": "auto.sieg-loop.hp-loop-keep-send-relay",
+        }
+        for n in self.sh_nodes or []:
+            effective = n.handle if n.handle is not None else n.name
+            if n.name in expected:
+                want = expected[n.name]
+            elif str(n.actor_class) in ("Relay", "ZeroTenOutputer"):
+                want = f"auto.{n.name}"
+            else:
+                continue
+            if effective != want:
+                raise ValueError(
+                    f"Axiom 33 (CommandNodeHandles) failed: {n.name!r} has effective "
+                    f"handle {effective!r}, expected {want!r}."
                 )
         return self

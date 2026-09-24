@@ -185,9 +185,8 @@ x-gridworks:
           "five-v-boss" → ActorClass "FiveVBoss"
           "pico-cycler" → ActorClass "PicoCycler"
           "hp-boss"     → ActorClass "HpBoss"
-        The effective handle of "n" SHALL be "auto.lc.n". (hp-boss is a command node in every
-        layout: hp-scada-ops-relay reports to it in all states, dormant when no heat pump is
-        commandable.)
+        (hp-boss is a command node in every layout: hp-scada-ops-relay reports to it in all
+        states, dormant when no heat pump is commandable.)
 
     - number: 5
       name: "RequiredActuators"
@@ -409,5 +408,23 @@ x-gridworks:
         no joined record SHALL have PrimaryPumpFactoryInstalled true with
         PrimaryPumpOverridable false: a pump that ships inside the unit and cannot be
         overridden is under the unit's control.
+    - number: 30
+      name: "CommandNodeHandles"
+      statement: >
+        Let the effective handle of an ShNode be its Handle if present, otherwise its
+        Name. The authored tree is the plant with no one in charge: "auto" is the root,
+        the command nodes and every actuator hang directly under it, and a fixed relay
+        hangs under the interior node that owns it. The effective handles SHALL be:
+          "five-v-boss"        → "auto.five-v-boss"
+          "pico-cycler"        → "auto.five-v-boss.pico-cycler"
+          "vdc-relay"          → "auto.five-v-boss.pico-cycler.vdc-relay"
+          "lc"                 → "auto.lc"
+          "n"                  → "auto.lc.n"
+          "backup"             → "auto.lc.backup"
+          "scada-blind"        → "auto.lc.scada-blind"
+          "hp-boss"            → "auto.hp-boss"
+          "hp-scada-ops-relay" → "auto.hp-boss.hp-scada-ops-relay"
+        Every other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
+        effective handle "auto.<Name>".
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

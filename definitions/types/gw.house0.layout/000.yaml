@@ -168,9 +168,9 @@ x-gridworks:
           "pico-cycler" → ActorClass "PicoCycler"
           "hp-boss"     → ActorClass "HpBoss"
           "sieg-loop"   → ActorClass "SiegLoop"
-        The effective handle of "n" SHALL be "auto.lc.n". (A gw.house0.layout plant has a
-        siegenthaler loop; whether the loop is USED is operational, so sieg-loop and hp-boss are
-        unconditional command nodes, dormant when unused.)
+        (A gw.house0.layout plant has a siegenthaler loop; whether the loop is USED is
+        operational, so sieg-loop and hp-boss are unconditional command nodes, dormant when
+        unused.)
     - number: 4
       name: "CircuitHeatCallChannel"
       statement: >
@@ -415,3 +415,24 @@ x-gridworks:
         If Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
         PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
         ships inside the unit and cannot be overridden is under the unit's control.
+    - number: 33
+      name: "CommandNodeHandles"
+      statement: >
+        Let the effective handle of an ShNode be its Handle if present, otherwise its
+        Name. The authored tree is the plant with no one in charge: "auto" is the root,
+        the command nodes and every actuator hang directly under it, and a fixed relay
+        hangs under the interior node that owns it. The effective handles SHALL be:
+          "five-v-boss"             → "auto.five-v-boss"
+          "pico-cycler"             → "auto.five-v-boss.pico-cycler"
+          "vdc-relay"               → "auto.five-v-boss.pico-cycler.vdc-relay"
+          "lc"                      → "auto.lc"
+          "n"                       → "auto.lc.n"
+          "backup"                  → "auto.lc.backup"
+          "scada-blind"             → "auto.lc.scada-blind"
+          "hp-boss"                 → "auto.hp-boss"
+          "hp-scada-ops-relay"      → "auto.hp-boss.hp-scada-ops-relay"
+          "sieg-loop"               → "auto.sieg-loop"
+          "hp-loop-on-off-relay"    → "auto.sieg-loop.hp-loop-on-off-relay"
+          "hp-loop-keep-send-relay" → "auto.sieg-loop.hp-loop-keep-send-relay"
+        Every other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
+        effective handle "auto.<Name>".

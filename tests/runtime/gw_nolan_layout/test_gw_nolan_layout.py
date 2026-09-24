@@ -373,3 +373,31 @@ def test_axiom_29_scada_control_with_an_overridable_control_box_is_accepted(
         box["PrimaryPumpOverridable"] = True
 
     GwNolanLayout.model_validate(mutated(vanilla, mutate))
+
+
+def set_handle(name: str, handle: str) -> Callable[[dict[str, Any]], None]:
+    def mutate(d: dict[str, Any]) -> None:
+        next(n for n in d["ShNodes"] if n["Name"] == name)["Handle"] = handle
+
+    return mutate
+
+
+def test_axiom_30_command_node_declared_under_lc(vanilla: dict[str, Any]) -> None:
+    """hp-boss and its relay move together so the tree stays prefix-closed
+    and the handle axiom is the one that rejects."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        set_handle("hp-boss", "auto.lc.n.hp-boss")(d)
+        set_handle("hp-scada-ops-relay", "auto.lc.n.hp-boss.hp-scada-ops-relay")(d)
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_fixed_relay_declared_flat(vanilla: dict[str, Any]) -> None:
+    reject(vanilla, set_handle("hp-scada-ops-relay", "auto.hp-scada-ops-relay"), "Axiom 30")
+
+
+def test_axiom_30_floating_actuator_declared_under_a_boss(
+    vanilla: dict[str, Any],
+) -> None:
+    reject(vanilla, set_handle("store-pump-relay", "auto.lc.n.store-pump-relay"), "Axiom 30")
