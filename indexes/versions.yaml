@@ -2046,6 +2046,12 @@ enums:
     versions:
       "000": {}
 
+  move.sieg.valve:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
   pico.board.variant:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
@@ -2095,6 +2101,12 @@ enums:
       "000": {}
 
   setpoint.phase:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  sieg.valve.state:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

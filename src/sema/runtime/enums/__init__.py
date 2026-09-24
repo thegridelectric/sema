@@ -69,6 +69,7 @@ from sema.runtime.enums.log_level import LogLevel
 from sema.runtime.enums.market_price_unit import MarketPriceUnit
 from sema.runtime.enums.market_quantity_unit import MarketQuantityUnit
 from sema.runtime.enums.market_type_name import MarketTypeName
+from sema.runtime.enums.move_sieg_valve import MoveSiegValve
 from sema.runtime.enums.pico_board_variant import PicoBoardVariant
 from sema.runtime.enums.pico_cycler_event import PicoCyclerEvent
 from sema.runtime.enums.pico_cycler_state import PicoCyclerState
@@ -78,6 +79,7 @@ from sema.runtime.enums.relay_energization_state import RelayEnergizationState
 from sema.runtime.enums.relay_open_or_closed import RelayOpenOrClosed
 from sema.runtime.enums.relay_wiring_config import RelayWiringConfig
 from sema.runtime.enums.setpoint_phase import SetpointPhase
+from sema.runtime.enums.sieg_valve_state import SiegValveState
 from sema.runtime.enums.single_pico_state import SinglePicoState
 from sema.runtime.enums.spaceheat_make_model import SpaceheatMakeModel
 from sema.runtime.enums.spaceheat_telemetry_name import SpaceheatTelemetryName
@@ -160,6 +162,7 @@ __all__ = [
     "MarketPriceUnit",
     "MarketQuantityUnit",
     "MarketTypeName",
+    "MoveSiegValve",
     "PicoBoardVariant",
     "PicoCyclerEvent",
     "PicoCyclerState",
@@ -169,6 +172,7 @@ __all__ = [
     "RelayOpenOrClosed",
     "RelayWiringConfig",
     "SetpointPhase",
+    "SiegValveState",
     "SinglePicoState",
     "SpaceheatMakeModel",
     "SpaceheatTelemetryName",

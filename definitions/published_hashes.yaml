@@ -136,6 +136,10 @@ enums:
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
+  sieg.valve.state:
+    '000': sha256:a15ac7e95f0468db55349f3095eff25c5dbcbd0fd2fdedc5e86490295ce3b83a
+  move.sieg.valve:
+    '000': sha256:d029532070abe9c9193b1524370632ff3cb675dbb15a55fe489f45f89a380877
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
