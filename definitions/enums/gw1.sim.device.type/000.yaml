@@ -11,14 +11,12 @@ description: >
   talks to gets a non-descript value.
 enum:
   - "SimSensor"
-  - "SimRelayBank"
   - "SimPowerMeter"
   - "SimGw108"
   - "SimSamsungAE055FEYMCG"
   - "SimHpOdu"
   - "SimHpIdu"
   - "SimKridaDoubleRelayBoard16"
-  - "SimDac"
 default: "SimSensor"
 x-gridworks:
   owner: "gridworks-energy"
@@ -27,9 +25,6 @@ x-gridworks:
     "SimSensor": >
       GridWorks simulated sensor — the SimSensorActor's device type; fully configured from
       its Component ConfigList. (was gw1.device.type GridworksSimSensor)
-    "SimRelayBank": >
-      GridWorks simulated relay bank — the SimRelayActor's device type. (was
-      gw1.device.type GridworksSimRelayBank)
     "SimPowerMeter": >
       GridWorks simulated power meter. (was gw1.device.type GridworksSimPowerMeter;
       originally MakeModel GRIDWORKS__SIMPM1)
@@ -53,6 +48,3 @@ x-gridworks:
       KridaDoubleRelayBoard16. Carries the same board record shape
       (gw1.scada.device.type.gt), so expander and relay address resolution runs
       unchanged against simulated PCF8575 ports.
-    "SimDac": >
-      GridWorks simulated DAC — the device type of a standalone simulated DAC writer
-      component.

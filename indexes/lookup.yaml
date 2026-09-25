@@ -884,11 +884,6 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/setpoint.belief/000.yaml
-  sim.dac.writer.component.gt:
-    latest_version: '000'
-    versioning_strategy: literal
-    versions:
-      '000': definitions/types/sim.dac.writer.component.gt/000.yaml
   sim.pico.btu.meter.component.gt:
     latest_version: '000'
     versioning_strategy: literal
@@ -920,11 +915,6 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/sim.ready/000.yaml
-  sim.relay.component.gt:
-    latest_version: '000'
-    versioning_strategy: literal
-    versions:
-      '000': definitions/types/sim.relay.component.gt/000.yaml
   sim.sensor.component.gt:
     latest_version: '000'
     versioning_strategy: literal

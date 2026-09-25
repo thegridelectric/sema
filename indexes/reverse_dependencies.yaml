@@ -358,7 +358,6 @@ types:
     '000':
       used_by:
       - i2c.dac.writer.component.gt:000
-      - sim.dac.writer.component.gt:000
   i2c.dac.output.component.gt:
     '000':
       used_by:
@@ -511,7 +510,6 @@ types:
       used_by:
       - gw108.vdc.relay.component.gt:001
       - i2c.multichannel.dt.relay.component.gt:004
-      - sim.relay.component.gt:000
   relay.control.config:
     '000':
       used_by:
@@ -1276,11 +1274,9 @@ formats:
     - pico.flow.module.component.gt:001
     - pico.tank.module.component.gt:012
     - scada.board.component.gt:000
-    - sim.dac.writer.component.gt:000
     - sim.pico.btu.meter.component.gt:000
     - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
-    - sim.relay.component.gt:000
     - sim.sensor.component.gt:000
     - web.server.component.gt:001
   positive.float:
@@ -1728,13 +1724,11 @@ formats:
     - scada.params:002
     - scada.params:004
     - scada.params:005
-    - sim.dac.writer.component.gt:000
     - sim.pico.btu.meter.component.gt:000
     - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
     - sim.ready:000
-    - sim.relay.component.gt:000
     - sim.sensor.component.gt:000
     - sim.timestep:000
     - slow.contract.rejection:000

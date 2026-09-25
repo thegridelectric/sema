@@ -162,4 +162,4 @@ x-gridworks:
     reboots after a vdc power cycle) so the pico-cycler loop can be exercised
     on a simulated layout.
 
-    Simulates `pico.tank.module.component.gt`. Kin: `sim.relay.component.gt`. Kin: `sim.sensor.component.gt`.
+    Simulates `pico.tank.module.component.gt`. Kin: `sim.sensor.component.gt`.

@@ -1396,13 +1396,6 @@ types:
       "000":
         summary: "Belief pair (Phase, optional ValueF); UnknownIsValueless axiom ties value presence to phase."
 
-  sim.dac.writer.component.gt:
-    latest_version: "000"
-    versioning_strategy: "literal"
-    versions:
-      "000":
-        summary: "Initial Sema version (sim-marker DAC-writer component for simulated layouts; structurally i2c.dac.writer.component.gt minus board residency)."
-
   sim.pico.btu.meter.component.gt:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -1446,13 +1439,6 @@ types:
     versions:
       "000":
         summary: "Initial Sema version."
-
-  sim.relay.component.gt:
-    latest_version: "000"
-    versioning_strategy: "literal"
-    versions:
-      "000":
-        summary: "Initial Sema version (sim-marker relay component for simulated layouts)."
 
   sim.sensor.component.gt:
     latest_version: "000"

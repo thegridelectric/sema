@@ -7,14 +7,12 @@ class Gw1SimDeviceType(SemaEnum):
     """Sema: https://schemas.electricity.works/enums/gw1.sim.device.type/000"""
 
     SimSensor = auto()
-    SimRelayBank = auto()
     SimPowerMeter = auto()
     SimGw108 = auto()
     SimSamsungAE055FEYMCG = auto()
     SimHpOdu = auto()
     SimHpIdu = auto()
     SimKridaDoubleRelayBoard16 = auto()
-    SimDac = auto()
 
     @classmethod
     def default(cls) -> "Gw1SimDeviceType":
