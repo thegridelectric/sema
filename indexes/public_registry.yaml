@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-24T22:45:00Z'
+  last_updated: '2026-09-25T17:10:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -955,6 +955,18 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/setpoint.phase/000
         created: '2026-08-11T15:55:00Z'
+        status: staging
+  sieg.loop.strategy:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'How the sieg-loop drives the Siegenthaler valve while the tree is
+      in automatic hands: hold full send, protect stratification only, or control
+      leaving-water temperature.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/sieg.loop.strategy/000
+        created: '2026-09-25T17:10:00Z'
         status: staging
   sieg.valve.state:
     latest_version: '000'
@@ -2772,13 +2784,14 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.family.params/000
-        created: '2026-09-17T23:45:00Z'
+        created: '2026-09-25T17:10:00Z'
         status: staging
-        summary: 'Initial version: UseSiegLoop, KeepBufferFull, SeasonalStorageMode.
+        summary: 'Initial version: SiegLoopStrategy, KeepBufferFull, SeasonalStorageMode.
           All required.'
         direct_dependencies:
           structural:
           - gw1.seasonal.storage.mode:000
+          - sieg.loop.strategy:000
   gw.house0.layout:
     latest_version: '000'
     owner: gridworks-energy
@@ -2851,9 +2864,9 @@ types:
           PrimaryFlowSource (gw.primary.flow.source), Strategy. Axioms: Cardinality,
           CircuitResolution. The Siegenthaler-loop flags left this word: plumbed-ness
           is what a has-sieg layout word means, and use is operational (gw.house0.family.params
-          UseSiegLoop). - HpCommandNodeName (optional spaceheat.name): the node that
-          takes heat-pump commands under hp-boss; absent = nothing commands the heat
-          pump. The layout words'' CommandableHeatPump axiom governs it. - Strategy
+          SiegLoopStrategy). - HpCommandNodeName (optional spaceheat.name): the node
+          that takes heat-pump commands under hp-boss; absent = nothing commands the
+          heat pump. The layout words'' CommandableHeatPump axiom governs it. - Strategy
           dropped: the control family is the layout word''s own TypeName (invariant
           per word, so not a data field; the same rule that retired SiegLoopPlumbed).
           - TotalStoreTanks may be zero (a store that is not water tanks); the Cardinality
@@ -2962,7 +2975,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-09-17T23:45:00Z'
+        created: '2026-09-25T17:10:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\

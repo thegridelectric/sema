@@ -960,6 +960,10 @@ enums:
     '000':
       used_by:
       - setpoint.belief:000
+  sieg.loop.strategy:
+    '000':
+      used_by:
+      - gw.house0.family.params:000
   spaceheat.make.model:
     '007':
       used_by:

@@ -583,7 +583,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version: UseSiegLoop, KeepBufferFull, SeasonalStorageMode. All required."
+        summary: "Initial version: SiegLoopStrategy, KeepBufferFull, SeasonalStorageMode. All required."
 
   gw.house0.layout:
     latest_version: "000"
@@ -598,7 +598,7 @@ types:
     versions:
       "000":
         summary: >
-          - Typed hydronic block promoted out of gw.house0.layout's freeform Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit list, required: every layout word requires it non-empty), TotalStoreTanks, PrimaryFlowSource (gw.primary.flow.source), Strategy. Axioms: Cardinality, CircuitResolution. The Siegenthaler-loop flags left this word: plumbed-ness is what a has-sieg layout word means, and use is operational (gw.house0.family.params UseSiegLoop).
+          - Typed hydronic block promoted out of gw.house0.layout's freeform Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit list, required: every layout word requires it non-empty), TotalStoreTanks, PrimaryFlowSource (gw.primary.flow.source), Strategy. Axioms: Cardinality, CircuitResolution. The Siegenthaler-loop flags left this word: plumbed-ness is what a has-sieg layout word means, and use is operational (gw.house0.family.params SiegLoopStrategy).
           - HpCommandNodeName (optional spaceheat.name): the node that takes heat-pump commands under hp-boss; absent = nothing commands the heat pump. The layout words' CommandableHeatPump axiom governs it.
           - Strategy dropped: the control family is the layout word's own TypeName (invariant per word, so not a data field; the same rule that retired SiegLoopPlumbed).
           - TotalStoreTanks may be zero (a store that is not water tanks); the Cardinality axiom keeps only the upper bound of 6.
@@ -2091,6 +2091,12 @@ enums:
       "000": {}
 
   setpoint.phase:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  sieg.loop.strategy:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

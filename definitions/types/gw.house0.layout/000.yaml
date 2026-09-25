@@ -168,9 +168,8 @@ x-gridworks:
           "pico-cycler" → ActorClass "PicoCycler"
           "hp-boss"     → ActorClass "HpBoss"
           "sieg-loop"   → ActorClass "SiegLoop"
-        (A gw.house0.layout plant has a siegenthaler loop; whether the loop is USED is
-        operational, so sieg-loop and hp-boss are unconditional command nodes, dormant when
-        unused.)
+        (A gw.house0.layout plant has a siegenthaler loop; how the loop drives its valve
+        is operational, so sieg-loop and hp-boss are unconditional command nodes.)
     - number: 4
       name: "CircuitHeatCallChannel"
       statement: >

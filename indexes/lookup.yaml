@@ -1374,6 +1374,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/setpoint.phase/000.yaml
+  sieg.loop.strategy:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/sieg.loop.strategy/000.yaml
   sieg.valve.state:
     enum_type: versioned
     latest_version: '000'

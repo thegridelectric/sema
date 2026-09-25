@@ -132,7 +132,7 @@ examples:
     {
       "ScadaAlias": "hw1.isone.me.versant.keene.beech.scada",
       "FamilyParams": {
-        "UseSiegLoop": true,
+        "SiegLoopStrategy": "StratProtect",
         "KeepBufferFull": false,
         "SeasonalStorageMode": "AllTanks",
         "TypeName": "gw.house0.family.params",

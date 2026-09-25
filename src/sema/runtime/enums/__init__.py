@@ -79,6 +79,7 @@ from sema.runtime.enums.relay_energization_state import RelayEnergizationState
 from sema.runtime.enums.relay_open_or_closed import RelayOpenOrClosed
 from sema.runtime.enums.relay_wiring_config import RelayWiringConfig
 from sema.runtime.enums.setpoint_phase import SetpointPhase
+from sema.runtime.enums.sieg_loop_strategy import SiegLoopStrategy
 from sema.runtime.enums.sieg_valve_state import SiegValveState
 from sema.runtime.enums.single_pico_state import SinglePicoState
 from sema.runtime.enums.spaceheat_make_model import SpaceheatMakeModel
@@ -172,6 +173,7 @@ __all__ = [
     "RelayOpenOrClosed",
     "RelayWiringConfig",
     "SetpointPhase",
+    "SiegLoopStrategy",
     "SiegValveState",
     "SinglePicoState",
     "SpaceheatMakeModel",

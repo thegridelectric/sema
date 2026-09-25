@@ -916,6 +916,7 @@ types:
     '000':
       enums:
       - gw1.seasonal.storage.mode:000
+      - sieg.loop.strategy:000
       formats: []
       types: []
       versionless_types: []
@@ -1150,6 +1151,7 @@ types:
       - gw1.actuation.authority:000
       - gw1.seasonal.storage.mode:000
       - gw1.service.mode:000
+      - sieg.loop.strategy:000
       formats:
       - hh.mm
       - iana.timezone.str

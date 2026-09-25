@@ -77,8 +77,8 @@
         "NoActor" "scada-blind" → ActorClass "NoActor" "five-v-boss" → ActorClass
         "FiveVBoss" "pico-cycler" → ActorClass "PicoCycler" "hp-boss" → ActorClass
         "HpBoss" "sieg-loop" → ActorClass "SiegLoop" (A gw.house0.layout plant has a
-        siegenthaler loop; whether the loop is USED is operational, so sieg-loop and
-        hp-boss are unconditional command nodes, dormant when unused.)
+        siegenthaler loop; how the loop drives its valve is operational, so sieg-loop and
+        hp-boss are unconditional command nodes.)
         """
         if not self.sh_nodes:
             return self

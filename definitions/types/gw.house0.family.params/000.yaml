@@ -9,11 +9,11 @@ description: >
   Siegenthaler loop, a buffer tank, and water store tanks.
 
 properties:
-  UseSiegLoop:
-    type: boolean
+  SiegLoopStrategy:
+    $ref: "https://schemas.electricity.works/enums/sieg.loop.strategy/000"
     description: >
-      True when the scada runs the Siegenthaler loop control; false leaves
-      the loop unmanaged by the scada.
+      How the sieg-loop drives the Siegenthaler valve while the tree is in
+      automatic hands.
 
   KeepBufferFull:
     type: boolean
@@ -40,7 +40,7 @@ properties:
     const: "000"
 
 required:
-  - UseSiegLoop
+  - SiegLoopStrategy
   - KeepBufferFull
   - SeasonalStorageMode
   - TypeName
@@ -51,7 +51,7 @@ additionalProperties: false
 examples:
   - |
     {
-      "UseSiegLoop": true,
+      "SiegLoopStrategy": "StratProtect",
       "KeepBufferFull": false,
       "SeasonalStorageMode": "AllTanks",
       "TypeName": "gw.house0.family.params",
