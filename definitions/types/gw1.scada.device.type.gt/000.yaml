@@ -240,6 +240,12 @@ x-gridworks:
       name: "RelayEnergizedLevelRange"
       statement: >
         RelayEnergizedLevel SHALL be 0 or 1.
+    - number: 6
+      name: "SingleBus"
+      statement: >
+        BusList SHALL have exactly one entry: a scada process drives one bus,
+        and the bus actor opens that entry's adapter. (Retired by the
+        multi-bus work, which replaces this axiom with per-bus binding.)
   extended_description: >
     Various hardware layouts enforce membership in `gw1.device.type` for the
     DeviceType (e.g. `Gw108RevB`, `KridaDoubleRelayBoard16`). The relay drive

@@ -1,0 +1,50 @@
+{
+  "DeviceType": "GridworksScadaGw108",
+  "SupportsPinReadback": true,
+  "RelayEnergizedLevel": 1,
+  "BusList": [
+    {
+      "Name": "DefaultBus",
+      "BusNumber": 1,
+      "TypeName": "i2c.bus",
+      "Version": "000"
+    },
+    {
+      "Name": "SecondBus",
+      "BusNumber": 3,
+      "TypeName": "i2c.bus",
+      "Version": "000"
+    }
+  ],
+  "Expanders": [
+    {
+      "ExpanderIdx": 1,
+      "I2cBus": "DefaultBus",
+      "ExpanderType": "Pcf8575",
+      "I2cAddress": 32,
+      "TypeName": "i2c.expander",
+      "Version": "000"
+    }
+  ],
+  "I2cRelays": [
+    {
+      "RelayName": "BufferTop",
+      "ExpanderIdx": 1,
+      "RegisterIndex": 2,
+      "BitIndex": 1,
+      "SupportedWiringConfigs": [
+        "NormallyOpen"
+      ],
+      "TypeName": "i2c.relay.capability",
+      "Version": "000"
+    }
+  ],
+  "TelemetryNameList": [],
+  "NativeGpioInputs": [],
+  "NativeGpioOutputs": [],
+  "Muxes": [],
+  "ThermistorAdcs": [],
+  "Dacs": [],
+  "TypeName": "gw1.scada.device.type.gt",
+  "Version": "000"
+}

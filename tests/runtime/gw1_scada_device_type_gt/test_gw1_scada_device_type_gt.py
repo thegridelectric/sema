@@ -50,3 +50,9 @@ def test_axiom_5_catches_energized_level_out_of_range() -> None:
     payload = json.loads((FIX / "axiom_5.json").read_text())
     with pytest.raises(SemaError, match="Axiom 5"):
         default_codec.from_dict(payload)
+
+
+def test_axiom_6_catches_two_buses() -> None:
+    payload = json.loads((FIX / "axiom_6.json").read_text())
+    with pytest.raises(SemaError, match="SingleBus"):
+        default_codec.from_dict(payload)

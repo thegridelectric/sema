@@ -156,3 +156,18 @@ class Gw1ScadaDeviceTypeGt(SemaType):
                 f"{self.relay_energized_level} must be 0 or 1."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> "Gw1ScadaDeviceTypeGt":
+        """
+        Axiom 6: SingleBus
+        BusList SHALL have exactly one entry: a scada process drives one bus,
+        and the bus actor opens that entry's adapter. (Retired by the
+        multi-bus work, which replaces this axiom with per-bus binding.)
+        """
+        if len(self.bus_list) != 1:
+            raise ValueError(
+                "Axiom 6 (SingleBus) failed: BusList declares "
+                f"{len(self.bus_list)} buses; exactly one is required."
+            )
+        return self
