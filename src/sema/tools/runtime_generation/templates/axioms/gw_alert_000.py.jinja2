@@ -1,13 +1,13 @@
     @staticmethod
     def kind_enum_for(
-        category: GwAlertCategory,
-    ) -> type[GwHouseAlertKind] | type[GwFleetAlertKind] | type[GwPlatformAlertKind] | None:
+        category: {{ gw_alert_category_000_class_name }},
+    ) -> type[{{ gw_house_alert_kind_000_class_name }}] | type[{{ gw_fleet_alert_kind_000_class_name }}] | type[{{ gw_platform_alert_kind_000_class_name }}] | None:
         """The kind enum a Category selects; None for a category this
         version does not know."""
         return {
-            GwAlertCategory.House: GwHouseAlertKind,
-            GwAlertCategory.Fleet: GwFleetAlertKind,
-            GwAlertCategory.PlatformService: GwPlatformAlertKind,
+            {{ gw_alert_category_000_class_name }}.House: {{ gw_house_alert_kind_000_class_name }},
+            {{ gw_alert_category_000_class_name }}.Fleet: {{ gw_fleet_alert_kind_000_class_name }},
+            {{ gw_alert_category_000_class_name }}.PlatformService: {{ gw_platform_alert_kind_000_class_name }},
         }.get(category)
 
     @model_validator(mode="before")
@@ -26,13 +26,13 @@
         kind_key = "Kind" if "Kind" in data else "kind"
         if category_key not in data or kind_key not in data:
             return data
-        kind_enum = cls.kind_enum_for(GwAlertCategory(str(data[category_key])))
+        kind_enum = cls.kind_enum_for({{ gw_alert_category_000_class_name }}(str(data[category_key])))
         if kind_enum is None:
             return data
         value = str(data[kind_key])
         elsewhere = {
             v
-            for other in (GwHouseAlertKind, GwFleetAlertKind, GwPlatformAlertKind)
+            for other in ({{ gw_house_alert_kind_000_class_name }}, {{ gw_fleet_alert_kind_000_class_name }}, {{ gw_platform_alert_kind_000_class_name }})
             if other is not kind_enum
             for v in other.values()
         }
@@ -68,7 +68,7 @@
         present, it SHALL identify a TerminalAsset and therefore SHALL end with the suffix
         ".ta".
         """
-        if self.category == GwAlertCategory.House and self.about_g_node_alias is None:
+        if self.category == {{ gw_alert_category_000_class_name }}.House and self.about_g_node_alias is None:
             raise ValueError("HouseSubject: Category House requires AboutGNodeAlias.")
         if self.about_g_node_alias is not None and not self.about_g_node_alias.endswith(".ta"):
             raise ValueError(
@@ -83,8 +83,8 @@
         a. If State is Resolved, ResolvedMs SHALL be present. b. If State is Firing,
         ResolvedMs SHALL be absent.
         """
-        if self.state == GwAlertState.Resolved and self.resolved_ms is None:
+        if self.state == {{ gw_alert_state_000_class_name }}.Resolved and self.resolved_ms is None:
             raise ValueError("ResolvedTime: State Resolved requires ResolvedMs.")
-        if self.state == GwAlertState.Firing and self.resolved_ms is not None:
+        if self.state == {{ gw_alert_state_000_class_name }}.Firing and self.resolved_ms is not None:
             raise ValueError("ResolvedTime: State Firing forbids ResolvedMs.")
         return self
