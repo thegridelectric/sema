@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-09-25T17:10:00Z"
+  last_updated: "2026-09-28T17:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -923,12 +923,18 @@ enums:
         status: "published"
 
   move.sieg.valve:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     enum_type: "versioned"
-    description: "The sieg-loop's command vocabulary: send the heat pump's whole flow out of the Siegenthaler loop, or keep it all in."
+    description: "The sieg-loop's command vocabulary: send the heat pump's whole flow out of the Siegenthaler loop, or keep it all in, or stop where it is."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/enums/move.sieg.valve/001"
+        created: "2026-09-28T17:30:00Z"
+        status: "staging"
+        added_values:
+          - "StopValve"
       "000":
         schema_url: "https://schemas.electricity.works/enums/move.sieg.valve/000"
         created: "2026-09-24T21:45:00Z"

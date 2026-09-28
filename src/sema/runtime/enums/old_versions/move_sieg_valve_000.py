@@ -3,15 +3,14 @@ from enum import auto
 from sema.runtime.enums.gw_str_enum import SemaEnum
 
 
-class MoveSiegValve(SemaEnum):
-    """Sema: https://schemas.electricity.works/enums/move.sieg.valve/001"""
+class MoveSiegValve000(SemaEnum):
+    """Sema: https://schemas.electricity.works/enums/move.sieg.valve/000"""
 
     MoveToFullSend = auto()
     MoveToFullKeep = auto()
-    StopValve = auto()
 
     @classmethod
-    def default(cls) -> "MoveSiegValve":
+    def default(cls) -> "MoveSiegValve000":
         return cls.MoveToFullSend
 
     @classmethod
@@ -24,4 +23,4 @@ class MoveSiegValve(SemaEnum):
 
     @classmethod
     def enum_version(cls) -> str:
-        return "001"
+        return "000"

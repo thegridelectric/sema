@@ -2040,6 +2040,9 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "001":
+        added_values:
+          - "StopValve"
       "000": {}
 
   pico.board.variant:

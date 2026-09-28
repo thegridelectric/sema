@@ -1334,8 +1334,9 @@ enums:
       '000': definitions/enums/market.type.name/000.yaml
   move.sieg.valve:
     enum_type: versioned
-    latest_version: '000'
+    latest_version: '001'
     versions:
+      '001': definitions/enums/move.sieg.valve/001.yaml
       '000': definitions/enums/move.sieg.valve/000.yaml
   pico.board.variant:
     enum_type: versioned
