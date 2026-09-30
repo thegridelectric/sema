@@ -54,14 +54,3 @@
                 raise ValueError("Axiom 4 failed: derived channel created_by_node_name must reference an active node.")
         return self
 
-    @model_validator(mode="after")
-    def check_axiom_5(self) -> "{{ layout_lite_013_class_name }}":
-        """
-        Axiom 5: RefusalReasonPresence
-        DispatchRefusalReason SHALL be present if and only if AcceptsDispatch is false.
-        """
-        if self.accepts_dispatch and self.dispatch_refusal_reason is not None:
-            raise ValueError("Axiom 5 failed: AcceptsDispatch true forbids DispatchRefusalReason.")
-        if not self.accepts_dispatch and self.dispatch_refusal_reason is None:
-            raise ValueError("Axiom 5 failed: AcceptsDispatch false requires DispatchRefusalReason.")
-        return self

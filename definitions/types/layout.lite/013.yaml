@@ -38,28 +38,6 @@ properties:
       gw.house0.layout or gw.nolan.layout): the layout family every consumer
       of this projection branches on.
 
-  AcceptsDispatch:
-    type: boolean
-    description: >
-      Whether the running scada takes dispatch contracts; the LTN sends
-      no bids and runs no FLO while false.
-
-  DispatchRefusalReason:
-    $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
-    description: >
-      Why AcceptsDispatch is false.
-
-  ServiceMode:
-    $ref: "https://schemas.electricity.works/enums/gw1.service.mode/000"
-    description: >
-      The thermal service the running scada provides; the LTN offers
-      heating contracts only while it is Heating.
-
-  SeasonalStorageMode:
-    $ref: "https://schemas.electricity.works/enums/gw1.seasonal.storage.mode/000"
-    description: >
-      Active seasonal storage mode for the running SCADA deployment.
-
   KeepBufferFull:
     type: boolean
     description: >
@@ -150,9 +128,6 @@ required:
   - MessageCreatedMs
   - MessageId
   - HardwareLayoutTypeName
-  - AcceptsDispatch
-  - ServiceMode
-  - SeasonalStorageMode
   - KeepBufferFull
   - ZoneList
   - CriticalZoneList
@@ -195,12 +170,6 @@ x-gridworks:
       statement: >
         Every DerivedChannels.CreatedByNodeName SHALL reference an existing
         ShNodes.Name whose ActorClass is active.
-
-    - number: 5
-      name: "RefusalReasonPresence"
-      statement: >
-        DispatchRefusalReason SHALL be present if and only if
-        AcceptsDispatch is false.
 
   extended_description: >
     `layout.lite` is the SCADA-emitted semantic context for a running

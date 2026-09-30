@@ -1,9 +1,6 @@
 from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums import Gw1SeasonalStorageMode
-from sema.runtime.enums import Gw1ServiceMode
-from sema.runtime.enums import GwDispatchRefusalReason
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UTCMilliseconds
@@ -32,10 +29,6 @@ class LayoutLite(SemaType):
     message_created_ms: UTCMilliseconds
     message_id: UUID4Str
     hardware_layout_type_name: LeftRightDot
-    accepts_dispatch: bool
-    dispatch_refusal_reason: GwDispatchRefusalReason | None = None
-    service_mode: Gw1ServiceMode
-    seasonal_storage_mode: Gw1SeasonalStorageMode
     keep_buffer_full: bool
     zone_list: list[str]
     critical_zone_list: list[str]
@@ -124,20 +117,4 @@ class LayoutLite(SemaType):
                 raise ValueError(
                     "Axiom 4 failed: derived channel created_by_node_name must reference an active node."
                 )
-        return self
-
-    @model_validator(mode="after")
-    def check_axiom_5(self) -> "LayoutLite":
-        """
-        Axiom 5: RefusalReasonPresence
-        DispatchRefusalReason SHALL be present if and only if AcceptsDispatch is false.
-        """
-        if self.accepts_dispatch and self.dispatch_refusal_reason is not None:
-            raise ValueError(
-                "Axiom 5 failed: AcceptsDispatch true forbids DispatchRefusalReason."
-            )
-        if not self.accepts_dispatch and self.dispatch_refusal_reason is None:
-            raise ValueError(
-                "Axiom 5 failed: AcceptsDispatch false requires DispatchRefusalReason."
-            )
         return self

@@ -2364,12 +2364,9 @@ types:
       enums:
       - change.relay.state:000
       - gpm.from.hz.method:000
-      - gw.dispatch.refusal.reason:000
       - gw1.actor.class:014
       - gw1.emission.method:000
       - gw1.quantity:000
-      - gw1.seasonal.storage.mode:000
-      - gw1.service.mode:000
       - gw1.unit:000
       - hz.calc.method:001
       - pico.board.variant:000

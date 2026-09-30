@@ -121,7 +121,10 @@ def test_snapshot_prepare_and_build_write_sema_at_output_root(
         "from gjk.sema.enums.seasonal_storage_mode import SeasonalStorageMode"
         in enum_init
     )
-    assert "from gjk.sema.enums import SeasonalStorageMode" in lite_layout
+    # layout.lite 013 references no enum directly; 012 still does, and the
+    # vendored old version must import it through the package.
+    lite_layout_012 = (target_root / "types" / "old_versions" / "lite_layout_012.py").read_text()
+    assert "from gjk.sema.enums import SeasonalStorageMode" in lite_layout_012
 
     assert snapshot.build_snapshot_runtime("gjk") == target_root
     assert "def check_axiom_1" in (target_root / "types" / "lite_layout.py").read_text()
