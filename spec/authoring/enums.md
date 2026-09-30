@@ -68,9 +68,12 @@ x-gridworks:
   - Is the forward-compatibility fallback: a decoder on this version that
     meets a value it does not know SHALL decode it to `default` rather
     than reject it, so a value appended in a later version reaches an
-    older consumer as the default (by convention a first value named
-    `Unknown` that means "drop, do not act"). A consumer that must act
-    on a value therefore treats `default` as "not known here".
+    older consumer as the default. The default is therefore either a
+    first value named `Unknown` that means "drop, do not act", or the
+    safe value: the one a consumer that must act on the enum can act on
+    without harm when the true value is not known here
+    (`gw1.lc.top.state` defaults to `Dormant`). A default that makes an
+    unknown value look like a normal working one is a defect.
 
 ## String Enum Value Constraints — values are Python identifiers
 
