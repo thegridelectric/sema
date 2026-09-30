@@ -912,6 +912,20 @@ types:
       - utc.milliseconds
       types: []
       versionless_types: []
+  gw.house.operating.status:
+    '000':
+      enums:
+      - gw.dispatch.refusal.reason:000
+      - gw.standby.posture:000
+      - gw.top.state:000
+      - gw1.seasonal.storage.mode:000
+      - gw1.service.mode:000
+      - ta.validation.state:000
+      formats:
+      - left.right.dot
+      - utc.milliseconds
+      types: []
+      versionless_types: []
   gw.house0.family.params:
     '000':
       enums:
@@ -1148,7 +1162,8 @@ types:
     '000':
       enums:
       - day.of.week:000
-      - gw1.actuation.authority:000
+      - gw.dispatch.refusal.reason:000
+      - gw.standby.posture:000
       - gw1.seasonal.storage.mode:000
       - gw1.service.mode:000
       - sieg.loop.strategy:000
@@ -2349,8 +2364,8 @@ types:
       enums:
       - change.relay.state:000
       - gpm.from.hz.method:000
+      - gw.dispatch.refusal.reason:000
       - gw1.actor.class:014
-      - gw1.actuation.authority:000
       - gw1.emission.method:000
       - gw1.quantity:000
       - gw1.seasonal.storage.mode:000

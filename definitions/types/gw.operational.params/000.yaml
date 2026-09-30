@@ -9,9 +9,9 @@ description: >
   deployment config and the static hardware layout.
 
   The fields every layout family tunes live here: the per-channel capture
-  tuning, the 0-10V power-on levels, actuation authority and service mode
-  (authority dominates: ServiceMode is inert unless ActuationAuthority is
-  Active), the COP and heating curves, the heat-pump and load-estimation
+  tuning, the 0-10V power-on levels, whether the scada stands by and what
+  its standby does to the plant, the service mode, whether the scada takes
+  dispatch contracts and why not, the COP and heating curves, the heat-pump and load-estimation
   knobs, the FLO horizon, and the tariff. The knobs that presume a feature of
   the layout (a buffer, a store, a Siegenthaler loop) live in FamilyParams,
   whose TypeName names the layout family; the consumer decodes FamilyParams
@@ -48,17 +48,48 @@ properties:
     description: >
       The power-on level of each 0-10V output, one entry per output node.
 
-  ActuationAuthority:
-    $ref: "https://schemas.electricity.works/enums/gw1.actuation.authority/000"
+  Standby:
+    type: boolean
     description: >
-      The degree of physical actuation authority SCADA exercises. Authority
-      dominates: ServiceMode is inert unless ActuationAuthority is Active.
+      When true the standby machine runs in place of the family's local
+      control: every relay directly under local control is de-energized
+      except EnergizedStandbyRelays, the heat pump is held off through
+      hp-boss, and the 0-10V outputs stay at their power-on levels.
+
+  StandbyPosture:
+    $ref: "https://schemas.electricity.works/enums/gw.standby.posture/000"
+    description: >
+      What the standby achieves at this house. Read whether or not Standby
+      is true, so a reader knows what standby would do here.
+
+  EnergizedStandbyRelays:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The relay nodes the standby machine energizes; every other relay
+      directly under local control is de-energized. Each names a Relay
+      ShNode of the layout whose boot handle sits directly under local
+      control, which the assembly step checks against the layout.
 
   ServiceMode:
     $ref: "https://schemas.electricity.works/enums/gw1.service.mode/000"
     description: >
-      The thermal service provided while ActuationAuthority is Active;
-      inert otherwise.
+      The thermal service the house provides. On a plant that can do both
+      it selects the local control machine; inert while Standby is true.
+
+  AcceptsDispatch:
+    type: boolean
+    description: >
+      Whether the scada takes dispatch contracts. The leaf ally refuses
+      every offer while false, and the LTN sends none.
+
+  DispatchRefusalReason:
+    $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
+    description: >
+      Why AcceptsDispatch is false. A scada that finds the house cold
+      writes ServiceContractBroken here itself; a person clears it with a
+      params update.
 
   CopCurve:
     $ref: "https://schemas.electricity.works/types/cop.curve/000"
@@ -112,8 +143,11 @@ required:
   - FamilyParams
   - CaptureTuningList
   - ZeroTenPowerOnList
-  - ActuationAuthority
+  - Standby
+  - StandbyPosture
+  - EnergizedStandbyRelays
   - ServiceMode
+  - AcceptsDispatch
   - CopCurve
   - HeatingCurve
   - HpTurnOnMinutes
@@ -156,8 +190,11 @@ examples:
           "Version": "000"
         }
       ],
-      "ActuationAuthority": "Active",
+      "Standby": false,
+      "StandbyPosture": "NoHeatingOrCooling",
+      "EnergizedStandbyRelays": ["hp-failsafe-relay", "aquastat-ctrl-relay"],
       "ServiceMode": "Heating",
+      "AcceptsDispatch": true,
       "CopCurve": {
         "Intercept": 1.02,
         "OatCoeff": 0.0257,
@@ -218,6 +255,32 @@ x-gridworks:
       name: "ZeroTenPowerOnNodeUniqueness"
       statement: >
         NodeName SHALL be unique across ZeroTenPowerOnList.
+
+    - number: 3
+      name: "StandbyRefusesDispatch"
+      statement: >
+        If Standby is true, AcceptsDispatch SHALL be false and
+        DispatchRefusalReason SHALL be Standby.
+
+    - number: 4
+      name: "RefusalReasonPresence"
+      statement: >
+        DispatchRefusalReason SHALL be present if and only if
+        AcceptsDispatch is false.
+
+    - number: 5
+      name: "PostureRelaysPerFamily"
+      statement: >
+        StandbyPosture fixes EnergizedStandbyRelays for the family named by
+        FamilyParams.TypeName:
+        a. If StandbyPosture is MonitorOnly, EnergizedStandbyRelays SHALL
+           be empty.
+        b. If FamilyParams.TypeName is gw.house0.family.params and
+           StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays
+           SHALL be exactly hp-failsafe-relay and aquastat-ctrl-relay.
+        c. If FamilyParams.TypeName is gw.nolan.family.params and
+           StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays
+           SHALL be empty.
 
   extended_description: >
     operational-params is the authored home for the tunable state that left the

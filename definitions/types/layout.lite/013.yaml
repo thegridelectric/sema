@@ -38,18 +38,22 @@ properties:
       gw.house0.layout or gw.nolan.layout): the layout family every consumer
       of this projection branches on.
 
-  ActuationAuthority:
-    $ref: "https://schemas.electricity.works/enums/gw1.actuation.authority/000"
+  AcceptsDispatch:
+    type: boolean
     description: >
-      The degree of physical actuation authority the running SCADA
-      deployment exercises. Authority dominates: ServiceMode is inert
-      unless ActuationAuthority is Active.
+      Whether the running scada takes dispatch contracts; the LTN sends
+      no bids and runs no FLO while false.
+
+  DispatchRefusalReason:
+    $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
+    description: >
+      Why AcceptsDispatch is false.
 
   ServiceMode:
     $ref: "https://schemas.electricity.works/enums/gw1.service.mode/000"
     description: >
-      The thermal service provided while ActuationAuthority is Active;
-      inert otherwise.
+      The thermal service the running scada provides; the LTN offers
+      heating contracts only while it is Heating.
 
   SeasonalStorageMode:
     $ref: "https://schemas.electricity.works/enums/gw1.seasonal.storage.mode/000"
@@ -146,7 +150,7 @@ required:
   - MessageCreatedMs
   - MessageId
   - HardwareLayoutTypeName
-  - ActuationAuthority
+  - AcceptsDispatch
   - ServiceMode
   - SeasonalStorageMode
   - KeepBufferFull
@@ -191,6 +195,12 @@ x-gridworks:
       statement: >
         Every DerivedChannels.CreatedByNodeName SHALL reference an existing
         ShNodes.Name whose ActorClass is active.
+
+    - number: 5
+      name: "RefusalReasonPresence"
+      statement: >
+        DispatchRefusalReason SHALL be present if and only if
+        AcceptsDispatch is false.
 
   extended_description: >
     `layout.lite` is the SCADA-emitted semantic context for a running

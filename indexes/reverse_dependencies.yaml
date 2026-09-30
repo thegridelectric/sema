@@ -710,6 +710,12 @@ enums:
     '000':
       used_by:
       - gw.alert:000
+  gw.dispatch.refusal.reason:
+    '000':
+      used_by:
+      - gw.house.operating.status:000
+      - gw.operational.params:000
+      - layout.lite:013
   gw.fleet.alert.kind:
     '000':
       used_by:
@@ -738,6 +744,15 @@ enums:
     '000':
       used_by:
       - gw.dispatch.nack:000
+  gw.standby.posture:
+    '000':
+      used_by:
+      - gw.house.operating.status:000
+      - gw.operational.params:000
+  gw.top.state:
+    '000':
+      used_by:
+      - gw.house.operating.status:000
   gw.weather.forecast.fidelity:
     '000':
       used_by:
@@ -771,11 +786,6 @@ enums:
       - new.command.tree:003
       - scada.control.capabilities:002
       - spaceheat.node.gt:303
-  gw1.actuation.authority:
-    '000':
-      used_by:
-      - gw.operational.params:000
-      - layout.lite:013
   gw1.emission.method:
     '000':
       used_by:
@@ -801,6 +811,7 @@ enums:
   gw1.seasonal.storage.mode:
     '000':
       used_by:
+      - gw.house.operating.status:000
       - gw.house0.family.params:000
       - gw.nolan.family.params:000
       - layout.lite:008
@@ -812,6 +823,7 @@ enums:
   gw1.service.mode:
     '000':
       used_by:
+      - gw.house.operating.status:000
       - gw.operational.params:000
       - layout.lite:013
   gw1.system.mode:
@@ -1001,6 +1013,7 @@ enums:
   ta.validation.state:
     '000':
       used_by:
+      - gw.house.operating.status:000
       - slow.contract.rejection:000
       - ta.deed:000
   temp.calc.method:
@@ -1119,6 +1132,7 @@ formats:
     - gw.channel.noise.stats:000
     - gw.command.interface:000
     - gw.experiment.run:000
+    - gw.house.operating.status:000
     - gw.operational.params:000
     - gw.readings:000
     - gw.tou.tariff:000
@@ -1435,6 +1449,7 @@ formats:
     - gw.house0.layout:000
     - gw.hydronic:000
     - gw.nolan.layout:000
+    - gw.operational.params:000
     - gw1.hvac.zone:000
     - gw1.zone.call.circuit:000
     - i2c.multichannel.dt.relay.component.gt:003
@@ -1535,6 +1550,7 @@ formats:
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
     - gw.experiment.run:000
+    - gw.house.operating.status:000
     - gw.readings:000
     - gw.weather.forecast:000
     - i2c.result:000

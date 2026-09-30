@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-09-28T17:30:00Z'
+  last_updated: '2026-09-30T18:35:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -486,17 +486,53 @@ enums:
         schema_url: https://schemas.electricity.works/enums/gw1.actor.class/009
         created: '2026-01-15T18:00:00Z'
         status: published
-  gw1.actuation.authority:
+  gw.top.state:
     latest_version: '000'
     owner: gridworks-energy
     enum_type: versioned
-    description: 'Degree of physical actuation authority SCADA exercises: Active /
-      Standby / MonitorOnly. Dominates gw1.service.mode; default MonitorOnly so an
-      unrecognized value degrades to non-actuation.'
+    description: 'Who holds the scada''s command tree: Auto (the scada''s own control)
+      or Admin (an admin session).'
     versions:
       '000':
-        schema_url: https://schemas.electricity.works/enums/gw1.actuation.authority/000
-        created: '2026-08-13T11:55:00Z'
+        schema_url: https://schemas.electricity.works/enums/gw.top.state/000
+        created: '2026-09-29T22:05:00Z'
+        status: staging
+  gw.standby.posture:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'What a scada in Standby does to the plant: MonitorOnly (energizes
+      nothing) or NoHeatingOrCooling (holds every heat source off); the intent behind
+      the house''s EnergizedStandbyRelays list. Default MonitorOnly so an unknown
+      posture touches nothing.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.standby.posture/000
+        created: '2026-09-30T18:35:00Z'
+        status: staging
+  gw.dispatch.refusal.reason:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Why a scada refuses dispatch contracts: Standby, NoAggregator, or
+      ServiceContractBroken. Default Standby so an unknown reason still reads as a
+      refusal.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000
+        created: '2026-09-30T18:35:00Z'
+        status: staging
+  gw1.nolan.lc.buffer.only.state:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'States of the Nolan buffer-only heating machine: Initializing, HpCallOn,
+      HpCallOff, Dormant. The state names the heat-pump call decision; postures re-asserted
+      each check are not states.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw1.nolan.lc.buffer.only.state/000
+        created: '2026-09-30T18:35:00Z'
         status: staging
   gw1.device.type:
     latest_version: '000'
@@ -644,9 +680,9 @@ enums:
     latest_version: '000'
     owner: gridworks-energy
     enum_type: versioned
-    description: "Thermal service the system provides while actuation authority is\
-      \ Active: Heating / Cooling. Inert outside Active \u2014 gw1.actuation.authority\
-      \ dominates."
+    description: 'Thermal service the system provides: Heating / Cooling. Selects
+      the local control machine on a plant that can do both, and gates heating contracts
+      at the LTN.'
     versions:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw1.service.mode/000
@@ -671,8 +707,8 @@ enums:
     description: System operational mode for HVAC control. Conflated actuation authority
       with the thermal service (Heating doubled as full authority).
     replaced_by:
-    - gw1.actuation.authority
     - gw1.service.mode
+    - gw.operational.params
     versions:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw1.system.mode/000
@@ -2798,6 +2834,34 @@ types:
           structural:
           - gw1.seasonal.storage.mode:000
           - sieg.loop.strategy:000
+  gw.house.operating.status:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'How a house is operating in one record: validation state, standby
+      and its posture, storage mode, service mode, whether it accepts dispatch and
+      why not, who holds the command tree, and whether the LTN is dispatching. Sent
+      once at startup and on change.'
+    versions:
+      '000':
+        status: staging
+        schema_url: https://schemas.electricity.works/types/gw.house.operating.status/000
+        created: '2026-09-30T18:35:00Z'
+        summary: Initial version. ScadaAlias + ValidationState (from the deed) + Standby
+          x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x
+          DispatchRefusalReason (present iff refusing, axiom 1; Standby refuses, axiom
+          2) + TopState + LtnDispatching + UnixMs. The slow facts of the LTN-scada
+          agreement; nothing that cycles inside a healthy hour.
+        direct_dependencies:
+          structural:
+          - gw.dispatch.refusal.reason:000
+          - gw.standby.posture:000
+          - gw.top.state:000
+          - gw1.seasonal.storage.mode:000
+          - gw1.service.mode:000
+          - left.right.dot
+          - ta.validation.state:000
+          - utc.milliseconds
   gw.house0.layout:
     latest_version: '000'
     owner: gridworks-energy
@@ -2981,33 +3045,41 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-09-25T17:10:00Z'
+        created: '2026-09-30T18:35:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
           \ + FamilyParams (oneOf gw.house0.family.params / gw.nolan.family.params,\
           \ discriminated by TypeName; the family TypeName pairs the instance with\
           \ its layout family, so a mismatched pair fails at decode) + CaptureTuningList\
-          \ + ZeroTenPowerOnList + ActuationAuthority x ServiceMode (authority dominates;\
-          \ ServiceMode inert outside Active) + CopCurve + HeatingCurve + HpTurnOnMinutes\
-          \ + HpMaxKwEl + LoadOverestimationPercent + OilBoilerBackup + HorizonHours\
-          \ + Tariff (gw.tou.tariff). All required \u2014 no assumed defaults. Axioms\
-          \ 1-2: ChannelName unique across CaptureTuningList, NodeName unique across\
-          \ ZeroTenPowerOnList."
+          \ + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays\
+          \ (the standby machine energizes the listed relays and nothing else; the\
+          \ posture names what the list achieves) + ServiceMode + AcceptsDispatch\
+          \ x DispatchRefusalReason (present iff refusing) + CopCurve + HeatingCurve\
+          \ + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + OilBoilerBackup\
+          \ + HorizonHours + Tariff (gw.tou.tariff). All required but the reason \u2014\
+          \ no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList,\
+          \ NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby refuses dispatch\
+          \ with reason Standby. Axiom 4: the reason is present iff AcceptsDispatch\
+          \ is false. Axiom 5: the posture fixes the relay list (MonitorOnly empty;\
+          \ House0 NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan\
+          \ NoHeatingOrCooling empty)."
         direct_dependencies:
           structural:
           - capture.tuning:000
           - cop.curve:000
+          - gw.dispatch.refusal.reason:000
           - gw.house0.family.params:000
           - gw.nolan.family.params:000
+          - gw.standby.posture:000
           - gw.tou.tariff:000
-          - gw1.actuation.authority:000
           - gw1.service.mode:000
           - heating.curve:000
           - left.right.dot
           - non.negative.int
           - positive.float
           - positive.int
+          - spaceheat.name
           - zero.ten.power.on:000
   gw.readings:
     latest_version: '000'
@@ -4306,17 +4378,19 @@ types:
     versions:
       '013':
         schema_url: https://schemas.electricity.works/types/layout.lite/013
-        created: '2026-09-21T19:50:00Z'
+        created: '2026-09-30T18:35:00Z'
         status: staging
         summary: '- ShNodes: spaceheat.node.gt:301 -> 303 - DataChannels: data.channel.gt:002
           -> 003 - TankModuleComponents / FlowModuleComponents / I2cRelayComponent:
           cac-carrying component versions -> cac-free DeviceType versions (pico.tank.module
           011->012, sim.pico.tank.module 000->001, pico.flow.module 000->001, i2c.multichannel.dt.relay
           003->004). Context-dependent: the embedded components'' DeviceType lives
-          on their cac, not the component. - SystemMode -> ActuationAuthority x ServiceMode
-          split (Heating -> Active/Heating, Standby -> Standby/Heating, MonitorOnly
-          -> MonitorOnly/Heating; mechanical, not the blocking reason for context).
-          - Strategy (free manifold-variant string) -> HardwareLayoutTypeName (left.right.dot):
+          on their cac, not the component. - SystemMode -> AcceptsDispatch x DispatchRefusalReason
+          (whether the scada takes dispatch contracts, and why not) + ServiceMode
+          (Heating -> true/Heating, Standby -> false/Standby/Heating, MonitorOnly
+          -> false/Standby/Heating; mechanical, not the blocking reason for context).
+          Axiom 5: the reason is present iff AcceptsDispatch is false. - Strategy
+          (free manifold-variant string) -> HardwareLayoutTypeName (left.right.dot):
           the loaded layout word''s TypeName is the family; a format, not an enum
           of layout words, so this word publishes independently of the layout words''
           status. - BufferShortCycling -> KeepBufferFull: the running scada''s KeepBufferFull
@@ -4325,7 +4399,7 @@ types:
           structural:
           - data.channel.gt:003
           - derived.channel.gt:001
-          - gw1.actuation.authority:000
+          - gw.dispatch.refusal.reason:000
           - gw1.seasonal.storage.mode:000
           - gw1.service.mode:000
           - gw1.tank.temp.calibration.map:000

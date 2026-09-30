@@ -1,0 +1,37 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
+
+title: "gw.dispatch.refusal.reason"
+type: "string"
+
+description: >
+  Why a scada refuses dispatch contracts. Carried beside AcceptsDispatch
+  when it is false, so an LTN or a person reading the house's status sees
+  the reason and not only the refusal.
+
+enum:
+  - "Standby"
+  - "NoAggregator"
+  - "ServiceContractBroken"
+
+default: "Standby"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+
+  value_descriptions:
+    "Standby": >
+      The scada is in Standby: no local control machine runs, so there is
+      nothing for a contract to dispatch. The decode fallback: an unknown
+      reason still reads as a refusal.
+
+    "NoAggregator": >
+      The house has no aggregator yet. The scada runs local control and
+      collects data, and takes no contract until one is chosen.
+
+    "ServiceContractBroken": >
+      The scada found the house cold and holds the refusal until a person
+      clears it with a params update. The service contract between the
+      homeowner and the aggregator is treated as broken from the cold
+      event forward, whatever the house does afterwards.

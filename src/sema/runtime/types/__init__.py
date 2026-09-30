@@ -95,6 +95,7 @@ from sema.runtime.types.gw_dispatch_nack import GwDispatchNack
 from sema.runtime.types.gw_experiment_run import GwExperimentRun
 from sema.runtime.types.gw_house0_family_params import GwHouse0FamilyParams
 from sema.runtime.types.gw_house0_layout import GwHouse0Layout
+from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
 from sema.runtime.types.gw_hydronic import GwHydronic
 from sema.runtime.types.gw_native_gpio_pin import GwNativeGpioPin
 from sema.runtime.types.gw_nolan_family_params import GwNolanFamilyParams
@@ -301,6 +302,7 @@ __all__ = [
     "GwExperimentRun",
     "GwHouse0FamilyParams",
     "GwHouse0Layout",
+    "GwHouseOperatingStatus",
     "GwHydronic",
     "GwNativeGpioPin",
     "GwNolanFamilyParams",
