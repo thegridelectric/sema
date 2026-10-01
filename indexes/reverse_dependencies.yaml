@@ -1344,6 +1344,7 @@ formats:
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
+    - gw.nolan.family.params:000
     - gw.operational.params:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000

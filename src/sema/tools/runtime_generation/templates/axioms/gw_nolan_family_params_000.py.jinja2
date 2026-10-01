@@ -1,0 +1,12 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_nolan_family_params_000_class_name }}":
+        """
+        Axiom 1: ChargeBelowFull
+        BufferChargeF SHALL be less than BufferFullF.
+        """
+        if self.buffer_charge_f >= self.buffer_full_f:
+            raise ValueError(
+                "Axiom 1 (ChargeBelowFull) failed: BufferChargeF "
+                f"{self.buffer_charge_f} is not below BufferFullF {self.buffer_full_f}"
+            )
+        return self

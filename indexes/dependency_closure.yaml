@@ -1065,7 +1065,8 @@ types:
     '000':
       enums:
       - gw1.seasonal.storage.mode:000
-      formats: []
+      formats:
+      - positive.int
       types: []
       versionless_types: []
   gw.nolan.layout:

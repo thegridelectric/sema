@@ -27,6 +27,21 @@ properties:
     description: >
       Which thermal stores participate in the current season's operation.
 
+  BufferFullF:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
+    description: >
+      The buffer band's full threshold in degrees Fahrenheit. Buffer-depth3,
+      the bottom sensor, at or above it says the buffer is full and the heat
+      pump call opens.
+
+  BufferChargeF:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
+    description: >
+      The buffer band's charge threshold in degrees Fahrenheit. Buffer-depth1,
+      the top sensor, below it says the buffer wants charge and the heat pump
+      call may close. Between the two thresholds the band holds its last
+      state.
+
   TypeName:
     const: "gw.nolan.family.params"
 
@@ -36,6 +51,8 @@ properties:
 required:
   - KeepBufferFull
   - SeasonalStorageMode
+  - BufferFullF
+  - BufferChargeF
   - TypeName
   - Version
 
@@ -46,9 +63,15 @@ examples:
     {
       "KeepBufferFull": false,
       "SeasonalStorageMode": "AllTanks",
+      "BufferFullF": 130,
+      "BufferChargeF": 90,
       "TypeName": "gw.nolan.family.params",
       "Version": "000"
     }
 
 x-gridworks:
   owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ChargeBelowFull"
+      statement: "BufferChargeF SHALL be less than BufferFullF."

@@ -623,7 +623,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version: KeepBufferFull, SeasonalStorageMode. All required."
+        summary: "Initial version: KeepBufferFull, SeasonalStorageMode, BufferFullF, BufferChargeF. All required. Axiom 1: BufferChargeF below BufferFullF."
 
   gw.nolan.layout:
     latest_version: "000"
