@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-01T00:30:00Z'
+  last_updated: '2026-10-01T00:45:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -322,7 +322,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.alert.category/000
         created: '2026-09-16T17:45:00Z'
-        status: staging
+        status: published
   gw.alert.state:
     owner: gridworks-energy
     enum_type: literal
@@ -330,7 +330,7 @@ enums:
       (Resolved).
     schema_url: https://schemas.electricity.works/enums/gw.alert.state/000
     created: '2026-09-16T17:45:00Z'
-    status: staging
+    status: published
   gw.fleet.alert.kind:
     latest_version: '000'
     owner: gridworks-energy
@@ -341,7 +341,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.fleet.alert.kind/000
         created: '2026-09-16T17:45:00Z'
-        status: staging
+        status: published
   gw.g.node.class:
     latest_version: '000'
     owner: gridworks-energy
@@ -419,7 +419,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.platform.alert.kind/000
         created: '2026-09-16T17:45:00Z'
-        status: staging
+        status: published
   gw.scada.cmd.refusal.reason:
     latest_version: '000'
     owner: gridworks-energy
@@ -2646,7 +2646,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.alert/000
         created: '2026-09-16T17:45:00Z'
-        status: staging
+        status: published
         summary: Initial Sema version. One word for both transitions (State), a Category
           choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias
           (axiom 2), ResolvedMs iff Resolved (axiom 3).
