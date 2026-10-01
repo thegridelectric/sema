@@ -40,11 +40,15 @@ class GwAlert(SemaType):
     ):
         """The kind enum a Category selects; None for a category this
         version does not know."""
-        return {
+        by_category: dict[
+            GwAlertCategory,
+            type[GwHouseAlertKind] | type[GwFleetAlertKind] | type[GwPlatformAlertKind],
+        ] = {
             GwAlertCategory.House: GwHouseAlertKind,
             GwAlertCategory.Fleet: GwFleetAlertKind,
             GwAlertCategory.PlatformService: GwPlatformAlertKind,
-        }.get(category)
+        }
+        return by_category.get(category)
 
     @model_validator(mode="before")
     @classmethod

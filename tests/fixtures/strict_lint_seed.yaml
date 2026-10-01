@@ -15,6 +15,10 @@ initial_targets:
   types:
     report.event:
       versions: ["002","003"]
+    # gw.alert's axiom template is hand-written (the kind enum discriminated
+    # by Category); the strict gate has to see it.
+    gw.alert:
+      include_all_versions: true
     layout.lite:
       include_all_versions: true
     glitch:

@@ -4,11 +4,15 @@
     ) -> type[{{ gw_house_alert_kind_000_class_name }}] | type[{{ gw_fleet_alert_kind_000_class_name }}] | type[{{ gw_platform_alert_kind_000_class_name }}] | None:
         """The kind enum a Category selects; None for a category this
         version does not know."""
-        return {
+        by_category: dict[
+            {{ gw_alert_category_000_class_name }},
+            type[{{ gw_house_alert_kind_000_class_name }}] | type[{{ gw_fleet_alert_kind_000_class_name }}] | type[{{ gw_platform_alert_kind_000_class_name }}],
+        ] = {
             {{ gw_alert_category_000_class_name }}.House: {{ gw_house_alert_kind_000_class_name }},
             {{ gw_alert_category_000_class_name }}.Fleet: {{ gw_fleet_alert_kind_000_class_name }},
             {{ gw_alert_category_000_class_name }}.PlatformService: {{ gw_platform_alert_kind_000_class_name }},
-        }.get(category)
+        }
+        return by_category.get(category)
 
     @model_validator(mode="before")
     @classmethod
