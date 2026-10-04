@@ -242,6 +242,14 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "hp-sensor",
+      "ActorClass": "NoActor",
+      "DisplayName": "Hp Sensor",
+      "ShNodeId": "3a6264a2-66d3-4edc-bd1a-dec259c80aed"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "economy-energy-l1",
       "ActorClass": "NoActor",
       "DisplayName": "Economy Energy L1",

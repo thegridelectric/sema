@@ -483,3 +483,17 @@ def test_axiom_34_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
         d["DerivedChannels"].append(stray)
 
     reject(vanilla, mutate, "Axiom 34")
+
+
+def test_axiom_14_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any]) -> None:
+    """A NoActor node under lc other than n, backup or scada-blind fails, though
+    clause b reads it as a command node."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        stray = json.loads(json.dumps(next(n for n in d["ShNodes"] if n["Name"] == "n")))
+        stray["Name"] = "stray"
+        stray["Handle"] = "auto.lc.stray"
+        stray["ShNodeId"] = "3b9e2c71-5d4a-4f6e-9a8b-1c2d3e4f5a6b"
+        d["ShNodes"].append(stray)
+
+    reject(vanilla, mutate, "Axiom 14")

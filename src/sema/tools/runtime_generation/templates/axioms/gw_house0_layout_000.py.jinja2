@@ -507,7 +507,9 @@
         effective handle's parent prefix is the effective handle of an ShNode with
         ActorClass "LocalControl". a. Every actuator SHALL have a dotted effective
         handle and SHALL be a leaf. b. Every leaf SHALL be an actuator or a command
-        node.
+        node. c. Every ShNode with ActorClass "NoActor" whose effective handle's parent
+        prefix is the effective handle of an ShNode with ActorClass "LocalControl" SHALL
+        be named "n", "backup" or "scada-blind".
         """
         actuator_classes = {"Relay", "ZeroTenOutputer", "HpTwin"}
         command_classes = {"LocalControl", "LeafAlly", "FiveVBoss", "PicoCycler", "HpBoss", "SiegLoop"}
@@ -543,6 +545,17 @@
                         f"handle {handle!r} (ActorClass {actor_class}) is neither an "
                         "actuator nor a command node."
                     )
+            if (
+                actor_class == "NoActor"
+                and "." in handle
+                and handle.rsplit(".", 1)[0] in lc_handles
+                and node.name not in ("n", "backup", "scada-blind")
+            ):
+                raise ValueError(
+                    f"Axiom 14 (ActuatorLeaves) failed: {node.name!r} with handle "
+                    f"{handle!r} is a NoActor node under local control other than n, "
+                    "backup or scada-blind."
+                )
         return self
 
     @model_validator(mode="after")

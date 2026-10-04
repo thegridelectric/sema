@@ -562,7 +562,9 @@ class GwNolanLayout(SemaType):
         effective handle's parent prefix is the effective handle of an ShNode with
         ActorClass "LocalControl". a. Every actuator SHALL have a dotted effective
         handle and SHALL be a leaf. b. Every leaf SHALL be an actuator or a command
-        node.
+        node. c. Every ShNode with ActorClass "NoActor" whose effective handle's parent
+        prefix is the effective handle of an ShNode with ActorClass "LocalControl" SHALL
+        be named "n", "backup" or "scada-blind".
         """
         actuator_classes = {"Relay", "ZeroTenOutputer", "HpTwin"}
         command_classes = {
@@ -605,6 +607,17 @@ class GwNolanLayout(SemaType):
                         f"handle {handle!r} (ActorClass {actor_class}) is neither an "
                         "actuator nor a command node."
                     )
+            if (
+                actor_class == "NoActor"
+                and "." in handle
+                and handle.rsplit(".", 1)[0] in lc_handles
+                and node.name not in ("n", "backup", "scada-blind")
+            ):
+                raise ValueError(
+                    f"Axiom 12 (ActuatorLeaves) failed: {node.name!r} with handle "
+                    f"{handle!r} is a NoActor node under local control other than n, "
+                    "backup or scada-blind."
+                )
         return self
 
     @model_validator(mode="after")
@@ -1182,4 +1195,18 @@ class GwNolanLayout(SemaType):
                     f"Axiom 31 (HeatCallChannelBelongsToCircuit) failed: heat-call channel "
                     f"'{d.name}' has inputs {inputs}, not exactly one circuit's whitewire."
                 )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_32(self) -> Self:
+        """
+        Axiom 32: HpSensorNode ShNodes SHALL include a node named "hp-sensor" with
+        ActorClass "NoActor".
+        """
+        node = next((n for n in self.sh_nodes or [] if n.name == "hp-sensor"), None)
+        if node is None or str(node.actor_class) != "NoActor":
+            raise ValueError(
+                "Axiom 32 (HpSensorNode) failed: no ShNode named 'hp-sensor' with "
+                "ActorClass 'NoActor'."
+            )
         return self

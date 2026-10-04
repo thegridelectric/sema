@@ -294,6 +294,9 @@ x-gridworks:
         ActorClass "LocalControl".
         a. Every actuator SHALL have a dotted effective handle and SHALL be a leaf.
         b. Every leaf SHALL be an actuator or a command node.
+        c. Every ShNode with ActorClass "NoActor" whose effective handle's parent prefix
+        is the effective handle of an ShNode with ActorClass "LocalControl" SHALL be
+        named "n", "backup" or "scada-blind".
     - number: 15
       name: "ComponentBinding"
       statement: >

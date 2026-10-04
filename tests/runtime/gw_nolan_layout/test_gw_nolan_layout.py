@@ -458,3 +458,32 @@ def test_axiom_31_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
         d["DerivedChannels"].append(stray)
 
     reject(vanilla, mutate, "Axiom 31")
+
+
+def test_axiom_32_hp_sensor_absent(vanilla: dict[str, Any]) -> None:
+    """No hp-sensor node fails."""
+    reject(vanilla, drop_node("hp-sensor"), "Axiom 32")
+
+
+def test_axiom_32_hp_sensor_wrong_actor_class(vanilla: dict[str, Any]) -> None:
+    """An hp-sensor node with an ActorClass other than NoActor fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        for n in d["ShNodes"]:
+            if n["Name"] == "hp-sensor":
+                n["ActorClass"] = "HpBoss"
+                n["ActorHierarchyName"] = "s.hp-sensor"
+
+    reject(vanilla, mutate, "Axiom 32")
+
+
+def test_axiom_12_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any]) -> None:
+    """A NoActor node under lc other than n, backup or scada-blind fails, though
+    clause b reads it as a command node."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        for n in d["ShNodes"]:
+            if n["Name"] == "hp-sensor":
+                n["Handle"] = "auto.lc.hp-sensor"
+
+    reject(vanilla, mutate, "Axiom 12")
