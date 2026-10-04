@@ -36,6 +36,7 @@ enum:
   - "I2cDacWriter"
   - "HpTwin"
   - "FiveVBoss"
+  - "HpSensor"
 
 default: "NoActor"
 
@@ -69,3 +70,7 @@ x-gridworks:
       5 V supply off. It owns the vdc relay while the hold is on and
       the pico-cycler owns it otherwise; exactly one node per layout,
       named five-v-boss.
+    "HpSensor": >
+      Senses whether the heat pump is running from its outdoor-unit power
+      reading and reports that sensed state as a machine state under its
+      own node. Commands nothing.

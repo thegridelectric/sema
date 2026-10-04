@@ -1814,6 +1814,7 @@ enums:
       "014":
         added_values:
           - "FiveVBoss"
+          - "HpSensor"
       "013":
         added_values:
           - "I2cDacWriter"

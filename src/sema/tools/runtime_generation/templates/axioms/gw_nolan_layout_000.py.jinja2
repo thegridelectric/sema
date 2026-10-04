@@ -1070,12 +1070,12 @@
     def check_axiom_32(self) -> Self:
         """
         Axiom 32: HpSensorNode ShNodes SHALL include a node named "hp-sensor" with
-        ActorClass "NoActor".
+        ActorClass "HpSensor".
         """
         node = next((n for n in self.sh_nodes or [] if n.name == "hp-sensor"), None)
-        if node is None or str(node.actor_class) != "NoActor":
+        if node is None or str(node.actor_class) != "HpSensor":
             raise ValueError(
                 "Axiom 32 (HpSensorNode) failed: no ShNode named 'hp-sensor' with "
-                "ActorClass 'NoActor'."
+                "ActorClass 'HpSensor'."
             )
         return self

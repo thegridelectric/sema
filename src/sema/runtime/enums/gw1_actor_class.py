@@ -35,6 +35,7 @@ class Gw1ActorClass(SemaEnum):
     I2cDacWriter = auto()
     HpTwin = auto()
     FiveVBoss = auto()
+    HpSensor = auto()
 
     @classmethod
     def default(cls) -> "Gw1ActorClass":

@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-04T19:40:00Z"
+  last_updated: "2026-10-04T20:20:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -477,6 +477,7 @@ enums:
         status: "staging"
         added_values:
           - "FiveVBoss"
+          - "HpSensor"
       "013":
         schema_url: "https://schemas.electricity.works/enums/gw1.actor.class/013"
         created: "2026-08-12T16:50:00Z"

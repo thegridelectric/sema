@@ -466,13 +466,13 @@ def test_axiom_32_hp_sensor_absent(vanilla: dict[str, Any]) -> None:
 
 
 def test_axiom_32_hp_sensor_wrong_actor_class(vanilla: dict[str, Any]) -> None:
-    """An hp-sensor node with an ActorClass other than NoActor fails."""
+    """An hp-sensor node with an ActorClass other than HpSensor fails."""
 
     def mutate(d: dict[str, Any]) -> None:
         for n in d["ShNodes"]:
             if n["Name"] == "hp-sensor":
-                n["ActorClass"] = "HpBoss"
-                n["ActorHierarchyName"] = "s.hp-sensor"
+                n["ActorClass"] = "NoActor"
+                del n["ActorHierarchyName"]
 
     reject(vanilla, mutate, "Axiom 32")
 
@@ -482,8 +482,10 @@ def test_axiom_12_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any])
     clause b reads it as a command node."""
 
     def mutate(d: dict[str, Any]) -> None:
-        for n in d["ShNodes"]:
-            if n["Name"] == "hp-sensor":
-                n["Handle"] = "auto.lc.hp-sensor"
+        stray = json.loads(json.dumps(next(n for n in d["ShNodes"] if n["Name"] == "n")))
+        stray["Name"] = "stray"
+        stray["Handle"] = "auto.lc.stray"
+        stray["ShNodeId"] = "3b9e2c71-5d4a-4f6e-9a8b-1c2d3e4f5a6b"
+        d["ShNodes"].append(stray)
 
     reject(vanilla, mutate, "Axiom 12")

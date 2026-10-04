@@ -243,7 +243,8 @@
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
       "Name": "hp-sensor",
-      "ActorClass": "NoActor",
+      "ActorHierarchyName": "s.hp-sensor",
+      "ActorClass": "HpSensor",
       "DisplayName": "Hp Sensor",
       "ShNodeId": "3a6264a2-66d3-4edc-bd1a-dec259c80aed"
     },
