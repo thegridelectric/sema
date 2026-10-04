@@ -1198,6 +1198,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw1.nolan.lc.buffer.only.state/000.yaml
+  spruce.hack.hp.state:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/spruce.hack.hp.state/000.yaml
   gw1.device.type:
     enum_type: versioned
     latest_version: '000'

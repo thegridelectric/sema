@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-01T00:45:00Z'
+  last_updated: '2026-10-04T19:25:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -533,6 +533,18 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw1.nolan.lc.buffer.only.state/000
         created: '2026-09-30T18:35:00Z'
+        status: staging
+  spruce.hack.hp.state:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'The heat pump''s running state sensed from outdoor-unit power on
+      spruce''s starter-script thresholds: Unknown, HpDetectedOn, HpDetectedOff, held
+      between the on and off lines.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/spruce.hack.hp.state/000
+        created: '2026-10-04T18:40:00Z'
         status: staging
   gw1.device.type:
     latest_version: '000'

@@ -1856,6 +1856,12 @@ enums:
     versions:
       "000": {}
 
+  spruce.hack.hp.state:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
   gw1.device.type:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
