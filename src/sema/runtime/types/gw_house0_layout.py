@@ -420,9 +420,9 @@ class GwHouse0Layout(SemaType):
         "hp-scada-ops-relay", "aquastat-ctrl-relay", "store-pump-relay",
         "hp-loop-on-off-relay", and "hp-loop-keep-send-relay", each with ActorClass
         "Relay", and nodes named "dist-010v" and "store-010v", each with ActorClass
-        "ZeroTenOutputer". b. Hydronic.ZoneCallCircuits SHALL be non-empty, and each
-        circuit's FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in ShNodes with
-        ActorClass "Relay". c. Each of "dist-010v" and "store-010v" SHALL have a
+        "ZeroTenOutputer". b. Each circuit's FailsafeRelayNode and OpsRelayNode in
+        Hydronic.ZoneCallCircuits SHALL name a ShNode in ShNodes with ActorClass
+        "Relay". c. Each of "dist-010v" and "store-010v" SHALL have a
         ComponentId equal to the ComponentId of an i2c.dac.output.component.gt in
         Components.
         """
@@ -456,12 +456,7 @@ class GwHouse0Layout(SemaType):
             class_or_raise(required, "Relay", "plant relay")
         for required in ("dist-010v", "store-010v"):
             class_or_raise(required, "ZeroTenOutputer", "0-10V output")
-        circuits = self.hydronic.zone_call_circuits or []
-        if not circuits:
-            raise ValueError(
-                "Axiom 10 (RequiredActuators) failed: Hydronic.ZoneCallCircuits is empty."
-            )
-        for circuit in circuits:
+        for circuit in self.hydronic.zone_call_circuits:
             class_or_raise(
                 circuit.failsafe_relay_node, "Relay", "circuit failsafe relay"
             )
@@ -926,18 +921,19 @@ class GwHouse0Layout(SemaType):
     @model_validator(mode="after")
     def check_axiom_24(self) -> Self:
         """
-        Axiom 24: StoreTankTemps For each tank index N in 1..Hydronic.TotalStoreTanks
-        and each depth i in 1..3, a channel named "tank{N}-depth{i}" SHALL exist in
-        DataChannels or in DerivedChannels.
+        Axiom 24: StoreTankTemps For each tank index N in
+        1..Hydronic.WaterStore.TotalStoreTanks and each depth i in 1..3, a channel
+        named "tank{N}-depth{i}" SHALL exist in DataChannels or in DerivedChannels.
         """
-        if self.hydronic is None:
+        water_store = self.hydronic.water_store
+        if water_store is None:
             return self
         channel_names = {c.name for c in (self.data_channels or [])} | {
             c.name for c in (self.derived_channels or [])
         }
         missing = [
             f"tank{tank}-depth{depth}"
-            for tank in range(1, self.hydronic.total_store_tanks + 1)
+            for tank in range(1, water_store.total_store_tanks + 1)
             for depth in (1, 2, 3)
             if f"tank{tank}-depth{depth}" not in channel_names
         ]
@@ -1421,4 +1417,16 @@ class GwHouse0Layout(SemaType):
                         f"{captured_by[name]!r}, which is not the node of the circuit's "
                         "thermostat component."
                     )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_37(self) -> Self:
+        """
+        Axiom 37: WaterStore Hydronic.WaterStore SHALL be present: a House0 home
+        stores heat in water tanks.
+        """
+        if self.hydronic.water_store is None:
+            raise ValueError(
+                "Axiom 37 (WaterStore) failed: Hydronic.WaterStore is absent."
+            )
         return self

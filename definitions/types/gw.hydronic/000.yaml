@@ -6,7 +6,7 @@ type: object
 description: >
   The hydronic / flow-topology configuration of a hydronic space-heating
   layout (House0 and Nolan strategies alike): its zones, zone-call
-  circuits, store-tank count, how primary-loop flow is obtained, who runs
+  circuits, water store, how primary-loop flow is obtained, who runs
   the primary pump, and the heat pump's refrigerant cycle. These are
   physical facts of the installed house, carried here so the layout states
   them rather than code inferring them from channel presence or from
@@ -32,11 +32,11 @@ properties:
       every circuit serves exactly one zone and every zone is served by at
       least its primary circuit.
 
-  TotalStoreTanks:
-    $ref: "https://schemas.electricity.works/formats/non.negative.int"
+  WaterStore:
+    $ref: "https://schemas.electricity.works/types/gw.water.store/000"
     description: >
-      Number of thermal-storage tanks (buffer excluded); zero for a layout
-      whose store is not water tanks. At most 6 (the Cardinality axiom).
+      The water store tanks. Absent for a layout whose store is not water
+      tanks.
 
   PrimaryFlowSource:
     $ref: "https://schemas.electricity.works/enums/gw.primary.flow.source/000"
@@ -77,7 +77,6 @@ properties:
 required:
   - Zones
   - ZoneCallCircuits
-  - TotalStoreTanks
   - PrimaryFlowSource
   - PrimaryPumpOwner
   - RefrigerantCycle
@@ -128,7 +127,7 @@ examples:
           "Version": "000"
         }
       ],
-      "TotalStoreTanks": 3,
+      "WaterStore": {"TotalStoreTanks": 3, "TypeName": "gw.water.store", "Version": "000"},
       "PrimaryFlowSource": "Measured",
       "PrimaryPumpOwner": "Scada",
       "RefrigerantCycle": "Cascade",
@@ -142,8 +141,7 @@ x-gridworks:
     - number: 1
       name: "Cardinality"
       statement: >
-        a. TotalStoreTanks SHALL be at most 6.
-        b. The number of Zones SHALL be between 1 and 6 inclusive.
+        The number of Zones SHALL be between 1 and 6 inclusive.
     - number: 2
       name: "CircuitResolution"
       statement: >

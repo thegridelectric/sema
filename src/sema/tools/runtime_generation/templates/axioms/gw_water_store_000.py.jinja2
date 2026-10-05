@@ -1,0 +1,12 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> Self:
+        """
+        Axiom 1: TankCount
+        TotalStoreTanks SHALL be at most 6.
+        """
+        if self.total_store_tanks > 6:
+            raise ValueError(
+                "Axiom 1 (TankCount) failed: TotalStoreTanks "
+                f"({self.total_store_tanks}) must be at most 6."
+            )
+        return self

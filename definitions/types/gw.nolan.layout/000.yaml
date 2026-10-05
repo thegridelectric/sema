@@ -205,8 +205,8 @@ x-gridworks:
           "tank1-top-elt-relay",
           and "tank1-bottom-elt-relay",
         each with ActorClass "Relay".
-        b. Hydronic.ZoneCallCircuits SHALL be non-empty, and each circuit's
-        FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in ShNodes with
+        b. Each circuit's FailsafeRelayNode and OpsRelayNode in
+        Hydronic.ZoneCallCircuits SHALL name a ShNode in ShNodes with
         ActorClass "Relay".
         c. ShNodes SHALL include a node named "secondary-010v" with ActorClass
         "ZeroTenOutputer" and a ComponentId equal to the ComponentId of an
@@ -267,8 +267,8 @@ x-gridworks:
     - number: 9
       name: "SingleStoreTank"
       statement: >
-        Hydronic.TotalStoreTanks SHALL equal 1 — the Nolan plant carries exactly
-        one store tank.
+        Hydronic.WaterStore SHALL be present and its TotalStoreTanks SHALL equal 1:
+        the Nolan plant carries exactly one store tank.
 
     - number: 10
       name: "CommandableHeatPump"
@@ -358,8 +358,9 @@ x-gridworks:
     - number: 21
       name: "StoreTankTemps"
       statement: >
-        For each tank index N in 1..Hydronic.TotalStoreTanks and each depth i in 1..3, a channel
-        named "tank{N}-depth{i}" SHALL exist in DataChannels or in DerivedChannels.
+        For each tank index N in 1..Hydronic.WaterStore.TotalStoreTanks and each depth i in
+        1..3, a channel named "tank{N}-depth{i}" SHALL exist in DataChannels or in
+        DerivedChannels.
     - number: 22
       name: "SystemModelEnergyChannels"
       statement: >

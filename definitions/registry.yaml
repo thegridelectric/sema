@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-05T14:25:00Z"
+  last_updated: "2026-10-05T15:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3108,7 +3108,7 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.house0.layout/000"
-        created: "2026-09-24T22:45:00Z"
+        created: "2026-10-05T15:30:00Z"
         status: "staging"
         summary: "The complete deployable artifact for a House0-fleet home: every collection and Hydronic required. The word MEANS has-a-siegenthaler-loop (beech, maple); sieg-less homes are gw.house0.no.sieg. Components: eGauge, ADS111x thermistor snaps, the House0 board record (Krida expanders and GP8403 DACs) with per-relay and per-output components, pico flow and BTU meters, tank modules real and sim, Hubitat with poller, web-server, all over the DeviceType record model. The axioms carry the layout invariants; wording is identical across layout words where the axiom name is shared."
         direct_dependencies:
@@ -3154,18 +3154,18 @@ types:
     latest_version: "000"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "House0-fleet hydronic / flow-topology config: zones, zone-call circuits, store-tank count, primary-flow source, primary-pump owner, refrigerant cycle."
+    description: "Hydronic / flow-topology config: zones, zone-call circuits, water store, primary-flow source, primary-pump owner, refrigerant cycle."
 
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.hydronic/000"
-        created: "2026-09-24T17:50:00Z"
+        created: "2026-10-05T15:30:00Z"
         status: "staging"
         summary: >-
-          - Typed hydronic block promoted out of gw.house0.layout's freeform Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit list, required: every layout word requires it non-empty), TotalStoreTanks, PrimaryFlowSource (gw.primary.flow.source), Strategy. Axioms: Cardinality, CircuitResolution. The Siegenthaler-loop flags left this word: plumbed-ness is what a has-sieg layout word means, and use is operational (gw.house0.family.params SiegLoopStrategy).
+          - Typed hydronic block promoted out of gw.house0.layout's freeform Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit list, required), PrimaryFlowSource (gw.primary.flow.source), Strategy. Axioms: Cardinality, CircuitResolution. The Siegenthaler-loop flags left this word: plumbed-ness is what a has-sieg layout word means, and use is operational (gw.house0.family.params SiegLoopStrategy).
           - HpCommandNodeName (optional spaceheat.name): the node that takes heat-pump commands under hp-boss; absent = nothing commands the heat pump. The layout words' CommandableHeatPump axiom governs it.
           - Strategy dropped: the control family is the layout word's own TypeName (invariant per word, so not a data field; the same rule that retired SiegLoopPlumbed).
-          - TotalStoreTanks may be zero (a store that is not water tanks); the Cardinality axiom keeps only the upper bound of 6.
+          - WaterStore (optional gw.water.store): the water store tanks; absent for a layout whose store is not water tanks. Cardinality bounds the zones.
           - PrimaryPumpOwner (gw.primary.pump.owner, required): who runs the primary pump, the heat pump or the scada; the layout words' PrimaryPumpActuators axiom ties the actuator nodes to it. RefrigerantCycle (gw.refrigerant.cycle, required): single compressor or two-compressor cascade, for the optimizer's COP model.
           - CircuitResolution b: a circuit's CircuitPosition is its 1-based place in ZoneCallCircuits. PrimaryCircuit axiom: each zone's PrimaryCircuitPosition names a circuit serving that zone, and that circuit carries a setpoint channel. CircuitDistinctness axiom: no two circuits share a Name, a whitewire channel, a setpoint channel, a temperature channel or a relay node. CircuitResolution d is dropped: PrimaryCircuit implies every zone is served.
         direct_dependencies:
@@ -3173,9 +3173,9 @@ types:
             - "gw.primary.flow.source:000"
             - "gw.primary.pump.owner:000"
             - "gw.refrigerant.cycle:000"
+            - "gw.water.store:000"
             - "gw1.hvac.zone:000"
             - "gw1.zone.call.circuit:000"
-            - "non.negative.int"
             - "spaceheat.name"
 
   gw.native.gpio.pin:
@@ -3220,7 +3220,7 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.nolan.layout/000"
-        created: "2026-09-24T17:50:00Z"
+        created: "2026-10-05T15:30:00Z"
         status: "staging"
         summary: "The complete deployable artifact for a Nolan home: monobloc heat pump, one store tank, the gw108 board. Components are the cac-free DeviceType versions; DeviceTypes holds the per-family device-type records; every relay is a per-relay component against the board record. The axioms carry the layout invariants; wording is identical across layout words where the axiom name is shared."
         direct_dependencies:
@@ -3360,6 +3360,22 @@ types:
           structural:
             - "day.of.week:000"
             - "hh.mm"
+
+  gw.water.store:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The water store tanks of a hydronic space-heating layout (buffer excluded)."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.water.store/000"
+        created: "2026-10-05T15:30:00Z"
+        status: "staging"
+        summary: "TotalStoreTanks (positive.int), at most 6 (axiom TankCount). Carried by gw.hydronic as the optional WaterStore."
+        direct_dependencies:
+          structural:
+            - "positive.int"
 
   gw.weather.channel.gt:
     latest_version: "000"

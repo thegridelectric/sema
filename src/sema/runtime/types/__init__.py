@@ -105,6 +105,7 @@ from sema.runtime.types.gw_readings import GwReadings
 from sema.runtime.types.gw_recorded_setpoints import GwRecordedSetpoints
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
 from sema.runtime.types.gw_tou_window import GwTouWindow
+from sema.runtime.types.gw_water_store import GwWaterStore
 from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
 from sema.runtime.types.gw_weather_cmd_ack import GwWeatherCmdAck
 from sema.runtime.types.gw_weather_cmd_nack import GwWeatherCmdNack
@@ -313,6 +314,7 @@ __all__ = [
     "GwRecordedSetpoints",
     "GwTouTariff",
     "GwTouWindow",
+    "GwWaterStore",
     "GwWeatherChannelGt",
     "GwWeatherCmdAck",
     "GwWeatherCmdNack",

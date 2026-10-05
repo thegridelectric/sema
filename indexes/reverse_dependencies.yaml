@@ -200,6 +200,10 @@ types:
     '000':
       used_by:
       - gw.tou.tariff:000
+  gw.water.store:
+    '000':
+      used_by:
+      - gw.hydronic:000
   gw.weather.channel.gt:
     '000':
       used_by:
@@ -1232,7 +1236,6 @@ formats:
     used_by:
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
-    - gw.hydronic:000
     - gw.native.gpio.pin:000
     - gw.operational.params:000
     - gw.weather.channel.gt:000
@@ -1350,6 +1353,7 @@ formats:
     - gw.channel.noise.stats:000
     - gw.nolan.family.params:000
     - gw.operational.params:000
+    - gw.water.store:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000

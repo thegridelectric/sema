@@ -128,7 +128,7 @@ def test_axiom_24_store_tank_temps_counts_every_tank(vanilla: dict[str, Any]) ->
     """Raising TotalStoreTanks demands the new tank's readings."""
 
     def mutate(d: dict[str, Any]) -> None:
-        d["Hydronic"]["TotalStoreTanks"] += 1
+        d["Hydronic"]["WaterStore"]["TotalStoreTanks"] += 1
 
     reject(vanilla, mutate, "Axiom 24")
 
@@ -570,3 +570,22 @@ def test_hydronic_axiom_3_a_primary_serves_another_zone(vanilla: dict[str, Any])
         d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 2
 
     reject(vanilla, mutate, "PrimaryCircuit")
+
+
+def test_axiom_37_water_store_is_required(vanilla: dict[str, Any]) -> None:
+    """A House0 layout without its water store fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["WaterStore"]
+
+    reject(vanilla, mutate, "Axiom 37")
+
+
+def test_no_circuits_fails_in_the_hydronic_word(vanilla: dict[str, Any]) -> None:
+    """An empty circuit list leaves every zone without its primary circuit."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"] = []
+
+    reject(vanilla, mutate, "Axiom 3")
+

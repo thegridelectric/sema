@@ -4,10 +4,10 @@ from sema.runtime.base import SemaType
 from sema.runtime.enums import GwPrimaryFlowSource
 from sema.runtime.enums import GwPrimaryPumpOwner
 from sema.runtime.enums import GwRefrigerantCycle
-from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.gw1_hvac_zone import Gw1HvacZone
 from sema.runtime.types.gw1_zone_call_circuit import Gw1ZoneCallCircuit
+from sema.runtime.types.gw_water_store import GwWaterStore
 
 
 class GwHydronic(SemaType):
@@ -15,7 +15,7 @@ class GwHydronic(SemaType):
 
     zones: list[Gw1HvacZone]
     zone_call_circuits: list[Gw1ZoneCallCircuit]
-    total_store_tanks: NonNegativeInt
+    water_store: GwWaterStore | None = None
     primary_flow_source: GwPrimaryFlowSource
     primary_pump_owner: GwPrimaryPumpOwner
     refrigerant_cycle: GwRefrigerantCycle
@@ -27,14 +27,8 @@ class GwHydronic(SemaType):
     def check_axiom_1(self) -> Self:
         """
         Axiom 1: Cardinality
-        a. TotalStoreTanks SHALL be at most 6.
-        b. The number of Zones SHALL be between 1 and 6 inclusive.
+        The number of Zones SHALL be between 1 and 6 inclusive.
         """
-        if self.total_store_tanks > 6:
-            raise ValueError(
-                "Axiom 1 (Cardinality) failed: TotalStoreTanks "
-                f"({self.total_store_tanks}) must be at most 6."
-            )
         if not 1 <= len(self.zones) <= 6:
             raise ValueError(
                 "Axiom 1 (Cardinality) failed: number of Zones "

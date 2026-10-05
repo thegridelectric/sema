@@ -3587,7 +3587,11 @@
         "EmitterType": "Other"
       }
     ],
-    "TotalStoreTanks": 3,
+    "WaterStore": {
+      "TotalStoreTanks": 3,
+      "TypeName": "gw.water.store",
+      "Version": "000"
+    },
     "PrimaryFlowSource": "DerivedSiegSum",
     "PrimaryPumpOwner": "Scada",
     "RefrigerantCycle": "Cascade"

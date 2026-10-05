@@ -283,9 +283,9 @@ class GwNolanLayout(SemaType):
         "iso-valve-relay", "secondary-pump-relay", "hp-scada-ops-relay",
         "charge-valve-relay", "store-pump-relay", "buffer-top-elt-relay",
         "buffer-bottom-elt-relay", "tank1-top-elt-relay", and "tank1-bottom-elt-relay",
-        each with ActorClass "Relay". b. Hydronic.ZoneCallCircuits SHALL be non-empty,
-        and each circuit's FailsafeRelayNode and OpsRelayNode SHALL name a ShNode in
-        ShNodes with ActorClass "Relay". c. ShNodes SHALL include a node named
+        each with ActorClass "Relay". b. Each circuit's FailsafeRelayNode and
+        OpsRelayNode in Hydronic.ZoneCallCircuits SHALL name a ShNode in ShNodes with
+        ActorClass "Relay". c. ShNodes SHALL include a node named
         "secondary-010v" with ActorClass "ZeroTenOutputer" and a ComponentId equal to
         the ComponentId of an i2c.dac.output.component.gt in Components.
         """
@@ -318,12 +318,7 @@ class GwNolanLayout(SemaType):
             "tank1-bottom-elt-relay",
         ):
             relay_or_raise(required, "plant relay")
-        circuits = self.hydronic.zone_call_circuits or []
-        if not circuits:
-            raise ValueError(
-                "Axiom 5 (RequiredActuators) failed: Hydronic.ZoneCallCircuits is empty."
-            )
-        for circuit in circuits:
+        for circuit in self.hydronic.zone_call_circuits:
             relay_or_raise(circuit.failsafe_relay_node, "circuit failsafe relay")
             relay_or_raise(circuit.ops_relay_node, "circuit ops relay")
         output_node = next(
@@ -464,13 +459,19 @@ class GwNolanLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_9(self) -> "GwNolanLayout":
         """
-        Axiom 9: SingleStoreTank Hydronic.TotalStoreTanks SHALL equal 1 — the Nolan
-        plant carries exactly one store tank.
+        Axiom 9: SingleStoreTank Hydronic.WaterStore SHALL be present and its
+        TotalStoreTanks SHALL equal 1: the Nolan plant carries exactly one store
+        tank.
         """
-        if self.hydronic.total_store_tanks != 1:
+        water_store = self.hydronic.water_store
+        if water_store is None:
+            raise ValueError(
+                "Axiom 9 (SingleStoreTank) failed: Hydronic.WaterStore is absent."
+            )
+        if water_store.total_store_tanks != 1:
             raise ValueError(
                 "Axiom 9 (SingleStoreTank) failed: TotalStoreTanks is "
-                f"{self.hydronic.total_store_tanks}, expected 1."
+                f"{water_store.total_store_tanks}, expected 1."
             )
         return self
 
@@ -835,18 +836,19 @@ class GwNolanLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_21(self) -> "GwNolanLayout":
         """
-        Axiom 21: StoreTankTemps For each tank index N in 1..Hydronic.TotalStoreTanks
-        and each depth i in 1..3, a channel named "tank{N}-depth{i}" SHALL exist in
-        DataChannels or in DerivedChannels.
+        Axiom 21: StoreTankTemps For each tank index N in
+        1..Hydronic.WaterStore.TotalStoreTanks and each depth i in 1..3, a channel
+        named "tank{N}-depth{i}" SHALL exist in DataChannels or in DerivedChannels.
         """
-        if self.hydronic is None:
+        water_store = self.hydronic.water_store
+        if water_store is None:
             return self
         channel_names = {c.name for c in (self.data_channels or [])} | {
             c.name for c in (self.derived_channels or [])
         }
         missing = [
             f"tank{tank}-depth{depth}"
-            for tank in range(1, self.hydronic.total_store_tanks + 1)
+            for tank in range(1, water_store.total_store_tanks + 1)
             for depth in (1, 2, 3)
             if f"tank{tank}-depth{depth}" not in channel_names
         ]

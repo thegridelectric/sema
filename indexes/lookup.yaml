@@ -436,6 +436,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.tou.window/000.yaml
+  gw.water.store:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.water.store/000.yaml
   gw.weather.channel.gt:
     latest_version: '000'
     versioning_strategy: literal

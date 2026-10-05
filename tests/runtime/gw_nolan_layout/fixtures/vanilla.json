@@ -4240,7 +4240,11 @@
         "EmitterType": "FanCoil"
       }
     ],
-    "TotalStoreTanks": 1,
+    "WaterStore": {
+      "TotalStoreTanks": 1,
+      "TypeName": "gw.water.store",
+      "Version": "000"
+    },
     "PrimaryFlowSource": "Measured",
     "PrimaryPumpOwner": "HeatPump",
     "RefrigerantCycle": "Single"

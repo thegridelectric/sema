@@ -997,6 +997,7 @@ types:
       - gpio.sensor.component.gt:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
+      - gw.water.store:000
       - gw0.required.energy.layered:000
       - gw0.usable.energy.layered:000
       - gw1.hvac.zone:000
@@ -1044,11 +1045,11 @@ types:
       - thermostat.kind:000
       - zone.setpoint.source:000
       formats:
-      - non.negative.int
       - positive.int
       - spaceheat.name
       - uuid4.str
       types:
+      - gw.water.store:000
       - gw1.hvac.zone:000
       - gw1.zone.call.circuit:000
       - gw1.zone.thermostat:000
@@ -1127,6 +1128,7 @@ types:
       - gpio.sensor.component.gt:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
+      - gw.water.store:000
       - gw0.required.energy.layered:000
       - gw0.usable.energy.layered:000
       - gw1.hvac.zone:000
@@ -1235,6 +1237,13 @@ types:
       - day.of.week:000
       formats:
       - hh.mm
+      types: []
+      versionless_types: []
+  gw.water.store:
+    '000':
+      enums: []
+      formats:
+      - positive.int
       types: []
       versionless_types: []
   gw.weather.channel.gt:

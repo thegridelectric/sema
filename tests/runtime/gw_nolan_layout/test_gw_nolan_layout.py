@@ -617,3 +617,22 @@ def test_hydronic_axiom_2_c_two_zones_with_one_name(vanilla: dict[str, Any]) -> 
         zones[3]["Name"] = zones[0]["Name"]
 
     reject(vanilla, mutate, "zone Names")
+
+
+def test_axiom_9_water_store_is_required(vanilla: dict[str, Any]) -> None:
+    """A Nolan layout without its water store fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["WaterStore"]
+
+    reject(vanilla, mutate, "Axiom 9")
+
+
+def test_no_circuits_fails_in_the_hydronic_word(vanilla: dict[str, Any]) -> None:
+    """An empty circuit list leaves every zone without its primary circuit."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"] = []
+
+    reject(vanilla, mutate, "Axiom 3")
+
