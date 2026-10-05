@@ -4110,7 +4110,7 @@
         "Name": "bedrooms",
         "Critical": true,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone1-bedrooms-gw-temp"
+        "PrimaryCircuitPosition": 1
       },
       {
         "TypeName": "gw1.hvac.zone",
@@ -4118,7 +4118,7 @@
         "Name": "living-rm",
         "Critical": true,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone2-living-rm-gw-temp"
+        "PrimaryCircuitPosition": 2
       },
       {
         "TypeName": "gw1.hvac.zone",
@@ -4126,7 +4126,7 @@
         "Name": "upstairs",
         "Critical": true,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone3-upstairs-gw-temp"
+        "PrimaryCircuitPosition": 3
       },
       {
         "TypeName": "gw1.hvac.zone",
@@ -4134,7 +4134,7 @@
         "Name": "garage",
         "Critical": false,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone4-garage-gw-temp"
+        "PrimaryCircuitPosition": 4
       }
     ],
     "ZoneCallCircuits": [
@@ -4142,6 +4142,7 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 1,
+        "Name": "bedrooms",
         "ServesZone": "bedrooms",
         "CanCool": false,
         "SetpointSource": "Learned",
@@ -4152,6 +4153,7 @@
         },
         "WhitewireChannelName": "zone1-bedrooms-opto-input",
         "SetpointChannelName": "zone1-bedrooms-set",
+        "TempChannelName": "zone1-bedrooms-gw-temp",
         "FailsafeRelayNode": "zone1-bedrooms-failsafe-relay",
         "OpsRelayNode": "zone1-bedrooms-ops-relay",
         "EmitterType": "RadiantSlab",
@@ -4161,6 +4163,7 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 2,
+        "Name": "living-rm",
         "ServesZone": "living-rm",
         "CanCool": false,
         "SetpointSource": "Learned",
@@ -4171,6 +4174,7 @@
         },
         "WhitewireChannelName": "zone2-living-rm-opto-input",
         "SetpointChannelName": "zone2-living-rm-set",
+        "TempChannelName": "zone2-living-rm-gw-temp",
         "FailsafeRelayNode": "zone2-living-rm-failsafe-relay",
         "OpsRelayNode": "zone2-living-rm-ops-relay",
         "EmitterType": "RadiantSlab",
@@ -4180,6 +4184,7 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 3,
+        "Name": "upstairs",
         "ServesZone": "upstairs",
         "CanCool": false,
         "SetpointSource": "Learned",
@@ -4190,6 +4195,7 @@
         },
         "WhitewireChannelName": "zone3-upstairs-opto-input",
         "SetpointChannelName": "zone3-upstairs-set",
+        "TempChannelName": "zone3-upstairs-gw-temp",
         "FailsafeRelayNode": "zone3-upstairs-failsafe-relay",
         "OpsRelayNode": "zone3-upstairs-ops-relay",
         "EmitterType": "FanCoil"
@@ -4198,6 +4204,7 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 4,
+        "Name": "garage",
         "ServesZone": "garage",
         "CanCool": false,
         "SetpointSource": "Learned",
@@ -4208,6 +4215,7 @@
         },
         "WhitewireChannelName": "zone4-garage-opto-input",
         "SetpointChannelName": "zone4-garage-set",
+        "TempChannelName": "zone4-garage-gw-temp",
         "FailsafeRelayNode": "zone4-garage-failsafe-relay",
         "OpsRelayNode": "zone4-garage-ops-relay",
         "EmitterType": "RadiantSlab",
@@ -4217,6 +4225,7 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 5,
+        "Name": "living-rm-fancoil",
         "ServesZone": "living-rm",
         "CanCool": true,
         "SetpointSource": "Learned",

@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-05T11:25:00Z"
+  last_updated: "2026-10-05T13:40:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3148,6 +3148,7 @@ types:
             - "gw0.usable.energy.layered:000"
             - "gw1.actor.class:014"
             - "gw1.quantity:001"
+            - "zone.setpoint.source:000"
 
   gw.hydronic:
     latest_version: "000"
@@ -3166,6 +3167,7 @@ types:
           - Strategy dropped: the control family is the layout word's own TypeName (invariant per word, so not a data field; the same rule that retired SiegLoopPlumbed).
           - TotalStoreTanks may be zero (a store that is not water tanks); the Cardinality axiom keeps only the upper bound of 6.
           - PrimaryPumpOwner (gw.primary.pump.owner, required): who runs the primary pump, the heat pump or the scada; the layout words' PrimaryPumpActuators axiom ties the actuator nodes to it. RefrigerantCycle (gw.refrigerant.cycle, required): single compressor or two-compressor cascade, for the optimizer's COP model.
+          - CircuitResolution b: a circuit's CircuitPosition is its 1-based place in ZoneCallCircuits. PrimaryCircuit axiom: each zone's PrimaryCircuitPosition names a circuit serving that zone, and that circuit carries a setpoint channel. CircuitDistinctness axiom: no two circuits share a Name, a whitewire channel, a setpoint channel or a temperature channel.
         direct_dependencies:
           structural:
             - "gw.primary.flow.source:000"
@@ -3255,6 +3257,7 @@ types:
             - "gw0.usable.energy.layered:000"
             - "gw1.actor.class:014"
             - "gw1.quantity:001"
+            - "zone.setpoint.source:000"
 
   gw.operational.params:
     latest_version: "000"
@@ -3563,7 +3566,7 @@ types:
     latest_version: "000"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "One thermal zone: label, critical flag, kWh-per-degF thermal weight, and air-temperature channel."
+    description: "One thermal zone: label, critical flag, kWh-per-degF thermal weight, and primary circuit."
 
     versions:
       "000":
@@ -3572,8 +3575,10 @@ types:
         status: "staging"
         summary: >-
           - New shared zone type (Name, Critical, KwhPerDegF, TempChannelName) replacing the former parallel ZoneList / CriticalZoneList / ZoneKwhPerDegFList in the hydronic block.
+          - PrimaryCircuitPosition (required positive.int) names the zone's primary circuit; TempChannelName dropped: the zone's air temperature is its primary circuit's.
         direct_dependencies:
           structural:
+            - "positive.int"
             - "spaceheat.name"
 
   gw1.scada.device.type.gt:
@@ -3713,7 +3718,7 @@ types:
         schema_url: "https://schemas.electricity.works/types/gw1.zone.call.circuit/000"
         created: "2026-09-23T22:25:00Z"
         status: "staging"
-        summary: "Circuit record (CircuitPosition, ServesZone, EmitterType, CanCool, SetpointSource, Thermostat, WhitewireChannelName, optional FloorTempChannelName, FailsafeRelayNode, OpsRelayNode); OnlyFanCoilsCool and ReadSetpointNeedsCommsStat axioms."
+        summary: "Circuit record (CircuitPosition as the place in the layout's circuit list, Name, ServesZone, EmitterType, CanCool, SetpointSource, Thermostat, WhitewireChannelName, optional SetpointChannelName, optional TempChannelName for the air temperature sensed at the circuit's thermostat, optional FloorTempChannelName, FailsafeRelayNode, OpsRelayNode); OnlyFanCoilsCool, ReadSetpointNeedsCommsStat and SetpointNeedsTemp axioms."
         direct_dependencies:
           structural:
             - "gw.zone.emitter.type:000"

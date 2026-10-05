@@ -12,7 +12,13 @@ properties:
   CircuitPosition:
     $ref: "https://schemas.electricity.works/formats/positive.int"
     description: >
-      The circuit's 1-based position in the relay board's zone bank.
+      The circuit's 1-based place in the layout's list of zone-call
+      circuits.
+
+  Name:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The circuit's label (e.g. "living-rm-fancoil").
 
   ServesZone:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
@@ -43,6 +49,13 @@ properties:
     description: >
       Name of the channel carrying this circuit's thermostat setpoint.
 
+  TempChannelName:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Name of the channel carrying the air temperature sensed at this
+      circuit's thermostat. The sensor is physically co-located with the
+      thermostat element that makes the heat call.
+
   FloorTempChannelName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
@@ -66,6 +79,7 @@ properties:
 
 required:
   - CircuitPosition
+  - Name
   - ServesZone
   - EmitterType
   - CanCool
@@ -91,3 +105,8 @@ x-gridworks:
       statement: >
         If SetpointSource is FromThermostat, Thermostat.Kind SHALL NOT
         be MechanicalDial.
+    - number: 3
+      name: "SetpointNeedsTemp"
+      statement: >
+        If SetpointChannelName is present, TempChannelName SHALL be
+        present.

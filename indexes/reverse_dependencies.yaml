@@ -1046,6 +1046,8 @@ enums:
   zone.setpoint.source:
     '000':
       used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
       - gw1.zone.call.circuit:000
 formats:
   firmware.commit:
@@ -1351,6 +1353,7 @@ formats:
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000
+    - gw1.hvac.zone:000
     - gw1.scada.device.type.gt:000
     - gw1.zone.call.circuit:000
     - gw108.gpio.sensor.component.gt:001

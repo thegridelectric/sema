@@ -762,8 +762,8 @@ class GwHouse0Layout(SemaType):
     @model_validator(mode="after")
     def check_axiom_18(self) -> Self:
         """
-        Axiom 18: ZoneTempChannelResolution a. Every zone's TempChannelName in
-        Hydronic.Zones SHALL equal the Name of a channel in DataChannels or in
+        Axiom 18: CircuitTempChannelResolution a. Every circuit's TempChannelName in
+        Hydronic.ZoneCallCircuits SHALL equal the Name of a channel in DataChannels or in
         DerivedChannels. b. That channel SHALL carry temperature: a DataChannel's
         Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.
         """
@@ -773,19 +773,21 @@ class GwHouse0Layout(SemaType):
         quantity_by_name.update(
             {d.name: str(d.output_quantity) for d in (self.derived_channels or [])}
         )
-        for zone in self.hydronic.zones or []:
-            if zone.temp_channel_name not in quantity_by_name:
+        for circuit in self.hydronic.zone_call_circuits or []:
+            name = circuit.temp_channel_name
+            if not name:
+                continue
+            if name not in quantity_by_name:
                 raise ValueError(
-                    "Axiom 18 (ZoneTempChannelResolution) failed: zone "
-                    f"{zone.name!r} names TempChannelName {zone.temp_channel_name!r}, "
+                    "Axiom 18 (CircuitTempChannelResolution) failed: circuit "
+                    f"{circuit.name!r} names TempChannelName {name!r}, "
                     "which is not a channel in DataChannels or DerivedChannels."
                 )
-            quantity = quantity_by_name[zone.temp_channel_name]
-            if quantity != "Temperature":
+            if quantity_by_name[name] != "Temperature":
                 raise ValueError(
-                    "Axiom 18 (ZoneTempChannelResolution) failed: zone "
-                    f"{zone.name!r} names {zone.temp_channel_name!r}, whose "
-                    f"quantity is {quantity}, not Temperature."
+                    "Axiom 18 (CircuitTempChannelResolution) failed: circuit "
+                    f"{circuit.name!r} names {name!r}, whose quantity is "
+                    f"{quantity_by_name[name]}, not Temperature."
                 )
         return self
 
@@ -1308,41 +1310,71 @@ class GwHouse0Layout(SemaType):
     @model_validator(mode="after")
     def check_axiom_35(self) -> Self:
         """
-        Axiom 35: CriticalZoneSetpointChannel a. Every zone in Hydronic.Zones with
-        Critical true SHALL be the ServesZone of at least one circuit in
-        Hydronic.ZoneCallCircuits that carries SetpointChannelName. b. Every circuit's
-        SetpointChannelName SHALL equal the Name of a channel in DataChannels or in
-        DerivedChannels. c. That channel SHALL carry temperature: a DataChannel's
-        Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.
+        Axiom 35: CircuitSetpointChannel a. Every circuit's SetpointChannelName in
+        Hydronic.ZoneCallCircuits SHALL equal the Name of a channel in DataChannels or in
+        DerivedChannels. b. That channel SHALL carry temperature: a DataChannel's
+        Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature. c. Where a
+        circuit's SetpointSource is "FromThermostat", its SetpointChannelName SHALL name
+        a channel in DataChannels. d. Where a circuit's SetpointSource is "Learned", its
+        SetpointChannelName SHALL name a channel in DerivedChannels. e. That derived
+        channel's InputChannelNames SHALL contain the circuit's TempChannelName and the
+        Name of the circuit's heat-call channel (the CircuitHeatCallChannel axiom).
         """
         if self.hydronic is None:
             return self
-        circuits = self.hydronic.zone_call_circuits or []
-        with_setpoint = {c.serves_zone for c in circuits if c.setpoint_channel_name}
-        for zone in self.hydronic.zones or []:
-            if zone.critical and zone.name not in with_setpoint:
-                raise ValueError(
-                    "Axiom 35 (CriticalZoneSetpointChannel) failed: critical zone "
-                    f"{zone.name!r} has no circuit that carries SetpointChannelName."
-                )
+        data_names = {d.name for d in (self.data_channels or [])}
+        derived_by_name = {d.name: d for d in (self.derived_channels or [])}
         quantity_by_name = {d.name: str(d.quantity) for d in (self.data_channels or [])}
         quantity_by_name.update(
-            {d.name: str(d.output_quantity) for d in (self.derived_channels or [])}
+            {name: str(d.output_quantity) for name, d in derived_by_name.items()}
         )
-        for circuit in circuits:
+        for circuit in self.hydronic.zone_call_circuits or []:
             name = circuit.setpoint_channel_name
             if not name:
                 continue
             if name not in quantity_by_name:
                 raise ValueError(
-                    "Axiom 35 (CriticalZoneSetpointChannel) failed: circuit "
-                    f"{circuit.circuit_position} names SetpointChannelName {name!r}, "
+                    "Axiom 35 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} names SetpointChannelName {name!r}, "
                     "which is not a channel in DataChannels or DerivedChannels."
                 )
             if quantity_by_name[name] != "Temperature":
                 raise ValueError(
-                    "Axiom 35 (CriticalZoneSetpointChannel) failed: circuit "
-                    f"{circuit.circuit_position} names {name!r}, whose quantity is "
+                    "Axiom 35 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} names {name!r}, whose quantity is "
                     f"{quantity_by_name[name]}, not Temperature."
+                )
+            # String comparison: the enum class name differs under a snapshot's
+            # local names.
+            source = str(circuit.setpoint_source)
+            if source == "FromThermostat" and name not in data_names:
+                raise ValueError(
+                    "Axiom 35 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} has SetpointSource FromThermostat, so "
+                    f"{name!r} SHALL be a channel in DataChannels."
+                )
+            if source != "Learned":
+                continue
+            if name not in derived_by_name:
+                raise ValueError(
+                    "Axiom 35 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} has SetpointSource Learned, so "
+                    f"{name!r} SHALL be a channel in DerivedChannels."
+                )
+            inputs = list(derived_by_name[name].input_channel_names or [])
+            heat_calls = [
+                d.name
+                for d in derived_by_name.values()
+                if d.strategy == "heat-call"
+                and list(d.input_channel_names or [])
+                == [circuit.whitewire_channel_name]
+            ]
+            needed = [circuit.temp_channel_name, *heat_calls]
+            missing = [n for n in needed if n not in inputs]
+            if missing:
+                raise ValueError(
+                    "Axiom 35 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} learns its setpoint on {name!r}, whose "
+                    f"InputChannelNames {inputs} lack {missing}."
                 )
         return self

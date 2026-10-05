@@ -18,10 +18,8 @@ properties:
     items:
       $ref: "https://schemas.electricity.works/types/gw1.hvac.zone/000"
     description: >
-      The heating zones in order; the 1-based position of each is its zone
-      index. Replaces the former parallel ZoneList / CriticalZoneList /
-      ZoneKwhPerDegFList (their subset / equal-length invariants are now
-      structural).
+      The heating zones. Each is served by one or more zone-call circuits
+      and names its primary circuit.
 
   ZoneCallCircuits:
     type: array
@@ -29,8 +27,10 @@ properties:
       $ref: "https://schemas.electricity.works/types/gw1.zone.call.circuit/000"
     description: >
       The zone-call circuits, each binding a wall thermostat, call wire,
-      relay pair, and actuator to the zone it serves. A zone may be served
-      by more than one circuit.
+      relay pair, and actuator to the zone it serves. A circuit's place in
+      this list is its CircuitPosition. The zones partition the circuits:
+      every circuit serves exactly one zone and every zone is served by at
+      least one circuit.
 
   TotalStoreTanks:
     $ref: "https://schemas.electricity.works/formats/non.negative.int"
@@ -90,12 +90,13 @@ examples:
   - |
     {
       "Zones": [
-        {"Name": "down", "Critical": true, "KwhPerDegF": 1, "TempChannelName": "zone1-down-temp", "TypeName": "gw1.hvac.zone", "Version": "000"},
-        {"Name": "up", "Critical": true, "KwhPerDegF": 0, "TempChannelName": "zone2-up-temp", "TypeName": "gw1.hvac.zone", "Version": "000"}
+        {"Name": "down", "Critical": true, "KwhPerDegF": 1, "PrimaryCircuitPosition": 1, "TypeName": "gw1.hvac.zone", "Version": "000"},
+        {"Name": "up", "Critical": true, "KwhPerDegF": 0, "PrimaryCircuitPosition": 2, "TypeName": "gw1.hvac.zone", "Version": "000"}
       ],
       "ZoneCallCircuits": [
         {
           "CircuitPosition": 1,
+          "Name": "down",
           "ServesZone": "down",
           "EmitterType": "RadiantSlab",
           "CanCool": false,
@@ -103,6 +104,7 @@ examples:
           "Thermostat": {"Kind": "MechanicalDial", "TypeName": "gw1.zone.thermostat", "Version": "000"},
           "WhitewireChannelName": "zone1-down-opto-input",
           "SetpointChannelName": "zone1-down-set",
+          "TempChannelName": "zone1-down-temp",
           "FloorTempChannelName": "zone1-down-floor-temp",
           "FailsafeRelayNode": "zone1-down-failsafe-relay",
           "OpsRelayNode": "zone1-down-ops-relay",
@@ -111,6 +113,7 @@ examples:
         },
         {
           "CircuitPosition": 2,
+          "Name": "up",
           "ServesZone": "up",
           "EmitterType": "RadiantSlab",
           "CanCool": false,
@@ -118,6 +121,7 @@ examples:
           "Thermostat": {"Kind": "MechanicalDial", "TypeName": "gw1.zone.thermostat", "Version": "000"},
           "WhitewireChannelName": "zone2-up-opto-input",
           "SetpointChannelName": "zone2-up-set",
+          "TempChannelName": "zone2-up-temp",
           "FailsafeRelayNode": "zone2-up-failsafe-relay",
           "OpsRelayNode": "zone2-up-ops-relay",
           "TypeName": "gw1.zone.call.circuit",
@@ -144,6 +148,20 @@ x-gridworks:
       name: "CircuitResolution"
       statement: >
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
-        Zones. b. No two circuits SHALL share a CircuitPosition.
+        Zones. b. The circuit at 1-based place i in ZoneCallCircuits SHALL
+        have CircuitPosition i.
         c. No two zones SHALL share a Name. d. Every zone in Zones SHALL be
         the ServesZone of at least one circuit.
+    - number: 3
+      name: "PrimaryCircuit"
+      statement: >
+        a. Every zone's PrimaryCircuitPosition SHALL equal the
+        CircuitPosition of a circuit whose ServesZone equals the zone's
+        Name. b. That circuit SHALL carry SetpointChannelName.
+    - number: 4
+      name: "CircuitDistinctness"
+      statement: >
+        a. No two circuits SHALL share a Name. b. No two circuits SHALL
+        share a WhitewireChannelName. c. No two circuits SHALL share a
+        SetpointChannelName. d. No two circuits SHALL share a
+        TempChannelName.

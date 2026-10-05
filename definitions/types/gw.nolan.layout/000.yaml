@@ -304,10 +304,10 @@ x-gridworks:
         is the effective handle of an ShNode with ActorClass "LocalControl" SHALL be
         named "n", "backup" or "scada-blind".
     - number: 13
-      name: "ZoneTempChannelResolution"
+      name: "CircuitTempChannelResolution"
       statement: >
-        a. Every zone's TempChannelName in Hydronic.Zones SHALL equal the Name of a
-        channel in DataChannels or in DerivedChannels.
+        a. Every circuit's TempChannelName in Hydronic.ZoneCallCircuits SHALL equal the
+        Name of a channel in DataChannels or in DerivedChannels.
         b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
         DerivedChannel's OutputQuantity, SHALL be Temperature.
     - number: 14
@@ -446,13 +446,18 @@ x-gridworks:
       statement: >
         ShNodes SHALL include a node named "hp-sensor" with ActorClass "HpSensor".
     - number: 33
-      name: "CriticalZoneSetpointChannel"
+      name: "CircuitSetpointChannel"
       statement: >
-        a. Every zone in Hydronic.Zones with Critical true SHALL be the ServesZone of at
-        least one circuit in Hydronic.ZoneCallCircuits that carries SetpointChannelName.
-        b. Every circuit's SetpointChannelName SHALL equal the Name of a channel in
-        DataChannels or in DerivedChannels.
-        c. That channel SHALL carry temperature: a DataChannel's Quantity, or a
+        a. Every circuit's SetpointChannelName in Hydronic.ZoneCallCircuits SHALL equal
+        the Name of a channel in DataChannels or in DerivedChannels.
+        b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
         DerivedChannel's OutputQuantity, SHALL be Temperature.
+        c. Where a circuit's SetpointSource is "FromThermostat", its SetpointChannelName
+        SHALL name a channel in DataChannels.
+        d. Where a circuit's SetpointSource is "Learned", its SetpointChannelName SHALL
+        name a channel in DerivedChannels.
+        e. That derived channel's InputChannelNames SHALL contain the circuit's
+        TempChannelName and the Name of the circuit's heat-call channel (the
+        CircuitHeatCallChannel axiom).
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

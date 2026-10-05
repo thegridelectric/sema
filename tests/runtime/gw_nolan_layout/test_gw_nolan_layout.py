@@ -491,31 +491,106 @@ def test_axiom_12_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any])
     reject(vanilla, mutate, "Axiom 12")
 
 
-def test_axiom_33_a_critical_zone_with_no_setpoint_channel(vanilla: dict[str, Any]) -> None:
-    """A critical zone none of whose circuits carries SetpointChannelName fails."""
-
+def test_axiom_13_a_circuit_temp_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        zone = next(z["Name"] for z in d["Hydronic"]["Zones"] if z["Critical"])
-        for c in d["Hydronic"]["ZoneCallCircuits"]:
-            if c["ServesZone"] == zone:
-                c.pop("SetpointChannelName", None)
+        d["Hydronic"]["ZoneCallCircuits"][0]["TempChannelName"] = "no-such-temp"
 
-    reject(vanilla, mutate, "Axiom 33")
+    reject(vanilla, mutate, "Axiom 13")
 
 
-def test_axiom_33_b_setpoint_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
+def test_axiom_13_b_circuit_temp_channel_that_is_not_a_temperature(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
+        circuit["TempChannelName"] = circuit["WhitewireChannelName"]
+
+    reject(vanilla, mutate, "Axiom 13")
+
+
+def test_axiom_33_a_setpoint_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "no-such-set"
 
     reject(vanilla, mutate, "Axiom 33")
 
 
-def test_axiom_33_c_setpoint_channel_that_is_not_a_temperature(vanilla: dict[str, Any]) -> None:
+def test_axiom_33_b_setpoint_channel_that_is_not_a_temperature(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
         circuit = d["Hydronic"]["ZoneCallCircuits"][0]
         circuit["SetpointChannelName"] = circuit["WhitewireChannelName"]
 
     reject(vanilla, mutate, "Axiom 33")
+
+
+def test_axiom_33_d_learned_setpoint_on_a_data_channel(vanilla: dict[str, Any]) -> None:
+    """A Learned circuit whose setpoint channel is a reported channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "zone1-bedrooms-gw-temp"
+
+    reject(vanilla, mutate, "SHALL be a channel in DerivedChannels")
+
+
+def test_axiom_33_e_learned_setpoint_without_its_heat_call(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        setpoint = next(c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set")
+        setpoint["InputChannelNames"] = ["zone1-bedrooms-gw-temp"]
+
+    reject(vanilla, mutate, "Axiom 33")
+
+
+def test_axiom_33_e_learned_setpoint_from_another_circuits_temp(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        setpoint = next(c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set")
+        setpoint["InputChannelNames"] = ["zone2-living-rm-gw-temp", "zone1-bedrooms-heat-call"]
+
+    reject(vanilla, mutate, "Axiom 33")
+
+
+def test_hydronic_axiom_2_b_circuit_position_is_not_its_place(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuits = d["Hydronic"]["ZoneCallCircuits"]
+        circuits[0]["CircuitPosition"], circuits[1]["CircuitPosition"] = 2, 1
+
+    reject(vanilla, mutate, "1-based place")
+
+
+def test_hydronic_axiom_3_a_primary_is_no_circuit(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 9
+
+    reject(vanilla, mutate, "PrimaryCircuit")
+
+
+def test_hydronic_axiom_3_a_primary_serves_another_zone(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 2
+
+    reject(vanilla, mutate, "PrimaryCircuit")
+
+
+def test_hydronic_axiom_3_b_primary_without_a_setpoint(vanilla: dict[str, Any]) -> None:
+    """The living room's fancoil circuit carries no setpoint, so it cannot be primary."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Zones"][1]["PrimaryCircuitPosition"] = 5
+
+    reject(vanilla, mutate, "carries no SetpointChannelName")
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["Name", "WhitewireChannelName", "SetpointChannelName", "TempChannelName"],
+)
+def test_hydronic_axiom_4_two_circuits_share(vanilla: dict[str, Any], field: str) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuits = d["Hydronic"]["ZoneCallCircuits"]
+        circuits[2][field] = circuits[0][field]
+
+    reject(vanilla, mutate, "CircuitDistinctness")
 
 
 def test_hydronic_axiom_2_c_two_zones_with_one_name(vanilla: dict[str, Any]) -> None:
@@ -534,5 +609,7 @@ def test_hydronic_axiom_2_d_zone_served_by_no_circuit(vanilla: dict[str, Any]) -
         d["Hydronic"]["ZoneCallCircuits"] = [
             c for c in d["Hydronic"]["ZoneCallCircuits"] if c["ServesZone"] != "upstairs"
         ]
+        for place, c in enumerate(d["Hydronic"]["ZoneCallCircuits"], start=1):
+            c["CircuitPosition"] = place
 
     reject(vanilla, mutate, "served by no circuit")

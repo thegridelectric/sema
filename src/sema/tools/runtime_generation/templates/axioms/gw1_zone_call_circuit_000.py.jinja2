@@ -30,3 +30,17 @@
                 "FromThermostat, so Thermostat.Kind SHALL NOT be MechanicalDial."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> "{{ gw1_zone_call_circuit_000_class_name }}":
+        """
+        Axiom 3: SetpointNeedsTemp If SetpointChannelName is present, TempChannelName
+        SHALL be present.
+        """
+        if self.setpoint_channel_name and not self.temp_channel_name:
+            raise ValueError(
+                "Axiom 3 (SetpointNeedsTemp) failed: the circuit carries "
+                f"SetpointChannelName {self.setpoint_channel_name!r}, so it SHALL "
+                "carry TempChannelName."
+            )
+        return self

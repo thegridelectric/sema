@@ -3532,7 +3532,7 @@
         "Name": "living-rm",
         "Critical": true,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone1-living-rm-gw-temp"
+        "PrimaryCircuitPosition": 1
       },
       {
         "TypeName": "gw1.hvac.zone",
@@ -3540,7 +3540,7 @@
         "Name": "bedroom",
         "Critical": true,
         "KwhPerDegF": 1.0,
-        "TempChannelName": "zone2-bedroom-temp"
+        "PrimaryCircuitPosition": 2
       }
     ],
     "ZoneCallCircuits": [
@@ -3548,9 +3548,10 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 1,
+        "Name": "living-rm",
         "ServesZone": "living-rm",
         "CanCool": false,
-        "SetpointSource": "Learned",
+        "SetpointSource": "FromThermostat",
         "Thermostat": {
           "TypeName": "gw1.zone.thermostat",
           "Version": "000",
@@ -3559,6 +3560,7 @@
         },
         "WhitewireChannelName": "zone1-living-rm-whitewire-pwr",
         "SetpointChannelName": "zone1-living-rm-set",
+        "TempChannelName": "zone1-living-rm-gw-temp",
         "FailsafeRelayNode": "zone1-living-rm-failsafe-relay",
         "OpsRelayNode": "zone1-living-rm-ops-relay",
         "EmitterType": "Other"
@@ -3567,9 +3569,10 @@
         "TypeName": "gw1.zone.call.circuit",
         "Version": "000",
         "CircuitPosition": 2,
+        "Name": "bedroom",
         "ServesZone": "bedroom",
         "CanCool": false,
-        "SetpointSource": "Learned",
+        "SetpointSource": "FromThermostat",
         "Thermostat": {
           "TypeName": "gw1.zone.thermostat",
           "Version": "000",
@@ -3578,6 +3581,7 @@
         },
         "WhitewireChannelName": "zone2-bedroom-whitewire-pwr",
         "SetpointChannelName": "zone2-bedroom-set",
+        "TempChannelName": "zone2-bedroom-temp",
         "FailsafeRelayNode": "zone2-bedroom-failsafe-relay",
         "OpsRelayNode": "zone2-bedroom-ops-relay",
         "EmitterType": "Other"

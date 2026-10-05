@@ -12,6 +12,7 @@ class Gw1ZoneCallCircuit(SemaType):
     """Sema: https://schemas.electricity.works/types/gw1.zone.call.circuit/000"""
 
     circuit_position: PositiveInt
+    name: SpaceheatName
     serves_zone: SpaceheatName
     emitter_type: GwZoneEmitterType
     can_cool: bool
@@ -19,6 +20,7 @@ class Gw1ZoneCallCircuit(SemaType):
     thermostat: Gw1ZoneThermostat
     whitewire_channel_name: SpaceheatName
     setpoint_channel_name: SpaceheatName | None = None
+    temp_channel_name: SpaceheatName | None = None
     floor_temp_channel_name: SpaceheatName | None = None
     failsafe_relay_node: SpaceheatName
     ops_relay_node: SpaceheatName
@@ -55,5 +57,19 @@ class Gw1ZoneCallCircuit(SemaType):
             raise ValueError(
                 "Axiom 2 (ReadSetpointNeedsCommsStat) failed: SetpointSource is "
                 "FromThermostat, so Thermostat.Kind SHALL NOT be MechanicalDial."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> "Gw1ZoneCallCircuit":
+        """
+        Axiom 3: SetpointNeedsTemp If SetpointChannelName is present, TempChannelName
+        SHALL be present.
+        """
+        if self.setpoint_channel_name and not self.temp_channel_name:
+            raise ValueError(
+                "Axiom 3 (SetpointNeedsTemp) failed: the circuit carries "
+                f"SetpointChannelName {self.setpoint_channel_name!r}, so it SHALL "
+                "carry TempChannelName."
             )
         return self

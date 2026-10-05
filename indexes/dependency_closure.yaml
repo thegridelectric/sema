@@ -1351,6 +1351,7 @@ types:
     '000':
       enums: []
       formats:
+      - positive.int
       - spaceheat.name
       types: []
       versionless_types: []

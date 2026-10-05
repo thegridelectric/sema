@@ -6,7 +6,7 @@ type: "string"
 description: >
   How the scada knows a zone-call circuit's setpoint: read from a
   comms-capable thermostat, or learned from the circuit's call behavior
-  against the zone's temperature channel.
+  against the circuit's temperature channel.
 
 enum:
   - "FromThermostat"
@@ -23,4 +23,4 @@ x-gridworks:
 
     "Learned": >
       The setpoint is a learned belief maintained from call edges and
-      the zone's temperature channel.
+      the circuit's temperature channel.

@@ -22,7 +22,8 @@
         """
         Axiom 2: CircuitResolution
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
-        Zones. b. No two circuits SHALL share a CircuitPosition.
+        Zones. b. The circuit at 1-based place i in ZoneCallCircuits SHALL
+        have CircuitPosition i.
         c. No two zones SHALL share a Name. d. Every zone in Zones SHALL be
         the ServesZone of at least one circuit.
         """
@@ -35,10 +36,10 @@
                     f"{c.serves_zone!r} does not name a zone in Zones."
                 )
         positions = [c.circuit_position for c in circuits]
-        if len(positions) != len(set(positions)):
+        if positions != list(range(1, len(circuits) + 1)):
             raise ValueError(
                 "Axiom 2 (CircuitResolution) failed: CircuitPosition values "
-                f"{positions} are not distinct."
+                f"{positions} are not each circuit's 1-based place in ZoneCallCircuits."
             )
         names = [z.name for z in self.zones]
         if len(names) != len(set(names)):
@@ -51,4 +52,54 @@
             raise ValueError(
                 f"Axiom 2 (CircuitResolution) failed: zones {unserved} are served by no circuit."
             )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> Self:
+        """
+        Axiom 3: PrimaryCircuit
+        a. Every zone's PrimaryCircuitPosition SHALL equal the
+        CircuitPosition of a circuit whose ServesZone equals the zone's
+        Name. b. That circuit SHALL carry SetpointChannelName.
+        """
+        circuits = {c.circuit_position: c for c in (self.zone_call_circuits or [])}
+        for zone in self.zones:
+            primary = circuits.get(zone.primary_circuit_position)
+            if primary is None or primary.serves_zone != zone.name:
+                raise ValueError(
+                    f"Axiom 3 (PrimaryCircuit) failed: zone {zone.name!r} names "
+                    f"PrimaryCircuitPosition {zone.primary_circuit_position}, which is "
+                    "not the position of a circuit serving it."
+                )
+            if not primary.setpoint_channel_name:
+                raise ValueError(
+                    f"Axiom 3 (PrimaryCircuit) failed: zone {zone.name!r}'s primary "
+                    f"circuit {primary.name!r} carries no SetpointChannelName."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_4(self) -> Self:
+        """
+        Axiom 4: CircuitDistinctness
+        a. No two circuits SHALL share a Name. b. No two circuits SHALL
+        share a WhitewireChannelName. c. No two circuits SHALL share a
+        SetpointChannelName. d. No two circuits SHALL share a
+        TempChannelName.
+        """
+        circuits = self.zone_call_circuits or []
+        for field, values in (
+            ("Name", [c.name for c in circuits]),
+            ("WhitewireChannelName", [c.whitewire_channel_name for c in circuits]),
+            (
+                "SetpointChannelName",
+                [c.setpoint_channel_name for c in circuits if c.setpoint_channel_name],
+            ),
+            ("TempChannelName", [c.temp_channel_name for c in circuits if c.temp_channel_name]),
+        ):
+            if len(values) != len(set(values)):
+                raise ValueError(
+                    f"Axiom 4 (CircuitDistinctness) failed: {field} values {values} "
+                    "are not distinct."
+                )
         return self
