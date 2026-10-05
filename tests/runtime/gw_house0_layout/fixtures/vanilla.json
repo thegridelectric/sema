@@ -3560,7 +3560,7 @@
         },
         "WhitewireChannelName": "zone1-living-rm-whitewire-pwr",
         "SetpointChannelName": "zone1-living-rm-set",
-        "TempChannelName": "zone1-living-rm-gw-temp",
+        "TempChannelName": "zone1-living-rm-temp",
         "FailsafeRelayNode": "zone1-living-rm-failsafe-relay",
         "OpsRelayNode": "zone1-living-rm-ops-relay",
         "EmitterType": "Other"

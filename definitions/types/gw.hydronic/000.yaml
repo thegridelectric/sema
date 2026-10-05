@@ -30,7 +30,7 @@ properties:
       relay pair, and actuator to the zone it serves. A circuit's place in
       this list is its CircuitPosition. The zones partition the circuits:
       every circuit serves exactly one zone and every zone is served by at
-      least one circuit.
+      least its primary circuit.
 
   TotalStoreTanks:
     $ref: "https://schemas.electricity.works/formats/non.negative.int"
@@ -150,8 +150,7 @@ x-gridworks:
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
         Zones. b. The circuit at 1-based place i in ZoneCallCircuits SHALL
         have CircuitPosition i.
-        c. No two zones SHALL share a Name. d. Every zone in Zones SHALL be
-        the ServesZone of at least one circuit.
+        c. No two zones SHALL share a Name.
     - number: 3
       name: "PrimaryCircuit"
       statement: >
@@ -164,4 +163,5 @@ x-gridworks:
         a. No two circuits SHALL share a Name. b. No two circuits SHALL
         share a WhitewireChannelName. c. No two circuits SHALL share a
         SetpointChannelName. d. No two circuits SHALL share a
-        TempChannelName.
+        TempChannelName. e. No two circuits SHALL share a FailsafeRelayNode.
+        f. No two circuits SHALL share an OpsRelayNode.

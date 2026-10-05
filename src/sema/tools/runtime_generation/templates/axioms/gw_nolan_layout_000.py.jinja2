@@ -1091,15 +1091,14 @@
         Hydronic.ZoneCallCircuits SHALL equal the Name of a channel in DataChannels or in
         DerivedChannels. b. That channel SHALL carry temperature: a DataChannel's
         Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature. c. Where a
-        circuit's SetpointSource is "FromThermostat", its SetpointChannelName SHALL name
-        a channel in DataChannels. d. Where a circuit's SetpointSource is "Learned", its
-        SetpointChannelName SHALL name a channel in DerivedChannels. e. That derived
-        channel's InputChannelNames SHALL contain the circuit's TempChannelName and the
-        Name of the circuit's heat-call channel (the CircuitHeatCallChannel axiom).
+        circuit's SetpointSource is "Learned", its SetpointChannelName SHALL name a
+        channel in DerivedChannels. d. That derived channel's InputChannelNames SHALL
+        contain the circuit's TempChannelName and the Name of the circuit's heat-call
+        channel (the CircuitHeatCallChannel axiom). e. That derived channel's Strategy
+        SHALL be "simple-falling-edge-setpoint".
         """
         if self.hydronic is None:
             return self
-        data_names = {d.name for d in (self.data_channels or [])}
         derived_by_name = {d.name: d for d in (self.derived_channels or [])}
         quantity_by_name = {d.name: str(d.quantity) for d in (self.data_channels or [])}
         quantity_by_name.update(
@@ -1123,14 +1122,7 @@
                 )
             # String comparison: the enum class name differs under a snapshot's
             # local names.
-            source = str(circuit.setpoint_source)
-            if source == "FromThermostat" and name not in data_names:
-                raise ValueError(
-                    "Axiom 33 (CircuitSetpointChannel) failed: circuit "
-                    f"{circuit.name!r} has SetpointSource FromThermostat, so "
-                    f"{name!r} SHALL be a channel in DataChannels."
-                )
-            if source != "Learned":
+            if str(circuit.setpoint_source) != "Learned":
                 continue
             if name not in derived_by_name:
                 raise ValueError(
@@ -1153,4 +1145,51 @@
                     f"{circuit.name!r} learns its setpoint on {name!r}, whose "
                     f"InputChannelNames {inputs} lack {missing}."
                 )
+            strategy = derived_by_name[name].strategy
+            if strategy != "simple-falling-edge-setpoint":
+                raise ValueError(
+                    "Axiom 33 (CircuitSetpointChannel) failed: circuit "
+                    f"{circuit.name!r} learns its setpoint on {name!r}, whose "
+                    f"Strategy is {strategy!r}, not 'simple-falling-edge-setpoint'."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_34(self) -> Self:
+        """
+        Axiom 34: ReadThermostatChannels Where a circuit's SetpointSource is
+        "FromThermostat", the channels named by its SetpointChannelName and
+        TempChannelName SHALL each be a channel in DataChannels whose CapturedByNodeName
+        is the Name of an ShNode whose ComponentId equals the circuit's
+        Thermostat.ComponentId.
+        """
+        if self.hydronic is None:
+            return self
+        captured_by = {d.name: d.captured_by_node_name for d in (self.data_channels or [])}
+        component_of = {n.name: n.component_id for n in (self.sh_nodes or [])}
+        for circuit in self.hydronic.zone_call_circuits or []:
+            # String comparison: the enum class name differs under a snapshot's
+            # local names.
+            if str(circuit.setpoint_source) != "FromThermostat":
+                continue
+            for field, name in (
+                ("SetpointChannelName", circuit.setpoint_channel_name),
+                ("TempChannelName", circuit.temp_channel_name),
+            ):
+                if not name:
+                    continue
+                if name not in captured_by:
+                    raise ValueError(
+                        "Axiom 34 (ReadThermostatChannels) failed: circuit "
+                        f"{circuit.name!r} reads its thermostat, so {field} {name!r} "
+                        "SHALL be a channel in DataChannels."
+                    )
+                component_id = component_of.get(captured_by[name])
+                if component_id is None or component_id != circuit.thermostat.component_id:
+                    raise ValueError(
+                        "Axiom 34 (ReadThermostatChannels) failed: circuit "
+                        f"{circuit.name!r} names {field} {name!r}, captured by "
+                        f"{captured_by[name]!r}, which is not the node of the circuit's "
+                        "thermostat component."
+                    )
         return self

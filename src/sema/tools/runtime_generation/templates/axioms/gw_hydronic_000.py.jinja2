@@ -24,8 +24,7 @@
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
         Zones. b. The circuit at 1-based place i in ZoneCallCircuits SHALL
         have CircuitPosition i.
-        c. No two zones SHALL share a Name. d. Every zone in Zones SHALL be
-        the ServesZone of at least one circuit.
+        c. No two zones SHALL share a Name.
         """
         circuits = self.zone_call_circuits or []
         zone_names = {z.name for z in self.zones}
@@ -45,12 +44,6 @@
         if len(names) != len(set(names)):
             raise ValueError(
                 f"Axiom 2 (CircuitResolution) failed: zone Names {names} are not distinct."
-            )
-        served = {c.serves_zone for c in circuits}
-        unserved = [name for name in names if name not in served]
-        if unserved:
-            raise ValueError(
-                f"Axiom 2 (CircuitResolution) failed: zones {unserved} are served by no circuit."
             )
         return self
 
@@ -85,7 +78,8 @@
         a. No two circuits SHALL share a Name. b. No two circuits SHALL
         share a WhitewireChannelName. c. No two circuits SHALL share a
         SetpointChannelName. d. No two circuits SHALL share a
-        TempChannelName.
+        TempChannelName. e. No two circuits SHALL share a FailsafeRelayNode.
+        f. No two circuits SHALL share an OpsRelayNode.
         """
         circuits = self.zone_call_circuits or []
         for field, values in (
@@ -96,6 +90,8 @@
                 [c.setpoint_channel_name for c in circuits if c.setpoint_channel_name],
             ),
             ("TempChannelName", [c.temp_channel_name for c in circuits if c.temp_channel_name]),
+            ("FailsafeRelayNode", [c.failsafe_relay_node for c in circuits]),
+            ("OpsRelayNode", [c.ops_relay_node for c in circuits]),
         ):
             if len(values) != len(set(values)):
                 raise ValueError(

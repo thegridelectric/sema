@@ -531,14 +531,23 @@ def test_axiom_35_b_setpoint_channel_that_is_not_a_temperature(vanilla: dict[str
     reject(vanilla, mutate, "Axiom 35")
 
 
-def test_axiom_35_c_read_setpoint_on_a_derived_channel(vanilla: dict[str, Any]) -> None:
+def test_axiom_36_read_setpoint_on_a_derived_channel(vanilla: dict[str, Any]) -> None:
     """A FromThermostat circuit whose setpoint channel is a derived channel fails."""
 
     def mutate(d: dict[str, Any]) -> None:
         derived = next(c for c in d["DerivedChannels"] if c["OutputQuantity"] == "Temperature")
         d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = derived["Name"]
 
-    reject(vanilla, mutate, "SHALL be a channel in DataChannels")
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_axiom_36_read_temp_not_captured_by_the_thermostat(vanilla: dict[str, Any]) -> None:
+    """A FromThermostat circuit judged on a thermistor its thermostat does not read fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["TempChannelName"] = "zone1-living-rm-gw-temp"
+
+    reject(vanilla, mutate, "Axiom 36")
 
 
 def test_hydronic_axiom_2_b_circuit_position_is_not_its_place(vanilla: dict[str, Any]) -> None:

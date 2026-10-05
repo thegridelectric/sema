@@ -452,12 +452,18 @@ x-gridworks:
         the Name of a channel in DataChannels or in DerivedChannels.
         b. That channel SHALL carry temperature: a DataChannel's Quantity, or a
         DerivedChannel's OutputQuantity, SHALL be Temperature.
-        c. Where a circuit's SetpointSource is "FromThermostat", its SetpointChannelName
-        SHALL name a channel in DataChannels.
-        d. Where a circuit's SetpointSource is "Learned", its SetpointChannelName SHALL
+        c. Where a circuit's SetpointSource is "Learned", its SetpointChannelName SHALL
         name a channel in DerivedChannels.
-        e. That derived channel's InputChannelNames SHALL contain the circuit's
+        d. That derived channel's InputChannelNames SHALL contain the circuit's
         TempChannelName and the Name of the circuit's heat-call channel (the
         CircuitHeatCallChannel axiom).
+        e. That derived channel's Strategy SHALL be "simple-falling-edge-setpoint".
+    - number: 34
+      name: "ReadThermostatChannels"
+      statement: >
+        Where a circuit's SetpointSource is "FromThermostat", the channels named by its
+        SetpointChannelName and TempChannelName SHALL each be a channel in DataChannels
+        whose CapturedByNodeName is the Name of an ShNode whose ComponentId equals the
+        circuit's Thermostat.ComponentId.
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).
