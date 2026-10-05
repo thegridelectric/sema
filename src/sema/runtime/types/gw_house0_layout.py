@@ -114,8 +114,9 @@ class GwHouse0Layout(SemaType):
         "SecondaryScada" "power-meter" → ActorClass "PowerMeter" "ltn" → ActorClass
         "NoActor" "admin" → ActorClass "NoActor" "auto" → ActorClass "NoActor" "la" →
         ActorClass "LeafAlly" "lc" → ActorClass "LocalControl" "derived-generator" →
-        ActorClass "DerivedGenerator" The effective handle (Handle if present, otherwise
-        Name) of "admin" SHALL be "admin" and of "auto" SHALL be "auto".
+        ActorClass "DerivedGenerator" "cold-watch" → ActorClass "ColdWatch" The effective
+        handle (Handle if present, otherwise Name) of "admin" SHALL be "admin" and of
+        "auto" SHALL be "auto".
         """
         if not self.sh_nodes:
             return self
@@ -129,6 +130,7 @@ class GwHouse0Layout(SemaType):
             "la": "LeafAlly",
             "lc": "LocalControl",
             "derived-generator": "DerivedGenerator",
+            "cold-watch": "ColdWatch",
         }
         nodes_by_name = {}
         for n in self.sh_nodes:
@@ -1300,5 +1302,47 @@ class GwHouse0Layout(SemaType):
                 raise ValueError(
                     f"Axiom 34 (HeatCallChannelBelongsToCircuit) failed: heat-call channel "
                     f"'{d.name}' has inputs {inputs}, not exactly one circuit's whitewire."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_35(self) -> Self:
+        """
+        Axiom 35: CriticalZoneSetpointChannel a. Every zone in Hydronic.Zones with
+        Critical true SHALL be the ServesZone of at least one circuit in
+        Hydronic.ZoneCallCircuits that carries SetpointChannelName. b. Every circuit's
+        SetpointChannelName SHALL equal the Name of a channel in DataChannels or in
+        DerivedChannels. c. That channel SHALL carry temperature: a DataChannel's
+        Quantity, or a DerivedChannel's OutputQuantity, SHALL be Temperature.
+        """
+        if self.hydronic is None:
+            return self
+        circuits = self.hydronic.zone_call_circuits or []
+        with_setpoint = {c.serves_zone for c in circuits if c.setpoint_channel_name}
+        for zone in self.hydronic.zones or []:
+            if zone.critical and zone.name not in with_setpoint:
+                raise ValueError(
+                    "Axiom 35 (CriticalZoneSetpointChannel) failed: critical zone "
+                    f"{zone.name!r} has no circuit that carries SetpointChannelName."
+                )
+        quantity_by_name = {d.name: str(d.quantity) for d in (self.data_channels or [])}
+        quantity_by_name.update(
+            {d.name: str(d.output_quantity) for d in (self.derived_channels or [])}
+        )
+        for circuit in circuits:
+            name = circuit.setpoint_channel_name
+            if not name:
+                continue
+            if name not in quantity_by_name:
+                raise ValueError(
+                    "Axiom 35 (CriticalZoneSetpointChannel) failed: circuit "
+                    f"{circuit.circuit_position} names SetpointChannelName {name!r}, "
+                    "which is not a channel in DataChannels or DerivedChannels."
+                )
+            if quantity_by_name[name] != "Temperature":
+                raise ValueError(
+                    "Axiom 35 (CriticalZoneSetpointChannel) failed: circuit "
+                    f"{circuit.circuit_position} names {name!r}, whose quantity is "
+                    f"{quantity_by_name[name]}, not Temperature."
                 )
         return self

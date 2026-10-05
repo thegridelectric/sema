@@ -497,3 +497,30 @@ def test_axiom_14_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any])
         d["ShNodes"].append(stray)
 
     reject(vanilla, mutate, "Axiom 14")
+
+
+def test_axiom_35_a_critical_zone_with_no_setpoint_channel(vanilla: dict[str, Any]) -> None:
+    """A critical zone none of whose circuits carries SetpointChannelName fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        zone = next(z["Name"] for z in d["Hydronic"]["Zones"] if z["Critical"])
+        for c in d["Hydronic"]["ZoneCallCircuits"]:
+            if c["ServesZone"] == zone:
+                c.pop("SetpointChannelName", None)
+
+    reject(vanilla, mutate, "Axiom 35")
+
+
+def test_axiom_35_b_setpoint_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "no-such-set"
+
+    reject(vanilla, mutate, "Axiom 35")
+
+
+def test_axiom_35_c_setpoint_channel_that_is_not_a_temperature(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
+        circuit["SetpointChannelName"] = circuit["WhitewireChannelName"]
+
+    reject(vanilla, mutate, "Axiom 35")

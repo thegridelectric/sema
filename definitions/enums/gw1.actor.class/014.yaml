@@ -37,6 +37,7 @@ enum:
   - "HpTwin"
   - "FiveVBoss"
   - "HpSensor"
+  - "ColdWatch"
 
 default: "NoActor"
 
@@ -74,3 +75,7 @@ x-gridworks:
       Senses whether the heat pump is running from its outdoor-unit power
       reading and reports that sensed state as a machine state under its
       own node. Commands nothing.
+    "ColdWatch": >
+      Judges whether the house is cold, raises the cold glitches and asks
+      the scada to refuse dispatch. Commands nothing; exactly one node per
+      layout, named cold-watch.

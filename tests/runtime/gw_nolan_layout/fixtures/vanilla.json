@@ -120,6 +120,15 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "cold-watch",
+      "ActorHierarchyName": "s.cold-watch",
+      "ActorClass": "ColdWatch",
+      "DisplayName": "Cold Watch",
+      "ShNodeId": "dd88d257-6b51-4927-90d0-8944100ccc3c"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "hp-boss",
       "ActorHierarchyName": "s.hp-boss",
       "Handle": "auto.hp-boss",
@@ -4142,6 +4151,7 @@
           "Kind": "MechanicalDial"
         },
         "WhitewireChannelName": "zone1-bedrooms-opto-input",
+        "SetpointChannelName": "zone1-bedrooms-set",
         "FailsafeRelayNode": "zone1-bedrooms-failsafe-relay",
         "OpsRelayNode": "zone1-bedrooms-ops-relay",
         "EmitterType": "RadiantSlab",
@@ -4160,6 +4170,7 @@
           "Kind": "MechanicalDial"
         },
         "WhitewireChannelName": "zone2-living-rm-opto-input",
+        "SetpointChannelName": "zone2-living-rm-set",
         "FailsafeRelayNode": "zone2-living-rm-failsafe-relay",
         "OpsRelayNode": "zone2-living-rm-ops-relay",
         "EmitterType": "RadiantSlab",
@@ -4178,6 +4189,7 @@
           "Kind": "MechanicalDial"
         },
         "WhitewireChannelName": "zone3-upstairs-opto-input",
+        "SetpointChannelName": "zone3-upstairs-set",
         "FailsafeRelayNode": "zone3-upstairs-failsafe-relay",
         "OpsRelayNode": "zone3-upstairs-ops-relay",
         "EmitterType": "FanCoil"
@@ -4195,6 +4207,7 @@
           "Kind": "MechanicalDial"
         },
         "WhitewireChannelName": "zone4-garage-opto-input",
+        "SetpointChannelName": "zone4-garage-set",
         "FailsafeRelayNode": "zone4-garage-failsafe-relay",
         "OpsRelayNode": "zone4-garage-ops-relay",
         "EmitterType": "RadiantSlab",

@@ -1,0 +1,21 @@
+{
+  "ScadaAlias": "d1.isone.me.versant.keene.spruce.scada",
+  "SetpointList": [
+    {
+      "ChannelName": "zone1-bedrooms-set",
+      "Value": 6800,
+      "ScadaReadTimeUnixMs": 1759662000000,
+      "TypeName": "single.reading",
+      "Version": "000"
+    },
+    {
+      "ChannelName": "zone2-living-rm-set",
+      "Value": 7000,
+      "ScadaReadTimeUnixMs": 1759662000000,
+      "TypeName": "single.reading",
+      "Version": "000"
+    }
+  ],
+  "TypeName": "gw.recorded.setpoints",
+  "Version": "000"
+}

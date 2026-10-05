@@ -36,6 +36,7 @@ class Gw1ActorClass(SemaEnum):
     HpTwin = auto()
     FiveVBoss = auto()
     HpSensor = auto()
+    ColdWatch = auto()
 
     @classmethod
     def default(cls) -> "Gw1ActorClass":

@@ -38,6 +38,11 @@ properties:
     description: >
       Name of the channel sensing the thermostat call wire.
 
+  SetpointChannelName:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Name of the channel carrying this circuit's thermostat setpoint.
+
   FloorTempChannelName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >

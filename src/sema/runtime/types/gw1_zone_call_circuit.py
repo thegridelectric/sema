@@ -18,6 +18,7 @@ class Gw1ZoneCallCircuit(SemaType):
     setpoint_source: ZoneSetpointSource
     thermostat: Gw1ZoneThermostat
     whitewire_channel_name: SpaceheatName
+    setpoint_channel_name: SpaceheatName | None = None
     floor_temp_channel_name: SpaceheatName | None = None
     failsafe_relay_node: SpaceheatName
     ops_relay_node: SpaceheatName

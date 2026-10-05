@@ -172,6 +172,7 @@ x-gridworks:
           "la"                → ActorClass "LeafAlly"
           "lc"                → ActorClass "LocalControl"
           "derived-generator" → ActorClass "DerivedGenerator"
+          "cold-watch"        → ActorClass "ColdWatch"
         The effective handle (Handle if present, otherwise Name) of "admin" SHALL be "admin" and
         of "auto" SHALL be "auto".
 
@@ -444,5 +445,14 @@ x-gridworks:
       name: "HpSensorNode"
       statement: >
         ShNodes SHALL include a node named "hp-sensor" with ActorClass "HpSensor".
+    - number: 33
+      name: "CriticalZoneSetpointChannel"
+      statement: >
+        a. Every zone in Hydronic.Zones with Critical true SHALL be the ServesZone of at
+        least one circuit in Hydronic.ZoneCallCircuits that carries SetpointChannelName.
+        b. Every circuit's SetpointChannelName SHALL equal the Name of a channel in
+        DataChannels or in DerivedChannels.
+        c. That channel SHALL carry temperature: a DataChannel's Quantity, or a
+        DerivedChannel's OutputQuantity, SHALL be Temperature.
   extended_description: >
     TODO: add Nolan specific information (e.g. radiant floor heating, Gw108).

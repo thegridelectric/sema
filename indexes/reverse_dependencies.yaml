@@ -566,6 +566,7 @@ types:
   single.reading:
     '000':
       used_by:
+      - gw.recorded.setpoints:000
       - snapshot.spaceheat:001
       - snapshot.spaceheat:002
       - snapshot.spaceheat:003
@@ -1132,6 +1133,7 @@ formats:
     - gw.house.operating.status:000
     - gw.operational.params:000
     - gw.readings:000
+    - gw.recorded.setpoints:000
     - gw.tou.tariff:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000

@@ -102,6 +102,7 @@ from sema.runtime.types.gw_nolan_family_params import GwNolanFamilyParams
 from sema.runtime.types.gw_nolan_layout import GwNolanLayout
 from sema.runtime.types.gw_operational_params import GwOperationalParams
 from sema.runtime.types.gw_readings import GwReadings
+from sema.runtime.types.gw_recorded_setpoints import GwRecordedSetpoints
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
 from sema.runtime.types.gw_tou_window import GwTouWindow
 from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
@@ -309,6 +310,7 @@ __all__ = [
     "GwNolanLayout",
     "GwOperationalParams",
     "GwReadings",
+    "GwRecordedSetpoints",
     "GwTouTariff",
     "GwTouWindow",
     "GwWeatherChannelGt",

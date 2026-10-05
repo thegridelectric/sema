@@ -1208,6 +1208,16 @@ types:
       - gw1.unit.quantity.projection:000
       - spaceheat.telemetry.quantity.projection:000
       versionless_types: []
+  gw.recorded.setpoints:
+    '000':
+      enums: []
+      formats:
+      - left.right.dot
+      - spaceheat.name
+      - utc.milliseconds
+      types:
+      - single.reading:000
+      versionless_types: []
   gw.tou.tariff:
     '000':
       enums:

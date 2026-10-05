@@ -416,6 +416,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.operational.params/000.yaml
+  gw.recorded.setpoints:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.recorded.setpoints/000.yaml
   gw.readings:
     latest_version: '000'
     versioning_strategy: literal

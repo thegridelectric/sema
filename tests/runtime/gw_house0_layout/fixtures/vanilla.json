@@ -120,6 +120,15 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "cold-watch",
+      "ActorHierarchyName": "s.cold-watch",
+      "ActorClass": "ColdWatch",
+      "DisplayName": "Cold Watch",
+      "ShNodeId": "1ca6c92f-0a2c-4f74-9073-5ae3434cd0f0"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "lc",
       "ActorHierarchyName": "s.lc",
       "Handle": "auto.lc",
@@ -3549,6 +3558,7 @@
           "ComponentId": "8947081f-de97-4bc1-84e8-cabb5d554a4b"
         },
         "WhitewireChannelName": "zone1-living-rm-whitewire-pwr",
+        "SetpointChannelName": "zone1-living-rm-set",
         "FailsafeRelayNode": "zone1-living-rm-failsafe-relay",
         "OpsRelayNode": "zone1-living-rm-ops-relay",
         "EmitterType": "Other"
@@ -3567,6 +3577,7 @@
           "ComponentId": "abdfa4f4-5e52-448e-9870-a7c153c9a57c"
         },
         "WhitewireChannelName": "zone2-bedroom-whitewire-pwr",
+        "SetpointChannelName": "zone2-bedroom-set",
         "FailsafeRelayNode": "zone2-bedroom-failsafe-relay",
         "OpsRelayNode": "zone2-bedroom-ops-relay",
         "EmitterType": "Other"

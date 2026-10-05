@@ -1,0 +1,14 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_recorded_setpoints_000_class_name }}":
+        """
+        Axiom 1: SetpointChannelUniqueness
+        ChannelName SHALL be unique across SetpointList.
+        """
+        channel_names = [reading.channel_name for reading in self.setpoint_list]
+        duplicates = sorted({n for n in channel_names if channel_names.count(n) > 1})
+        if duplicates:
+            raise ValueError(
+                "Axiom 1 (SetpointChannelUniqueness) failed: ChannelName is not "
+                f"unique across SetpointList; duplicates: {duplicates}"
+            )
+        return self

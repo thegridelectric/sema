@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-04T20:20:00Z'
+  last_updated: '2026-10-05T11:25:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -455,6 +455,7 @@ enums:
         added_values:
         - FiveVBoss
         - HpSensor
+        - ColdWatch
       '013':
         schema_url: https://schemas.electricity.works/enums/gw1.actor.class/013
         created: '2026-08-12T16:50:00Z'
@@ -3096,6 +3097,23 @@ types:
           - positive.int
           - spaceheat.name
           - zero.ten.power.on:000
+  gw.recorded.setpoints:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: The last reading each learned zone setpoint channel carried, kept
+      by a scada across restarts.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.recorded.setpoints/000
+        created: '2026-10-05T11:20:00Z'
+        status: staging
+        summary: 'Initial version: ScadaAlias and SetpointList of single.reading.
+          Axiom 1: ChannelName unique across SetpointList.'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - single.reading:000
   gw.readings:
     latest_version: '000'
     owner: gridworks-energy

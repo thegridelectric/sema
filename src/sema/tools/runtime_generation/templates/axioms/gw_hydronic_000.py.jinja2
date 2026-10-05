@@ -23,6 +23,8 @@
         Axiom 2: CircuitResolution
         a. Every circuit's ServesZone SHALL equal the Name of a zone in
         Zones. b. No two circuits SHALL share a CircuitPosition.
+        c. No two zones SHALL share a Name. d. Every zone in Zones SHALL be
+        the ServesZone of at least one circuit.
         """
         circuits = self.zone_call_circuits or []
         zone_names = {z.name for z in self.zones}
@@ -37,5 +39,16 @@
             raise ValueError(
                 "Axiom 2 (CircuitResolution) failed: CircuitPosition values "
                 f"{positions} are not distinct."
+            )
+        names = [z.name for z in self.zones]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                f"Axiom 2 (CircuitResolution) failed: zone Names {names} are not distinct."
+            )
+        served = {c.serves_zone for c in circuits}
+        unserved = [name for name in names if name not in served]
+        if unserved:
+            raise ValueError(
+                f"Axiom 2 (CircuitResolution) failed: zones {unserved} are served by no circuit."
             )
         return self
