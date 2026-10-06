@@ -30,9 +30,6 @@ from sema.runtime.enums.gw1_local_control_all_tanks_state import (
 from sema.runtime.enums.gw1_local_control_buffer_only_state import (
     Gw1LocalControlBufferOnlyState,
 )
-from sema.runtime.enums.gw1_local_control_standby_top_state import (
-    Gw1LocalControlStandbyTopState,
-)
 from sema.runtime.enums.gw1_main_auto_state import Gw1MainAutoState
 from sema.runtime.enums.gw1_nolan_lc_buffer_only_state import Gw1NolanLcBufferOnlyState
 from sema.runtime.enums.gw1_quantity import Gw1Quantity
@@ -131,7 +128,6 @@ __all__ = [
     "Gw1LeafAllyBufferOnlyState",
     "Gw1LocalControlAllTanksState",
     "Gw1LocalControlBufferOnlyState",
-    "Gw1LocalControlStandbyTopState",
     "Gw1MainAutoState",
     "Gw1NolanLcBufferOnlyState",
     "Gw1Quantity",

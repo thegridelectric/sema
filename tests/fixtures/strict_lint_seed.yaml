@@ -61,5 +61,4 @@ initial_targets:
     gw1.leaf.ally.buffer.only.state: {}
     gw1.local.control.all.tanks.state: {}
     gw1.local.control.buffer.only.state: {}
-    gw1.local.control.standby.top.state: {}
     market.type.name: {}

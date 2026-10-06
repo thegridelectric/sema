@@ -1258,11 +1258,6 @@ enums:
     latest_version: '001'
     versions:
       '001': definitions/enums/gw1.local.control.buffer.only.state/001.yaml
-  gw1.local.control.standby.top.state:
-    enum_type: versioned
-    latest_version: '001'
-    versions:
-      '001': definitions/enums/gw1.local.control.standby.top.state/001.yaml
   gw1.main.auto.state:
     enum_type: versioned
     latest_version: '001'

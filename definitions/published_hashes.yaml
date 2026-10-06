@@ -78,8 +78,6 @@ enums:
     '001': sha256:c7c06750ef889f2b47da974362e98676d8638f85a6b56cd575c489dd95fda18f
   gw1.local.control.buffer.only.state:
     '001': sha256:3f6b5146a9811741c2b63aaa54e44550e9eec4ff40dd8b5e80e2eb4d5d21f72c
-  gw1.local.control.standby.top.state:
-    '001': sha256:c93be0ab308c3503dce9a47c6f8a96b38845004be8242ec7b809aae427fe9a62
   gw1.main.auto.state:
     '001': sha256:8a1adb8574450dc582ef1e48cc6b17aeecda07f27df78a07b632526d580943df
   gw1.quantity:

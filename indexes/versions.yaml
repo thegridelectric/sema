@@ -1935,12 +1935,6 @@ enums:
     versions:
       "001": {}
 
-  gw1.local.control.standby.top.state:
-    enum_type: "versioned"
-    note: "This enum is versioned; new versions are additive only."
-    versions:
-      "001": {}
-
   gw1.main.auto.state:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."

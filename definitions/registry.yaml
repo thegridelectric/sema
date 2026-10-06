@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-06T11:35:00Z"
+  last_updated: "2026-10-06T13:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -679,20 +679,6 @@ enums:
     versions:
       "001":    
         schema_url: "https://schemas.electricity.works/enums/gw1.local.control.buffer.only.state/001"
-        created: "2026-05-08T19:57:00Z"
-        status: "published"
-
-  gw1.local.control.standby.top.state:
-    latest_version: "001"
-    owner: gridworks-energy
-    enum_type: "versioned"
-    description: "Local-Control sub-state of a GridWorks spaceheat system in standby mode."
-    replaced_by:
-      - gw2.lc.top.state
-
-    versions:
-      "001":    
-        schema_url: "https://schemas.electricity.works/enums/gw1.local.control.standby.top.state/001"
         created: "2026-05-08T19:57:00Z"
         status: "published"
 
