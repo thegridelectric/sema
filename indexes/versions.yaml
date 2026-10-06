@@ -1831,7 +1831,7 @@ enums:
       "014":
         added_values:
           - "FiveVBoss"
-          - "HpSensor"
+          - "HpWatch"
           - "ColdWatch"
       "013":
         added_values:
@@ -1904,6 +1904,12 @@ enums:
     note: "This enum is versioned; new versions are additive only."
     versions:
       "001": {}
+
+  gw2.lc.top.state:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
 
   gw1.leaf.ally.all.tanks.state:
     enum_type: "versioned"

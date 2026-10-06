@@ -251,9 +251,9 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
-      "Name": "hp-sensor",
-      "ActorHierarchyName": "s.hp-sensor",
-      "ActorClass": "HpSensor",
+      "Name": "hp-watch",
+      "ActorHierarchyName": "s.hp-watch",
+      "ActorClass": "HpWatch",
       "DisplayName": "Hp Sensor",
       "ShNodeId": "3a6264a2-66d3-4edc-bd1a-dec259c80aed"
     },

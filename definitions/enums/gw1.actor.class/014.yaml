@@ -36,7 +36,7 @@ enum:
   - "I2cDacWriter"
   - "HpTwin"
   - "FiveVBoss"
-  - "HpSensor"
+  - "HpWatch"
   - "ColdWatch"
 
 default: "NoActor"
@@ -71,10 +71,10 @@ x-gridworks:
       5 V supply off. It owns the vdc relay while the hold is on and
       the pico-cycler owns it otherwise; exactly one node per layout,
       named five-v-boss.
-    "HpSensor": >
-      Senses whether the heat pump is running from its outdoor-unit power
-      reading and reports that sensed state as a machine state under its
-      own node. Commands nothing.
+    "HpWatch": >
+      Watches whether the heat pump is running from its outdoor-unit power
+      reading and reports that state as a machine state under its own
+      node. Commands nothing.
     "ColdWatch": >
       Judges whether the house is cold, raises the cold glitches and asks
       the scada to refuse dispatch. Commands nothing; exactly one node per

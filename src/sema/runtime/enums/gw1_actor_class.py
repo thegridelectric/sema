@@ -35,7 +35,7 @@ class Gw1ActorClass(SemaEnum):
     I2cDacWriter = auto()
     HpTwin = auto()
     FiveVBoss = auto()
-    HpSensor = auto()
+    HpWatch = auto()
     ColdWatch = auto()
 
     @classmethod

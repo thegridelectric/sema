@@ -41,6 +41,7 @@ from sema.runtime.enums.gw1_service_mode import Gw1ServiceMode
 from sema.runtime.enums.gw1_sim_device_type import Gw1SimDeviceType
 from sema.runtime.enums.gw1_system_mode import Gw1SystemMode
 from sema.runtime.enums.gw1_unit import Gw1Unit
+from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
 from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
 from sema.runtime.enums.gw_dispatch_refusal_reason import GwDispatchRefusalReason
@@ -139,6 +140,7 @@ __all__ = [
     "Gw1SimDeviceType",
     "Gw1SystemMode",
     "Gw1Unit",
+    "Gw2LcTopState",
     "GwAlertCategory",
     "GwAlertState",
     "GwDispatchRefusalReason",

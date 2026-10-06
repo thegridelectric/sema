@@ -460,17 +460,17 @@ def test_axiom_31_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
     reject(vanilla, mutate, "Axiom 31")
 
 
-def test_axiom_32_hp_sensor_absent(vanilla: dict[str, Any]) -> None:
-    """No hp-sensor node fails."""
-    reject(vanilla, drop_node("hp-sensor"), "Axiom 32")
+def test_axiom_32_hp_watch_absent(vanilla: dict[str, Any]) -> None:
+    """No hp-watch node fails."""
+    reject(vanilla, drop_node("hp-watch"), "Axiom 32")
 
 
-def test_axiom_32_hp_sensor_wrong_actor_class(vanilla: dict[str, Any]) -> None:
-    """An hp-sensor node with an ActorClass other than HpSensor fails."""
+def test_axiom_32_hp_watch_wrong_actor_class(vanilla: dict[str, Any]) -> None:
+    """An hp-watch node with an ActorClass other than HpWatch fails."""
 
     def mutate(d: dict[str, Any]) -> None:
         for n in d["ShNodes"]:
-            if n["Name"] == "hp-sensor":
+            if n["Name"] == "hp-watch":
                 n["ActorClass"] = "NoActor"
                 del n["ActorHierarchyName"]
 

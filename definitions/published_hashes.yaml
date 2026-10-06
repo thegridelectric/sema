@@ -147,6 +147,8 @@ enums:
     '000': sha256:d3300159974505bbe8e304f5f07cfbc90324f7e37121811c18e4e5bf0d052521
   gw.platform.alert.kind:
     '000': sha256:25020b860aa7d8b2f4ba70086c19965cdbceef0caa521836aa27b52b83c7c24c
+  gw2.lc.top.state:
+    '000': sha256:00504e431cea6737f2e28e7a55a4844f829e05727c19a09205cc90c65e800e42
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1

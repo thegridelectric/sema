@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-05T15:30:00Z'
+  last_updated: '2026-10-06T11:35:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -454,7 +454,7 @@ enums:
         status: staging
         added_values:
         - FiveVBoss
-        - HpSensor
+        - HpWatch
         - ColdWatch
       '013':
         schema_url: https://schemas.electricity.works/enums/gw1.actor.class/013
@@ -586,10 +586,24 @@ enums:
     owner: gridworks-energy
     enum_type: versioned
     description: Local-Control sub-state of a GridWorks spaceheat system
+    replaced_by:
+    - gw2.lc.top.state
     versions:
       '001':
         schema_url: https://schemas.electricity.works/enums/gw1.lc.top.state/001
         created: '2026-05-08T19:57:00Z'
+        status: published
+  gw2.lc.top.state:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Top state of the local control node, reported by whichever local
+      control machine the scada runs: Dormant, UsingNonElectricBackup, Normal, ScadaBlind,
+      Standby.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw2.lc.top.state/000
+        created: '2026-10-06T11:35:00Z'
         status: published
   gw1.leaf.ally.all.tanks.state:
     latest_version: '001'
@@ -641,6 +655,8 @@ enums:
     enum_type: versioned
     description: Local-Control sub-state of a GridWorks spaceheat system in standby
       mode.
+    replaced_by:
+    - gw2.lc.top.state
     versions:
       '001':
         schema_url: https://schemas.electricity.works/enums/gw1.local.control.standby.top.state/001

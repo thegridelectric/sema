@@ -443,9 +443,9 @@ x-gridworks:
         Hydronic.ZoneCallCircuits]. With CircuitHeatCallChannel, the heat-call channels and the
         circuits are one to one.
     - number: 32
-      name: "HpSensorNode"
+      name: "HpWatchNode"
       statement: >
-        ShNodes SHALL include a node named "hp-sensor" with ActorClass "HpSensor".
+        ShNodes SHALL include a node named "hp-watch" with ActorClass "HpWatch".
     - number: 33
       name: "CircuitSetpointChannel"
       statement: >
