@@ -645,7 +645,7 @@ def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) 
     without a node fails here."""
     state_nodes = {
         "Normal": "n",
-        "UsingNonElectricBackup": "backup",
+        "InBackup": "backup",
         "ScadaBlind": "scada-blind",
         "Standby": "standby",
     }

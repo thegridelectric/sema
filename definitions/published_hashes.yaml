@@ -48,12 +48,19 @@ enums:
     '000': sha256:2d764e05f0c45813d20966bdf2060c358c1f5c7859be29cc240d39f2a0ec3343
   gpm.from.hz.method:
     '000': sha256:cd987e3452dd431563b404dd4b0c7043f6dec40b274815f2db2240574cae5c2d
+  gw.alert.category:
+    '000': sha256:3d7c17adce5393dffc925b0d67d38920f03b478ef17a67a4ee4d2d1dbbec0bc5
+  gw.alert.state: sha256:4dad5b94506e499c2b3971317050b77916ae9451cfcc8cc9770954fe937ad380
+  gw.fleet.alert.kind:
+    '000': sha256:d3300159974505bbe8e304f5f07cfbc90324f7e37121811c18e4e5bf0d052521
   gw.g.node.class:
     '000': sha256:492ac9defec62dc025adc0dccf8d2198acd9fb22d1c21f56ac33f07c06fbbee2
   gw.house.alert.kind:
     '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
   gw.market.product.name:
     '000': sha256:b1c91cdca4978f783c836abd6e1e646df2fd940c2cd240cc4f852788e4046324
+  gw.platform.alert.kind:
+    '000': sha256:25020b860aa7d8b2f4ba70086c19965cdbceef0caa521836aa27b52b83c7c24c
   gw.scada.cmd.refusal.reason:
     '000': sha256:b0ecf6dc537707fc149d5ff96f10764740264799902e5eb236ace7c4906090ca
   gw.weather.forecast.fidelity:
@@ -106,6 +113,8 @@ enums:
     '000': sha256:af16ab9e45c4a60c9026b46ae64e004b2bfb3319e5f16a8778780a0e0b0eabae
   market.type.name:
     '000': sha256:8eebaee538a7b5ba69d52ba0ad6439d56ef7014d892dc359fcf04a487a9f1d2b
+  move.sieg.valve:
+    '000': sha256:d029532070abe9c9193b1524370632ff3cb675dbb15a55fe489f45f89a380877
   pico.board.variant:
     '000': sha256:793376e9c13e4c9791f5de3a73a2f04905f80b4fd8e488898e99edc4ac56bca2
   pico.cycler.event:
@@ -118,6 +127,8 @@ enums:
   relay.open.or.closed: sha256:c22cf9cde67209cfb4ba1c3dddfe8ba639a5c4bf19c8054aae24946bfe38854a
   relay.wiring.config:
     '000': sha256:3a511bdd979d29c260decfd807428c4a0ddd54ccb0188717cc723f79de354a79
+  sieg.valve.state:
+    '000': sha256:a15ac7e95f0468db55349f3095eff25c5dbcbd0fd2fdedc5e86490295ce3b83a
   single.pico.state:
     '000': sha256:2146287be9333097f56fec9fcdc2b70c1ccf099a656548ff610006a298f1f031
   spaceheat.make.model:
@@ -134,19 +145,6 @@ enums:
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
-  sieg.valve.state:
-    '000': sha256:a15ac7e95f0468db55349f3095eff25c5dbcbd0fd2fdedc5e86490295ce3b83a
-  move.sieg.valve:
-    '000': sha256:d029532070abe9c9193b1524370632ff3cb675dbb15a55fe489f45f89a380877
-  gw.alert.state: sha256:4dad5b94506e499c2b3971317050b77916ae9451cfcc8cc9770954fe937ad380
-  gw.alert.category:
-    '000': sha256:3d7c17adce5393dffc925b0d67d38920f03b478ef17a67a4ee4d2d1dbbec0bc5
-  gw.fleet.alert.kind:
-    '000': sha256:d3300159974505bbe8e304f5f07cfbc90324f7e37121811c18e4e5bf0d052521
-  gw.platform.alert.kind:
-    '000': sha256:25020b860aa7d8b2f4ba70086c19965cdbceef0caa521836aa27b52b83c7c24c
-  gw2.lc.top.state:
-    '000': sha256:00504e431cea6737f2e28e7a55a4844f829e05727c19a09205cc90c65e800e42
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -255,6 +253,8 @@ types:
     '001': sha256:f346bf8e152bca26c9a3edf7c54c7a47883929cd2c8deae63dc4f2e81e9e6f73
   gridworks.ping: sha256:2d9b1cbcc31974562514f23fc41ffc3b69de136642788ba0a0c0d413ab5c3c87
   gw: sha256:7cc842d93a9e1e9cf7ebacdafb945a6baadd1692ac626cdf2155b90dbbf32629
+  gw.alert:
+    '000': sha256:fe0b76b49cc56796b17f46e1ce9026b31ff688bda54f6e17c7cda6e1997476c1
   gw.channel.gap.stats:
     '000': sha256:87dd64d79061813560f3becced73d908f0d6066c21d805edb36d88434452670a
   gw.channel.jump.stats:
@@ -448,5 +448,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  gw.alert:
-    '000': sha256:fe0b76b49cc56796b17f46e1ce9026b31ff688bda54f6e17c7cda6e1997476c1

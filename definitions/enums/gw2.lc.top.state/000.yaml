@@ -9,10 +9,10 @@ description: >
 
 enum:
   - "Dormant"
-  - "UsingNonElectricBackup"
   - "Normal"
   - "ScadaBlind"
   - "Standby"
+  - "InBackup"
 
 default: "Dormant"
 
@@ -23,9 +23,6 @@ x-gridworks:
     "Dormant": >
       Another node holds the command tree (admin, or the leaf ally under a
       dispatch contract); the local control commands nothing.
-    "UsingNonElectricBackup": >
-      The house has been cold with its stores empty and the local control
-      runs the non-electric backup.
     "Normal": >
       The local control runs its heating machine and holds the command tree.
     "ScadaBlind": >
@@ -35,3 +32,6 @@ x-gridworks:
       The scada runs the standby machine: the claimed relays sit in the
       authored standby posture and the heat pump is told off. The house may
       be unheated on purpose.
+    "InBackup": >
+      The house has been cold and the local control runs the backup heat
+      its layout has.

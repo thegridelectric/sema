@@ -7,10 +7,10 @@ class Gw2LcTopState(SemaEnum):
     """Sema: https://schemas.electricity.works/enums/gw2.lc.top.state/000"""
 
     Dormant = auto()
-    UsingNonElectricBackup = auto()
     Normal = auto()
     ScadaBlind = auto()
     Standby = auto()
+    InBackup = auto()
 
     @classmethod
     def default(cls) -> "Gw2LcTopState":
