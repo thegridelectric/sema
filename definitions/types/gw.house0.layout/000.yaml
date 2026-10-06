@@ -165,6 +165,7 @@ x-gridworks:
           "n"           → ActorClass "NoActor"
           "backup"      → ActorClass "NoActor"
           "scada-blind" → ActorClass "NoActor"
+          "standby"     → ActorClass "NoActor"
           "five-v-boss" → ActorClass "FiveVBoss"
           "pico-cycler" → ActorClass "PicoCycler"
           "hp-boss"     → ActorClass "HpBoss"
@@ -292,12 +293,15 @@ x-gridworks:
         is an ShNode whose ActorClass is "LocalControl", "LeafAlly", "FiveVBoss",
         "PicoCycler", "HpBoss" or "SiegLoop", or whose ActorClass is "NoActor" and whose
         effective handle's parent prefix is the effective handle of an ShNode with
-        ActorClass "LocalControl".
+        ActorClass "LocalControl". Local control's state nodes are named for the
+        values of gw2.lc.top.state in which local control holds the command tree:
+        "n" for Normal, "backup" for UsingNonElectricBackup, "scada-blind" for
+        ScadaBlind and "standby" for Standby; Dormant has no node.
         a. Every actuator SHALL have a dotted effective handle and SHALL be a leaf.
         b. Every leaf SHALL be an actuator or a command node.
         c. Every ShNode with ActorClass "NoActor" whose effective handle's parent prefix
         is the effective handle of an ShNode with ActorClass "LocalControl" SHALL be
-        named "n", "backup" or "scada-blind".
+        one of these state nodes: "n", "backup", "scada-blind" or "standby".
     - number: 15
       name: "ComponentBinding"
       statement: >
@@ -437,6 +441,7 @@ x-gridworks:
           "n"                       → "auto.lc.n"
           "backup"                  → "auto.lc.backup"
           "scada-blind"             → "auto.lc.scada-blind"
+          "standby"                 → "auto.lc.standby"
           "hp-boss"                 → "auto.hp-boss"
           "hp-scada-ops-relay"      → "auto.hp-boss.hp-scada-ops-relay"
           "sieg-loop"               → "auto.sieg-loop"

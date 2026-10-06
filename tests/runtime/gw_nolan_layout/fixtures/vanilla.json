@@ -1013,6 +1013,15 @@
       "DisplayName": "Scada Blind",
       "ShNodeId": "048bfb9b-1ee2-4018-ba74-aa180ce0cb70",
       "Handle": "auto.lc.scada-blind"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
+      "Name": "standby",
+      "ActorClass": "NoActor",
+      "DisplayName": "Standby",
+      "ShNodeId": "4a4a37e4-e4db-42d5-9d97-e6d6e5581c63",
+      "Handle": "auto.lc.standby"
     }
   ],
   "DataChannels": [

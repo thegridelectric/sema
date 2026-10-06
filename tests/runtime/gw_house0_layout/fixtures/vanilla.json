@@ -166,6 +166,15 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "standby",
+      "Handle": "auto.lc.standby",
+      "ActorClass": "NoActor",
+      "DisplayName": "Standby",
+      "ShNodeId": "76cff898-991b-45b2-8918-4575a29de8bc"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "hp-boss",
       "ActorHierarchyName": "s.hp-boss",
       "Handle": "auto.hp-boss",

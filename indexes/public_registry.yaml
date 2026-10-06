@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-06T13:30:00Z'
+  last_updated: '2026-10-06T15:30:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -2887,7 +2887,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-10-05T15:30:00Z'
+        created: '2026-10-06T15:30:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -2934,6 +2934,7 @@ types:
           - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
+          - gw2.lc.top.state:000
           - zone.setpoint.source:000
   gw.hydronic:
     latest_version: '000'
@@ -3019,7 +3020,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-10-05T15:30:00Z'
+        created: '2026-10-06T15:30:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType
@@ -3061,6 +3062,7 @@ types:
           - gw0.usable.energy.layered:000
           - gw1.actor.class:014
           - gw1.quantity:001
+          - gw2.lc.top.state:000
           - zone.setpoint.source:000
   gw.operational.params:
     latest_version: '000'

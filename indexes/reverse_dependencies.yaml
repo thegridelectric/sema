@@ -851,6 +851,11 @@ enums:
     '002':
       used_by:
       - gw.weather.channel.gt:000
+  gw2.lc.top.state:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
   hp.boss.state:
     '000':
       used_by:

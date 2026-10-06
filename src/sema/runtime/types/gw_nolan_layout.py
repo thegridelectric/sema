@@ -248,15 +248,17 @@ class GwNolanLayout(SemaType):
         Axiom 4: CommandNodesExistenceAndActorClass ShNodes SHALL contain a node with
         each of the following Name / ActorClass pairs, and no additional ShNode with any
         of these Names SHALL exist: "n" → ActorClass "NoActor" "backup" → ActorClass
-        "NoActor" "scada-blind" → ActorClass "NoActor" "five-v-boss" → ActorClass
-        "FiveVBoss" "pico-cycler" → ActorClass "PicoCycler" "hp-boss" → ActorClass
-        "HpBoss" (hp-boss is a command node in every layout: hp-scada-ops-relay reports
-        to it in all states, dormant when no heat pump is commandable.)
+        "NoActor" "scada-blind" → ActorClass "NoActor" "standby" → ActorClass "NoActor"
+        "five-v-boss" → ActorClass "FiveVBoss" "pico-cycler" → ActorClass "PicoCycler"
+        "hp-boss" → ActorClass "HpBoss" (hp-boss is a command node in every layout:
+        hp-scada-ops-relay reports to it in all states, dormant when no heat pump is
+        commandable.)
         """
         pairs = (
             ("n", "NoActor"),
             ("backup", "NoActor"),
             ("scada-blind", "NoActor"),
+            ("standby", "NoActor"),
             ("five-v-boss", "FiveVBoss"),
             ("pico-cycler", "PicoCycler"),
             ("hp-boss", "HpBoss"),
@@ -563,11 +565,15 @@ class GwNolanLayout(SemaType):
         node is an ShNode whose ActorClass is "LocalControl", "LeafAlly", "FiveVBoss",
         "PicoCycler", "HpBoss" or "SiegLoop", or whose ActorClass is "NoActor" and whose
         effective handle's parent prefix is the effective handle of an ShNode with
-        ActorClass "LocalControl". a. Every actuator SHALL have a dotted effective
-        handle and SHALL be a leaf. b. Every leaf SHALL be an actuator or a command
-        node. c. Every ShNode with ActorClass "NoActor" whose effective handle's parent
-        prefix is the effective handle of an ShNode with ActorClass "LocalControl" SHALL
-        be named "n", "backup" or "scada-blind".
+        ActorClass "LocalControl". Local control's state nodes are named for the values
+        of gw2.lc.top.state in which local control holds the command tree: "n" for
+        Normal, "backup" for UsingNonElectricBackup, "scada-blind" for ScadaBlind and
+        "standby" for Standby; Dormant has no node. a. Every actuator SHALL have a
+        dotted effective handle and SHALL be a leaf. b. Every leaf SHALL be an actuator
+        or a command node. c. Every ShNode with ActorClass "NoActor" whose effective
+        handle's parent prefix is the effective handle of an ShNode with ActorClass
+        "LocalControl" SHALL be one of these state nodes: "n", "backup", "scada-blind"
+        or "standby".
         """
         actuator_classes = {"Relay", "ZeroTenOutputer", "HpTwin"}
         command_classes = {
@@ -614,12 +620,12 @@ class GwNolanLayout(SemaType):
                 actor_class == "NoActor"
                 and "." in handle
                 and handle.rsplit(".", 1)[0] in lc_handles
-                and node.name not in ("n", "backup", "scada-blind")
+                and node.name not in ("n", "backup", "scada-blind", "standby")
             ):
                 raise ValueError(
                     f"Axiom 12 (ActuatorLeaves) failed: {node.name!r} with handle "
                     f"{handle!r} is a NoActor node under local control other than n, "
-                    "backup or scada-blind."
+                    "backup, scada-blind or standby."
                 )
         return self
 
@@ -1144,16 +1150,17 @@ class GwNolanLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_30(self) -> Self:
         """
-        Axiom 30: CommandNodeHandles Let the effective handle of an ShNode be its Handle if
-        present, otherwise its Name. The authored tree is the plant with no one in charge:
-        "auto" is the root, the command nodes and every actuator hang directly under it, and a
-        fixed relay hangs under the interior node that owns it. The effective handles SHALL
-        be: "five-v-boss" → "auto.five-v-boss" "pico-cycler" → "auto.five-v-boss.pico-cycler"
-        "vdc-relay" → "auto.five-v-boss.pico-cycler.vdc-relay" "lc" → "auto.lc" "n" →
-        "auto.lc.n" "backup" → "auto.lc.backup" "scada-blind" → "auto.lc.scada-blind"
-        "hp-boss" → "auto.hp-boss" "hp-scada-ops-relay" → "auto.hp-boss.hp-scada-ops-relay"
-        Every other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
-        effective handle "auto.<Name>".
+        Axiom 30: CommandNodeHandles Let the effective handle of an ShNode be its Handle
+        if present, otherwise its Name. The authored tree is the plant with no one in
+        charge: "auto" is the root, the command nodes and every actuator hang directly
+        under it, and a fixed relay hangs under the interior node that owns it. The
+        effective handles SHALL be: "five-v-boss" → "auto.five-v-boss" "pico-cycler" →
+        "auto.five-v-boss.pico-cycler" "vdc-relay" →
+        "auto.five-v-boss.pico-cycler.vdc-relay" "lc" → "auto.lc" "n" → "auto.lc.n"
+        "backup" → "auto.lc.backup" "scada-blind" → "auto.lc.scada-blind" "standby" →
+        "auto.lc.standby" "hp-boss" → "auto.hp-boss" "hp-scada-ops-relay" →
+        "auto.hp-boss.hp-scada-ops-relay" Every other ShNode whose ActorClass is Relay
+        or ZeroTenOutputer SHALL have the effective handle "auto.<Name>".
         """
         expected = {
             "five-v-boss": "auto.five-v-boss",
@@ -1163,6 +1170,7 @@ class GwNolanLayout(SemaType):
             "n": "auto.lc.n",
             "backup": "auto.lc.backup",
             "scada-blind": "auto.lc.scada-blind",
+            "standby": "auto.lc.standby",
             "hp-boss": "auto.hp-boss",
             "hp-scada-ops-relay": "auto.hp-boss.hp-scada-ops-relay",
         }

@@ -11,6 +11,7 @@ from typing import Any, Callable
 
 import pytest
 
+from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
 from sema.runtime.types.gw_house0_layout import GwHouse0Layout
 
 FIXTURE = Path(__file__).parent / "fixtures" / "vanilla.json"
@@ -486,7 +487,7 @@ def test_axiom_34_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
 
 
 def test_axiom_14_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any]) -> None:
-    """A NoActor node under lc other than n, backup or scada-blind fails, though
+    """A NoActor node under lc other than n, backup, scada-blind or standby fails, though
     clause b reads it as a command node."""
 
     def mutate(d: dict[str, Any]) -> None:
@@ -589,3 +590,28 @@ def test_no_circuits_fails_in_the_hydronic_word(vanilla: dict[str, Any]) -> None
 
     reject(vanilla, mutate, "Axiom 3")
 
+
+
+@pytest.mark.parametrize("name", ["backup", "scada-blind", "standby"])
+def test_axiom_3_local_control_command_nodes(vanilla: dict[str, Any], name: str) -> None:
+    """backup, scada-blind and standby are command nodes in every House0 layout."""
+    reject(vanilla, drop_nodes({name}), "Axiom 3")
+
+
+def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) -> None:
+    """ActuatorLeaves names one state node for each gw2.lc.top.state value in
+    which local control holds the command tree. A value added to the enum
+    without a node fails here."""
+    state_nodes = {
+        "Normal": "n",
+        "UsingNonElectricBackup": "backup",
+        "ScadaBlind": "scada-blind",
+        "Standby": "standby",
+    }
+    assert set(Gw2LcTopState.values()) - {"Dormant"} == set(state_nodes)
+    under_lc = {
+        n["Name"]
+        for n in vanilla["ShNodes"]
+        if n["ActorClass"] == "NoActor" and n.get("Handle", "").startswith("auto.lc.")
+    }
+    assert under_lc == set(state_nodes.values())
