@@ -6,8 +6,8 @@ type: object
 description: >
   The hydronic / flow-topology configuration of a hydronic space-heating
   layout (House0 and Nolan strategies alike): its zones, zone-call
-  circuits, water store, how primary-loop flow is obtained, who runs
-  the primary pump, and the heat pump's refrigerant cycle. These are
+  circuits, water store, backup heat, how primary-loop flow is obtained,
+  who runs the primary pump, and the heat pump's refrigerant cycle. These are
   physical facts of the installed house, carried here so the layout states
   them rather than code inferring them from channel presence or from
   device records.
@@ -37,6 +37,15 @@ properties:
     description: >
       The water store tanks. Absent for a layout whose store is not water
       tanks.
+
+  Backup:
+    oneOf:
+      - $ref: "https://schemas.electricity.works/types/gw.boiler.backup/000"
+      - $ref: "https://schemas.electricity.works/types/gw.element.backup/000"
+    description: >
+      The second source of heat the local control can run when the house
+      is cold, a boiler or resistive elements. Absent for a layout with no
+      backup.
 
   PrimaryFlowSource:
     $ref: "https://schemas.electricity.works/enums/gw.primary.flow.source/000"

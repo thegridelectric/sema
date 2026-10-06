@@ -66,11 +66,12 @@ def test_vanilla_fixture_is_a_gw_nolan_layout(vanilla: dict[str, Any]) -> None:
     assert layout.version == "000"
 
 
-@pytest.mark.parametrize("name", ["backup", "scada-blind", "standby"])
+@pytest.mark.parametrize("name", ["backup", "cold-override", "scada-blind", "standby"])
 def test_axiom_4_command_nodes_state_anchors(
     vanilla: dict[str, Any], name: str
 ) -> None:
-    """backup, scada-blind and standby are command nodes in every Nolan layout."""
+    """backup (with the fixture's Backup), cold-override, scada-blind and standby
+    are command nodes."""
     reject(vanilla, drop_node(name), "Axiom 4")
 
 
@@ -646,6 +647,7 @@ def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) 
     state_nodes = {
         "Normal": "n",
         "InBackup": "backup",
+        "ColdOverride": "cold-override",
         "ScadaBlind": "scada-blind",
         "Standby": "standby",
     }
@@ -656,3 +658,35 @@ def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) 
         if n["ActorClass"] == "NoActor" and n.get("Handle", "").startswith("auto.lc.")
     }
     assert under_lc == set(state_nodes.values())
+
+
+def test_axiom_4_c_backup_node_without_a_backup(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]
+
+    reject(vanilla, mutate, "Axiom 4")
+
+
+def test_no_backup_and_no_backup_node_validate(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]
+        d["ShNodes"] = [n for n in d["ShNodes"] if n["Name"] != "backup"]
+
+    layout = GwNolanLayout.model_validate(mutated(vanilla, mutate))
+    assert layout.hydronic.backup is None
+
+
+def test_axiom_35_backup_names_a_node_that_is_not_a_relay(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Backup"]["ElementRelayNames"] = ["buffer-top-elt"]
+
+    reject(vanilla, mutate, "Axiom 35")
+
+
+def test_axiom_35_backup_names_a_missing_node(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Backup"]["ElementRelayNames"] = ["elt-nowhere-relay"]
+
+    reject(vanilla, mutate, "Axiom 35")

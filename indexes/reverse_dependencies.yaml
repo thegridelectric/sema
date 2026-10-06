@@ -166,6 +166,12 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
+  gw.boiler.backup:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.hydronic:000
+      - gw.nolan.layout:000
   gw.command.interface:
     '000':
       used_by:
@@ -175,6 +181,12 @@ types:
     '000':
       used_by:
       - gw.command.interface:000
+  gw.element.backup:
+    '000':
+      used_by:
+      - gw.house0.layout:000
+      - gw.hydronic:000
+      - gw.nolan.layout:000
   gw.house0.family.params:
     '000':
       used_by:
@@ -1453,10 +1465,12 @@ formats:
     - fsm.full.report:000
     - fsm.full.report:001
     - glitch:000
+    - gw.boiler.backup:000
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
     - gw.command.interface:000
+    - gw.element.backup:000
     - gw.experiment.run:000
     - gw.house0.layout:000
     - gw.hydronic:000

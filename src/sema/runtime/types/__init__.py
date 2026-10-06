@@ -85,6 +85,7 @@ from sema.runtime.types.gw1_zone_call_circuit import Gw1ZoneCallCircuit
 from sema.runtime.types.gw1_zone_thermostat import Gw1ZoneThermostat
 from sema.runtime.types.gw_adc_waveform import GwAdcWaveform
 from sema.runtime.types.gw_alert import GwAlert
+from sema.runtime.types.gw_boiler_backup import GwBoilerBackup
 from sema.runtime.types.gw_channel_gap_stats import GwChannelGapStats
 from sema.runtime.types.gw_channel_jump_stats import GwChannelJumpStats
 from sema.runtime.types.gw_channel_noise_stats import GwChannelNoiseStats
@@ -92,6 +93,7 @@ from sema.runtime.types.gw_command_interface import GwCommandInterface
 from sema.runtime.types.gw_command_transition import GwCommandTransition
 from sema.runtime.types.gw_dispatch_ack import GwDispatchAck
 from sema.runtime.types.gw_dispatch_nack import GwDispatchNack
+from sema.runtime.types.gw_element_backup import GwElementBackup
 from sema.runtime.types.gw_experiment_run import GwExperimentRun
 from sema.runtime.types.gw_house0_family_params import GwHouse0FamilyParams
 from sema.runtime.types.gw_house0_layout import GwHouse0Layout
@@ -294,6 +296,7 @@ __all__ = [
     "Gw1ZoneThermostat",
     "GwAdcWaveform",
     "GwAlert",
+    "GwBoilerBackup",
     "GwChannelGapStats",
     "GwChannelJumpStats",
     "GwChannelNoiseStats",
@@ -301,6 +304,7 @@ __all__ = [
     "GwCommandTransition",
     "GwDispatchAck",
     "GwDispatchNack",
+    "GwElementBackup",
     "GwExperimentRun",
     "GwHouse0FamilyParams",
     "GwHouse0Layout",

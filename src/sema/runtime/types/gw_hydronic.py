@@ -7,6 +7,8 @@ from sema.runtime.enums import GwRefrigerantCycle
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.gw1_hvac_zone import Gw1HvacZone
 from sema.runtime.types.gw1_zone_call_circuit import Gw1ZoneCallCircuit
+from sema.runtime.types.gw_boiler_backup import GwBoilerBackup
+from sema.runtime.types.gw_element_backup import GwElementBackup
 from sema.runtime.types.gw_water_store import GwWaterStore
 
 
@@ -16,6 +18,7 @@ class GwHydronic(SemaType):
     zones: list[Gw1HvacZone]
     zone_call_circuits: list[Gw1ZoneCallCircuit]
     water_store: GwWaterStore | None = None
+    backup: GwBoilerBackup | GwElementBackup | None = None
     primary_flow_source: GwPrimaryFlowSource
     primary_pump_owner: GwPrimaryPumpOwner
     refrigerant_cycle: GwRefrigerantCycle

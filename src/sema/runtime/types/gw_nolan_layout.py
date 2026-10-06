@@ -245,18 +245,20 @@ class GwNolanLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_4(self) -> "GwNolanLayout":
         """
-        Axiom 4: CommandNodesExistenceAndActorClass ShNodes SHALL contain a node with
+        Axiom 4: CommandNodesExistenceAndActorClass a. ShNodes SHALL contain a node with
         each of the following Name / ActorClass pairs, and no additional ShNode with any
-        of these Names SHALL exist: "n" → ActorClass "NoActor" "backup" → ActorClass
-        "NoActor" "scada-blind" → ActorClass "NoActor" "standby" → ActorClass "NoActor"
-        "five-v-boss" → ActorClass "FiveVBoss" "pico-cycler" → ActorClass "PicoCycler"
-        "hp-boss" → ActorClass "HpBoss" (hp-boss is a command node in every layout:
-        hp-scada-ops-relay reports to it in all states, dormant when no heat pump is
-        commandable.)
+        of these Names SHALL exist: "n" → ActorClass "NoActor" "cold-override" →
+        ActorClass "NoActor" "scada-blind" → ActorClass "NoActor" "standby" → ActorClass
+        "NoActor" "five-v-boss" → ActorClass "FiveVBoss" "pico-cycler" → ActorClass
+        "PicoCycler" "hp-boss" → ActorClass "HpBoss" (hp-boss is a command node in every
+        layout: hp-scada-ops-relay reports to it in all states, dormant when no heat
+        pump is commandable.) b. If Hydronic.Backup is present, ShNodes SHALL contain
+        exactly one node named "backup", with ActorClass "NoActor". c. If
+        Hydronic.Backup is absent, no ShNode SHALL be named "backup".
         """
         pairs = (
             ("n", "NoActor"),
-            ("backup", "NoActor"),
+            ("cold-override", "NoActor"),
             ("scada-blind", "NoActor"),
             ("standby", "NoActor"),
             ("five-v-boss", "FiveVBoss"),
@@ -276,6 +278,19 @@ class GwNolanLayout(SemaType):
                     "Axiom 4 (CommandNodesExistenceAndActorClass) failed: ShNode "
                     f"{name!r} has ActorClass {matches[0].actor_class}, expected {actor_class}."
                 )
+        backups = [n for n in (self.sh_nodes or []) if n.name == "backup"]
+        if self.hydronic.backup is not None:
+            if len(backups) != 1 or str(backups[0].actor_class) != "NoActor":
+                raise ValueError(
+                    "Axiom 4 (CommandNodesExistenceAndActorClass) failed: Hydronic.Backup "
+                    "is present, so exactly one ShNode 'backup' with ActorClass NoActor "
+                    "SHALL exist."
+                )
+        elif backups:
+            raise ValueError(
+                "Axiom 4 (CommandNodesExistenceAndActorClass) failed: Hydronic.Backup "
+                "is absent, so no ShNode SHALL be named 'backup'."
+            )
         return self
 
     @model_validator(mode="after")
@@ -567,13 +582,13 @@ class GwNolanLayout(SemaType):
         effective handle's parent prefix is the effective handle of an ShNode with
         ActorClass "LocalControl". Local control's state nodes are named for the values
         of gw2.lc.top.state in which local control holds the command tree: "n" for
-        Normal, "backup" for InBackup, "scada-blind" for ScadaBlind and "standby" for
-        Standby; Dormant has no node. a. Every actuator SHALL have a
-        dotted effective handle and SHALL be a leaf. b. Every leaf SHALL be an actuator
-        or a command node. c. Every ShNode with ActorClass "NoActor" whose effective
-        handle's parent prefix is the effective handle of an ShNode with ActorClass
-        "LocalControl" SHALL be one of these state nodes: "n", "backup", "scada-blind"
-        or "standby".
+        Normal, "backup" for InBackup, "cold-override" for ColdOverride, "scada-blind"
+        for ScadaBlind and "standby" for Standby; Dormant has no node. a. Every actuator
+        SHALL have a dotted effective handle and SHALL be a leaf. b. Every leaf SHALL be
+        an actuator or a command node. c. Every ShNode with ActorClass "NoActor" whose
+        effective handle's parent prefix is the effective handle of an ShNode with
+        ActorClass "LocalControl" SHALL be one of these state nodes: "n", "backup",
+        "cold-override", "scada-blind" or "standby".
         """
         actuator_classes = {"Relay", "ZeroTenOutputer", "HpTwin"}
         command_classes = {
@@ -620,12 +635,13 @@ class GwNolanLayout(SemaType):
                 actor_class == "NoActor"
                 and "." in handle
                 and handle.rsplit(".", 1)[0] in lc_handles
-                and node.name not in ("n", "backup", "scada-blind", "standby")
+                and node.name
+                not in ("n", "backup", "cold-override", "scada-blind", "standby")
             ):
                 raise ValueError(
                     f"Axiom 12 (ActuatorLeaves) failed: {node.name!r} with handle "
                     f"{handle!r} is a NoActor node under local control other than n, "
-                    "backup, scada-blind or standby."
+                    "backup, cold-override, scada-blind or standby."
                 )
         return self
 
@@ -1157,10 +1173,11 @@ class GwNolanLayout(SemaType):
         effective handles SHALL be: "five-v-boss" → "auto.five-v-boss" "pico-cycler" →
         "auto.five-v-boss.pico-cycler" "vdc-relay" →
         "auto.five-v-boss.pico-cycler.vdc-relay" "lc" → "auto.lc" "n" → "auto.lc.n"
-        "backup" → "auto.lc.backup" "scada-blind" → "auto.lc.scada-blind" "standby" →
-        "auto.lc.standby" "hp-boss" → "auto.hp-boss" "hp-scada-ops-relay" →
-        "auto.hp-boss.hp-scada-ops-relay" Every other ShNode whose ActorClass is Relay
-        or ZeroTenOutputer SHALL have the effective handle "auto.<Name>".
+        "backup" → "auto.lc.backup" "cold-override" → "auto.lc.cold-override"
+        "scada-blind" → "auto.lc.scada-blind" "standby" → "auto.lc.standby" "hp-boss" →
+        "auto.hp-boss" "hp-scada-ops-relay" → "auto.hp-boss.hp-scada-ops-relay" Every
+        other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
+        effective handle "auto.<Name>".
         """
         expected = {
             "five-v-boss": "auto.five-v-boss",
@@ -1169,6 +1186,7 @@ class GwNolanLayout(SemaType):
             "lc": "auto.lc",
             "n": "auto.lc.n",
             "backup": "auto.lc.backup",
+            "cold-override": "auto.lc.cold-override",
             "scada-blind": "auto.lc.scada-blind",
             "standby": "auto.lc.standby",
             "hp-boss": "auto.hp-boss",
@@ -1339,4 +1357,30 @@ class GwNolanLayout(SemaType):
                         f"{captured_by[name]!r}, which is not the node of the circuit's "
                         "thermostat component."
                     )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_35(self) -> "GwNolanLayout":
+        """
+        Axiom 35: BackupRelays Where Hydronic.Backup is a gw.boiler.backup, its
+        FailsafeRelayName and AquastatCtrlRelayName, and where it is a
+        gw.element.backup, each name in its ElementRelayNames, SHALL equal the Name of
+        an ShNode in ShNodes whose ActorClass is "Relay".
+        """
+        backup = self.hydronic.backup
+        if backup is None:
+            return self
+        if backup.type_name == "gw.boiler.backup":
+            names = [backup.failsafe_relay_name, backup.aquastat_ctrl_relay_name]
+        else:
+            names = list(backup.element_relay_names)
+        relays = {
+            n.name for n in (self.sh_nodes or []) if str(n.actor_class) == "Relay"
+        }
+        for name in names:
+            if name not in relays:
+                raise ValueError(
+                    f"Axiom 35 (BackupRelays) failed: the backup names {name!r}, "
+                    "which is not an ShNode with ActorClass Relay."
+                )
         return self

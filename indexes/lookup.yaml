@@ -336,6 +336,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.alert/000.yaml
+  gw.boiler.backup:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.boiler.backup/000.yaml
   gw.channel.gap.stats:
     latest_version: '000'
     versioning_strategy: literal
@@ -371,6 +376,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.dispatch.nack/000.yaml
+  gw.element.backup:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.element.backup/000.yaml
   gw.experiment.run:
     latest_version: '000'
     versioning_strategy: literal

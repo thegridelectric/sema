@@ -605,6 +605,7 @@ def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) 
     state_nodes = {
         "Normal": "n",
         "InBackup": "backup",
+        "ColdOverride": "cold-override",
         "ScadaBlind": "scada-blind",
         "Standby": "standby",
     }
@@ -615,3 +616,24 @@ def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) 
         if n["ActorClass"] == "NoActor" and n.get("Handle", "").startswith("auto.lc.")
     }
     assert under_lc == set(state_nodes.values())
+
+
+@pytest.mark.parametrize("name", ["backup", "cold-override"])
+def test_axiom_3_a_b_state_nodes(vanilla: dict[str, Any], name: str) -> None:
+    """cold-override is a command node in every House0 layout; backup is one
+    where Hydronic.Backup is present, as in the fixture."""
+    reject(vanilla, drop_nodes({name}), "Axiom 3")
+
+
+def test_axiom_3_c_backup_node_without_a_backup(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]
+
+    reject(vanilla, mutate, "Axiom 3")
+
+
+def test_axiom_38_boiler_relay_is_not_a_relay(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Backup"]["AquastatCtrlRelayName"] = "backup"
+
+    reject(vanilla, mutate, "Axiom 38")

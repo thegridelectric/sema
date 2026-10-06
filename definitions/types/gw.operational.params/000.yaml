@@ -116,10 +116,12 @@ properties:
     description: >
       Percentage by which forecast heat load is deliberately overestimated.
 
-  OilBoilerBackup:
+  UsesBackupWhenCold:
     type: boolean
     description: >
-      Whether the home has an oil boiler available as backup heat.
+      Whether the local control goes to the layout's backup heat when the
+      house is cold. When false it runs the heat pump with the tariff set
+      aside.
 
   HorizonHours:
     $ref: "https://schemas.electricity.works/formats/positive.int"
@@ -153,7 +155,7 @@ required:
   - HpTurnOnMinutes
   - HpMaxKwEl
   - LoadOverestimationPercent
-  - OilBoilerBackup
+  - UsesBackupWhenCold
   - HorizonHours
   - Tariff
   - TypeName
@@ -220,7 +222,7 @@ examples:
       "HpTurnOnMinutes": 12,
       "HpMaxKwEl": 9.66,
       "LoadOverestimationPercent": 0,
-      "OilBoilerBackup": true,
+      "UsesBackupWhenCold": true,
       "HorizonHours": 48,
       "Tariff": {
         "Alias": "versant.a1.home.eco.bonus",

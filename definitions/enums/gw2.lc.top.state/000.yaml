@@ -13,6 +13,7 @@ enum:
   - "ScadaBlind"
   - "Standby"
   - "InBackup"
+  - "ColdOverride"
 
 default: "Dormant"
 
@@ -35,3 +36,6 @@ x-gridworks:
     "InBackup": >
       The house has been cold and the local control runs the backup heat
       its layout has.
+    "ColdOverride": >
+      The house has been cold and the local control runs the heat pump
+      with the tariff set aside.

@@ -36,7 +36,7 @@ class GwOperationalParams(SemaType):
     hp_turn_on_minutes: PositiveInt
     hp_max_kw_el: PositiveFloat
     load_overestimation_percent: NonNegativeInt
-    oil_boiler_backup: bool
+    uses_backup_when_cold: bool
     horizon_hours: PositiveInt
     tariff: GwTouTariff
     type_name: Literal["gw.operational.params"] = "gw.operational.params"

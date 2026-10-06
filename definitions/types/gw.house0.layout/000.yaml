@@ -160,18 +160,21 @@ x-gridworks:
     - number: 3
       name: "CommandNodesExistenceAndActorClass"
       statement: >
-        ShNodes SHALL contain a node with each of the following Name / ActorClass pairs, and no
-        additional ShNode with any of these Names SHALL exist:
-          "n"           → ActorClass "NoActor"
-          "backup"      → ActorClass "NoActor"
-          "scada-blind" → ActorClass "NoActor"
-          "standby"     → ActorClass "NoActor"
-          "five-v-boss" → ActorClass "FiveVBoss"
-          "pico-cycler" → ActorClass "PicoCycler"
-          "hp-boss"     → ActorClass "HpBoss"
-          "sieg-loop"   → ActorClass "SiegLoop"
+        a. ShNodes SHALL contain a node with each of the following Name / ActorClass pairs,
+        and no additional ShNode with any of these Names SHALL exist:
+          "n"             → ActorClass "NoActor"
+          "cold-override" → ActorClass "NoActor"
+          "scada-blind"   → ActorClass "NoActor"
+          "standby"       → ActorClass "NoActor"
+          "five-v-boss"   → ActorClass "FiveVBoss"
+          "pico-cycler"   → ActorClass "PicoCycler"
+          "hp-boss"       → ActorClass "HpBoss"
+          "sieg-loop"     → ActorClass "SiegLoop"
         (A gw.house0.layout plant has a siegenthaler loop; how the loop drives its valve
         is operational, so sieg-loop and hp-boss are unconditional command nodes.)
+        b. If Hydronic.Backup is present, ShNodes SHALL contain exactly one node named
+        "backup", with ActorClass "NoActor".
+        c. If Hydronic.Backup is absent, no ShNode SHALL be named "backup".
     - number: 4
       name: "CircuitHeatCallChannel"
       statement: >
@@ -295,13 +298,14 @@ x-gridworks:
         effective handle's parent prefix is the effective handle of an ShNode with
         ActorClass "LocalControl". Local control's state nodes are named for the
         values of gw2.lc.top.state in which local control holds the command tree:
-        "n" for Normal, "backup" for InBackup, "scada-blind" for ScadaBlind and
-        "standby" for Standby; Dormant has no node.
+        "n" for Normal, "backup" for InBackup, "cold-override" for ColdOverride,
+        "scada-blind" for ScadaBlind and "standby" for Standby; Dormant has no node.
         a. Every actuator SHALL have a dotted effective handle and SHALL be a leaf.
         b. Every leaf SHALL be an actuator or a command node.
         c. Every ShNode with ActorClass "NoActor" whose effective handle's parent prefix
         is the effective handle of an ShNode with ActorClass "LocalControl" SHALL be
-        one of these state nodes: "n", "backup", "scada-blind" or "standby".
+        one of these state nodes: "n", "backup", "cold-override", "scada-blind" or
+        "standby".
     - number: 15
       name: "ComponentBinding"
       statement: >
@@ -440,6 +444,7 @@ x-gridworks:
           "lc"                      → "auto.lc"
           "n"                       → "auto.lc.n"
           "backup"                  → "auto.lc.backup"
+          "cold-override"           → "auto.lc.cold-override"
           "scada-blind"             → "auto.lc.scada-blind"
           "standby"                 → "auto.lc.standby"
           "hp-boss"                 → "auto.hp-boss"
@@ -481,3 +486,10 @@ x-gridworks:
       statement: >
         Hydronic.WaterStore SHALL be present: a House0 home stores heat in
         water tanks.
+    - number: 38
+      name: "BackupRelays"
+      statement: >
+        Where Hydronic.Backup is a gw.boiler.backup, its FailsafeRelayName and
+        AquastatCtrlRelayName, and where it is a gw.element.backup, each name in its
+        ElementRelayNames, SHALL equal the Name of an ShNode in ShNodes whose ActorClass
+        is "Relay".

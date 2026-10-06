@@ -1,0 +1,27 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_element_backup_000_class_name }}":
+        """
+        Axiom 1: NonEmptyElements
+        ElementRelayNames SHALL be non-empty.
+        """
+        if not self.element_relay_names:
+            raise ValueError(
+                "Axiom 1 (NonEmptyElements) failed: ElementRelayNames is empty."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ gw_element_backup_000_class_name }}":
+        """
+        Axiom 2: DistinctElements
+        No two entries of ElementRelayNames SHALL be equal.
+        """
+        seen: set[str] = set()
+        for name in self.element_relay_names:
+            if name in seen:
+                raise ValueError(
+                    "Axiom 2 (DistinctElements) failed: ElementRelayNames "
+                    f"lists {name} more than once."
+                )
+            seen.add(name)
+        return self

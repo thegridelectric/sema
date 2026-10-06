@@ -825,6 +825,13 @@ types:
       types:
       - channel.readings:002
       versionless_types: []
+  gw.boiler.backup:
+    '000':
+      enums: []
+      formats:
+      - spaceheat.name
+      types: []
+      versionless_types: []
   gw.channel.gap.stats:
     '000':
       enums: []
@@ -900,6 +907,13 @@ types:
       - handle.name
       - utc.milliseconds
       - uuid4.str
+      types: []
+      versionless_types: []
+  gw.element.backup:
+    '000':
+      enums: []
+      formats:
+      - spaceheat.name
       types: []
       versionless_types: []
   gw.experiment.run:
@@ -996,6 +1010,8 @@ types:
       - g.node.gt:006
       - gpio.relay.component.gt:000
       - gpio.sensor.component.gt:000
+      - gw.boiler.backup:000
+      - gw.element.backup:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
       - gw.water.store:000
@@ -1050,6 +1066,8 @@ types:
       - spaceheat.name
       - uuid4.str
       types:
+      - gw.boiler.backup:000
+      - gw.element.backup:000
       - gw.water.store:000
       - gw1.hvac.zone:000
       - gw1.zone.call.circuit:000
@@ -1128,6 +1146,8 @@ types:
       - g.node.gt:006
       - gpio.relay.component.gt:000
       - gpio.sensor.component.gt:000
+      - gw.boiler.backup:000
+      - gw.element.backup:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
       - gw.water.store:000
