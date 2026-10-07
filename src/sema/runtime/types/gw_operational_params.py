@@ -38,6 +38,7 @@ class GwOperationalParams(SemaType):
     load_overestimation_percent: NonNegativeInt
     uses_backup_when_cold: bool
     horizon_hours: PositiveInt
+    weather_bundle_name: LeftRightDot
     tariff: GwTouTariff
     type_name: Literal["gw.operational.params"] = "gw.operational.params"
     version: Literal["000"] = "000"

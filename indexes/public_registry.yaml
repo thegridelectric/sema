@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-07T13:00:00Z'
+  last_updated: '2026-10-07T15:05:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -3227,13 +3227,14 @@ types:
           \ posture names what the list achieves) + ServiceMode + AcceptsDispatch\
           \ x DispatchRefusalReason (present iff refusing) + CopCurve + HeatingCurve\
           \ + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold\
-          \ + HorizonHours + Tariff (gw.tou.tariff). All required but the reason \u2014\
-          \ no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList,\
-          \ NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby refuses dispatch\
-          \ with reason Standby. Axiom 4: the reason is present iff AcceptsDispatch\
-          \ is false. Axiom 5: the posture fixes the relay list (MonitorOnly empty;\
-          \ House0 NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan\
-          \ NoHeatingOrCooling empty)."
+          \ + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt\
+          \ the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required\
+          \ but the reason \u2014 no assumed defaults. Axioms 1-2: ChannelName unique\
+          \ across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom\
+          \ 3: Standby refuses dispatch with reason Standby. Axiom 4: the reason is\
+          \ present iff AcceptsDispatch is false. Axiom 5: the posture fixes the relay\
+          \ list (MonitorOnly empty; House0 NoHeatingOrCooling = hp-failsafe-relay\
+          \ + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty)."
         direct_dependencies:
           structural:
           - capture.tuning:000

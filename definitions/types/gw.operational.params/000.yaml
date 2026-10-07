@@ -128,6 +128,13 @@ properties:
     description: >
       The FLO optimization horizon, in hours.
 
+  WeatherBundleName:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The gw.weather.forecast.bundle.gt whose emissions are this home's
+      weather forecast. The LTN relays it and the scada falls back to
+      pulling it, so both read the same bundle.
+
   Tariff:
     $ref: "https://schemas.electricity.works/types/gw.tou.tariff/000"
     description: >
@@ -157,6 +164,7 @@ required:
   - LoadOverestimationPercent
   - UsesBackupWhenCold
   - HorizonHours
+  - WeatherBundleName
   - Tariff
   - TypeName
   - Version
@@ -224,6 +232,7 @@ examples:
       "LoadOverestimationPercent": 0,
       "UsesBackupWhenCold": true,
       "HorizonHours": 48,
+      "WeatherBundleName": "us.me.millinocket.forecast.nws.hourly96",
       "Tariff": {
         "Alias": "versant.a1.home.eco.bonus",
         "DisplayName": "Home Eco Rate with Bonus Meter",
