@@ -735,9 +735,11 @@ types:
         summary: "Initial version."
 
   gw.weather.create.cmd:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- Record: oneOf gains gw.weather.seasonal.template.gt/000"
       "000":
         summary: "Initial version."
 
@@ -770,6 +772,13 @@ types:
         summary: "Initial version."
 
   gw.weather.observation:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
+
+  gw.weather.seasonal.template.gt:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:

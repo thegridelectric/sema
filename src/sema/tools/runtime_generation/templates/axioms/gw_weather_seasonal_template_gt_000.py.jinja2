@@ -1,0 +1,12 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_weather_seasonal_template_gt_000_class_name }}":
+        """
+        Axiom 1: TwelveMonths
+        TempByMonth SHALL hold exactly twelve values.
+        """
+        if len(self.temp_by_month) != 12:
+            raise ValueError(
+                "Axiom 1 (TwelveMonths) failed: TempByMonth holds "
+                f"{len(self.temp_by_month)} values, not twelve."
+            )
+        return self

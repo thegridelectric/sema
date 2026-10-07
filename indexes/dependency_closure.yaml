@@ -1353,6 +1353,24 @@ types:
       - gw.weather.forecast.channel.gt:000
       - gw.weather.location.gt:000
       versionless_types: []
+    '001':
+      enums:
+      - gw1.quantity:002
+      - gw1.unit:002
+      formats:
+      - left.right.dot
+      - non.empty.string
+      - non.negative.int
+      - positive.int
+      - utc.iso8601.seconds
+      - uuid4.str
+      types:
+      - gw.weather.channel.gt:000
+      - gw.weather.forecast.bundle.gt:000
+      - gw.weather.forecast.channel.gt:000
+      - gw.weather.location.gt:000
+      - gw.weather.seasonal.template.gt:000
+      versionless_types: []
   gw.weather.forecast:
     '000':
       enums:
@@ -1405,6 +1423,15 @@ types:
       formats:
       - left.right.dot
       - utc.iso8601.seconds
+      types: []
+      versionless_types: []
+  gw.weather.seasonal.template.gt:
+    '000':
+      enums: []
+      formats:
+      - left.right.dot
+      - utc.iso8601.seconds
+      - uuid4.str
       types: []
       versionless_types: []
   gw0.required.energy.layered:

@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-07T15:05:00Z"
+  last_updated: "2026-10-07T22:15:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3572,12 +3572,25 @@ types:
           structural: []
 
   gw.weather.create.cmd:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "Command to create one weather record (location, observed channel, forecast channel, or bundle) — the human minting act; the service inserts, broadcasts once, and replies ack or nack."
+    description: "Command to create one weather record (location, observed channel, forecast channel, bundle, or seasonal template) — the human minting act; the service inserts, broadcasts once, and replies ack or nack."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.create.cmd/001"
+        created: "2026-10-07T22:15:00Z"
+        status: "staging"
+        summary: >-
+          - Record: oneOf gains gw.weather.seasonal.template.gt/000
+        direct_dependencies:
+          structural:
+            - "gw.weather.channel.gt:000"
+            - "gw.weather.forecast.bundle.gt:000"
+            - "gw.weather.forecast.channel.gt:000"
+            - "gw.weather.location.gt:000"
+            - "gw.weather.seasonal.template.gt:000"
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.create.cmd/000"
         created: "2026-08-12T17:05:00Z"
@@ -3688,6 +3701,24 @@ types:
           structural:
             - "left.right.dot"
             - "utc.iso8601.seconds"
+
+  gw.weather.seasonal.template.gt:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The design-cold temperature of each month at a weather location: the forecast fidelity ladder's last rung, one record per location."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.seasonal.template.gt/000"
+        created: "2026-10-07T22:15:00Z"
+        status: "staging"
+        summary: "Initial version."
+        direct_dependencies:
+          structural:
+            - "left.right.dot"
+            - "utc.iso8601.seconds"
+            - "uuid4.str"
 
   gw0.required.energy.layered:
     latest_version: "000"

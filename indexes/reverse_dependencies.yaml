@@ -220,20 +220,28 @@ types:
     '000':
       used_by:
       - gw.weather.create.cmd:000
+      - gw.weather.create.cmd:001
       - gw.weather.forecast.bundle.gt:000
   gw.weather.forecast.bundle.gt:
     '000':
       used_by:
       - gw.weather.create.cmd:000
+      - gw.weather.create.cmd:001
   gw.weather.forecast.channel.gt:
     '000':
       used_by:
       - gw.weather.create.cmd:000
+      - gw.weather.create.cmd:001
       - gw.weather.forecast.bundle.gt:000
   gw.weather.location.gt:
     '000':
       used_by:
       - gw.weather.create.cmd:000
+      - gw.weather.create.cmd:001
+  gw.weather.seasonal.template.gt:
+    '000':
+      used_by:
+      - gw.weather.create.cmd:001
   gw0.required.energy.layered:
     '000':
       used_by:
@@ -1180,6 +1188,7 @@ formats:
     - gw.weather.forecast:000
     - gw.weather.location.gt:000
     - gw.weather.observation:000
+    - gw.weather.seasonal.template.gt:000
     - heating.forecast:000
     - keyparam.change.log:000
     - latest.price:000
@@ -1564,6 +1573,7 @@ formats:
     - gw.weather.forecast.channel.gt:000
     - gw.weather.forecast:000
     - gw.weather.observation:000
+    - gw.weather.seasonal.template.gt:000
     - hourly.electricity.dataset:000
     - synced.readings.bundle:001
     - synced.readings.bundle:002
@@ -1737,6 +1747,7 @@ formats:
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000
     - gw.weather.location.gt:000
+    - gw.weather.seasonal.template.gt:000
     - gw1.zone.thermostat:000
     - gw108.gpio.sensor.component.gt:001
     - gw108.vdc.relay.component.gt:001
