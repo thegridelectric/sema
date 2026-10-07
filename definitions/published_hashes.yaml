@@ -145,6 +145,8 @@ enums:
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
+  gw.opsgenie.priority: sha256:4df695a826263bc46c10b44957b487c760e52e4484820407dd68adbf74710c1d
+  gw.opsgenie.alert.status: sha256:4ad9b70197037d190423690ad082f84b8edca0c6c366c0628cf750a36700e7e9
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -448,3 +450,9 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
+  gw.opsgenie.alert.close:
+    '000': sha256:4158c170dff653eca1816934b73f1ad07800a99014e97f2421fc1af21d23e86e
+  gw.opsgenie.alert.create:
+    '000': sha256:3e9af85a4f47864b85b73c3d3581c0e6fa0eefca6cf5bbca6ede5bd598129d84
+  gw.opsgenie.alert:
+    '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a

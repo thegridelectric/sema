@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-07T12:20:00Z"
+  last_updated: "2026-10-07T13:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -458,7 +458,7 @@ enums:
     description: "Whether Opsgenie holds an alert Open or Closed."
     schema_url: "https://schemas.electricity.works/enums/gw.opsgenie.alert.status/000"
     created: "2026-10-07T12:20:00Z"
-    status: "staging"
+    status: "published"
 
   gw.opsgenie.priority:
     owner: gridworks-energy
@@ -466,7 +466,7 @@ enums:
     description: "Opsgenie's five alert priorities, P1 the most urgent."
     schema_url: "https://schemas.electricity.works/enums/gw.opsgenie.priority/000"
     created: "2026-10-07T12:20:00Z"
-    status: "staging"
+    status: "published"
 
   gw.scada.cmd.refusal.reason:
     latest_version: "000"
@@ -3160,7 +3160,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert/000"
         created: "2026-10-07T12:20:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version. ClosedBy present iff Status is Closed (axiom 1)."
         direct_dependencies:
           structural:
@@ -3181,7 +3181,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert.close/000"
         created: "2026-10-07T12:20:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version."
         direct_dependencies:
           structural:
@@ -3199,7 +3199,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert.create/000"
         created: "2026-10-07T12:20:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version. House and About present together (axiom 1)."
         direct_dependencies:
           structural:
