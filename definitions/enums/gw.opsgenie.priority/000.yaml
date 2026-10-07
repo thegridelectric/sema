@@ -1,0 +1,27 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.opsgenie.priority/000"
+
+title: "gw.opsgenie.priority"
+type: "string"
+description: >
+  Opsgenie's five alert priorities, P1 the most urgent. Which people are
+  notified and how fast is the team's policy per priority.
+
+enum:
+  - "P1"
+  - "P2"
+  - "P3"
+  - "P4"
+  - "P5"
+
+default: "P5"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "P1": "Critical."
+    "P2": "High."
+    "P3": "Moderate; Opsgenie's own default when a create names none."
+    "P4": "Low."
+    "P5": "Informational; the safe value for a priority a consumer does not know."

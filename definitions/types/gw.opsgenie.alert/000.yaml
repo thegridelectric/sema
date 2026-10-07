@@ -1,0 +1,128 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.opsgenie.alert/000"
+
+title: "gw.opsgenie.alert"
+type: object
+description: >
+  One alert as Opsgenie's Alert API lists it, in the fields GridWorks
+  reads: the alias that ties it to a gw.alert, its status and
+  acknowledgement, how many creates Opsgenie folded into it, and when it
+  was created, last occurred, acknowledged and closed. Versioned by
+  GridWorks as Opsgenie's API moves.
+
+properties:
+
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The alias the alert was created under, which Opsgenie deduplicates
+      on; the AlertId of the gw.alert that raised it.
+
+  OpsgenieId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Opsgenie's own identifier for the alert.
+
+  TinyId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Opsgenie's short per-account number for the alert, as shown in its
+      console.
+
+  Message:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The headline Opsgenie shows for the alert.
+
+  Status:
+    $ref: "https://schemas.electricity.works/enums/gw.opsgenie.alert.status/000"
+    description: >
+      Whether Opsgenie holds the alert open or closed.
+
+  Acknowledged:
+    type: boolean
+    description: >
+      Whether a person has acknowledged the alert.
+
+  Count:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
+    description: >
+      How many creates Opsgenie has folded into this alias while it was
+      open; one for an alert created once.
+
+  Priority:
+    $ref: "https://schemas.electricity.works/enums/gw.opsgenie.priority/000"
+    description: >
+      The priority the alert was created with.
+
+  Source:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The source the alert was created with; the GNode alias of the
+      alerting service when GridWorks created it.
+
+  Tags:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The tags the alert was created with.
+
+  CreatedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      When Opsgenie created the alert.
+
+  LastOccurredMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      When Opsgenie last took a create for this alias; equals CreatedMs
+      while Count is one.
+
+  AcknowledgedBy:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The Opsgenie user who acknowledged the alert.
+
+  ClosedBy:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Who closed the alert: an Opsgenie user, or "Alert API" when a close
+      request did.
+
+  TypeName:
+    const: "gw.opsgenie.alert"
+
+  Version:
+    const: "000"
+
+required:
+  - Alias
+  - OpsgenieId
+  - Message
+  - Status
+  - Acknowledged
+  - Count
+  - Priority
+  - Source
+  - Tags
+  - CreatedMs
+  - LastOccurredMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ClosedByOnClosed"
+      statement: >
+        a. If Status is Closed, ClosedBy SHALL be present.
+        b. If Status is Open, ClosedBy SHALL be absent.
+  extended_description: >
+    The word is GridWorks' record of what the notifier holds, read back
+    from Opsgenie; it is not the request that created the alert, which is
+    gw.opsgenie.alert.create. A tap's reconcile pass and a shadow-week
+    comparison both read lists of these.

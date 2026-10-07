@@ -103,6 +103,9 @@ from sema.runtime.types.gw_native_gpio_pin import GwNativeGpioPin
 from sema.runtime.types.gw_nolan_family_params import GwNolanFamilyParams
 from sema.runtime.types.gw_nolan_layout import GwNolanLayout
 from sema.runtime.types.gw_operational_params import GwOperationalParams
+from sema.runtime.types.gw_opsgenie_alert import GwOpsgenieAlert
+from sema.runtime.types.gw_opsgenie_alert_close import GwOpsgenieAlertClose
+from sema.runtime.types.gw_opsgenie_alert_create import GwOpsgenieAlertCreate
 from sema.runtime.types.gw_readings import GwReadings
 from sema.runtime.types.gw_recorded_setpoints import GwRecordedSetpoints
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
@@ -314,6 +317,9 @@ __all__ = [
     "GwNolanFamilyParams",
     "GwNolanLayout",
     "GwOperationalParams",
+    "GwOpsgenieAlert",
+    "GwOpsgenieAlertClose",
+    "GwOpsgenieAlertCreate",
     "GwReadings",
     "GwRecordedSetpoints",
     "GwTouTariff",

@@ -1,0 +1,8 @@
+    def upgrade(self) -> "{{ gw_experiment_run_001_class_name }}":
+        """
+        Adds required Verdict (gw.experiment.verdict) and optional Claim naming the executor claim the run verifies; upgrade from 000 sets Verdict Unknown.
+        """
+        data = self.model_dump()
+        data["verdict"] = {{ gw_experiment_verdict_000_class_name }}.Unknown
+        data["version"] = "001"
+        return {{ gw_experiment_run_001_class_name }}.model_validate(data)

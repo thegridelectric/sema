@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_opsgenie_alert_create_000_class_name }}":
+        """
+        Axiom 1: HouseDetailsTogether
+        House and About SHALL both be present or both be absent; they are present when the
+        gw.alert carries an AboutGNodeAlias.
+        """
+        if (self.house is None) != (self.about is None):
+            raise ValueError(
+                "Axiom 1 (HouseDetailsTogether) failed: House and About must both be "
+                "present or both be absent."
+            )
+        return self

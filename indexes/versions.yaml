@@ -586,9 +586,11 @@ types:
         summary: "ElementRelayNames (spaceheat.name list), InService (boolean). Axioms NonEmptyElements, DistinctElements. Carried by gw.hydronic as one kind of the optional Backup."
 
   gw.experiment.run:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "Adds required Verdict (gw.experiment.verdict) and optional Claim naming the executor claim the run verifies; upgrade from 000 sets Verdict Unknown."
       "000":
         summary: "Initial version."
 
@@ -598,6 +600,27 @@ types:
     versions:
       "000":
         summary: "Initial version: SiegLoopStrategy, KeepBufferFull, SeasonalStorageMode. All required."
+
+  gw.opsgenie.alert:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. ClosedBy present iff Status is Closed (axiom 1)."
+
+  gw.opsgenie.alert.close:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version."
+
+  gw.opsgenie.alert.create:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. House and About present together (axiom 1)."
 
   gw.house.operating.status:
     latest_version: "000"
@@ -1824,6 +1847,24 @@ enums:
   gw.platform.alert.kind:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.experiment.verdict:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.opsgenie.alert.status:
+    enum_type: "literal"
+    note: "This enum is literal; version 000 is immutable and exclusive."
+    versions:
+      "000": {}
+
+  gw.opsgenie.priority:
+    enum_type: "literal"
+    note: "This enum is literal; version 000 is immutable and exclusive."
     versions:
       "000": {}
 

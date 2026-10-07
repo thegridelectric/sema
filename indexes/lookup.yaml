@@ -382,15 +382,31 @@ types:
     versions:
       '000': definitions/types/gw.element.backup/000.yaml
   gw.experiment.run:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.experiment.run/001.yaml
       '000': definitions/types/gw.experiment.run/000.yaml
   gw.house0.family.params:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.house0.family.params/000.yaml
+  gw.opsgenie.alert:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.opsgenie.alert/000.yaml
+  gw.opsgenie.alert.close:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.opsgenie.alert.close/000.yaml
+  gw.opsgenie.alert.create:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.opsgenie.alert.create/000.yaml
   gw.house.operating.status:
     latest_version: '000'
     versioning_strategy: literal
@@ -1178,6 +1194,17 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw.platform.alert.kind/000.yaml
+  gw.experiment.verdict:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.experiment.verdict/000.yaml
+  gw.opsgenie.alert.status:
+    enum_type: literal
+    schema: definitions/enums/gw.opsgenie.alert.status/000.yaml
+  gw.opsgenie.priority:
+    enum_type: literal
+    schema: definitions/enums/gw.opsgenie.priority/000.yaml
   gw.scada.cmd.refusal.reason:
     enum_type: versioned
     latest_version: '000'

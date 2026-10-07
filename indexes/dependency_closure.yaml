@@ -926,6 +926,16 @@ types:
       - utc.milliseconds
       types: []
       versionless_types: []
+    '001':
+      enums:
+      - gw.experiment.verdict:000
+      formats:
+      - left.right.dot
+      - non.empty.string
+      - spaceheat.name
+      - utc.milliseconds
+      types: []
+      versionless_types: []
   gw.house.operating.status:
     '000':
       enums:
@@ -1209,6 +1219,37 @@ types:
       - gw.tou.window:000
       - heating.curve:000
       - zero.ten.power.on:000
+      versionless_types: []
+  gw.opsgenie.alert:
+    '000':
+      enums:
+      - gw.opsgenie.alert.status:000
+      - gw.opsgenie.priority:000
+      formats:
+      - non.empty.string
+      - positive.int
+      - utc.milliseconds
+      - uuid4.str
+      types: []
+      versionless_types: []
+  gw.opsgenie.alert.close:
+    '000':
+      enums: []
+      formats:
+      - left.right.dot
+      - non.empty.string
+      - uuid4.str
+      types: []
+      versionless_types: []
+  gw.opsgenie.alert.create:
+    '000':
+      enums:
+      - gw.opsgenie.priority:000
+      formats:
+      - left.right.dot
+      - non.empty.string
+      - uuid4.str
+      types: []
       versionless_types: []
   gw.readings:
     '000':

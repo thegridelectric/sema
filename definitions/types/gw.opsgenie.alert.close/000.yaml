@@ -1,0 +1,44 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.opsgenie.alert.close/000"
+
+title: "gw.opsgenie.alert.close"
+type: object
+description: >
+  The request a GridWorks tap posts to close an Opsgenie alert from a
+  gw.alert Resolved record, by the alias it was created under.
+  Versioned by GridWorks as Opsgenie's API moves.
+
+properties:
+
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The AlertId of the gw.alert, the alias the alert was created under.
+
+  Source:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the alerting service that resolved the gw.alert.
+
+  Note:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The gw.alert Resolved Summary, shown on the closed alert.
+
+  TypeName:
+    const: "gw.opsgenie.alert.close"
+
+  Version:
+    const: "000"
+
+required:
+  - Alias
+  - Source
+  - Note
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"

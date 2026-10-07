@@ -42,10 +42,13 @@ from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
 from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
 from sema.runtime.enums.gw_dispatch_refusal_reason import GwDispatchRefusalReason
+from sema.runtime.enums.gw_experiment_verdict import GwExperimentVerdict
 from sema.runtime.enums.gw_fleet_alert_kind import GwFleetAlertKind
 from sema.runtime.enums.gw_g_node_class import GwGNodeClass
 from sema.runtime.enums.gw_house_alert_kind import GwHouseAlertKind
 from sema.runtime.enums.gw_market_product_name import GwMarketProductName
+from sema.runtime.enums.gw_opsgenie_alert_status import GwOpsgenieAlertStatus
+from sema.runtime.enums.gw_opsgenie_priority import GwOpsgeniePriority
 from sema.runtime.enums.gw_platform_alert_kind import GwPlatformAlertKind
 from sema.runtime.enums.gw_primary_flow_source import GwPrimaryFlowSource
 from sema.runtime.enums.gw_primary_pump_owner import GwPrimaryPumpOwner
@@ -140,10 +143,13 @@ __all__ = [
     "GwAlertCategory",
     "GwAlertState",
     "GwDispatchRefusalReason",
+    "GwExperimentVerdict",
     "GwFleetAlertKind",
     "GwGNodeClass",
     "GwHouseAlertKind",
     "GwMarketProductName",
+    "GwOpsgenieAlertStatus",
+    "GwOpsgeniePriority",
     "GwPlatformAlertKind",
     "GwPrimaryFlowSource",
     "GwPrimaryPumpOwner",

@@ -1,0 +1,19 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_opsgenie_alert_000_class_name }}":
+        """
+        Axiom 1: ClosedByOnClosed
+        a. If Status is Closed, ClosedBy SHALL be present. b. If Status is Open, ClosedBy
+        SHALL be absent.
+        """
+        closed = self.status is {{ gw_opsgenie_alert_status_000_class_name }}.Closed
+        if closed and self.closed_by is None:
+            raise ValueError(
+                "Axiom 1 (ClosedByOnClosed) failed: ClosedBy must be present when "
+                "Status is Closed."
+            )
+        if not closed and self.closed_by is not None:
+            raise ValueError(
+                "Axiom 1 (ClosedByOnClosed) failed: ClosedBy must be absent when "
+                "Status is Open."
+            )
+        return self

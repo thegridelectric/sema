@@ -1,0 +1,123 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.opsgenie.alert.create/000"
+
+title: "gw.opsgenie.alert.create"
+type: object
+description: >
+  The request a GridWorks tap posts to create an Opsgenie alert from a
+  gw.alert Firing record: the alias Opsgenie deduplicates on, the
+  headline, who is paged, and the facts of the alert carried as named
+  details. Versioned by GridWorks as Opsgenie's API moves.
+
+properties:
+
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The AlertId of the gw.alert; Opsgenie deduplicates on it, so a
+      Firing told twice is one alert and a re-raise after a resolve a new
+      one.
+
+  Message:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The headline a pager shows: "[house] summary" for a house alert,
+      else the summary, cut to Opsgenie's limit.
+
+  Description:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The gw.alert Summary in full.
+
+  Entity:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      What the alert is about: the AboutGNodeAlias, else the Subject, else
+      the Src of the gw.alert.
+
+  Source:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the alerting service that raised the gw.alert.
+
+  Priority:
+    $ref: "https://schemas.electricity.works/enums/gw.opsgenie.priority/000"
+    description: >
+      The priority the alert is created with.
+
+  ResponderTeamId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The Opsgenie team the alert pages.
+
+  Tags:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The gw.alert Category and Kind.
+
+  Kind:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The gw.alert Kind, carried as a detail a reader opens.
+
+  Category:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The gw.alert Category, carried as a detail.
+
+  Subject:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The full identity of what the alert is about, carried as a detail;
+      the same value as Entity.
+
+  House:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The house's short name for a house alert, display only.
+
+  About:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      For a house alert, the AboutGNodeAlias with the registry's display
+      name, so two houses with one short name are told apart where a
+      reader acts.
+
+  TypeName:
+    const: "gw.opsgenie.alert.create"
+
+  Version:
+    const: "000"
+
+required:
+  - Alias
+  - Message
+  - Description
+  - Entity
+  - Source
+  - Priority
+  - ResponderTeamId
+  - Tags
+  - Kind
+  - Category
+  - Subject
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "HouseDetailsTogether"
+      statement: >
+        House and About SHALL both be present or both be absent; they are
+        present when the gw.alert carries an AboutGNodeAlias.
+  extended_description: >
+    Opsgenie's create takes a flat string map of details; this word names
+    the details GridWorks sends as fields, and the tap writes them into
+    that map under their lower-case names. The word is the tap's outbound
+    contract, constructed through the snapshot before it is posted.

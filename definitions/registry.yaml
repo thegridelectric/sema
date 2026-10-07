@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-06T18:10:00Z"
+  last_updated: "2026-10-07T12:20:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -439,6 +439,34 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw.platform.alert.kind/000"
         created: "2026-09-16T17:45:00Z"
         status: "published"
+
+  gw.experiment.verdict:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "What an experiment run concluded against its bar: Unknown, Pass, Fail, Inconclusive."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.experiment.verdict/000"
+        created: "2026-10-07T12:20:00Z"
+        status: "staging"
+
+  gw.opsgenie.alert.status:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Whether Opsgenie holds an alert Open or Closed."
+    schema_url: "https://schemas.electricity.works/enums/gw.opsgenie.alert.status/000"
+    created: "2026-10-07T12:20:00Z"
+    status: "staging"
+
+  gw.opsgenie.priority:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Opsgenie's five alert priorities, P1 the most urgent."
+    schema_url: "https://schemas.electricity.works/enums/gw.opsgenie.priority/000"
+    created: "2026-10-07T12:20:00Z"
+    status: "staging"
 
   gw.scada.cmd.refusal.reason:
     latest_version: "000"
@@ -3075,12 +3103,24 @@ types:
             - "spaceheat.name"
 
   gw.experiment.run:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "The metadata every experiment result carries: kind slug, host GNode alias, wall-clock measurement window, optional code pointer."
+    description: "The metadata every experiment result carries: kind slug, host GNode alias, wall-clock measurement window, verdict, optional code pointer and claim."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.experiment.run/001"
+        created: "2026-10-07T12:20:00Z"
+        status: "staging"
+        summary: "Adds required Verdict (gw.experiment.verdict) and optional Claim naming the executor claim the run verifies; upgrade from 000 sets Verdict Unknown."
+        direct_dependencies:
+          structural:
+            - "gw.experiment.verdict:000"
+            - "left.right.dot"
+            - "non.empty.string"
+            - "spaceheat.name"
+            - "utc.milliseconds"
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.experiment.run/000"
         created: "2026-08-06T19:40:00Z"
@@ -3109,6 +3149,64 @@ types:
           structural:
             - "gw1.seasonal.storage.mode:000"
             - "sieg.loop.strategy:000"
+
+  gw.opsgenie.alert:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "One alert as Opsgenie's Alert API lists it, in the fields GridWorks reads: alias, status, acknowledgement, count, times, who acknowledged and closed."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert/000"
+        created: "2026-10-07T12:20:00Z"
+        status: "staging"
+        summary: "Initial Sema version. ClosedBy present iff Status is Closed (axiom 1)."
+        direct_dependencies:
+          structural:
+            - "gw.opsgenie.alert.status:000"
+            - "gw.opsgenie.priority:000"
+            - "non.empty.string"
+            - "positive.int"
+            - "utc.milliseconds"
+            - "uuid4.str"
+
+  gw.opsgenie.alert.close:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The request a GridWorks tap posts to close an Opsgenie alert by alias from a gw.alert Resolved record."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert.close/000"
+        created: "2026-10-07T12:20:00Z"
+        status: "staging"
+        summary: "Initial Sema version."
+        direct_dependencies:
+          structural:
+            - "left.right.dot"
+            - "non.empty.string"
+            - "uuid4.str"
+
+  gw.opsgenie.alert.create:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The request a GridWorks tap posts to create an Opsgenie alert from a gw.alert Firing record, with the alert's facts as named details."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.opsgenie.alert.create/000"
+        created: "2026-10-07T12:20:00Z"
+        status: "staging"
+        summary: "Initial Sema version. House and About present together (axiom 1)."
+        direct_dependencies:
+          structural:
+            - "gw.opsgenie.priority:000"
+            - "left.right.dot"
+            - "non.empty.string"
+            - "uuid4.str"
 
   gw.house.operating.status:
     latest_version: "000"

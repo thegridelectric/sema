@@ -1,0 +1,27 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.opsgenie.alert.status/000"
+
+title: "gw.opsgenie.alert.status"
+type: "string"
+description: >
+  Whether Opsgenie holds an alert open or closed, as its Alert API
+  reports it. Acknowledgement is a separate flag on the alert, not a
+  status.
+
+enum:
+  - "Open"
+  - "Closed"
+
+default: "Open"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Open": >
+      Opsgenie holds the alert open: it notifies and escalates by its
+      policy until acknowledged, and a create with the same alias folds
+      into it.
+    "Closed": >
+      Opsgenie has closed the alert; a create with the same alias opens
+      a new one.

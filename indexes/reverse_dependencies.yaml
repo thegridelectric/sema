@@ -732,6 +732,10 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - gw.operational.params:000
+  gw.experiment.verdict:
+    '000':
+      used_by:
+      - gw.experiment.run:001
   gw.fleet.alert.kind:
     '000':
       used_by:
@@ -740,6 +744,15 @@ enums:
     '000':
       used_by:
       - gw.alert:000
+  gw.opsgenie.alert.status:
+    '000':
+      used_by:
+      - gw.opsgenie.alert:000
+  gw.opsgenie.priority:
+    '000':
+      used_by:
+      - gw.opsgenie.alert.create:000
+      - gw.opsgenie.alert:000
   gw.platform.alert.kind:
     '000':
       used_by:
@@ -1153,8 +1166,11 @@ formats:
     - gw.channel.noise.stats:000
     - gw.command.interface:000
     - gw.experiment.run:000
+    - gw.experiment.run:001
     - gw.house.operating.status:000
     - gw.operational.params:000
+    - gw.opsgenie.alert.close:000
+    - gw.opsgenie.alert.create:000
     - gw.readings:000
     - gw.recorded.setpoints:000
     - gw.tou.tariff:000
@@ -1240,6 +1256,10 @@ formats:
     - gw.channel.noise.stats:000
     - gw.command.transition:000
     - gw.experiment.run:000
+    - gw.experiment.run:001
+    - gw.opsgenie.alert.close:000
+    - gw.opsgenie.alert.create:000
+    - gw.opsgenie.alert:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000
@@ -1370,6 +1390,7 @@ formats:
     - gw.channel.noise.stats:000
     - gw.nolan.family.params:000
     - gw.operational.params:000
+    - gw.opsgenie.alert:000
     - gw.water.store:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
@@ -1472,6 +1493,7 @@ formats:
     - gw.command.interface:000
     - gw.element.backup:000
     - gw.experiment.run:000
+    - gw.experiment.run:001
     - gw.house0.layout:000
     - gw.hydronic:000
     - gw.nolan.layout:000
@@ -1576,7 +1598,9 @@ formats:
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
     - gw.experiment.run:000
+    - gw.experiment.run:001
     - gw.house.operating.status:000
+    - gw.opsgenie.alert:000
     - gw.readings:000
     - gw.weather.forecast:000
     - i2c.result:000
@@ -1706,6 +1730,9 @@ formats:
     - gw.alert:000
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
+    - gw.opsgenie.alert.close:000
+    - gw.opsgenie.alert.create:000
+    - gw.opsgenie.alert:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
     - gw.weather.forecast.channel.gt:000

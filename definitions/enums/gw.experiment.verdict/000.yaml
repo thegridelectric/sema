@@ -1,0 +1,29 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.experiment.verdict/000"
+
+title: "gw.experiment.verdict"
+type: "string"
+description: >
+  What an experiment run concluded against the bar it set: the claim it
+  verifies holds, fails, or could not be judged from this run.
+
+enum:
+  - "Unknown"
+  - "Pass"
+  - "Fail"
+  - "Inconclusive"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      No verdict is recorded; a run record upgraded from a version without
+      one carries this value.
+    "Pass": "The run met its bar; the claim it verifies holds."
+    "Fail": "The run did not meet its bar; the claim does not hold as stated."
+    "Inconclusive": >
+      The run completed but could not judge the claim: the condition did
+      not arise, or the evidence does not separate the outcomes.

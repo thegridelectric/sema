@@ -111,12 +111,16 @@ matter for distributed coordination, they are visible and verifiable in
 the serialized artifact itself.
 
 **5. Vocabulary Scope and Adoption.** Registration in `registry.yaml`
-establishes uniqueness and governance — not universal adoption. Publishing
+establishes uniqueness and governance, not universal adoption. Publishing
 a vocabulary word does not imply that all Sema participants must or are
-expected to use it. Vocabulary words are namespace-scoped. Organizations
-MAY and are encouraged to define their own vocabularies under distinct
-namespaces (e.g., `gw.*`, `acme.*`, `utilityX.*`). Universal adoption is
-determined by ecosystem coordination, not by registry presence.
+expected to use it; adoption is determined by ecosystem coordination, not
+by registry presence. A word's name is unique because it is registered,
+not because of its first segment. The recommended pattern is that the
+first segment groups a vocabulary: usually by the organization that owns
+it (`gw.*`), sometimes by the system the words describe (`hubitat.*`,
+`i2c.*`, both GridWorks-owned). The first segment confers no ownership
+and the registry does not check it (see [governance.md](governance.md)
+"Reserved Namespaces").
 
 ## How this spec is organized
 
