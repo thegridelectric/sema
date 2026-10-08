@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-07T22:15:00Z'
+  last_updated: '2026-10-08T19:00:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -1919,12 +1919,28 @@ types:
           - universe.run
           - uuid4.str
   fis.instance.authorization.event:
-    latest_version: '000'
+    latest_version: '001'
     owner: jessica-millar
     versioning_strategy: literal
     description: 'Record of one connect-gate decision by the Fleet Index Service (FIS):
       whether a runtime instance of a principal was admitted to a run, and why.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/fis.instance.authorization.event/001
+        created: '2026-10-08T19:00:00Z'
+        summary: InstanceId and Run optional, so a verdict on a request whose claims
+          did not decode is recorded; PrincipalId and Transport stay required
+        status: staging
+        direct_dependencies:
+          structural:
+          - fis.authorization.decision:000
+          - fis.authorization.reason:000
+          - g.node.instance.transport:000
+          - left.right.dot
+          - non.empty.string
+          - universe.run
+          - utc.milliseconds
+          - uuid4.str
       '000':
         schema_url: https://schemas.electricity.works/types/fis.instance.authorization.event/000
         created: '2026-09-04T14:40:00Z'

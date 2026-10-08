@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ fis_instance_authorization_event_001_class_name }}:
+        """
+        InstanceId and Run optional, so a verdict on a request whose claims did
+        not decode is recorded; PrincipalId and Transport stay required
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ fis_instance_authorization_event_001_class_name }}.model_validate(data)

@@ -1,0 +1,138 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/fis.instance.authorization.event/001"
+
+title: "fis.instance.authorization.event"
+type: object
+description: >
+  Record of one connect-gate decision by the Fleet Index Service (FIS):
+  whether a runtime instance of a principal was admitted to a run, and
+  why. Written after the verdict is returned to the broker; it records
+  authority decisions and grants nothing.
+
+properties:
+
+  EventId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Unique identifier of this record.
+
+  PrincipalId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The authenticated identity, as the certificate subject names it: the
+      GNodeId for a GNode, the principal id for a service.
+
+  InstanceId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The runtime process instance that attempted to connect. Absent when
+      the connect request carried no decodable instance claim.
+
+  Run:
+    $ref: "https://schemas.electricity.works/formats/universe.run"
+    description: >
+      The run the instance claimed to join. Absent when the connect
+      request carried no decodable run claim.
+
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The alias claimed at connect. Present only when the transport
+      carries claims.
+
+  GNodeClass:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      The GNodeClass claimed at connect. Present only when the transport
+      carries claims and the principal is a GNode.
+
+  Transport:
+    $ref: "https://schemas.electricity.works/enums/g.node.instance.transport/000"
+    description: >
+      The messaging transport through which the instance connected.
+
+  Decision:
+    $ref: "https://schemas.electricity.works/enums/fis.authorization.decision/000"
+
+  Reason:
+    $ref: "https://schemas.electricity.works/enums/fis.authorization.reason/000"
+
+  DecidedAtUnixMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      When the verdict was decided.
+
+  TypeName:
+    const: "fis.instance.authorization.event"
+
+  Version:
+    const: "001"
+
+required:
+  - EventId
+  - PrincipalId
+  - Transport
+  - Decision
+  - Reason
+  - DecidedAtUnixMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "EventId": "8c1d2f7e-3a4b-4c5d-8e6f-7a8b9c0d1e2f",
+      "PrincipalId": "19ee09df-80ba-437b-b6c1-1eebe9d34801",
+      "InstanceId": "aaaaaaaa-1111-4aaa-8aaa-aaaaaaaaaaaa",
+      "Run": "hw1__1",
+      "Alias": "hw1.isone.me.versant.keene.beech.scada",
+      "GNodeClass": "Scada",
+      "Transport": "RabbitAmqp",
+      "Decision": "Authorized",
+      "Reason": "Superseded",
+      "DecidedAtUnixMs": 1762634100033,
+      "TypeName": "fis.instance.authorization.event",
+      "Version": "001"
+    }
+  - |
+    {
+      "EventId": "2b7e4d90-5c6a-4f1b-9d3e-0a1b2c3d4e5f",
+      "PrincipalId": "9fd6a1b2-3c4d-4e5f-8a6b-7c8d9e0f1a2b",
+      "Transport": "RabbitMqtt",
+      "Decision": "Denied",
+      "Reason": "MalformedRequest",
+      "DecidedAtUnixMs": 1762634100120,
+      "TypeName": "fis.instance.authorization.event",
+      "Version": "001"
+    }
+
+x-gridworks:
+  owner: "jessica-millar"
+  projection:
+    from: Reason
+    to: Decision
+    table:
+      MalformedRequest: Denied
+      PrincipalNotFound: Denied
+      PrincipalSuspended: Denied
+      RunOutsideUniverse: Denied
+      NotInRegistry: Denied
+      AliasMismatch: Denied
+      ClassMismatch: Denied
+      InstanceRevoked: Denied
+      KillUnconfirmed: Denied
+      LeaseRace: Denied
+      IdempotentReconnect: Authorized
+      Superseded: Authorized
+  axioms:
+    - number: 1
+      name: "ReasonDeterminesDecision"
+      statement: >
+        Decision SHALL equal the value the projection table maps Reason to.
+  extended_description: >
+    One record per connect-gate verdict, whatever the outcome. Enforcement
+    is the broker's verdict at connect time; this record is the audit trail
+    of it, including supersessions and denials. It is held in FIS's own
+    store and read out from there.

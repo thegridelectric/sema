@@ -687,10 +687,12 @@ enums:
     '000':
       used_by:
       - fis.instance.authorization.event:000
+      - fis.instance.authorization.event:001
   fis.authorization.reason:
     '000':
       used_by:
       - fis.instance.authorization.event:000
+      - fis.instance.authorization.event:001
   fsm.report.type:
     '000':
       used_by:
@@ -705,6 +707,7 @@ enums:
     '000':
       used_by:
       - fis.instance.authorization.event:000
+      - fis.instance.authorization.event:001
       - g.node.instance.gt:000
       - g.node.instance.gt:001
   g.node.status:
@@ -1141,6 +1144,7 @@ formats:
     - energy.instruction:000
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
+    - fis.instance.authorization.event:001
     - flo.params.house0:000
     - flo.params.house0:001
     - flo.params.house0:002
@@ -1262,6 +1266,7 @@ formats:
     used_by:
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
+    - fis.instance.authorization.event:001
     - gw.channel.noise.stats:000
     - gw.command.transition:000
     - gw.experiment.run:000
@@ -1560,6 +1565,7 @@ formats:
     used_by:
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
+    - fis.instance.authorization.event:001
     - g.node.instance.gt:001
   utc.iso8601.millis:
     used_by:
@@ -1585,6 +1591,7 @@ formats:
     - channel.readings:002
     - energy.instruction:000
     - fis.instance.authorization.event:000
+    - fis.instance.authorization.event:001
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -1705,6 +1712,7 @@ formats:
     - electric.meter.component.gt:001
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
+    - fis.instance.authorization.event:001
     - flo.params.house0:000
     - flo.params.house0:001
     - flo.params.house0:002
