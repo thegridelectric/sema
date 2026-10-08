@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-08T19:00:00Z'
+  last_updated: '2026-10-08T20:00:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -1930,7 +1930,7 @@ types:
         created: '2026-10-08T19:00:00Z'
         summary: InstanceId and Run optional, so a verdict on a request whose claims
           did not decode is recorded; PrincipalId and Transport stay required
-        status: staging
+        status: published
         direct_dependencies:
           structural:
           - fis.authorization.decision:000
