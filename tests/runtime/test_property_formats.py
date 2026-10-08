@@ -12,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 FORMATS_DIR = REPO_ROOT / "definitions" / "formats"
 RUNTIME_FORMAT_TYPES: dict[str, Any] = {
     "firmware.commit": property_format.FirmwareCommit,
+    "git.commit": property_format.GitCommit,
     "handle.name": property_format.HandleName,
     "hex.char": property_format.HexChar,
     "hh.mm": property_format.HhMm,

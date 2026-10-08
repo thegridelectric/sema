@@ -1296,6 +1296,15 @@ types:
       types:
       - single.reading:000
       versionless_types: []
+  gw.scada.commit:
+    '000':
+      enums: []
+      formats:
+      - git.commit
+      - left.right.dot
+      - utc.milliseconds
+      types: []
+      versionless_types: []
   gw.tou.tariff:
     '000':
       enums:

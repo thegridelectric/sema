@@ -694,6 +694,13 @@ types:
       "000":
         summary: "Initial version."
 
+  gw.scada.commit:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version. ScadaAlias + GitCommit + MessageCreatedMs."
+
   gw.tou.tariff:
     latest_version: "000"
     versioning_strategy: "literal"

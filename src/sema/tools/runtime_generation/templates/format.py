@@ -244,6 +244,30 @@ FirmwareCommit = Annotated[
 """,
     },
 
+    "git.commit": {
+        "class_name": "GitCommit",
+        "pattern": r"^[0-9a-f]{40}(-dirty)?$",
+        "methods": """
+def is_git_commit(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: git.commit must be a string.")
+
+    if not GIT_COMMIT_PATTERN.fullmatch(v):
+        raise ValueError(
+            f"<{v}>: Fails git.commit format (a 40-character lowercase "
+            "git hash, optionally suffixed -dirty)."
+        )
+
+    return v
+""",
+        "annotated_type": """
+GitCommit = Annotated[
+    str,
+    BeforeValidator(is_git_commit),
+]
+""",
+    },
+
     "non.empty.string": {
         "class_name": "NonEmptyString",
         "imports": ["from pydantic import Field"],

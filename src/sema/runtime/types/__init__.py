@@ -108,6 +108,7 @@ from sema.runtime.types.gw_opsgenie_alert_close import GwOpsgenieAlertClose
 from sema.runtime.types.gw_opsgenie_alert_create import GwOpsgenieAlertCreate
 from sema.runtime.types.gw_readings import GwReadings
 from sema.runtime.types.gw_recorded_setpoints import GwRecordedSetpoints
+from sema.runtime.types.gw_scada_commit import GwScadaCommit
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
 from sema.runtime.types.gw_tou_window import GwTouWindow
 from sema.runtime.types.gw_water_store import GwWaterStore
@@ -325,6 +326,7 @@ __all__ = [
     "GwOpsgenieAlertCreate",
     "GwReadings",
     "GwRecordedSetpoints",
+    "GwScadaCommit",
     "GwTouTariff",
     "GwTouWindow",
     "GwWaterStore",

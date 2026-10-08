@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-08T20:00:00Z"
+  last_updated: "2026-10-08T21:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -10,6 +10,13 @@ formats:
     created: "2026-09-21T19:50:00Z"
     status: "published"
     description: "The gridworks-pico commit a board's firmware was generated from: a 40-character lowercase git hash, optionally suffixed -dirty, or the literal unstamped"
+
+  git.commit:
+    owner: gridworks-energy
+    schema_url: "https://schemas.electricity.works/formats/git.commit"
+    created: "2026-10-08T21:00:00Z"
+    status: "published"
+    description: "A git commit identifying running code: a 40-character lowercase git hash, suffixed -dirty when the working tree had uncommitted changes"
 
   handle.name:
     owner: gridworks-energy
@@ -3479,6 +3486,24 @@ types:
             - "channel.readings:002"
             - "data.channel.gt:003"
             - "derived.channel.gt:002"
+            - "left.right.dot"
+            - "utc.milliseconds"
+
+  gw.scada.commit:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The git commit a scada is running, announced once per run at boot so every message of the run can be tied to the code that produced it."
+
+    versions:
+      "000":
+        status: "staging"
+        schema_url: "https://schemas.electricity.works/types/gw.scada.commit/000"
+        created: "2026-10-08T21:00:00Z"
+        summary: "Initial version. ScadaAlias + GitCommit + MessageCreatedMs."
+        direct_dependencies:
+          structural:
+            - "git.commit"
             - "left.right.dot"
             - "utc.milliseconds"
 

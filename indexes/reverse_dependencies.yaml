@@ -1103,6 +1103,9 @@ formats:
     - pico.flow.module.component.gt:001
     - pico.tank.module.component.gt:012
     - tank.module.params:210
+  git.commit:
+    used_by:
+    - gw.scada.commit:000
   handle.name:
     used_by:
     - analog.dispatch:000
@@ -1185,6 +1188,7 @@ formats:
     - gw.opsgenie.alert.create:000
     - gw.readings:000
     - gw.recorded.setpoints:000
+    - gw.scada.commit:000
     - gw.tou.tariff:000
     - gw.weather.channel.gt:000
     - gw.weather.forecast.bundle.gt:000
@@ -1619,6 +1623,7 @@ formats:
     - gw.house.operating.status:000
     - gw.opsgenie.alert:000
     - gw.readings:000
+    - gw.scada.commit:000
     - gw.weather.forecast:000
     - i2c.result:000
     - i2c.result:001

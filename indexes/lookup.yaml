@@ -453,6 +453,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.readings/000.yaml
+  gw.scada.commit:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.scada.commit/000.yaml
   gw.tou.tariff:
     latest_version: '000'
     versioning_strategy: literal
@@ -1553,6 +1558,7 @@ enums:
       '000': definitions/enums/zone.setpoint.source/000.yaml
 formats:
   firmware.commit: definitions/formats/firmware.commit.yaml
+  git.commit: definitions/formats/git.commit.yaml
   handle.name: definitions/formats/handle.name.yaml
   hex.char: definitions/formats/hex.char.yaml
   hh.mm: definitions/formats/hh.mm.yaml
