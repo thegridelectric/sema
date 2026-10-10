@@ -4,6 +4,7 @@ from sema.runtime.base import SemaType
 from sema.runtime.enums import Gw1ServiceMode
 from sema.runtime.enums import GwDispatchRefusalReason
 from sema.runtime.enums import GwStandbyPosture
+from sema.runtime.enums import SiegLoopStrategy
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import PositiveFloat
@@ -138,4 +139,23 @@ class GwOperationalParams(SemaType):
                     f"for {family} requires EnergizedStandbyRelays {sorted(expected)}, "
                     f"got {sorted(relays)}."
                 )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> "GwOperationalParams":
+        """
+        Axiom 6: StandbyHoldsFullSend
+        If Standby is true and FamilyParams.TypeName is gw.house0.family.params,
+        FamilyParams.SiegLoopStrategy SHALL be HoldFullSend.
+        """
+        family = self.family_params
+        if (
+            self.standby
+            and isinstance(family, GwHouse0FamilyParams)
+            and family.sieg_loop_strategy is not SiegLoopStrategy.HoldFullSend
+        ):
+            raise ValueError(
+                "Axiom 6 (StandbyHoldsFullSend) failed: Standby requires "
+                f"SiegLoopStrategy HoldFullSend, got {family.sieg_loop_strategy}."
+            )
         return self

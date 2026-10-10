@@ -1,0 +1,89 @@
+{
+  "ScadaAlias": "hw1.isone.me.versant.keene.beech.scada",
+  "FamilyParams": {
+    "SiegLoopStrategy": "StratProtect",
+    "KeepBufferFull": false,
+    "SeasonalStorageMode": "AllTanks",
+    "TypeName": "gw.house0.family.params",
+    "Version": "000"
+  },
+  "CaptureTuningList": [
+    {
+      "ChannelName": "dist-swt",
+      "CapturePeriodS": 300,
+      "AsyncCapture": true,
+      "AsyncCaptureDelta": 250,
+      "TypeName": "capture.tuning",
+      "Version": "000"
+    }
+  ],
+  "ZeroTenPowerOnList": [
+    {
+      "NodeName": "dist-010v",
+      "PowerOnVoltsTimesTen": 20,
+      "TypeName": "zero.ten.power.on",
+      "Version": "000"
+    }
+  ],
+  "Standby": true,
+  "StandbyPosture": "NoHeatingOrCooling",
+  "EnergizedStandbyRelays": [
+    "hp-failsafe-relay",
+    "aquastat-ctrl-relay"
+  ],
+  "ServiceMode": "Heating",
+  "AcceptsDispatch": false,
+  "CopCurve": {
+    "Intercept": 1.02,
+    "OatCoeff": 0.0257,
+    "LwtCoeff": 0,
+    "Min": 1.4,
+    "MinOatF": 15,
+    "TypeName": "cop.curve",
+    "Version": "000"
+  },
+  "HeatingCurve": {
+    "AlphaTimes10": 55,
+    "BetaTimes100": -10,
+    "GammaEx6": 0,
+    "IntermediatePowerKw": 1.5,
+    "IntermediateRswtF": 100,
+    "DdPowerKw": 5.5,
+    "DdRswtF": 150,
+    "DdDeltaTF": 20,
+    "MaxEwtF": 170,
+    "TypeName": "heating.curve",
+    "Version": "000"
+  },
+  "HpTurnOnMinutes": 12,
+  "HpMaxKwEl": 9.66,
+  "LoadOverestimationPercent": 0,
+  "UsesBackupWhenCold": true,
+  "HorizonHours": 48,
+  "WeatherBundleName": "us.me.millinocket.forecast.nws.hourly96",
+  "Tariff": {
+    "Alias": "versant.a1.home.eco.bonus",
+    "DisplayName": "Home Eco Rate with Bonus Meter",
+    "TimezoneStr": "America/New_York",
+    "OnPeakWindows": [
+      {
+        "Start": "07:00",
+        "End": "12:00",
+        "Days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "TypeName": "gw.tou.window",
+        "Version": "000"
+      }
+    ],
+    "TypeName": "gw.tou.tariff",
+    "Version": "000"
+  },
+  "TypeName": "gw.operational.params",
+  "Version": "000",
+  "DispatchRefusalReason": "Standby"
+}

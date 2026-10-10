@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-08T21:00:00Z'
+  last_updated: '2026-10-10T09:55:00Z'
   maintainer: gridworks-energy
 formats:
   firmware.commit:
@@ -3257,7 +3257,8 @@ types:
           \ 3: Standby refuses dispatch with reason Standby. Axiom 4: the reason is\
           \ present iff AcceptsDispatch is false. Axiom 5: the posture fixes the relay\
           \ list (MonitorOnly empty; House0 NoHeatingOrCooling = hp-failsafe-relay\
-          \ + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty)."
+          \ + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 6: Standby\
+          \ holds a House0 loop at full send (SiegLoopStrategy HoldFullSend)."
         direct_dependencies:
           structural:
           - capture.tuning:000
@@ -3275,6 +3276,8 @@ types:
           - positive.int
           - spaceheat.name
           - zero.ten.power.on:000
+          axiom:
+          - sieg.loop.strategy:000
   gw.recorded.setpoints:
     latest_version: '000'
     owner: gridworks-energy

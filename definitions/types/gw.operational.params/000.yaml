@@ -293,6 +293,13 @@ x-gridworks:
            StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays
            SHALL be empty.
 
+    - number: 6
+      name: "StandbyHoldsFullSend"
+      statement: >
+        If Standby is true and FamilyParams.TypeName is
+        gw.house0.family.params, FamilyParams.SiegLoopStrategy SHALL be
+        HoldFullSend.
+
   extended_description: >
     operational-params is the authored home for the tunable state that left the
     static hardware layout and the deployment config: what changes without

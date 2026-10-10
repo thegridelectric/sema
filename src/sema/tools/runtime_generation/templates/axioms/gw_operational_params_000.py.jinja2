@@ -95,3 +95,22 @@
                     f"got {sorted(relays)}."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> "{{ gw_operational_params_000_class_name }}":
+        """
+        Axiom 6: StandbyHoldsFullSend
+        If Standby is true and FamilyParams.TypeName is gw.house0.family.params,
+        FamilyParams.SiegLoopStrategy SHALL be HoldFullSend.
+        """
+        family = self.family_params
+        if (
+            self.standby
+            and isinstance(family, {{ gw_house0_family_params_000_class_name }})
+            and family.sieg_loop_strategy is not {{ sieg_loop_strategy_000_class_name }}.HoldFullSend
+        ):
+            raise ValueError(
+                "Axiom 6 (StandbyHoldsFullSend) failed: Standby requires "
+                f"SiegLoopStrategy HoldFullSend, got {family.sieg_loop_strategy}."
+            )
+        return self

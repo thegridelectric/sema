@@ -1019,6 +1019,7 @@ enums:
     '000':
       used_by:
       - gw.house0.family.params:000
+      - gw.operational.params:000
   spaceheat.make.model:
     '007':
       used_by:
