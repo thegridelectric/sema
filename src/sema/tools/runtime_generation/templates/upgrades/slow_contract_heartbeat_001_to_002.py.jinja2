@@ -1,0 +1,16 @@
+    def upgrade(self) -> "{{ slow_contract_heartbeat_002_class_name }}":
+        """
+        Reason (gw.dispatch.refusal.reason) beside the free Cause, present iff
+        Status is TerminatedByScada (axiom 6), so a terminating heartbeat names
+        why in the scada's one refusal vocabulary.
+        """
+        if self.status is {{ gw1_slow_dispatch_contract_status_000_class_name }}.TerminatedByScada:
+            raise SemaType.upgrade_requires_context(
+                "{{ slow_contract_heartbeat_001_class_name }} cannot be upgraded to "
+                "{{ slow_contract_heartbeat_002_class_name }} without context: a "
+                "TerminatedByScada heartbeat needs a Reason, which only the "
+                "terminating scada knows, and it SHALL NOT be fabricated."
+            )
+        data = self.model_dump()
+        data["version"] = "002"
+        return {{ slow_contract_heartbeat_002_class_name }}.model_validate(data)

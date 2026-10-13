@@ -21,15 +21,15 @@
         """
         Axiom 2: StandbyRefusesDispatch
         If Standby is true, AcceptsDispatch SHALL be false and DispatchRefusalReason SHALL
-        be Standby.
+        be OperatorHold.
         """
         if self.standby and (
             self.accepts_dispatch
             or self.dispatch_refusal_reason
-            is not {{ gw_dispatch_refusal_reason_000_class_name }}.Standby
+            is not {{ gw_dispatch_refusal_reason_000_class_name }}.OperatorHold
         ):
             raise ValueError(
                 "Axiom 2 (StandbyRefusesDispatch) failed: Standby requires "
-                "AcceptsDispatch false with DispatchRefusalReason Standby."
+                "AcceptsDispatch false with DispatchRefusalReason OperatorHold."
             )
         return self

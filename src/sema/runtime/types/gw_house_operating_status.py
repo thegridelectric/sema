@@ -23,6 +23,7 @@ class GwHouseOperatingStatus(SemaType):
     accepts_dispatch: bool
     dispatch_refusal_reason: GwDispatchRefusalReason | None = None
     top_state: GwTopState
+    scada_blind: bool
     ltn_dispatching: bool
     unix_ms: UTCMilliseconds
     type_name: Literal["gw.house.operating.status"] = "gw.house.operating.status"
@@ -51,14 +52,14 @@ class GwHouseOperatingStatus(SemaType):
         """
         Axiom 2: StandbyRefusesDispatch
         If Standby is true, AcceptsDispatch SHALL be false and DispatchRefusalReason SHALL
-        be Standby.
+        be OperatorHold.
         """
         if self.standby and (
             self.accepts_dispatch
-            or self.dispatch_refusal_reason is not GwDispatchRefusalReason.Standby
+            or self.dispatch_refusal_reason is not GwDispatchRefusalReason.OperatorHold
         ):
             raise ValueError(
                 "Axiom 2 (StandbyRefusesDispatch) failed: Standby requires "
-                "AcceptsDispatch false with DispatchRefusalReason Standby."
+                "AcceptsDispatch false with DispatchRefusalReason OperatorHold."
             )
         return self

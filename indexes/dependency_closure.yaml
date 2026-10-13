@@ -912,6 +912,12 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+  gw.dispatch.hold:
+    '000':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   gw.dispatch.nack:
     '000':
       enums:
@@ -1210,7 +1216,6 @@ types:
     '000':
       enums:
       - day.of.week:000
-      - gw.dispatch.refusal.reason:000
       - gw.standby.posture:000
       - gw1.seasonal.storage.mode:000
       - gw1.service.mode:000
@@ -1226,6 +1231,7 @@ types:
       types:
       - capture.tuning:000
       - cop.curve:000
+      - gw.dispatch.hold:000
       - gw.house0.family.params:000
       - gw.nolan.family.params:000
       - gw.tou.tariff:000
@@ -3214,13 +3220,53 @@ types:
       - utc.milliseconds
       types: []
       versionless_types: []
+  slow.contract.heartbeat:
+    '001':
+      enums:
+      - gw1.slow.dispatch.contract.status:000
+      formats:
+      - decimal.digit
+      - left.right.dot
+      - positive.int
+      - spaceheat.name
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - slow.dispatch.contract:000
+      versionless_types: []
+    '002':
+      enums:
+      - gw.dispatch.refusal.reason:000
+      - gw1.slow.dispatch.contract.status:000
+      formats:
+      - decimal.digit
+      - left.right.dot
+      - positive.int
+      - spaceheat.name
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - slow.dispatch.contract:000
+      versionless_types: []
   slow.contract.rejection:
     '000':
       enums:
-      - ta.validation.state:000
+      - gw.dispatch.refusal.reason:000
       formats:
       - left.right.dot
       - utc.milliseconds
+      - uuid4.str
+      types: []
+      versionless_types: []
+  slow.dispatch.contract:
+    '000':
+      enums: []
+      formats:
+      - left.right.dot
+      - positive.int
+      - utc.seconds
       - uuid4.str
       types: []
       versionless_types: []

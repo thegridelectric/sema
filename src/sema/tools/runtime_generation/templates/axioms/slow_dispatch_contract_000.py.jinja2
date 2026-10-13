@@ -1,0 +1,25 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ slow_dispatch_contract_000_class_name }}":
+        """
+        Axiom 1: StartOnFiveMinutes
+        StartS SHALL be a multiple of 300.
+        """
+        if self.start_s % 300 != 0:
+            raise ValueError(
+                "Axiom 1 (StartOnFiveMinutes) failed: StartS must be a multiple "
+                f"of 300, got {self.start_s}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ slow_dispatch_contract_000_class_name }}":
+        """
+        Axiom 2: OilBoilerDrawsNoPower
+        If OilBoilerOn is true, AvgPowerWatts SHALL be 0.
+        """
+        if self.oil_boiler_on and self.avg_power_watts != 0:
+            raise ValueError(
+                "Axiom 2 (OilBoilerDrawsNoPower) failed: OilBoilerOn requires "
+                f"AvgPowerWatts 0, got {self.avg_power_watts}."
+            )
+        return self

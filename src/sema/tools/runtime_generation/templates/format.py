@@ -220,6 +220,25 @@ MacAddress = Annotated[
 """,
     },
 
+    "decimal.digit": {
+        "class_name": "DecimalDigit",
+        "imports": ["from pydantic import Field, StrictInt"],
+        "methods": """
+def is_decimal_digit(v: int) -> int:
+    if not isinstance(v, int):
+        raise TypeError("Not an int!")
+    if v < 0 or v > 9:
+        raise ValueError(f"{v} must be a single decimal digit, 0 through 9")
+    return v
+""",
+        "annotated_type": """
+DecimalDigit = Annotated[
+    StrictInt,
+    Field(ge=0, le=9),
+]
+""",
+    },
+
     "firmware.commit": {
         "class_name": "FirmwareCommit",
         "pattern": r"^([0-9a-f]{40}(-dirty)?|unstamped)$",

@@ -573,6 +573,13 @@ types:
       "000":
         summary: "Initial Sema version"
 
+  gw.dispatch.hold:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version. OperatorHold + ServiceContractBroken, both required."
+
   gw.dispatch.nack:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -629,7 +636,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (present iff refusing, axiom 1; Standby refuses, axiom 2) + TopState + LtnDispatching + UnixMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
+        summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + UnixMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
 
   gw.house0.layout:
     latest_version: "000"
@@ -678,7 +685,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version. ScadaAlias (the applying Scada's identity — stored/emitted instances self-identify; the layout holds the full GNodes) + FamilyParams (oneOf gw.house0.family.params / gw.nolan.family.params, discriminated by TypeName; the family TypeName pairs the instance with its layout family, so a mismatched pair fails at decode) + CaptureTuningList + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays (the standby machine energizes the listed relays and nothing else; the posture names what the list achieves) + ServiceMode + AcceptsDispatch x DispatchRefusalReason (present iff refusing) + CopCurve + HeatingCurve + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required but the reason — no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby refuses dispatch with reason Standby. Axiom 4: the reason is present iff AcceptsDispatch is false. Axiom 5: the posture fixes the relay list (MonitorOnly empty; House0 NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 6: Standby holds a House0 loop at full send (SiegLoopStrategy HoldFullSend)."
+        summary: "Initial version. ScadaAlias (the applying Scada's identity — stored/emitted instances self-identify; the layout holds the full GNodes) + FamilyParams (oneOf gw.house0.family.params / gw.nolan.family.params, discriminated by TypeName; the family TypeName pairs the instance with its layout family, so a mismatched pair fails at decode) + CaptureTuningList + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays (the standby machine energizes the listed relays and nothing else; the posture names what the list achieves) + ServiceMode + DispatchHold (gw.dispatch.hold: the operator's hold and the cold latch; one of three authorities over dispatch) + CopCurve + HeatingCurve + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required — no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby implies DispatchHold.OperatorHold. Axiom 4: the posture fixes the relay list (MonitorOnly empty; House0 NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 5: Standby holds a House0 loop at full send (SiegLoopStrategy HoldFullSend)."
 
   gw.recorded.setpoints:
     latest_version: "000"
@@ -1548,12 +1555,28 @@ types:
       "000":
         summary: "Initial Sema version"
 
+  slow.contract.heartbeat:
+    latest_version: "002"
+    versioning_strategy: "literal"
+    versions:
+      "002":
+        summary: "Reason (gw.dispatch.refusal.reason) beside the free Cause, present iff Status is TerminatedByScada (axiom 6), so a terminating heartbeat names why in the scada's one refusal vocabulary."
+      "001":
+        summary: "The wire form gridworks-scada has sent since 8898a88c (2026-01-14): FromNode (ltn or s) + Contract + PreviousStatus x Status + MessageCreatedMs + Cause + IsAuthoritative + WattHoursUsed + MyDigit x YourLastDigit + SignedProof. Axiom 1: Created within 10 s of StartS. Axiom 2: status authority per party. Axiom 3: Cause iff terminated or failed. Axiom 4: FromNode is s or ltn. Axiom 5: WattHoursUsed iff from the scada. No 000 was ever on the wire."
+
   slow.contract.rejection:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial Sema version"
+        summary: "Initial Sema version. FromGNodeAlias + ContractId + Reason (gw.dispatch.refusal.reason) + MessageCreatedMs."
+
+  slow.dispatch.contract:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "The wire form gridworks-scada has sent since f38e1e4a (2025-03-03): ScadaAlias + StartS + DurationMinutes + AvgPowerWatts + OilBoilerOn + ContractId. Axiom 1: StartS on a five-minute boundary. Axiom 2: OilBoilerOn means AvgPowerWatts 0."
 
   snapshot.spaceheat:
     latest_version: "003"
@@ -2034,6 +2057,12 @@ enums:
       "000": {}
 
   gw1.service.mode:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw1.slow.dispatch.contract.status:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

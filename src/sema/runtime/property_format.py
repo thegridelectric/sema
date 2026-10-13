@@ -51,6 +51,14 @@ UUID4_STR_PATTERN = re.compile(
 
 
 # --- methods ---
+def is_decimal_digit(v: int) -> int:
+    if not isinstance(v, int):
+        raise TypeError("Not an int!")
+    if v < 0 or v > 9:
+        raise ValueError(f"{v} must be a single decimal digit, 0 through 9")
+    return v
+
+
 def is_firmware_commit(v: str) -> str:
     if not isinstance(v, str):
         raise ValueError(f"<{v}>: firmware.commit must be a string.")
@@ -284,6 +292,11 @@ def is_uuid4_str(v: str) -> str:
 
 
 # --- annotated types ---
+DecimalDigit = Annotated[
+    StrictInt,
+    Field(ge=0, le=9),
+]
+
 FirmwareCommit = Annotated[
     str,
     BeforeValidator(is_firmware_commit),

@@ -181,6 +181,10 @@ types:
     '000':
       used_by:
       - gw.command.interface:000
+  gw.dispatch.hold:
+    '000':
+      used_by:
+      - gw.operational.params:000
   gw.element.backup:
     '000':
       used_by:
@@ -594,6 +598,11 @@ types:
       - snapshot.spaceheat:001
       - snapshot.spaceheat:002
       - snapshot.spaceheat:003
+  slow.dispatch.contract:
+    '000':
+      used_by:
+      - slow.contract.heartbeat:001
+      - slow.contract.heartbeat:002
   spaceheat.node.gt:
     '200':
       used_by:
@@ -742,7 +751,8 @@ enums:
     '000':
       used_by:
       - gw.house.operating.status:000
-      - gw.operational.params:000
+      - slow.contract.heartbeat:002
+      - slow.contract.rejection:000
   gw.experiment.verdict:
     '000':
       used_by:
@@ -864,6 +874,11 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - gw.operational.params:000
+  gw1.slow.dispatch.contract.status:
+    '000':
+      used_by:
+      - slow.contract.heartbeat:001
+      - slow.contract.heartbeat:002
   gw1.system.mode:
     '000':
       used_by:
@@ -1058,7 +1073,6 @@ enums:
     '000':
       used_by:
       - gw.house.operating.status:000
-      - slow.contract.rejection:000
       - ta.deed:000
   temp.calc.method:
     '000':
@@ -1096,6 +1110,10 @@ enums:
       - gw.nolan.layout:000
       - gw1.zone.call.circuit:000
 formats:
+  decimal.digit:
+    used_by:
+    - slow.contract.heartbeat:001
+    - slow.contract.heartbeat:002
   firmware.commit:
     used_by:
     - async.btu.params:110
@@ -1246,6 +1264,7 @@ formats:
     - sim.timestep:000
     - single.machine.state:000
     - slow.contract.rejection:000
+    - slow.dispatch.contract:000
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
     - snapshot.spaceheat:003
@@ -1462,6 +1481,7 @@ formats:
     - sim.pico.flow.module.component.gt:000
     - sim.pico.tank.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
+    - slow.dispatch.contract:000
     - spaceheat.node.gt:200
     - spaceheat.node.gt:300
     - spaceheat.node.gt:301
@@ -1552,6 +1572,8 @@ formats:
     - sim.plant.actuation:000
     - sim.plant.flux:000
     - single.reading:000
+    - slow.contract.heartbeat:001
+    - slow.contract.heartbeat:002
     - spaceheat.node.gt:200
     - spaceheat.node.gt:300
     - spaceheat.node.gt:301
@@ -1668,6 +1690,8 @@ formats:
     - sim.timestep:000
     - single.machine.state:000
     - single.reading:000
+    - slow.contract.heartbeat:001
+    - slow.contract.heartbeat:002
     - slow.contract.rejection:000
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
@@ -1696,6 +1720,7 @@ formats:
     - report:003
     - sim.ready:000
     - sim.timestep:000
+    - slow.dispatch.contract:000
     - ta.deed:000
     - weather.forecast:000
     - weather:000
@@ -1830,6 +1855,7 @@ formats:
     - sim.sensor.component.gt:000
     - sim.timestep:000
     - slow.contract.rejection:000
+    - slow.dispatch.contract:000
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
     - snapshot.spaceheat:003

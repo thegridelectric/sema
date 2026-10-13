@@ -20,6 +20,7 @@ RUNTIME_FORMAT_TYPES: dict[str, Any] = {
     "left.right.dot": property_format.LeftRightDot,
     "market.slot.name": property_format.MarketSlotName,
     "non.empty.string": property_format.NonEmptyString,
+    "decimal.digit": property_format.DecimalDigit,
     "non.negative.int": property_format.NonNegativeInt,
     "pascal.case": property_format.PascalCase,
     "positive.float": property_format.PositiveFloat,

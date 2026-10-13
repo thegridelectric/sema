@@ -372,6 +372,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.dispatch.ack/000.yaml
+  gw.dispatch.hold:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.dispatch.hold/000.yaml
   gw.dispatch.nack:
     latest_version: '000'
     versioning_strategy: literal
@@ -988,11 +993,22 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/single.reading/000.yaml
+  slow.contract.heartbeat:
+    latest_version: '002'
+    versioning_strategy: literal
+    versions:
+      '002': definitions/types/slow.contract.heartbeat/002.yaml
+      '001': definitions/types/slow.contract.heartbeat/001.yaml
   slow.contract.rejection:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/slow.contract.rejection/000.yaml
+  slow.dispatch.contract:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/slow.dispatch.contract/000.yaml
   snapshot.spaceheat:
     latest_version: '003'
     versioning_strategy: literal
@@ -1329,6 +1345,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw1.service.mode/000.yaml
+  gw1.slow.dispatch.contract.status:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw1.slow.dispatch.contract.status/000.yaml
   gw1.sim.device.type:
     enum_type: versioned
     latest_version: '000'
@@ -1557,6 +1578,7 @@ enums:
     versions:
       '000': definitions/enums/zone.setpoint.source/000.yaml
 formats:
+  decimal.digit: definitions/formats/decimal.digit.yaml
   firmware.commit: definitions/formats/firmware.commit.yaml
   git.commit: definitions/formats/git.commit.yaml
   handle.name: definitions/formats/handle.name.yaml

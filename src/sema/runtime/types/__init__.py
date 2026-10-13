@@ -92,6 +92,7 @@ from sema.runtime.types.gw_channel_noise_stats import GwChannelNoiseStats
 from sema.runtime.types.gw_command_interface import GwCommandInterface
 from sema.runtime.types.gw_command_transition import GwCommandTransition
 from sema.runtime.types.gw_dispatch_ack import GwDispatchAck
+from sema.runtime.types.gw_dispatch_hold import GwDispatchHold
 from sema.runtime.types.gw_dispatch_nack import GwDispatchNack
 from sema.runtime.types.gw_element_backup import GwElementBackup
 from sema.runtime.types.gw_experiment_run import GwExperimentRun
@@ -208,7 +209,9 @@ from sema.runtime.types.sim_sensor_component_gt import SimSensorComponentGt
 from sema.runtime.types.sim_timestep import SimTimestep
 from sema.runtime.types.single_machine_state import SingleMachineState
 from sema.runtime.types.single_reading import SingleReading
+from sema.runtime.types.slow_contract_heartbeat import SlowContractHeartbeat
 from sema.runtime.types.slow_contract_rejection import SlowContractRejection
+from sema.runtime.types.slow_dispatch_contract import SlowDispatchContract
 from sema.runtime.types.snapshot_spaceheat import SnapshotSpaceheat
 from sema.runtime.types.spaceheat_node_gt import SpaceheatNodeGt
 from sema.runtime.types.spaceheat_telemetry_quantity_projection import (
@@ -310,6 +313,7 @@ __all__ = [
     "GwCommandInterface",
     "GwCommandTransition",
     "GwDispatchAck",
+    "GwDispatchHold",
     "GwDispatchNack",
     "GwElementBackup",
     "GwExperimentRun",
@@ -410,7 +414,9 @@ __all__ = [
     "SimTimestep",
     "SingleMachineState",
     "SingleReading",
+    "SlowContractHeartbeat",
     "SlowContractRejection",
+    "SlowDispatchContract",
     "SnapshotSpaceheat",
     "SpaceheatNodeGt",
     "SpaceheatTelemetryQuantityProjection",

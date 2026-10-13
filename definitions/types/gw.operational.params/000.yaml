@@ -10,8 +10,8 @@ description: >
 
   The fields every layout family tunes live here: the per-channel capture
   tuning, the 0-10V power-on levels, whether the scada stands by and what
-  its standby does to the plant, the service mode, whether the scada takes
-  dispatch contracts and why not, the COP and heating curves, the heat-pump and load-estimation
+  its standby does to the plant, the service mode, the hold the file
+  places on dispatch, the COP and heating curves, the heat-pump and load-estimation
   knobs, the FLO horizon, and the tariff. The knobs that presume a feature of
   the layout (a buffer, a store, a Siegenthaler loop) live in FamilyParams,
   whose TypeName names the layout family; the consumer decodes FamilyParams
@@ -78,18 +78,12 @@ properties:
       The thermal service the house provides. On a plant that can do both
       it selects the local control machine; inert while Standby is true.
 
-  AcceptsDispatch:
-    type: boolean
+  DispatchHold:
+    $ref: "https://schemas.electricity.works/types/gw.dispatch.hold/000"
     description: >
-      Whether the scada takes dispatch contracts. The leaf ally refuses
-      every offer while false, and the LTN sends none.
-
-  DispatchRefusalReason:
-    $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
-    description: >
-      Why AcceptsDispatch is false. A scada that finds the house cold
-      writes ServiceContractBroken here itself; a person clears it with a
-      params update.
+      The hold this file places on dispatch. One of three authorities over
+      whether the scada takes a contract; the deed and the running scada
+      are the others.
 
   CopCurve:
     $ref: "https://schemas.electricity.works/types/cop.curve/000"
@@ -156,7 +150,7 @@ required:
   - StandbyPosture
   - EnergizedStandbyRelays
   - ServiceMode
-  - AcceptsDispatch
+  - DispatchHold
   - CopCurve
   - HeatingCurve
   - HpTurnOnMinutes
@@ -204,7 +198,12 @@ examples:
       "StandbyPosture": "NoHeatingOrCooling",
       "EnergizedStandbyRelays": ["hp-failsafe-relay", "aquastat-ctrl-relay"],
       "ServiceMode": "Heating",
-      "AcceptsDispatch": true,
+      "DispatchHold": {
+        "OperatorHold": false,
+        "ServiceContractBroken": false,
+        "TypeName": "gw.dispatch.hold",
+        "Version": "000"
+      },
       "CopCurve": {
         "Intercept": 1.02,
         "OatCoeff": 0.0257,
@@ -268,18 +267,11 @@ x-gridworks:
         NodeName SHALL be unique across ZeroTenPowerOnList.
 
     - number: 3
-      name: "StandbyRefusesDispatch"
+      name: "StandbyImpliesOperatorHold"
       statement: >
-        If Standby is true, AcceptsDispatch SHALL be false and
-        DispatchRefusalReason SHALL be Standby.
+        If Standby is true, DispatchHold.OperatorHold SHALL be true.
 
     - number: 4
-      name: "RefusalReasonPresence"
-      statement: >
-        DispatchRefusalReason SHALL be present if and only if
-        AcceptsDispatch is false.
-
-    - number: 5
       name: "PostureRelaysPerFamily"
       statement: >
         StandbyPosture fixes EnergizedStandbyRelays for the family named by
@@ -293,7 +285,7 @@ x-gridworks:
            StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays
            SHALL be empty.
 
-    - number: 6
+    - number: 5
       name: "StandbyHoldsFullSend"
       statement: >
         If Standby is true and FamilyParams.TypeName is

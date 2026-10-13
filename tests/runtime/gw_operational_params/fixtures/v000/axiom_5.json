@@ -32,7 +32,12 @@
     "aquastat-ctrl-relay"
   ],
   "ServiceMode": "Heating",
-  "AcceptsDispatch": false,
+  "DispatchHold": {
+    "OperatorHold": true,
+    "ServiceContractBroken": false,
+    "TypeName": "gw.dispatch.hold",
+    "Version": "000"
+  },
   "CopCurve": {
     "Intercept": 1.02,
     "OatCoeff": 0.0257,
@@ -84,6 +89,5 @@
     "Version": "000"
   },
   "TypeName": "gw.operational.params",
-  "Version": "000",
-  "DispatchRefusalReason": "Standby"
+  "Version": "000"
 }

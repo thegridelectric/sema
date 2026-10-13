@@ -20,9 +20,9 @@ def test_default_v000_loads_as_gw_operational_params() -> None:
     assert decoded.standby is False
 
 
-def test_axiom_6_catches_a_standby_house0_loop_not_at_full_send() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v000" / "axiom_6.json"
+def test_axiom_5_catches_a_standby_house0_loop_not_at_full_send() -> None:
+    fixture = Path(__file__).parent / "fixtures" / "v000" / "axiom_5.json"
     payload = json.loads(fixture.read_text())
 
-    with pytest.raises(SemaError, match="(?i)Axiom 6"):
+    with pytest.raises(SemaError, match="(?i)Axiom 5"):
         default_codec.from_dict(payload)

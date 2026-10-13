@@ -5,8 +5,8 @@ title: "slow.contract.rejection"
 type: object
 description: >
   A scada's answer to an LTN's slow dispatch contract offer that it will
-  not take, carrying the offered ContractId and the scada's ValidationState
-  as the cause, so the LTN learns why rather than timing out. Sent by the
+  not take: the offered ContractId and the reason, so the LTN learns why
+  rather than timing out. Sent by the
   scada direct to its LTN. It is not a heartbeat: a heartbeat presumes a
   contract the scada has started.
 
@@ -22,10 +22,10 @@ properties:
     description: >
       The ContractId of the offered slow dispatch contract.
 
-  ValidationState:
-    $ref: "https://schemas.electricity.works/enums/ta.validation.state/000"
+  Reason:
+    $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
     description: >
-      The scada's validation state, the cause of the refusal.
+      Why the scada refuses the offer.
 
   MessageCreatedMs:
     $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
@@ -39,7 +39,7 @@ properties:
 required:
   - FromGNodeAlias
   - ContractId
-  - ValidationState
+  - Reason
   - MessageCreatedMs
   - TypeName
   - Version
@@ -51,7 +51,7 @@ examples:
     {
       "FromGNodeAlias": "hw1.isone.me.versant.keene.beech.scada",
       "ContractId": "9d3b2a1c-8e7f-4a6b-b5c4-d3e2f1a0b9c8",
-      "ValidationState": "UnValidated",
+      "Reason": "NoTaDeed",
       "MessageCreatedMs": 1757300400250,
       "TypeName": "slow.contract.rejection",
       "Version": "000"

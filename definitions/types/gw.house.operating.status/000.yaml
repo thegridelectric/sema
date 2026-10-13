@@ -46,17 +46,25 @@ properties:
   AcceptsDispatch:
     type: boolean
     description: >
-      Whether the scada takes dispatch contracts.
+      Whether the scada takes slow dispatch contract offers now, derived
+      from its deed, its operational params and its running state.
 
   DispatchRefusalReason:
     $ref: "https://schemas.electricity.works/enums/gw.dispatch.refusal.reason/000"
     description: >
-      Why AcceptsDispatch is false.
+      Why AcceptsDispatch is false: the reason the scada's rejection
+      would state.
 
   TopState:
     $ref: "https://schemas.electricity.works/enums/gw.top.state/000"
     description: >
       Whether an admin session holds the command tree.
+
+  ScadaBlind:
+    type: boolean
+    description: >
+      Whether a channel the scada's control needs has no fresh reading,
+      so the scada cannot act as a leaf ally.
 
   LtnDispatching:
     type: boolean
@@ -86,6 +94,7 @@ required:
   - ServiceMode
   - AcceptsDispatch
   - TopState
+  - ScadaBlind
   - LtnDispatching
   - UnixMs
   - TypeName
@@ -104,6 +113,7 @@ examples:
       "ServiceMode": "Heating",
       "AcceptsDispatch": true,
       "TopState": "Auto",
+      "ScadaBlind": false,
       "LtnDispatching": true,
       "UnixMs": 1790000000000,
       "TypeName": "gw.house.operating.status",
@@ -118,8 +128,9 @@ examples:
       "SeasonalStorageMode": "AllTanks",
       "ServiceMode": "Heating",
       "AcceptsDispatch": false,
-      "DispatchRefusalReason": "Standby",
+      "DispatchRefusalReason": "OperatorHold",
       "TopState": "Auto",
+      "ScadaBlind": false,
       "LtnDispatching": false,
       "UnixMs": 1790000000000,
       "TypeName": "gw.house.operating.status",
@@ -140,14 +151,14 @@ x-gridworks:
       name: "StandbyRefusesDispatch"
       statement: >
         If Standby is true, AcceptsDispatch SHALL be false and
-        DispatchRefusalReason SHALL be Standby.
+        DispatchRefusalReason SHALL be OperatorHold.
 
   extended_description: >
     The LTN–scada agreement has layers, and this record shows each of them
     so "not dispatching" reads as a reason: no standing (ValidationState),
-    an admin session holding the tree (TopState), a posture that refuses
-    contracts (AcceptsDispatch and its reason, Standby, ServiceMode), or
-    simply no offer this hour. No field names the running machine: the
+    an admin session holding the tree (TopState), sensing too stale to
+    act on (ScadaBlind), a posture that refuses contracts (AcceptsDispatch
+    and its reason, Standby, ServiceMode), or simply no offer this hour. No field names the running machine: the
     loader derives it from Standby, the layout family, SeasonalStorageMode
     and ServiceMode, and a reader does the same. It carries nothing that
     cycles inside a healthy hour: the raw contract status and the running

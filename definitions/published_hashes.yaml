@@ -5,6 +5,7 @@
 # the fix is a NEW version, never an in-place change.
 
 formats:
+  decimal.digit: sha256:188a53046c9b979aeeb96d4e33ecb085bd59cdbc254be6dcfce64ee23691fc84
   firmware.commit: sha256:0fc43e5fdadcd236b7d396e7d3d9c26305fe8ce05ee80aff6aee0c3c1a188268
   git.commit: sha256:a95c907dd35e1a3eb0e885fa2cb212c010a4187b112a2c8724d5c698d5b669f7
   handle.name: sha256:8766362cd0940fa5451273dc0866f11f4a09e3496fe502e82ea448ffaab75c4f
@@ -148,6 +149,8 @@ enums:
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
+  gw1.slow.dispatch.contract.status:
+    '000': sha256:3c1b668963e80f472bbf938c6e3e2206e1ff456dbfb993ea89c859b3089e0971
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -458,3 +461,7 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
+  slow.dispatch.contract:
+    '000': sha256:de811035a1c2ba0a28c8811fcf79aefcd1baf3e8f85e45f54666e2363c2929a6
+  slow.contract.heartbeat:
+    '001': sha256:fc7516f59f79f6f7bc27c9025b355489b6c9ad04927af68b4b2b09c8c45bb3fb
