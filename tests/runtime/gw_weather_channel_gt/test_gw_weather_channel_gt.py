@@ -1,27 +1,24 @@
-"""gw.weather.channel.gt axiom counterexamples — sema must reject what violates an axiom.
+"""gw.weather.channel.gt axioms, proved by mutation of the word's example."""
 
-Each fixture is an otherwise-valid payload with one axiom-relevant field mutated
-to a violating value. Decoding through the sema runtime must catch it.
-"""
-
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
-
-
-def test_axiom_1_catches_name_not_derived_from_alias_and_quantity() -> None:
-    payload = json.loads((FIX / "axiom_1.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 1"):
-        default_codec.from_dict(payload)
+EXAMPLE = example("gw.weather.channel.gt", "000")
 
 
-def test_axiom_2_catches_offset_not_below_period() -> None:
-    payload = json.loads((FIX / "axiom_2.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 2"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("gw.weather.channel.gt", "000") == {1: [], 2: []}
+
+
+def test_axiom_1_refuses_name_not_derived_from_alias_and_quantity() -> None:
+    def mutate(p: dict) -> None:
+        p["Name"] = "us.me.millinocket.wrong"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
+
+
+def test_axiom_2_refuses_offset_not_below_period() -> None:
+    def mutate(p: dict) -> None:
+        p["EmitOffsetS"] = 3600
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)

@@ -1,33 +1,31 @@
-"""gw.command.interface axiom counterexamples — sema must reject what violates an axiom.
+"""gw.command.interface axioms, proved by mutation of the word's example."""
 
-Each fixture is the word's own example with one axiom-relevant field mutated to a
-violating value. Decoding through the sema runtime must catch it.
-"""
-
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
-
-
-def test_axiom_1_catches_empty_commands() -> None:
-    payload = json.loads((FIX / "axiom_1.json").read_text())
-    with pytest.raises(SemaError, match="Axiom 1"):
-        default_codec.from_dict(payload)
+EXAMPLE = example("gw.command.interface", "000")
 
 
-def test_axiom_2_catches_event_outside_event_type_vocabulary() -> None:
-    payload = json.loads((FIX / "axiom_2.json").read_text())
-    with pytest.raises(SemaError, match="Axiom 2"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("gw.command.interface", "000") == {1: [], 2: [], 3: []}
 
 
-def test_axiom_3_catches_state_outside_state_type_vocabulary() -> None:
-    payload = json.loads((FIX / "axiom_3.json").read_text())
-    with pytest.raises(SemaError, match="Axiom 3"):
-        default_codec.from_dict(payload)
+def test_axiom_1_refuses_empty_commands() -> None:
+    def mutate(p: dict) -> None:
+        p["Commands"] = []
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
+
+
+def test_axiom_2_refuses_event_outside_event_type_vocabulary() -> None:
+    def mutate(p: dict) -> None:
+        p["Commands"][0]["Event"] = "TurnSideways"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)
+
+
+def test_axiom_3_refuses_state_outside_state_type_vocabulary() -> None:
+    def mutate(p: dict) -> None:
+        p["Commands"][0]["ToState"] = "HpSideways"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 3)

@@ -28,6 +28,7 @@ packages = ["src/sema"]
 
 [tool.pytest.ini_options]
 norecursedirs = ["output"]
+pythonpath = ["."]
 
 [dependency-groups]
 dev = [

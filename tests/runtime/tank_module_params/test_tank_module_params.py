@@ -1,19 +1,19 @@
 import json
-import re
 from pathlib import Path
 
 import pytest
 
-from sema.runtime.base import SemaError, UpgradeRequiresContext
+from sema.runtime.base import UpgradeRequiresContext
 from sema.runtime.codec import default_codec
 from sema.runtime.enums.pico_board_variant import PicoBoardVariant
 from sema.runtime.types.old_versions.tank_module_params_110 import TankModuleParams110
 from sema.runtime.types.old_versions.tank_module_params_200 import TankModuleParams200
 from sema.runtime.types.tank_module_params import TankModuleParams
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-
-def _axiom_match(n: int) -> re.Pattern[str]:
-    return re.compile(rf"axiom {n}", re.IGNORECASE)
+EXAMPLE_110 = example("tank.module.params", "110")
+EXAMPLE_200 = example("tank.module.params", "200")
+EXAMPLE_210 = example("tank.module.params", "210")
 
 
 def _load_fixture(name: str, version_dir: str) -> dict:
@@ -95,8 +95,34 @@ def test_v210_unknown_board_coerces_to_unknown() -> None:
     assert decoded.pico_board_variant == PicoBoardVariant.Unknown
 
 
-@pytest.mark.parametrize("version_dir", ["v110", "v200", "v210"])
-def test_axiom_1_pico_a_b_is_a_or_b(version_dir: str) -> None:
-    """If PicoAB is present it SHALL be "a" or "b"."""
-    with pytest.raises(SemaError, match=_axiom_match(1)):
-        default_codec.from_dict(_load_fixture("axiom_1.json", version_dir))
+def test_v110_every_axiom_has_a_mutation() -> None:
+    assert axioms("tank.module.params", "110") == {1: []}
+
+
+def test_v110_axiom_1_refuses_pico_a_b_not_a_or_b() -> None:
+    def mutate(p: dict) -> None:
+        p["PicoAB"] = "c"
+
+    assert_refused(default_codec, mutated(EXAMPLE_110, mutate), 1)
+
+
+def test_v200_every_axiom_has_a_mutation() -> None:
+    assert axioms("tank.module.params", "200") == {1: []}
+
+
+def test_v200_axiom_1_refuses_pico_a_b_not_a_or_b() -> None:
+    def mutate(p: dict) -> None:
+        p["PicoAB"] = "ab"
+
+    assert_refused(default_codec, mutated(EXAMPLE_200, mutate), 1)
+
+
+def test_v210_every_axiom_has_a_mutation() -> None:
+    assert axioms("tank.module.params", "210") == {1: []}
+
+
+def test_v210_axiom_1_refuses_pico_a_b_not_a_or_b() -> None:
+    def mutate(p: dict) -> None:
+        p["PicoAB"] = "ab"
+
+    assert_refused(default_codec, mutated(EXAMPLE_210, mutate), 1)

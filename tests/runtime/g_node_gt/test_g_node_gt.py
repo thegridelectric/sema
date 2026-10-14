@@ -1,16 +1,12 @@
 import json
-import re
 from pathlib import Path
 
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
 from sema.runtime.types.g_node_gt import GNodeGt
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-
-def _axiom_match(n: int) -> re.Pattern[str]:
-    return re.compile(rf"axiom {n}", re.IGNORECASE)
+EXAMPLE_005 = example("g.node.gt", "005")
+EXAMPLE_006 = example("g.node.gt", "006")
 
 
 def _load_fixture(name: str, version_dir: str = "v005") -> dict:
@@ -38,82 +34,96 @@ def test_default_v006_pending_locationless_loads() -> None:
     assert decoded.position_point_id is None
 
 
-def test_v006_axiom_2_active_requires_location() -> None:
-    """
-    If Status is Active and BaseClass != Logical, PositionPointId SHALL NOT be null.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(2)):
-        default_codec.from_dict(_load_fixture("axiom_2.json", "v006"))
+def test_v005_every_axiom_has_a_mutation() -> None:
+    assert axioms("g.node.gt", "005") == {
+        1: ["a", "b"],
+        2: [],
+        3: [],
+        4: [],
+        5: ["a", "b"],
+        6: ["a", "b"],
+    }
 
 
-@pytest.mark.parametrize(
-    "fixture_name",
-    [
-        "axiom_1_a.json",
-        "axiom_1_b.json",
-    ],
-)
-def test_axiom_1(fixture_name: str) -> None:
-    """
-    a. If BaseClass is not Logical, GNodeClass SHALL equal the string value of BaseClass.
-    b. If BaseClass is Logical, GNodeClass SHALL NOT equal any value of base.g.node.class other than Logical.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(1)):
-        default_codec.from_dict(_load_fixture(fixture_name))
+def test_v006_every_axiom_has_a_mutation() -> None:
+    assert axioms("g.node.gt", "006") == {
+        1: ["a", "b"],
+        2: [],
+        3: [],
+        4: [],
+        5: ["a", "b"],
+        6: ["a", "b"],
+    }
 
 
-def test_axiom_2() -> None:
-    """
-    If BaseClass != Logical, PositionPointId SHALL NOT be null.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(2)):
-        default_codec.from_dict(_load_fixture("axiom_2.json"))
+def test_v005_axiom_1_a_refuses_g_node_class_unlike_physical_base_class() -> None:
+    def mutate(p: dict) -> None:
+        p["GNodeClass"] = "MarketMaker"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 1, clause="a")
 
 
-def test_axiom_3() -> None:
-    """
-    If PrevAlias is not null, it SHALL differ from Alias. If PrevAlias
-    is null, no alias transition is represented in this snapshot.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(3)):
-        default_codec.from_dict(_load_fixture("axiom_3.json"))
+def test_v005_axiom_1_b_refuses_logical_with_physical_g_node_class() -> None:
+    def mutate(p: dict) -> None:
+        p["BaseClass"] = "Logical"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 1, clause="b")
 
 
-def test_axiom_4() -> None:
-    """
-    GNodeClass SHALL be a non-empty string. It SHALL NOT contain whitespace.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(4)):
-        default_codec.from_dict(_load_fixture("axiom_4.json"))
+def test_v005_axiom_2_refuses_physical_without_position_point() -> None:
+    def mutate(p: dict) -> None:
+        del p["PositionPointId"]
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 2)
 
 
-@pytest.mark.parametrize(
-    "fixture_name",
-    [
-        "axiom_5_a.json",
-        "axiom_5_b.json",
-    ],
-)
-def test_axiom_5(fixture_name: str) -> None:
-    """
-    a. Alias SHALL end with ".ta" if and only if GNodeClass is "TerminalAsset".
-    b. Alias SHALL end with ".scada" if and only if GNodeClass is "Scada".
-    """
-    with pytest.raises(SemaError, match=_axiom_match(5)):
-        default_codec.from_dict(_load_fixture(fixture_name))
+def test_v005_axiom_3_refuses_prev_alias_equal_to_alias() -> None:
+    def mutate(p: dict) -> None:
+        p["PrevAlias"] = p["Alias"]
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 3)
 
 
-@pytest.mark.parametrize(
-    "fixture_name",
-    [
-        "axiom_6_a.json",
-        "axiom_6_b.json",
-    ],
-)
-def test_axiom_6(fixture_name: str) -> None:
-    """
-    a. Alias SHALL have at least two dotted words.
-    b. If PrevAlias is present, it SHALL likewise have at least two dotted words.
-    """
-    with pytest.raises(SemaError, match=_axiom_match(6)):
-        default_codec.from_dict(_load_fixture(fixture_name))
+def test_v005_axiom_4_refuses_g_node_class_with_whitespace() -> None:
+    def mutate(p: dict) -> None:
+        p["BaseClass"] = "Logical"
+        p["GNodeClass"] = "Scada Service"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 4)
+
+
+def test_v005_axiom_5_a_refuses_terminal_asset_without_ta_suffix() -> None:
+    def mutate(p: dict) -> None:
+        p["BaseClass"] = "TerminalAsset"
+        p["GNodeClass"] = "TerminalAsset"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 5, clause="a")
+
+
+def test_v005_axiom_5_b_refuses_scada_without_scada_suffix() -> None:
+    def mutate(p: dict) -> None:
+        p["BaseClass"] = "Logical"
+        p["GNodeClass"] = "Scada"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 5, clause="b")
+
+
+def test_v005_axiom_6_a_refuses_single_word_alias() -> None:
+    def mutate(p: dict) -> None:
+        p["Alias"] = "isone"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 6, clause="a")
+
+
+def test_v005_axiom_6_b_refuses_single_word_prev_alias() -> None:
+    def mutate(p: dict) -> None:
+        p["PrevAlias"] = "isone"
+
+    assert_refused(default_codec, mutated(EXAMPLE_005, mutate), 6, clause="b")
+
+
+def test_v006_axiom_2_refuses_active_physical_without_position_point() -> None:
+    def mutate(p: dict) -> None:
+        del p["PositionPointId"]
+
+    assert_refused(default_codec, mutated(EXAMPLE_006, mutate), 2)

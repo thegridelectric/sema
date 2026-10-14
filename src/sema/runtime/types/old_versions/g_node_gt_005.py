@@ -32,7 +32,7 @@ class GNodeGt005(SemaType):
         if self.base_class != BaseGNodeClass.Logical:
             if self.g_node_class != self.base_class.value:
                 raise ValueError(
-                    f"Axiom 1 failed: Physical GNodes must align BaseClass and GNodeClass. "
+                    f"Axiom 1 (ClassConsistency, clause a) failed: Physical GNodes must align BaseClass and GNodeClass. "
                     f"Expected GNodeClass='{self.base_class.value}' "
                     f"but got '{self.g_node_class}'."
                 )
@@ -41,7 +41,7 @@ class GNodeGt005(SemaType):
             and self.g_node_class != BaseGNodeClass.Logical.value
         ):
             raise ValueError(
-                "Axiom 1 failed: Logical GNodes must not use a non-Logical "
+                "Axiom 1 (ClassConsistency, clause b) failed: Logical GNodes must not use a non-Logical "
                 "base.g.node.class value as GNodeClass."
             )
         return self
@@ -94,14 +94,14 @@ class GNodeGt005(SemaType):
         alias_has_ta_suffix = self.alias.endswith(".ta")
         if (self.g_node_class == "TerminalAsset") != alias_has_ta_suffix:
             raise ValueError(
-                'Axiom 5 failed: Alias must end with ".ta" if and only if '
+                'Axiom 5 (AliasSuffixSemantics, clause a) failed: Alias must end with ".ta" if and only if '
                 'GNodeClass is "TerminalAsset".'
             )
 
         alias_has_scada_suffix = self.alias.endswith(".scada")
         if (self.g_node_class == "Scada") != alias_has_scada_suffix:
             raise ValueError(
-                'Axiom 5 failed: Alias must end with ".scada" if and only if '
+                'Axiom 5 (AliasSuffixSemantics, clause b) failed: Alias must end with ".scada" if and only if '
                 'GNodeClass is "Scada".'
             )
         return self
@@ -115,12 +115,12 @@ class GNodeGt005(SemaType):
         """
         if len(self.alias.split(".")) < 2:
             raise ValueError(
-                "Axiom 6 failed: Alias must have at least two dotted words "
+                "Axiom 6 (GNodeAliasHasBody, clause a) failed: Alias must have at least two dotted words "
                 "(the universe segment alone is a namespace, not a GNodeAlias)."
             )
         if self.prev_alias is not None and len(self.prev_alias.split(".")) < 2:
             raise ValueError(
-                "Axiom 6 failed: PrevAlias must have at least two dotted words "
+                "Axiom 6 (GNodeAliasHasBody, clause b) failed: PrevAlias must have at least two dotted words "
                 "(the universe segment alone is a namespace, not a GNodeAlias)."
             )
         return self

@@ -1,16 +1,11 @@
 import json
-import re
 from pathlib import Path
 
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
 from sema.runtime.types.pico_btu_meter_component_gt import PicoBtuMeterComponentGt
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-
-def _axiom_match(n: int) -> re.Pattern[str]:
-    return re.compile(rf"axiom {n}", re.IGNORECASE)
+EXAMPLE = example("pico.btu.meter.component.gt", "000")
 
 
 def _load_fixture(name: str) -> dict:
@@ -32,7 +27,21 @@ def test_ct_on_loads() -> None:
     assert decoded.read_ct_voltage is True
 
 
-@pytest.mark.parametrize("n", [1, 2])
-def test_axiom_counterexample_is_rejected(n: int) -> None:
-    with pytest.raises(SemaError, match=_axiom_match(n)):
-        default_codec.from_dict(_load_fixture(f"axiom_{n}.json"))
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("pico.btu.meter.component.gt", "000") == {1: [], 2: []}
+
+
+def test_axiom_1_refuses_read_ct_voltage_without_ct_volts_delta() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadCtVoltage"] = True
+        p["CtChannelName"] = "hp-ct-volts"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
+
+
+def test_axiom_2_refuses_read_ct_voltage_without_ct_channel_name() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadCtVoltage"] = True
+        p["AsyncCaptureDeltaCtVoltsX100"] = 50
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)

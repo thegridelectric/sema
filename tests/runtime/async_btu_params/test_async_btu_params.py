@@ -1,19 +1,19 @@
 import json
-import re
 from pathlib import Path
 
 import pytest
 
-from sema.runtime.base import SemaError, UpgradeRequiresContext
+from sema.runtime.base import UpgradeRequiresContext
 from sema.runtime.codec import default_codec
 from sema.runtime.enums.pico_board_variant import PicoBoardVariant
+from sema.runtime.types.async_btu_params import AsyncBtuParams
 from sema.runtime.types.old_versions.async_btu_params_000 import AsyncBtuParams000
 from sema.runtime.types.old_versions.async_btu_params_100 import AsyncBtuParams100
-from sema.runtime.types.async_btu_params import AsyncBtuParams
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-
-def _axiom_match(n: int) -> re.Pattern[str]:
-    return re.compile(rf"axiom {n}", re.IGNORECASE)
+EXAMPLE_000 = example("async.btu.params", "000")
+EXAMPLE_100 = example("async.btu.params", "100")
+EXAMPLE_110 = example("async.btu.params", "110")
 
 
 def _load_fixture(name: str, version_dir: str) -> dict:
@@ -95,8 +95,34 @@ def test_v110_unknown_board_coerces_to_unknown() -> None:
     assert decoded.pico_board_variant == PicoBoardVariant.Unknown
 
 
-@pytest.mark.parametrize("version_dir", ["v000", "v100", "v110"])
-def test_axiom_1_read_ct_voltage_iff_ct_channel_name(version_dir: str) -> None:
-    """ReadCtVoltage is true iff CtChannelName is present."""
-    with pytest.raises(SemaError, match=_axiom_match(1)):
-        default_codec.from_dict(_load_fixture("axiom_1.json", version_dir))
+def test_v000_every_axiom_has_a_mutation() -> None:
+    assert axioms("async.btu.params", "000") == {1: []}
+
+
+def test_v000_axiom_1_refuses_read_ct_voltage_without_ct_channel_name() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadCtVoltage"] = True
+
+    assert_refused(default_codec, mutated(EXAMPLE_000, mutate), 1)
+
+
+def test_v100_every_axiom_has_a_mutation() -> None:
+    assert axioms("async.btu.params", "100") == {1: []}
+
+
+def test_v100_axiom_1_refuses_read_ct_voltage_without_ct_channel_name() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadCtVoltage"] = True
+
+    assert_refused(default_codec, mutated(EXAMPLE_100, mutate), 1)
+
+
+def test_v110_every_axiom_has_a_mutation() -> None:
+    assert axioms("async.btu.params", "110") == {1: []}
+
+
+def test_v110_axiom_1_refuses_read_ct_voltage_without_ct_channel_name() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadCtVoltage"] = True
+
+    assert_refused(default_codec, mutated(EXAMPLE_110, mutate), 1)

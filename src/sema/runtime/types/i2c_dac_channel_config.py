@@ -21,16 +21,17 @@ class I2cDacChannelConfig(SemaType):
     def check_axiom_1(self) -> "I2cDacChannelConfig":
         """
         Axiom 1: EepromRanges
-        a. PowerOnRawValue SHALL be less than 4096. b. PowerOnGain SHALL be 1 or 2.
+        a. PowerOnRawValue SHALL be less than 4096.
+        b. PowerOnGain SHALL be 1 or 2.
         """
         if self.power_on_raw_value >= 4096:
             raise ValueError(
-                "Axiom 1 (EepromRanges) failed: PowerOnRawValue "
+                "Axiom 1 (EepromRanges, clause a) failed: PowerOnRawValue "
                 f"{self.power_on_raw_value} is not less than 4096."
             )
         if self.power_on_gain not in (1, 2):
             raise ValueError(
-                "Axiom 1 (EepromRanges) failed: PowerOnGain "
+                "Axiom 1 (EepromRanges, clause b) failed: PowerOnGain "
                 f"{self.power_on_gain} is not 1 or 2."
             )
         return self

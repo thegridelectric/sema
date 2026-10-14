@@ -1,22 +1,17 @@
-"""gw.weather.seasonal.template.gt axiom counterexamples — sema must reject
-what violates an axiom."""
+"""gw.weather.seasonal.template.gt axioms, proved by mutation of the word's example."""
 
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
-
-
-def _rejects(fixture: str, axiom: str) -> None:
-    payload = json.loads((FIX / fixture).read_text())
-    with pytest.raises(SemaError, match=f"(?i)axiom {axiom}"):
-        default_codec.from_dict(payload)
+EXAMPLE = example("gw.weather.seasonal.template.gt", "000")
 
 
-def test_axiom_1_catches_eleven_months() -> None:
-    _rejects("axiom_1.json", "1")
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("gw.weather.seasonal.template.gt", "000") == {1: []}
+
+
+def test_axiom_1_refuses_eleven_months() -> None:
+    def mutate(p: dict) -> None:
+        p["TempByMonth"] = p["TempByMonth"][:11]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)

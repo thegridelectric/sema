@@ -30,12 +30,12 @@ class GwWeatherLocationGt(SemaType):
         """
         if abs(self.latitude_microdegrees) > 90_000_000:
             raise ValueError(
-                "Axiom 1 (CoordinateBounds) failed: a. |LatitudeMicrodegrees| "
+                "Axiom 1 (CoordinateBounds, clause a) failed: |LatitudeMicrodegrees| "
                 f"must be at most 90000000; got {self.latitude_microdegrees}."
             )
         if abs(self.longitude_microdegrees) > 180_000_000:
             raise ValueError(
-                "Axiom 1 (CoordinateBounds) failed: b. |LongitudeMicrodegrees| "
+                "Axiom 1 (CoordinateBounds, clause b) failed: |LongitudeMicrodegrees| "
                 f"must be at most 180000000; got {self.longitude_microdegrees}."
             )
         return self

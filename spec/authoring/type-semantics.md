@@ -150,28 +150,10 @@ a distinct counterexample obligation. Explanatory text SHALL NOT be
 labeled. If multiple checks can be naturally expressed as one validation
 condition, the axiom SHOULD remain a single unlabeled clause.
 
-Each axiom clause SHOULD have a **counterexample fixture**: a complete
-instance that satisfies the version's structural schema and violates that
-clause and no other. Fixtures live in the registry beside the schemas, outside
-the schema file, at:
-
-```text
-definitions/counterexamples/<type.name>/<version>/axiom_<number>.json
-```
-
-for a single-clause axiom, and:
-
-```text
-definitions/counterexamples/<type.name>/<version>/axiom_<number>_<label>.json
-```
-
-for a multi-clause axiom, where `<label>` is the lowercase clause label. The
-runtime for that version MUST refuse every fixture naming that axiom (and
-clause); the registry's own tests and the snapshot build both enforce this
-(see [../snapshot.md](../snapshot.md) "Counterexamples"). Because a fixture is
-outside the schema file, adding one to a published version alters neither the
-schema nor its pinned hash (see [../registry/types.md](../registry/types.md)
-"Permitted Changes (All Types)").
+Each axiom clause SHOULD have a **mutation test** in the registry's own
+suite: a test that takes the version's example, changes it so that it
+violates that clause and no other, and asserts that the runtime refuses it
+naming that axiom (and clause).
 
 Example:
 
@@ -185,12 +167,8 @@ x-gridworks:
         b. If BaseClass is Logical, GNodeClass SHALL NOT equal any value of base.g.node.class other than Logical.
 ```
 
-The corresponding negative examples SHOULD be named:
-
-```text
-axiom_1_a.json
-axiom_1_b.json
-```
+A refusal of a labeled clause SHOULD name the clause, so a test can tell
+which obligation refused.
 
 SDK implementations SHOULD provide one validation function per axiom. In
 the Python SDK, validator functions SHALL be named:

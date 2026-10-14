@@ -38,17 +38,17 @@ class ScadaControlCapabilities001(SemaType):
         for node in self.relay_nodes:
             if node.actor_class != Gw1ActorClass012.Relay:
                 raise ValueError(
-                    "Axiom 1 failed: every relay_nodes actor_class must be Relay."
+                    "Axiom 1 (ActorClassConsistency, clause a) failed: every relay_nodes actor_class must be Relay."
                 )
         for node in self.dac_nodes:
             if node.actor_class != Gw1ActorClass012.ZeroTenOutputer:
                 raise ValueError(
-                    "Axiom 1 failed: every dac_nodes actor_class must be ZeroTenOutputer."
+                    "Axiom 1 (ActorClassConsistency, clause b) failed: every dac_nodes actor_class must be ZeroTenOutputer."
                 )
         for node in self.command_nodes:
             if node.actor_class in actuator_classes:
                 raise ValueError(
-                    "Axiom 1 failed: command_nodes actor_class must not be Relay or "
+                    "Axiom 1 (ActorClassConsistency, clause c) failed: command_nodes actor_class must not be Relay or "
                     "ZeroTenOutputer."
                 )
         return self
@@ -115,12 +115,12 @@ class ScadaControlCapabilities001(SemaType):
         ]
         if set(interface_names) != directly_commanded:
             raise ValueError(
-                "Axiom 4 failed: command_interfaces actor_name values must equal the "
+                "Axiom 4 (CommandInterfacesCoverTheTree, clause a) failed: command_interfaces actor_name values must equal the "
                 "names of the relay and command nodes the root commands directly."
             )
         if len(interface_names) != len(set(interface_names)):
             raise ValueError(
-                "Axiom 4 failed: command_interfaces actor_name values must be unique."
+                "Axiom 4 (CommandInterfacesCoverTheTree, clause b) failed: command_interfaces actor_name values must be unique."
             )
         return self
 

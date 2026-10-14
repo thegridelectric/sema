@@ -1,17 +1,17 @@
-"""i2c.result axiom counterexamples — sema must reject what violates an axiom."""
+"""i2c.result axioms, proved by mutation of the word's example."""
 
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
+EXAMPLE = example("i2c.result", "000")
 
 
-def test_axiom_1_catches_failure_without_error() -> None:
-    payload = json.loads((FIX / "axiom_1.json").read_text())
-    with pytest.raises(SemaError, match="ErrorIffFailure"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("i2c.result", "000") == {1: []}
+
+
+def test_axiom_1_refuses_failure_without_error() -> None:
+    def mutate(p: dict) -> None:
+        p["Success"] = False
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)

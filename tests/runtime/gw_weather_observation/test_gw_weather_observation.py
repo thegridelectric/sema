@@ -1,33 +1,31 @@
-"""gw.weather.observation axiom counterexamples — sema must reject what violates an axiom.
+"""gw.weather.observation axioms, proved by mutation of the word's example."""
 
-Each fixture is an otherwise-valid payload with one axiom-relevant field mutated
-to a violating value. Decoding through the sema runtime must catch it.
-"""
-
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
-
-
-def test_axiom_1_catches_identical_channel_names() -> None:
-    payload = json.loads((FIX / "axiom_1.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 1"):
-        default_codec.from_dict(payload)
+EXAMPLE = example("gw.weather.observation", "000")
 
 
-def test_axiom_2_a_catches_temp_channel_outside_location() -> None:
-    payload = json.loads((FIX / "axiom_2_a.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 2"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("gw.weather.observation", "000") == {1: [], 2: ["a", "b"]}
 
 
-def test_axiom_2_b_catches_windspeed_channel_outside_location() -> None:
-    payload = json.loads((FIX / "axiom_2_b.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 2"):
-        default_codec.from_dict(payload)
+def test_axiom_1_refuses_identical_channel_names() -> None:
+    def mutate(p: dict) -> None:
+        p["WindSpeedChannelName"] = p["TempChannelName"]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
+
+
+def test_axiom_2_a_refuses_temp_channel_outside_location() -> None:
+    def mutate(p: dict) -> None:
+        p["TempChannelName"] = "us.vt.burlington.temperature"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2, clause="a")
+
+
+def test_axiom_2_b_refuses_windspeed_channel_outside_location() -> None:
+    def mutate(p: dict) -> None:
+        p["WindSpeedChannelName"] = "us.vt.burlington.windspeed"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2, clause="b")

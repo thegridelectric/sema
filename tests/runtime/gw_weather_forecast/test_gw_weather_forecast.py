@@ -1,51 +1,58 @@
-"""gw.weather.forecast axiom counterexamples — sema must reject what violates an axiom.
+"""gw.weather.forecast axioms, proved by mutation of the word's example."""
 
-Each fixture is an otherwise-valid payload with one axiom-relevant field mutated
-to a violating value. Decoding through the sema runtime must catch it.
-"""
-
-import json
-from pathlib import Path
-
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-FIX = Path(__file__).parent / "fixtures" / "v000"
-
-
-def test_axiom_1_catches_empty_value_lists() -> None:
-    payload = json.loads((FIX / "axiom_1.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 1"):
-        default_codec.from_dict(payload)
+EXAMPLE = example("gw.weather.forecast", "000")
 
 
-def test_axiom_2_catches_unequal_value_lengths() -> None:
-    payload = json.loads((FIX / "axiom_2.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 2"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("gw.weather.forecast", "000") == {
+        1: [],
+        2: [],
+        3: [],
+        4: ["a", "b", "c"],
+    }
 
 
-def test_axiom_3_catches_identical_channel_names() -> None:
-    payload = json.loads((FIX / "axiom_3.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 3"):
-        default_codec.from_dict(payload)
+def test_axiom_1_refuses_empty_value_lists() -> None:
+    def mutate(p: dict) -> None:
+        p["TempValues"] = []
+        p["WindSpeedValues"] = []
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
 
 
-def test_axiom_4_a_catches_bundle_name_without_forecast_segment() -> None:
-    payload = json.loads((FIX / "axiom_4_a.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 4"):
-        default_codec.from_dict(payload)
+def test_axiom_2_refuses_unequal_value_lengths() -> None:
+    def mutate(p: dict) -> None:
+        p["WindSpeedValues"] = p["WindSpeedValues"][:1]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)
 
 
-def test_axiom_4_b_catches_temp_channel_without_forecast_segment() -> None:
-    payload = json.loads((FIX / "axiom_4_b.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 4"):
-        default_codec.from_dict(payload)
+def test_axiom_3_refuses_identical_channel_names() -> None:
+    def mutate(p: dict) -> None:
+        p["WindSpeedChannelName"] = p["TempChannelName"]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 3)
 
 
-def test_axiom_4_c_catches_windspeed_channel_without_forecast_segment() -> None:
-    payload = json.loads((FIX / "axiom_4_c.json").read_text())
-    with pytest.raises(SemaError, match="(?i)axiom 4"):
-        default_codec.from_dict(payload)
+def test_axiom_4_a_refuses_bundle_name_without_forecast_segment() -> None:
+    def mutate(p: dict) -> None:
+        p["BundleName"] = "us.me.millinocket.nws.hourly"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="a")
+
+
+def test_axiom_4_b_refuses_temp_channel_without_forecast_segment() -> None:
+    def mutate(p: dict) -> None:
+        p["TempChannelName"] = "us.me.millinocket.temperature"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="b")
+
+
+def test_axiom_4_c_refuses_windspeed_channel_without_forecast_segment() -> None:
+    def mutate(p: dict) -> None:
+        p["WindSpeedChannelName"] = "us.me.millinocket.windspeed"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="c")

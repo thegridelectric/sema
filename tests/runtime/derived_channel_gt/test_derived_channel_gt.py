@@ -1,11 +1,11 @@
 import json
 from pathlib import Path
 
-import pytest
-
-from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
 from sema.runtime.types.derived_channel_gt import DerivedChannelGt
+from tests.runtime.refusal import assert_refused, axioms, example, mutated
+
+EXAMPLE = example("derived.channel.gt", "002")
 
 
 def test_derived_channel_gt_latest_version_is_002() -> None:
@@ -45,33 +45,33 @@ def test_default_v002_loads_as_derived_channel_gt() -> None:
     assert decoded.version == "002"
 
 
-def test_axiom_2_catches_output_unit_quantity_mismatch() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v002" / "axiom_2.json"
-    payload = json.loads(fixture.read_text())
-
-    with pytest.raises(SemaError, match="Axiom 2 failed"):
-        default_codec.from_dict(payload)
+def test_every_axiom_has_a_mutation() -> None:
+    assert axioms("derived.channel.gt", "002") == {1: [], 2: [], 3: [], 4: []}
 
 
-def test_axiom_1_catches_missing_emit_period_for_periodic() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v002" / "axiom_1.json"
-    payload = json.loads(fixture.read_text())
+def test_axiom_1_refuses_periodic_without_emit_period() -> None:
+    def mutate(p: dict) -> None:
+        del p["EmitPeriodS"]
 
-    with pytest.raises(SemaError, match="Axiom 1 failed"):
-        default_codec.from_dict(payload)
-
-
-def test_axiom_3_catches_missing_affine_calibration() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v002" / "axiom_3.json"
-    payload = json.loads(fixture.read_text())
-
-    with pytest.raises(SemaError, match="Axiom 3 failed"):
-        default_codec.from_dict(payload)
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)
 
 
-def test_axiom_4_catches_missing_system_model_energy_model() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v002" / "axiom_4.json"
-    payload = json.loads(fixture.read_text())
+def test_axiom_2_refuses_output_quantity_not_matching_unit() -> None:
+    def mutate(p: dict) -> None:
+        p["OutputQuantity"] = "Power"
 
-    with pytest.raises(SemaError, match="Axiom 4 failed"):
-        default_codec.from_dict(payload)
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)
+
+
+def test_axiom_3_refuses_affine_without_calibration() -> None:
+    def mutate(p: dict) -> None:
+        p["Strategy"] = "affine"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 3)
+
+
+def test_axiom_4_refuses_system_model_without_energy_model() -> None:
+    def mutate(p: dict) -> None:
+        del p["Parameters"]["EnergyModel"]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4)
