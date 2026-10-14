@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ microvolts_100_class_name }}":
+        """
+        Axiom 1: ListLengthConsistency
+        len(AboutNodeNameList) SHALL equal len(MicroVoltsList).
+        """
+        if len(self.about_node_name_list) != len(self.micro_volts_list):
+            raise ValueError(
+                "Axiom 1 failed: about_node_name_list and micro_volts_list must "
+                f"have the same length (got {len(self.about_node_name_list)} and "
+                f"{len(self.micro_volts_list)})."
+            )
+        return self

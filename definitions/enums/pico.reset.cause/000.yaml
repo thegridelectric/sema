@@ -1,0 +1,30 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/pico.reset.cause/000"
+
+title: "pico.reset.cause"
+type: "string"
+description: >
+  Why a pico last booted, as the firmware determines it at boot. Tells a
+  rail cycle from a reset the firmware chose.
+
+enum:
+  - "Unknown"
+  - "PowerOn"
+  - "Watchdog"
+  - "SelfReset"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+  value_descriptions:
+    "Unknown": >
+      The cause is not known; a consumer SHALL NOT act on it.
+    "PowerOn": >
+      Power was applied to the board: a first boot or a rail cycle.
+    "Watchdog": >
+      The chip's watchdog rebooted the board; the firmware did not choose
+      it.
+    "SelfReset": >
+      The firmware reset the board itself.

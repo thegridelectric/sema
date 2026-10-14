@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-14T12:00:00Z'
+  last_updated: '2026-10-14T18:55:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -574,6 +574,17 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw1.nolan.lc.buffer.only.state/000
         created: '2026-09-30T18:35:00Z'
+        status: staging
+  pico.reset.cause:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Why a pico last booted: power-on, watchdog, or a reset the firmware
+      chose. Default Unknown.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/pico.reset.cause/000
+        created: '2026-10-14T18:55:00Z'
         status: staging
   spruce.hack.hp.state:
     latest_version: '000'
@@ -1393,10 +1404,13 @@ types:
         schema_url: https://schemas.electricity.works/types/async.btu.params/110
         created: '2026-09-21T19:50:00Z'
         status: staging
-        summary: '- FirmwareCommit: add'
+        summary: '- FirmwareCommit: add - MacAddress: add - ReadTemps: add - HotChannelName,
+          ColdChannelName, AsyncCaptureDeltaCelsiusX100: now optional, present iff
+          ReadTemps'
         direct_dependencies:
           structural:
           - firmware.commit
+          - mac.address
           - pico.board.variant:000
           - positive.float
           - positive.int
@@ -5073,6 +5087,51 @@ types:
           - left.right.dot
           - market.quantity.unit:000
           - uuid4.str
+  microvolts:
+    latest_version: '100'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: The thermistor voltages a tank-module pico posts to its scada, one
+      reading in microvolts per node.
+    versions:
+      '100':
+        schema_url: https://schemas.electricity.works/types/microvolts/100
+        created: '2026-10-14T18:50:00Z'
+        status: staging
+        summary: Registered from the shipped pico wire shape, version 100.
+        direct_dependencies:
+          structural:
+          - spaceheat.name
+  multichannel.snapshot:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: A set of readings a btu-meter pico posts to its scada, one measurement
+      per channel with its telemetry name.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/multichannel.snapshot/000
+        created: '2026-10-14T18:50:00Z'
+        status: staging
+        summary: Registered from the shipped pico wire shape, version 000.
+        direct_dependencies:
+          structural:
+          - spaceheat.name
+          - spaceheat.telemetry.name:007
+  new.code:
+    latest_version: '100'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: A pico's request at boot for a code update from its scada.
+    versions:
+      '100':
+        schema_url: https://schemas.electricity.works/types/new.code/100
+        created: '2026-10-14T18:50:00Z'
+        status: staging
+        summary: Registered from the shipped pico wire shape, version 100.
+        direct_dependencies:
+          structural:
+          - spaceheat.name
   new.command.tree:
     latest_version: '003'
     owner: gridworks-energy
@@ -5133,6 +5192,20 @@ types:
           - spaceheat.node.gt:300
           - spaceheat.node.gt:301
           - utc.milliseconds
+  new.pico:
+    latest_version: '100'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: The provisioner's announcement of a freshly provisioned pico to the
+      scada.
+    versions:
+      '100':
+        schema_url: https://schemas.electricity.works/types/new.pico/100
+        created: '2026-10-14T18:50:00Z'
+        status: staging
+        summary: Registered from the shipped pico wire shape, version 100.
+        direct_dependencies:
+          structural: []
   operating.state.sequence:
     latest_version: '000'
     owner: gridworks-energy
@@ -5214,6 +5287,22 @@ types:
           - spaceheat.make.model:007
           - spaceheat.name
           - uuid4.str
+  pico.heartbeat:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'A pico''s periodic sign of life to its scada: uptime and why it
+      last booted.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/pico.heartbeat/000
+        created: '2026-10-14T18:55:00Z'
+        status: staging
+        summary: Initial Sema version.
+        direct_dependencies:
+          structural:
+          - non.negative.int
+          - pico.reset.cause:000
   pico.tank.module.component.gt:
     latest_version: '012'
     owner: gridworks-energy
@@ -6244,10 +6333,11 @@ types:
         schema_url: https://schemas.electricity.works/types/tank.module.params/210
         created: '2026-09-21T19:50:00Z'
         status: staging
-        summary: '- FirmwareCommit: add'
+        summary: '- FirmwareCommit: add - MacAddress: add'
         direct_dependencies:
           structural:
           - firmware.commit
+          - mac.address
           - pico.board.variant:000
           - positive.int
           - spaceheat.name

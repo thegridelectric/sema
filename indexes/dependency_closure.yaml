@@ -67,6 +67,7 @@ types:
       - pico.board.variant:000
       formats:
       - firmware.commit
+      - mac.address
       - positive.float
       - positive.int
       - spaceheat.name
@@ -2578,6 +2579,28 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+  microvolts:
+    '100':
+      enums: []
+      formats:
+      - spaceheat.name
+      types: []
+      versionless_types: []
+  multichannel.snapshot:
+    '000':
+      enums:
+      - spaceheat.telemetry.name:007
+      formats:
+      - spaceheat.name
+      types: []
+      versionless_types: []
+  new.code:
+    '100':
+      enums: []
+      formats:
+      - spaceheat.name
+      types: []
+      versionless_types: []
   new.command.tree:
     '000':
       enums:
@@ -2634,6 +2657,12 @@ types:
       types:
       - spaceheat.node.gt:303
       versionless_types: []
+  new.pico:
+    '100':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   operating.state.sequence:
     '000':
       enums: []
@@ -2680,6 +2709,14 @@ types:
       - pascal.case
       - spaceheat.name
       - uuid4.str
+      types: []
+      versionless_types: []
+  pico.heartbeat:
+    '000':
+      enums:
+      - pico.reset.cause:000
+      formats:
+      - non.negative.int
       types: []
       versionless_types: []
   pico.tank.module.component.gt:
@@ -3445,6 +3482,7 @@ types:
       - pico.board.variant:000
       formats:
       - firmware.commit
+      - mac.address
       - positive.int
       - spaceheat.name
       types: []

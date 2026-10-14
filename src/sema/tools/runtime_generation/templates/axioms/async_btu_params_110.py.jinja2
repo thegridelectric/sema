@@ -14,3 +14,29 @@
                 "set/present (True/nonnull) or BOTH be unset/absent."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ async_btu_params_110_class_name }}":
+        """
+        Axiom 2: ReadTempsIffTemperatureFields
+        ReadTemps is true iff HotChannelName, ColdChannelName, ThermistorBeta
+        and AsyncCaptureDeltaCelsiusX100 are all present; ReadTemps is false
+        iff all four are absent.
+        """
+        present = [
+            self.hot_channel_name is not None,
+            self.cold_channel_name is not None,
+            self.thermistor_beta is not None,
+            self.async_capture_delta_celsius_x100 is not None,
+        ]
+        if self.read_temps and not all(present):
+            raise ValueError(
+                "Axiom 2: ReadTemps is true, so HotChannelName, ColdChannelName, "
+                "ThermistorBeta and AsyncCaptureDeltaCelsiusX100 must all be present."
+            )
+        if not self.read_temps and any(present):
+            raise ValueError(
+                "Axiom 2: ReadTemps is false, so HotChannelName, ColdChannelName, "
+                "ThermistorBeta and AsyncCaptureDeltaCelsiusX100 must all be absent."
+            )
+        return self

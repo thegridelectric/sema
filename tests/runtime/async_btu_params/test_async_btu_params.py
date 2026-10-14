@@ -118,7 +118,37 @@ def test_v100_axiom_1_refuses_read_ct_voltage_without_ct_channel_name() -> None:
 
 
 def test_v110_every_axiom_has_a_mutation() -> None:
-    assert axioms("async.btu.params", "110") == {1: []}
+    assert axioms("async.btu.params", "110") == {1: [], 2: []}
+
+
+def test_v110_axiom_2_refuses_read_temps_false_with_temperature_fields() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadTemps"] = False
+
+    assert_refused(default_codec, mutated(EXAMPLE_110, mutate), 2)
+
+
+def test_v110_axiom_2_refuses_read_temps_true_without_thermistor_beta() -> None:
+    def mutate(p: dict) -> None:
+        del p["ThermistorBeta"]
+
+    assert_refused(default_codec, mutated(EXAMPLE_110, mutate), 2)
+
+
+def test_v110_flow_only_omits_the_temperature_fields() -> None:
+    def mutate(p: dict) -> None:
+        p["ReadTemps"] = False
+        for k in (
+            "HotChannelName",
+            "ColdChannelName",
+            "ThermistorBeta",
+            "AsyncCaptureDeltaCelsiusX100",
+        ):
+            del p[k]
+
+    decoded = default_codec.from_dict(mutated(EXAMPLE_110, mutate), auto_upgrade=False)
+    assert isinstance(decoded, AsyncBtuParams)
+    assert decoded.hot_channel_name is None
 
 
 def test_v110_axiom_1_refuses_read_ct_voltage_without_ct_channel_name() -> None:

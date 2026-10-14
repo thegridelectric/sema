@@ -175,10 +175,15 @@ from sema.runtime.types.linear_one_dimensional_calibration import (
 from sema.runtime.types.machine_states import MachineStates
 from sema.runtime.types.maker_api_attribute_gt import MakerApiAttributeGt
 from sema.runtime.types.market_product import MarketProduct
+from sema.runtime.types.microvolts import Microvolts
+from sema.runtime.types.multichannel_snapshot import MultichannelSnapshot
+from sema.runtime.types.new_code import NewCode
 from sema.runtime.types.new_command_tree import NewCommandTree
+from sema.runtime.types.new_pico import NewPico
 from sema.runtime.types.operating_state_sequence import OperatingStateSequence
 from sema.runtime.types.pico_btu_meter_component_gt import PicoBtuMeterComponentGt
 from sema.runtime.types.pico_flow_module_component_gt import PicoFlowModuleComponentGt
+from sema.runtime.types.pico_heartbeat import PicoHeartbeat
 from sema.runtime.types.pico_tank_module_component_gt import PicoTankModuleComponentGt
 from sema.runtime.types.position_point_gt import PositionPointGt
 from sema.runtime.types.power_watts import PowerWatts
@@ -386,10 +391,15 @@ __all__ = [
     "MachineStates",
     "MakerApiAttributeGt",
     "MarketProduct",
+    "Microvolts",
+    "MultichannelSnapshot",
+    "NewCode",
     "NewCommandTree",
+    "NewPico",
     "OperatingStateSequence",
     "PicoBtuMeterComponentGt",
     "PicoFlowModuleComponentGt",
+    "PicoHeartbeat",
     "PicoTankModuleComponentGt",
     "PositionPointGt",
     "PowerWatts",

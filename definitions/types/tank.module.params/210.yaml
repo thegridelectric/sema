@@ -73,6 +73,13 @@ properties:
       The gridworks-pico commit the firmware was generated from, stamped
       into the code by the provisioner generator.
 
+  MacAddress:
+    $ref: "https://schemas.electricity.works/formats/mac.address"
+    description: >
+      The MAC address of the pico's link as the NIC reports it: burned
+      into the radio on a wifi board, derived from the chip id by the
+      driver on a Wiznet board.
+
   TypeName:
     const: "tank.module.params"
 
@@ -89,6 +96,7 @@ required:
   - PicoBoardVariant
   - MicropythonVersion
   - FirmwareCommit
+  - MacAddress
   - TypeName
   - Version
 
@@ -106,6 +114,7 @@ examples:
       "PicoBoardVariant": "PicoRaspberryWifi2040",
       "MicropythonVersion": "1.24.1",
       "FirmwareCommit": "9f4c1d2e7a8b0c3d5e6f70819a2b3c4d5e6f7081",
+      "MacAddress": "28:cd:c1:0f:1a:2b",
       "TypeName": "tank.module.params",
       "Version": "210"
     }

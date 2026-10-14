@@ -1,0 +1,46 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/new.code/100"
+
+title: "new.code"
+type: object
+description: >
+  A pico's request at boot for a code update: the scada answers with the
+  bytes of a new main file when one is staged for this pico, otherwise
+  with a JSON body.
+
+properties:
+  HwUid:
+    type: string
+    description: >
+      The pico's hardware id, derived from the chip's unique id.
+
+  ActorNodeName:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The name of the scada node this pico reports as.
+
+  TypeName:
+    const: "new.code"
+
+  Version:
+    const: "100"
+
+required:
+  - HwUid
+  - ActorNodeName
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "HwUid": "pico_3a202a",
+      "ActorNodeName": "primary-btu",
+      "TypeName": "new.code",
+      "Version": "100"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"

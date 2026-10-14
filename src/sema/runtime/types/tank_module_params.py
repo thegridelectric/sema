@@ -3,6 +3,7 @@ from pydantic import StrictFloat, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import PicoBoardVariant
 from sema.runtime.property_format import FirmwareCommit
+from sema.runtime.property_format import MacAddress
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 
@@ -21,6 +22,7 @@ class TankModuleParams(SemaType):
     pico_board_variant: PicoBoardVariant
     micropython_version: str
     firmware_commit: FirmwareCommit
+    mac_address: MacAddress
     type_name: Literal["tank.module.params"] = "tank.module.params"
     version: Literal["210"] = "210"
 

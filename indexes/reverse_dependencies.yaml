@@ -1000,6 +1000,10 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+  pico.reset.cause:
+    '000':
+      used_by:
+      - pico.heartbeat:000
   reboot.picos:
     '000':
       used_by:
@@ -1056,6 +1060,7 @@ enums:
       - gw1.scada.device.type.gt:000
       - maker.api.attribute.gt:000
       - maker.api.attribute.gt:001
+      - multichannel.snapshot:000
       - spaceheat.telemetry.quantity.projection:000
       - synced.readings.bundle:001
       - synced.readings.bundle:002
@@ -1276,7 +1281,9 @@ formats:
     - weather:000
   mac.address:
     used_by:
+    - async.btu.params:110
     - hubitat.gt:000
+    - tank.module.params:210
   market.slot.name:
     used_by:
     - atn.bid:001
@@ -1329,6 +1336,7 @@ formats:
     - i2c.write.bit:000
     - i2c.write.byte:000
     - i2c.write.reg:000
+    - pico.heartbeat:000
     - scada.board.component.gt:000
     - zero.ten.power.on:000
   pascal.case:
@@ -1549,6 +1557,9 @@ formats:
     - i2c.write.reg:000
     - maker.api.attribute.gt:000
     - maker.api.attribute.gt:001
+    - microvolts:100
+    - multichannel.snapshot:000
+    - new.code:100
     - operating.state.sequence:000
     - pico.btu.meter.component.gt:000
     - pico.flow.module.component.gt:000

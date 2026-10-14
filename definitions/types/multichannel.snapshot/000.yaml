@@ -1,0 +1,73 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/multichannel.snapshot/000"
+
+title: "multichannel.snapshot"
+type: object
+description: >
+  A set of readings a btu-meter pico posts to its scada in one message:
+  one measurement per channel, each with the telemetry name that says
+  what the integer means. Posted on the capture period and whenever a
+  value moves by more than its asynchronous capture delta.
+
+properties:
+  HwUid:
+    type: string
+    description: >
+      The pico's hardware id, derived from the chip's unique id.
+
+  ChannelNameList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The channel each measurement is a reading of.
+
+  MeasurementList:
+    type: array
+    items:
+      type: integer
+    description: >
+      The readings, in the units named at the same index of UnitList.
+
+  UnitList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/enums/spaceheat.telemetry.name/007"
+    description: >
+      The telemetry name of the measurement at the same index.
+
+  TypeName:
+    const: "multichannel.snapshot"
+
+  Version:
+    const: "000"
+
+required:
+  - HwUid
+  - ChannelNameList
+  - MeasurementList
+  - UnitList
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "HwUid": "pico_3a202a",
+      "ChannelNameList": ["primary-flow", "hp-lwt", "hp-ewt"],
+      "MeasurementList": [412, 4871, 4212],
+      "UnitList": ["GpmTimes100", "CelsiusTimes100", "CelsiusTimes100"],
+      "TypeName": "multichannel.snapshot",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ListLengthConsistency"
+      statement: >
+        len(ChannelNameList), len(MeasurementList) and len(UnitList) SHALL
+        be equal.

@@ -1,0 +1,17 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ multichannel_snapshot_000_class_name }}":
+        """
+        Axiom 1: ListLengthConsistency
+        len(ChannelNameList), len(MeasurementList) and len(UnitList) SHALL be equal.
+        """
+        lengths = (
+            len(self.channel_name_list),
+            len(self.measurement_list),
+            len(self.unit_list),
+        )
+        if len(set(lengths)) != 1:
+            raise ValueError(
+                "Axiom 1 failed: channel_name_list, measurement_list and unit_list "
+                f"must have the same length (got {lengths})."
+            )
+        return self

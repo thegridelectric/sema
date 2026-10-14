@@ -51,10 +51,13 @@ class AsyncBtuParams100(SemaType):
     def upgrade(self) -> AsyncBtuParams:
         """
         - FirmwareCommit: add
+        - MacAddress: add
+        - ReadTemps: add
+        - HotChannelName, ColdChannelName, AsyncCaptureDeltaCelsiusX100: now optional, present iff ReadTemps
         """
         raise SemaType.upgrade_requires_context(
             "AsyncBtuParams100 cannot be upgraded to "
             "AsyncBtuParams without context: v110 adds "
-            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "FirmwareCommit and MacAddress, which only the posting pico knows, and they SHALL "
             "NOT be fabricated."
         )

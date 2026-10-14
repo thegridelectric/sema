@@ -36,15 +36,24 @@ properties:
     description: >
       When true, the pico samples and reports CT voltage on CtChannelName.
 
+  ReadTemps:
+    type: boolean
+    description: >
+      When true, the pico reads its two thermistors and reports
+      HotChannelName and ColdChannelName; when false it is a flow-only
+      meter and leaves the temperature channels out of its snapshots.
+
   HotChannelName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
-      The channel name used for the hot-side thermistor reading.
+      The channel name used for the hot-side thermistor reading, when
+      ReadTemps is true.
 
   ColdChannelName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
-      The channel name used for the cold-side thermistor reading.
+      The channel name used for the cold-side thermistor reading, when
+      ReadTemps is true.
 
   CtChannelName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
@@ -55,7 +64,8 @@ properties:
   ThermistorBeta:
     type: integer
     description: >
-      Beta coefficient for the thermistor temperature calculation.
+      Beta coefficient for the thermistor temperature calculation, when
+      ReadTemps is true.
 
   CapturePeriodS:
     $ref: "https://schemas.electricity.works/formats/positive.int"
@@ -77,7 +87,7 @@ properties:
     $ref: "https://schemas.electricity.works/formats/positive.int"
     description: >
       Change in temperature x100 since the last report that triggers an
-      asynchronous report.
+      asynchronous report; present when ReadTemps is true.
 
   AsyncCaptureDeltaCtVoltsX100:
     $ref: "https://schemas.electricity.works/formats/positive.int"
@@ -110,6 +120,13 @@ properties:
       The gridworks-pico commit the firmware was generated from, stamped
       into the code by the provisioner generator.
 
+  MacAddress:
+    $ref: "https://schemas.electricity.works/formats/mac.address"
+    description: >
+      The MAC address of the pico's link as the NIC reports it: burned
+      into the radio on a wifi board, derived from the chip id by the
+      driver on a Wiznet board.
+
   TypeName:
     const: "async.btu.params"
 
@@ -122,15 +139,14 @@ required:
   - FlowChannelName
   - SendHz
   - ReadCtVoltage
-  - HotChannelName
-  - ColdChannelName
+  - ReadTemps
   - CapturePeriodS
   - GallonsPerPulse
   - AsyncCaptureDeltaGpmX100
-  - AsyncCaptureDeltaCelsiusX100
   - PicoBoardVariant
   - MicropythonVersion
   - FirmwareCommit
+  - MacAddress
   - TypeName
   - Version
 
@@ -144,8 +160,10 @@ examples:
       "FlowChannelName": "primary-flow",
       "SendHz": false,
       "ReadCtVoltage": false,
+      "ReadTemps": true,
       "HotChannelName": "hp-lwt",
       "ColdChannelName": "hp-ewt",
+      "ThermistorBeta": 3977,
       "CapturePeriodS": 60,
       "GallonsPerPulse": 0.0009,
       "AsyncCaptureDeltaGpmX100": 10,
@@ -154,6 +172,7 @@ examples:
       "PicoBoardVariant": "PicoRaspberryWifi2040",
       "MicropythonVersion": "1.24.1",
       "FirmwareCommit": "9f4c1d2e7a8b0c3d5e6f70819a2b3c4d5e6f7081",
+      "MacAddress": "28:cd:c1:0f:3a:20",
       "TypeName": "async.btu.params",
       "Version": "110"
     }
@@ -165,3 +184,9 @@ x-gridworks:
       name: "ReadCtVoltageIffCtChannelName"
       statement: >
         ReadCtVoltage is true iff CtChannelName is present.
+    - number: 2
+      name: "ReadTempsIffTemperatureFields"
+      statement: >
+        ReadTemps is true iff HotChannelName, ColdChannelName, ThermistorBeta
+        and AsyncCaptureDeltaCelsiusX100 are all present; ReadTemps is false
+        iff all four are absent.

@@ -38,10 +38,11 @@ class TankModuleParams200(SemaType):
     def upgrade(self) -> TankModuleParams:
         """
         - FirmwareCommit: add
+        - MacAddress: add
         """
         raise SemaType.upgrade_requires_context(
             "TankModuleParams200 cannot be upgraded to "
             "TankModuleParams without context: v210 adds "
-            "FirmwareCommit, which only the posting pico knows, and it SHALL "
+            "FirmwareCommit and MacAddress, which only the posting pico knows, and they SHALL "
             "NOT be fabricated."
         )

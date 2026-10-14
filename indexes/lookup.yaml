@@ -830,6 +830,21 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/market.product/000.yaml
+  microvolts:
+    latest_version: '100'
+    versioning_strategy: literal
+    versions:
+      '100': definitions/types/microvolts/100.yaml
+  multichannel.snapshot:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/multichannel.snapshot/000.yaml
+  new.code:
+    latest_version: '100'
+    versioning_strategy: literal
+    versions:
+      '100': definitions/types/new.code/100.yaml
   new.command.tree:
     latest_version: '003'
     versioning_strategy: literal
@@ -838,6 +853,11 @@ types:
       '002': definitions/types/new.command.tree/002.yaml
       '001': definitions/types/new.command.tree/001.yaml
       '000': definitions/types/new.command.tree/000.yaml
+  new.pico:
+    latest_version: '100'
+    versioning_strategy: literal
+    versions:
+      '100': definitions/types/new.pico/100.yaml
   operating.state.sequence:
     latest_version: '000'
     versioning_strategy: literal
@@ -854,6 +874,11 @@ types:
     versions:
       '001': definitions/types/pico.flow.module.component.gt/001.yaml
       '000': definitions/types/pico.flow.module.component.gt/000.yaml
+  pico.heartbeat:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/pico.heartbeat/000.yaml
   pico.tank.module.component.gt:
     latest_version: '012'
     versioning_strategy: literal
@@ -1273,6 +1298,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw1.nolan.lc.buffer.only.state/000.yaml
+  pico.reset.cause:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/pico.reset.cause/000.yaml
   spruce.hack.hp.state:
     enum_type: versioned
     latest_version: '000'

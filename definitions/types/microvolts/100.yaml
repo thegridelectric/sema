@@ -1,0 +1,62 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/microvolts/100"
+
+title: "microvolts"
+type: object
+description: >
+  The thermistor voltages a tank-module pico posts to its scada: one
+  reading in microvolts per node, posted on the capture period and
+  whenever a reading moves by more than the asynchronous capture delta.
+
+properties:
+  HwUid:
+    type: string
+    description: >
+      The pico's hardware id, derived from the chip's unique id.
+
+  AboutNodeNameList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The node each reading is about.
+
+  MicroVoltsList:
+    type: array
+    items:
+      type: integer
+    description: >
+      The readings in microvolts, one per node at the same index.
+
+  TypeName:
+    const: "microvolts"
+
+  Version:
+    const: "100"
+
+required:
+  - HwUid
+  - AboutNodeNameList
+  - MicroVoltsList
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "HwUid": "pico_1a2b3c",
+      "AboutNodeNameList": ["buffer-depth1", "buffer-depth2", "buffer-depth3"],
+      "MicroVoltsList": [1792211, 1811450, 1830102],
+      "TypeName": "microvolts",
+      "Version": "100"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ListLengthConsistency"
+      statement: >
+        len(AboutNodeNameList) SHALL equal len(MicroVoltsList).

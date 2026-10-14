@@ -1,0 +1,38 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/new.pico/100"
+
+title: "new.pico"
+type: object
+description: >
+  The provisioner's announcement of a freshly provisioned pico to the
+  scada, posted once during setup.
+
+properties:
+  HwUid:
+    type: string
+    description: >
+      The pico's hardware id, derived from the chip's unique id.
+
+  TypeName:
+    const: "new.pico"
+
+  Version:
+    const: "100"
+
+required:
+  - HwUid
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "HwUid": "pico_3a202a",
+      "TypeName": "new.pico",
+      "Version": "100"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"

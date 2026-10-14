@@ -36,7 +36,11 @@ types:
     versioning_strategy: "literal"
     versions:
       "110":
-        summary: "- FirmwareCommit: add"
+        summary: >
+          - FirmwareCommit: add
+          - MacAddress: add
+          - ReadTemps: add
+          - HotChannelName, ColdChannelName, AsyncCaptureDeltaCelsiusX100: now optional, present iff ReadTemps
       "100":
         summary: >
           - PicoBoardVariant: add
@@ -1273,6 +1277,27 @@ types:
       "000":
         summary: "Initial Sema version"
 
+  microvolts:
+    latest_version: "100"
+    versioning_strategy: "literal"
+    versions:
+      "100":
+        summary: "Registered from the shipped pico wire shape, version 100."
+
+  multichannel.snapshot:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Registered from the shipped pico wire shape, version 000."
+
+  new.code:
+    latest_version: "100"
+    versioning_strategy: "literal"
+    versions:
+      "100":
+        summary: "Registered from the shipped pico wire shape, version 100."
+
   new.command.tree:
     latest_version: "003"
     versioning_strategy: "literal"
@@ -1289,6 +1314,13 @@ types:
         summary: "- ShNodes: spaceheat.node.gt:301 only (drop the multi-version oneOf; retroactive registration of the wire version the spruce scada emitted from 2026-01-28)"
       "000":
         summary: "Initial Sema version"
+
+  new.pico:
+    latest_version: "100"
+    versioning_strategy: "literal"
+    versions:
+      "100":
+        summary: "Registered from the shipped pico wire shape, version 100."
 
   operating.state.sequence:
     latest_version: "000"
@@ -1314,6 +1346,13 @@ types:
           - FlowMeterType: spaceheat.make.model enum value -> gw1.device.type value (pascal.case); the device-type enum is articulated by the hardware layout.
       "000":
         summary: "Initial Sema version"
+
+  pico.heartbeat:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version."
 
   pico.tank.module.component.gt:
     latest_version: "012"
@@ -1654,7 +1693,9 @@ types:
     versioning_strategy: "literal"
     versions:
       "210":
-        summary: "- FirmwareCommit: add"
+        summary: >
+          - FirmwareCommit: add
+          - MacAddress: add
       "200":
         summary: >
           - PicoBoardVariant: add
@@ -1964,6 +2005,12 @@ enums:
       "000": {}
 
   gw1.nolan.lc.buffer.only.state:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  pico.reset.cause:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

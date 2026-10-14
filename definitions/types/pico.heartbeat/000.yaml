@@ -1,0 +1,54 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/pico.heartbeat/000"
+
+title: "pico.heartbeat"
+type: object
+description: >
+  A pico's periodic sign of life to its scada, posted on a fixed period
+  independent of its data posts so the scada can tell a silent pico from
+  one with nothing to report, and a pico that reset itself from one
+  whose rail was cycled.
+
+properties:
+  HwUid:
+    type: string
+    description: >
+      The pico's hardware id, derived from the chip's unique id.
+
+  UptimeS:
+    $ref: "https://schemas.electricity.works/formats/non.negative.int"
+    description: >
+      Whole seconds since the pico booted.
+
+  ResetCause:
+    $ref: "https://schemas.electricity.works/enums/pico.reset.cause/000"
+    description: >
+      Why the pico last booted.
+
+  TypeName:
+    const: "pico.heartbeat"
+
+  Version:
+    const: "000"
+
+required:
+  - HwUid
+  - UptimeS
+  - ResetCause
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "HwUid": "pico_3a202a",
+      "UptimeS": 3,
+      "ResetCause": "PowerOn",
+      "TypeName": "pico.heartbeat",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"

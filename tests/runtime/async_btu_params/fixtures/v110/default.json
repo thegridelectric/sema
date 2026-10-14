@@ -4,8 +4,10 @@
   "FlowChannelName": "primary-flow",
   "SendHz": false,
   "ReadCtVoltage": false,
+  "ReadTemps": true,
   "HotChannelName": "hp-lwt",
   "ColdChannelName": "hp-ewt",
+  "ThermistorBeta": 3977,
   "CapturePeriodS": 60,
   "GallonsPerPulse": 0.0009,
   "AsyncCaptureDeltaGpmX100": 10,
@@ -14,6 +16,7 @@
   "PicoBoardVariant": "PicoRaspberryWifi2040",
   "MicropythonVersion": "1.24.1",
   "FirmwareCommit": "9f4c1d2e7a8b0c3d5e6f70819a2b3c4d5e6f7081",
+  "MacAddress": "28:cd:c1:0f:3a:20",
   "TypeName": "async.btu.params",
   "Version": "110"
 }
