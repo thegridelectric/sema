@@ -1,10 +1,13 @@
     def upgrade(self) -> {{ ha1_params_006_class_name }}:
         """
-        - HpMaxKwEl: add as optional
-        - HpMaxKwTh: required -> optional
-        - HpTurnOnMinutes: add
+        HpMaxKwEl replaces HpMaxKwTh, required; the five Cop fields
+        required; HpTurnOnMinutes added, required (the shape every scada
+        has published at this version)
         """
-        data = self.model_dump()
-        data["hp_turn_on_minutes"] = 12
-        data["version"] = "006"
-        return {{ ha1_params_006_class_name }}.model_validate(data)
+        raise SemaType.upgrade_requires_context(
+            "{{ ha1_params_005_class_name }} cannot be upgraded to "
+            "{{ ha1_params_006_class_name }} without context: v006 requires "
+            "HpMaxKwEl, which the heat pump's thermal maximum does not give, "
+            "and the five Cop fields v005 leaves optional; only the house's "
+            "operational params know them, and they SHALL NOT be fabricated."
+        )

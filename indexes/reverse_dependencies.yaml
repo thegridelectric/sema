@@ -1118,9 +1118,6 @@ formats:
     used_by:
     - async.btu.params:110
     - flow.hall.params:210
-    - pico.btu.meter.component.gt:000
-    - pico.flow.module.component.gt:001
-    - pico.tank.module.component.gt:012
     - tank.module.params:210
   git.commit:
     used_by:

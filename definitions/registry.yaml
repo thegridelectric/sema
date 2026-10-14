@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-13T12:00:00Z"
+  last_updated: "2026-10-14T12:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -4093,9 +4093,9 @@ types:
         created: "2026-02-25T14:23:00Z"
         status: "published"
         summary: >-
-          - HpMaxKwEl: add as optional
-          - HpMaxKwTh: required -> optional
-          - HpTurnOnMinutes: add
+          HpMaxKwEl replaces HpMaxKwTh, required; the five Cop fields
+          required; HpTurnOnMinutes added, required (the shape every scada
+          has published at this version)
         direct_dependencies:
           structural: []
       "005":
@@ -5354,7 +5354,6 @@ types:
         summary: "Initial Sema version (flattened from the scada PicoBtuMeterComponentGt runtime). ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type value, pascal.case): the device type lived on the referenced cac, not the component. FlowMeterType: spaceheat.make.model enum value -> gw1.device.type value (pascal.case); the device-type enum is articulated by the hardware layout. ConfigList dropped."
         direct_dependencies:
           structural:
-            - "firmware.commit"
             - "gpm.from.hz.method:000"
             - "hz.calc.method:001"
             - "pascal.case"
@@ -5378,7 +5377,6 @@ types:
         summary: "- ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type value, pascal.case). Context-dependent: the device type lived on the referenced cac, not the component. - FlowMeterType: spaceheat.make.model enum value -> gw1.device.type value (pascal.case); the device-type enum is articulated by the hardware layout."
         direct_dependencies:
           structural:
-            - "firmware.commit"
             - "gpm.from.hz.method:000"
             - "hz.calc.method:001"
             - "pascal.case"
@@ -5413,7 +5411,6 @@ types:
         summary: "- ComponentAttributeClassId (cac UUID) -> DeviceType (gw1.device.type value, pascal.case). Context-dependent: the device type lived on the referenced cac, not the component."
         direct_dependencies:
           structural:
-            - "firmware.commit"
             - "pascal.case"
             - "pico.board.variant:000"
             - "positive.int"
