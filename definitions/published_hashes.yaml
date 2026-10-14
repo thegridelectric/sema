@@ -151,12 +151,15 @@ enums:
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
   gw1.slow.dispatch.contract.status:
     '000': sha256:3c1b668963e80f472bbf938c6e3e2206e1ff456dbfb993ea89c859b3089e0971
+  pico.reset.cause:
+    '000': sha256:7414880107b2d67fcab59cd08643b87e3f257610c380e8622a8e97e286b88bf2
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
   async.btu.params:
     '000': sha256:f47e4ce8d96f41da1ed8b7ea788f76b55b6e3170c942778a18125b64c1ca4864
     '100': sha256:db951bdb2524f820284dfec0017fa5aaa3161f86aff902ba92a3b7a4deb87105
+    '110': sha256:efaf34c0bf2a0fbfae1acbded870b6a65444248a566cddebe9e9e4eec0fe5604
   atn.bid:
     '001': sha256:6de266f87e83d36a4899862aa169755977c38f84c47850de0c6ab40cdec13214
     '002': sha256:8f93f00ce2f19d2d8dd40d224926fecda4b378d47ae5ac6dee31626adee79679
@@ -449,6 +452,7 @@ types:
   tank.module.params:
     '110': sha256:5ab1d5a4a1acec0a7314bf461af370bdf04f55c3a2e82ac857293b0f8053ccaa
     '200': sha256:1f6924ad517bab10c9fe06d774974675ad18071e58a79e48a2a0c50b9c546d33
+    '210': sha256:2449c014e9c9c81fb5743e0c107b0678070f22f691e1a60e29c8ddce9d00b993
   ticklist.hall:
     '101': sha256:06e78b373868c1d4bade376c9bc80d4fb6d74582faa212de5fe4d1a088ea2028
   ticklist.hall.report:
@@ -465,3 +469,13 @@ types:
     '000': sha256:de811035a1c2ba0a28c8811fcf79aefcd1baf3e8f85e45f54666e2363c2929a6
   slow.contract.heartbeat:
     '001': sha256:fc7516f59f79f6f7bc27c9025b355489b6c9ad04927af68b4b2b09c8c45bb3fb
+  pico.heartbeat:
+    '000': sha256:5b3fbc2230869f8eea1d35b0712feaac15cdc0477005d88aecdabd763181d8a6
+  multichannel.snapshot:
+    '000': sha256:6935ada9dc927ad649a9c2085105b02f083663205ea08c32997d5de08cfd0d53
+  microvolts:
+    '100': sha256:09cb327aed41ba28d2f7822b02298a6803562b75d489e446b4ee0b2650b54270
+  new.code:
+    '100': sha256:e0fc061d8a5da6585c882aaf199b2b728abadb4baab9535ed5271e682218f39d
+  new.pico:
+    '100': sha256:50f449b24290ddce7b83fa992deeec21723165a7ff6b2b672de4e7c8989e479a

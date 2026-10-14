@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-14T21:10:00Z"
+  last_updated: "2026-10-14T21:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -612,7 +612,7 @@ enums:
       "000":
         schema_url: "https://schemas.electricity.works/enums/pico.reset.cause/000"
         created: "2026-10-14T18:55:00Z"
-        status: "staging"
+        status: "published"
 
   spruce.hack.hp.state:
     latest_version: "000"
@@ -1491,7 +1491,7 @@ types:
       "110":
         schema_url: "https://schemas.electricity.works/types/async.btu.params/110"
         created: "2026-09-21T19:50:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - FirmwareCommit: add
           - MacAddress: add
@@ -5287,7 +5287,7 @@ types:
       "100":
         schema_url: "https://schemas.electricity.works/types/microvolts/100"
         created: "2026-10-14T18:50:00Z"
-        status: "staging"
+        status: "published"
         summary: "Registered from the shipped pico wire shape, version 100."
         direct_dependencies:
           structural:
@@ -5303,7 +5303,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/multichannel.snapshot/000"
         created: "2026-10-14T18:50:00Z"
-        status: "staging"
+        status: "published"
         summary: "Registered from the shipped pico wire shape, version 000."
         direct_dependencies:
           structural:
@@ -5320,7 +5320,7 @@ types:
       "100":
         schema_url: "https://schemas.electricity.works/types/new.code/100"
         created: "2026-10-14T18:50:00Z"
-        status: "staging"
+        status: "published"
         summary: "Registered from the shipped pico wire shape, version 100."
         direct_dependencies:
           structural:
@@ -5395,7 +5395,7 @@ types:
       "100":
         schema_url: "https://schemas.electricity.works/types/new.pico/100"
         created: "2026-10-14T18:50:00Z"
-        status: "staging"
+        status: "published"
         summary: "Registered from the shipped pico wire shape, version 100."
         direct_dependencies:
           structural: []
@@ -5485,7 +5485,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/pico.heartbeat/000"
         created: "2026-10-14T18:55:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version."
         direct_dependencies:
           structural:
@@ -6564,7 +6564,7 @@ types:
       "210":
         schema_url: "https://schemas.electricity.works/types/tank.module.params/210"
         created: "2026-09-21T19:50:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - FirmwareCommit: add
           - MacAddress: add
