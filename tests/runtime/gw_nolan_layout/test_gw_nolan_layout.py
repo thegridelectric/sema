@@ -144,40 +144,6 @@ def test_axiom_21_store_tank_temps(vanilla: dict[str, Any]) -> None:
     reject(vanilla, drop_channel("tank1-depth3"), "Axiom 21")
 
 
-@pytest.mark.parametrize("name", ["usable-energy", "required-energy"])
-def test_axiom_22_system_model_energy_channels_absent(
-    vanilla: dict[str, Any], name: str
-) -> None:
-    """Both system-model energy channels are required."""
-    reject(vanilla, drop_channel(name), "Axiom 22")
-
-
-def test_axiom_22_system_model_energy_channels_wrong_strategy(
-    vanilla: dict[str, Any],
-) -> None:
-    """A usable-energy channel on another strategy fails."""
-
-    def mutate(d: dict[str, Any]) -> None:
-        for c in d["DerivedChannels"]:
-            if c["Name"] == "usable-energy":
-                c["Strategy"] = "identity"
-
-    reject(vanilla, mutate, "Axiom 22")
-
-
-def test_axiom_22_system_model_energy_channels_same_model_twice(
-    vanilla: dict[str, Any],
-) -> None:
-    """The two channels name one model each, never the same model twice."""
-
-    def mutate(d: dict[str, Any]) -> None:
-        for c in d["DerivedChannels"]:
-            if c["Name"] == "required-energy":
-                c["Parameters"]["EnergyModel"]["TypeName"] = "gw0.usable.energy.layered"
-
-    reject(vanilla, mutate, "Axiom 22")
-
-
 def test_axiom_23_web_server_node_absent(vanilla: dict[str, Any]) -> None:
     """No web-server node fails."""
 

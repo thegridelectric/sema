@@ -251,9 +251,6 @@ when porting, don't re-enable the stale forms verbatim:
             - "dist-flow"
             - "primary-flow"
             - "store-flow"
-          # Energy estimates
-            - "required-energy"
-            - "usable-energy"
           # Relay states 
             - "vdc-relay"
             - "buffer-top-relay" 
@@ -443,22 +440,6 @@ when porting, don't re-enable the stale forms verbatim:
       the following SHALL hold:
         - TelemetryName SHALL be "GpmTimes100".
         - AboutNodeName SHALL equal the channel Name.
-    - number:
-      name: "EnergyChannelSemantics"
-      statement: >
-        For each DerivedChannel whose Name is one of:
-          - "usable-energy"
-          - "required-energy"
-        the following SHALL hold:
-          - Strategy SHALL be "system-model".
-          - OutputUnit SHALL be "WattHours".
-          - OutputQuantity SHALL be "Energy".
-          - EmissionMethod SHALL be "Periodic".
-          - EmitPeriodS SHALL be 60.
-          - InputChannelNames SHALL be empty.
-          - Parameters.EnergyModel.TypeName SHALL equal:
-              - "gw0.usable.energy.layered" for "usable-energy"
-              - "gw0.required.energy.layered" for "required-energy"
     - number:
       name: "VdcRelaySemantics"
       statement: >
