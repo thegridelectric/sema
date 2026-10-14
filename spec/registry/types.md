@@ -303,6 +303,10 @@ The following changes are permitted, provided they do not alter semantics:
   [../authoring/types.md](../authoring/types.md) "Examples") and alter no
   validation behavior or semantics, so adding one to a published version is in
   the same family as clarifying descriptive text — it is explicitly permitted.
+- Addition of counterexample fixtures (see
+  [../authoring/type-semantics.md](../authoring/type-semantics.md) "Axiom
+  Clause Labels and Counterexamples"). A fixture records what the version
+  already refuses and sits outside the schema file.
 - Correction of `created` timestamps, provided that:
   - Timestamp uniqueness is preserved
   - Timestamp ordering remains consistent with version ordering as

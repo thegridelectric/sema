@@ -16,8 +16,8 @@ behavior, not the vocabulary contract (formats/enums/types) in
 
 A snapshot is a vocabulary subset plus a generated codec emitted into a
 consumer's package. It ships **data, not test code**: the restricted
-definitions, the generated runtime, and a generated `samples/` folder. It does
-NOT vendor a test suite.
+definitions, the generated runtime, and generated `samples/` and
+`counterexamples/` folders. It does NOT vendor a test suite.
 
 ## Published-only by default
 
@@ -91,6 +91,32 @@ The latest version of a type need not carry an example; a **superseded** version
 MUST (see [authoring/types.md](authoring/types.md) "Superseded versions"). That
 mandate is what makes old-version round-trip coverage total.
 
+## Counterexamples
+
+For every **type** version in the closure that has counterexample fixtures in
+the registry (see [authoring/type-semantics.md](authoring/type-semantics.md)
+"Axiom Clause Labels and Counterexamples"), the build copies each fixture under
+`counterexamples/`. A counterexample is an instance that satisfies the version's
+structural schema and violates exactly one axiom clause; it is the negative
+twin of a sample.
+
+- **Filename**: `<type.name>.<version>.axiom_<n>.json`, or
+  `<type.name>.<version>.axiom_<n>_<label>.json` for a labeled clause. Old
+  versions are included.
+- **Content** is the fixture as authored, byte for byte. A counterexample is
+  never passed through the codec, since the codec refuses it.
+- Counterexamples are **generated from the registry, never hand-edited** in a
+  snapshot — the source of truth is the registry's fixture.
+- The coverage report (`samples/README.md`) lists, per seeded type version,
+  the axiom clauses with a counterexample and those without, so the gap is
+  visible rather than assumed-complete.
+
+What `counterexamples/` is for: an implementation that is **not generated**
+from the snapshot — a hand-written twin, firmware, a consumer in another
+language — can prove it refuses what the vocabulary refuses. A consumer whose
+runtime is the generated one gains nothing from running them; the build-time
+gate below has already run them.
+
 ## Round-trip gate
 
 The build runs a round-trip over the freshly written samples, inside the
@@ -116,10 +142,21 @@ Upgrades"). The round-trip gate recognizes that signal and treats step 2 as an
 **expected pass** for that version — the sample is still required and still must
 pass step 1.
 
+### Counterexample gate
+
+The build also decodes every counterexample under `counterexamples/` at its
+own version and requires a refusal that names the fixture's axiom number (and
+clause label, when the axiom is labeled). A counterexample the runtime accepts,
+or refuses for another reason — a structural error, a different axiom — fails
+the build. This is what keeps the fixtures true: a fixture that stops matching
+its axiom fails the producer's build, never a consumer's.
+
 ## Consumer-side verification
 
 A snapshot MAY ship a small, opt-in round-trip harness that re-runs the same
 checks over `samples/` in the **consumer's** environment — useful because the
 build-time gate runs in the producer's environment. It is data-plus-loader, not
 a vendored test suite. If a consumer never runs it, the build-time gate remains
-the floor.
+the floor. `counterexamples/` is the second kind of data such a harness may run
+over: a consumer that hand-writes or otherwise does not generate its
+implementation checks that it refuses each one naming the same axiom.

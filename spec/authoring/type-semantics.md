@@ -150,20 +150,28 @@ a distinct counterexample obligation. Explanatory text SHALL NOT be
 labeled. If multiple checks can be naturally expressed as one validation
 condition, the axiom SHOULD remain a single unlabeled clause.
 
-For runtime validation tests, counterexample fixtures SHOULD follow this
-naming convention:
+Each axiom clause SHOULD have a **counterexample fixture**: a complete
+instance that satisfies the version's structural schema and violates that
+clause and no other. Fixtures live in the registry beside the schemas, outside
+the schema file, at:
 
 ```text
-axiom_<number>.json
+definitions/counterexamples/<type.name>/<version>/axiom_<number>.json
 ```
 
 for a single-clause axiom, and:
 
 ```text
-axiom_<number>_<label>.json
+definitions/counterexamples/<type.name>/<version>/axiom_<number>_<label>.json
 ```
 
-for a multi-clause axiom, where `<label>` is the lowercase clause label.
+for a multi-clause axiom, where `<label>` is the lowercase clause label. The
+runtime for that version MUST refuse every fixture naming that axiom (and
+clause); the registry's own tests and the snapshot build both enforce this
+(see [../snapshot.md](../snapshot.md) "Counterexamples"). Because a fixture is
+outside the schema file, adding one to a published version alters neither the
+schema nor its pinned hash (see [../registry/types.md](../registry/types.md)
+"Permitted Changes (All Types)").
 
 Example:
 
