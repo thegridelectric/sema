@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ spaceheat_telemetry_quantity_projection_001_class_name }}:
+        """
+        - Quantity: gw1.quantity 000 -> 003
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ spaceheat_telemetry_quantity_projection_001_class_name }}.model_validate(data)

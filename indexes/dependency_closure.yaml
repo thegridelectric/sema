@@ -227,6 +227,18 @@ types:
       types:
       - spaceheat.telemetry.quantity.projection:000
       versionless_types: []
+    '004':
+      enums:
+      - gw1.quantity:003
+      - spaceheat.telemetry.name:007
+      formats:
+      - left.right.dot
+      - spaceheat.name
+      - utc.seconds
+      - uuid4.str
+      types:
+      - spaceheat.telemetry.quantity.projection:001
+      versionless_types: []
   derived.channel.gt:
     '000':
       enums:
@@ -1012,7 +1024,6 @@ types:
       - gw.zone.emitter.type:000
       - gw1.actor.class:014
       - gw1.emission.method:000
-      - gw1.quantity:000
       - gw1.quantity:003
       - gw1.unit:003
       - gw2.lc.top.state:000
@@ -1049,7 +1060,7 @@ types:
       - ads111x.based.component.gt:000
       - ads111x.based.device.type.gt:000
       - dac.output.config:000
-      - data.channel.gt:003
+      - data.channel.gt:004
       - derived.channel.gt:003
       - device.component.gt:000
       - egauge.register.config:000
@@ -1098,7 +1109,7 @@ types:
       - sim.pico.tank.module.component.gt:001
       - sim.sensor.component.gt:000
       - spaceheat.node.gt:303
-      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       - web.server.component.gt:001
       versionless_types: []
   gw.hydronic:
@@ -1152,7 +1163,6 @@ types:
       - gw.zone.emitter.type:000
       - gw1.actor.class:014
       - gw1.emission.method:000
-      - gw1.quantity:000
       - gw1.quantity:003
       - gw1.unit:003
       - gw2.lc.top.state:000
@@ -1184,7 +1194,7 @@ types:
       types:
       - ads111x.based.device.type.gt:000
       - dac.output.config:000
-      - data.channel.gt:003
+      - data.channel.gt:004
       - derived.channel.gt:003
       - device.component.gt:000
       - egauge.register.config:000
@@ -1226,7 +1236,7 @@ types:
       - sim.pico.tank.module.component.gt:001
       - sim.sensor.component.gt:000
       - spaceheat.node.gt:303
-      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       - web.server.component.gt:001
       versionless_types: []
   gw.operational.params:
@@ -1312,7 +1322,6 @@ types:
     '001':
       enums:
       - gw1.emission.method:000
-      - gw1.quantity:000
       - gw1.quantity:003
       - gw1.unit:003
       - spaceheat.telemetry.name:007
@@ -1325,10 +1334,10 @@ types:
       - uuid4.str
       types:
       - channel.readings:002
-      - data.channel.gt:003
+      - data.channel.gt:004
       - derived.channel.gt:003
       - gw1.unit.quantity.projection:001
-      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       versionless_types: []
   gw.recorded.setpoints:
     '000':
@@ -2578,7 +2587,6 @@ types:
       - gpm.from.hz.method:000
       - gw1.actor.class:014
       - gw1.emission.method:000
-      - gw1.quantity:000
       - gw1.quantity:003
       - gw1.unit:003
       - hz.calc.method:001
@@ -2599,7 +2607,7 @@ types:
       - utc.seconds
       - uuid4.str
       types:
-      - data.channel.gt:003
+      - data.channel.gt:004
       - derived.channel.gt:003
       - gw1.tank.temp.calibration.map:001
       - gw1.tank.temp.calibration:001
@@ -2611,7 +2619,7 @@ types:
       - relay.actor.config:003
       - sim.pico.tank.module.component.gt:001
       - spaceheat.node.gt:303
-      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       versionless_types: []
   linear.one.dimensional.calibration:
     '000':
@@ -3110,7 +3118,7 @@ types:
       enums:
       - change.relay.state:000
       - gw1.actor.class:014
-      - gw1.quantity:000
+      - gw1.quantity:003
       - hp.boss.state:000
       - pico.cycler.state:000
       - reboot.picos:000
@@ -3127,11 +3135,11 @@ types:
       - utc.seconds
       - uuid4.str
       types:
-      - data.channel.gt:003
+      - data.channel.gt:004
       - gw.command.interface:000
       - gw.command.transition:000
       - spaceheat.node.gt:303
-      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       versionless_types: []
   scada.params:
     '000':
@@ -3468,6 +3476,13 @@ types:
     '000':
       enums:
       - gw1.quantity:000
+      - spaceheat.telemetry.name:007
+      formats: []
+      types: []
+      versionless_types: []
+    '001':
+      enums:
+      - gw1.quantity:003
       - spaceheat.telemetry.name:007
       formats: []
       types: []

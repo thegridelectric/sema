@@ -136,9 +136,13 @@ types:
         summary: "Initial version (ChannelName, ActorName, DacChannel). The EEPROM power-on fields and their axiom left in place for zero.ten.power.on in operational-params; chip and board facts are scada driver tables."
 
   data.channel.gt:
-    latest_version: "003"
+    latest_version: "004"
     versioning_strategy: "literal"
     versions:
+      "004":
+        summary: >
+          - Quantity: gw1.quantity 000 -> 003
+          - TelemetryQuantityConsistency axiom: spaceheat.telemetry.quantity.projection 000 -> 001
       "003":
         summary: >
           - InPowerMetering: drop (metering is declared by the consuming transactive channel, not here)
@@ -715,7 +719,9 @@ types:
     versioning_strategy: "literal"
     versions:
       "001":
-        summary: "- Channels[]: derived.channel.gt 002 -> 003"
+        summary: >
+          - Channels[]: data.channel.gt 003 -> 004
+          - Channels[]: derived.channel.gt 002 -> 003
       "000":
         summary: "Initial version."
 
@@ -1228,7 +1234,7 @@ types:
       "013":
         summary: >
           - ShNodes: spaceheat.node.gt:301 -> 303
-          - DataChannels: data.channel.gt:002 -> 003
+          - DataChannels: data.channel.gt:002 -> 004
           - TankModuleComponents / FlowModuleComponents / I2cRelayComponent: cac-carrying component versions -> cac-free DeviceType versions (pico.tank.module 011->012, sim.pico.tank.module 000->001, pico.flow.module 000->001, i2c.multichannel.dt.relay 003->004). Context-dependent: the embedded components' DeviceType lives on their cac, not the component.
           - SystemMode and SeasonalStorageMode leave: the posture facts (Standby, StandbyPosture, SeasonalStorageMode, ServiceMode, AcceptsDispatch, DispatchRefusalReason) ride gw.house.operating.status, sent after the startup announcements and on change, so the LTN has one source for them.
           - Strategy (free manifold-variant string) -> HardwareLayoutTypeName (left.right.dot): the loaded layout word's TypeName is the family; a format, not an enum of layout words, so this word publishes independently of the layout words' status.
@@ -1485,6 +1491,7 @@ types:
     versions:
       "002":
         summary: >
+          - ControlChannels[]: data.channel.gt 003 -> 004
           - RelayNodes[], DacNodes[], CommandNodes[]: spaceheat.node.gt:302 -> 303
           - A node may carry more than one CommandInterfaces entry, one per
             command vocabulary (five-v-boss: turn.5v.on.off and reboot.picos)
@@ -1675,9 +1682,11 @@ types:
         summary: "Baseline runtime version (no prior version tracked)."
 
   spaceheat.telemetry.quantity.projection:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- Quantity: gw1.quantity 000 -> 003"
       "000":
         summary: "Initial Sema version"
 

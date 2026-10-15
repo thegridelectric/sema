@@ -34,6 +34,15 @@ required:
 
 additionalProperties: false
 
+examples:
+  - |
+    {
+      "TelemetryName": "WaterTempCTimes1000",
+      "Quantity": "Temperature",
+      "TypeName": "spaceheat.telemetry.quantity.projection",
+      "Version": "000"
+    }
+
 x-gridworks:
   owner: "gridworks-energy"
 

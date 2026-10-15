@@ -73,7 +73,7 @@ properties:
   DataChannels:
     type: array
     items:
-      $ref: "https://schemas.electricity.works/types/data.channel.gt/003"
+      $ref: "https://schemas.electricity.works/types/data.channel.gt/004"
     description: >
       Raw telemetry channel definitions used to interpret channel names appearing
       in reports and snapshots.

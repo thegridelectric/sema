@@ -10,8 +10,8 @@ from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UTCSeconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.types.old_versions.data_channel_gt_002 import DataChannelGt002
-from sema.runtime.types.spaceheat_telemetry_quantity_projection import (
-    SpaceheatTelemetryQuantityProjection,
+from sema.runtime.types.old_versions.spaceheat_telemetry_quantity_projection_000 import (
+    SpaceheatTelemetryQuantityProjection000,
 )
 
 
@@ -55,7 +55,7 @@ class DataChannelGt001(SemaType):
         data = self.model_dump()
         upgraded_telemetry_name = SpaceheatTelemetryName[self.telemetry_name.name]
         data["telemetry_name"] = upgraded_telemetry_name
-        data["quantity"] = SpaceheatTelemetryQuantityProjection.project(
+        data["quantity"] = SpaceheatTelemetryQuantityProjection000.project(
             upgraded_telemetry_name
         )
         data["version"] = "002"

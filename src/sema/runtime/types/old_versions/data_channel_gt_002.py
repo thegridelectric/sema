@@ -7,9 +7,9 @@ from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UTCSeconds
 from sema.runtime.property_format import UUID4Str
-from sema.runtime.types.data_channel_gt import DataChannelGt
-from sema.runtime.types.spaceheat_telemetry_quantity_projection import (
-    SpaceheatTelemetryQuantityProjection,
+from sema.runtime.types.old_versions.data_channel_gt_003 import DataChannelGt003
+from sema.runtime.types.old_versions.spaceheat_telemetry_quantity_projection_000 import (
+    SpaceheatTelemetryQuantityProjection000,
 )
 
 
@@ -52,7 +52,7 @@ class DataChannelGt002(SemaType):
         spaceheat.telemetry.quantity.projection/000 instance for the specified TelemetryName.
         """
         try:
-            SpaceheatTelemetryQuantityProjection(
+            SpaceheatTelemetryQuantityProjection000(
                 telemetry_name=self.telemetry_name,
                 quantity=self.quantity,
             )
@@ -62,7 +62,7 @@ class DataChannelGt002(SemaType):
             ) from e
         return self
 
-    def upgrade(self) -> DataChannelGt:
+    def upgrade(self) -> DataChannelGt003:
         """
         - InPowerMetering: drop (metering is declared by the consuming transactive channel, not here)
         - PowerMeteringConstraint axiom: drop
@@ -70,4 +70,4 @@ class DataChannelGt002(SemaType):
         data = self.model_dump()
         data.pop("in_power_metering", None)
         data["version"] = "003"
-        return DataChannelGt.model_validate(data)
+        return DataChannelGt003.model_validate(data)

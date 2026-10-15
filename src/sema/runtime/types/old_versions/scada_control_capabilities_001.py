@@ -4,8 +4,8 @@ from sema.runtime.base import SemaType
 from sema.runtime.enums.old_versions.gw1_actor_class_012 import Gw1ActorClass012
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import UTCMilliseconds
-from sema.runtime.types.data_channel_gt import DataChannelGt
 from sema.runtime.types.gw_command_interface import GwCommandInterface
+from sema.runtime.types.old_versions.data_channel_gt_003 import DataChannelGt003
 from sema.runtime.types.old_versions.spaceheat_node_gt_302 import SpaceheatNodeGt302
 from sema.runtime.types.scada_control_capabilities import ScadaControlCapabilities
 
@@ -18,7 +18,7 @@ class ScadaControlCapabilities001(SemaType):
     relay_nodes: list[SpaceheatNodeGt302]
     dac_nodes: list[SpaceheatNodeGt302]
     command_nodes: list[SpaceheatNodeGt302]
-    control_channels: list[DataChannelGt]
+    control_channels: list[DataChannelGt003]
     command_interfaces: list[GwCommandInterface]
     type_name: Literal["scada.control.capabilities"] = "scada.control.capabilities"
     version: Literal["001"] = "001"
@@ -126,11 +126,15 @@ class ScadaControlCapabilities001(SemaType):
 
     def upgrade(self) -> ScadaControlCapabilities:
         """
+        - ControlChannels[]: data.channel.gt 003 -> 004
         - RelayNodes[], DacNodes[], CommandNodes[]: spaceheat.node.gt:302 -> 303
         - A node may carry more than one CommandInterfaces entry, one per
           command vocabulary (five-v-boss: turn.5v.on.off and reboot.picos)
         """
         data = self.model_dump()
+        data["control_channels"] = [
+            c.upgrade().model_dump() for c in self.control_channels
+        ]
         for key in ("relay_nodes", "dac_nodes", "command_nodes"):
             for node in data[key]:
                 node["version"] = "303"

@@ -102,9 +102,10 @@ types:
     versions:
       '000': definitions/types/dac.output.config/000.yaml
   data.channel.gt:
-    latest_version: '003'
+    latest_version: '004'
     versioning_strategy: literal
     versions:
+      '004': definitions/types/data.channel.gt/004.yaml
       '003': definitions/types/data.channel.gt/003.yaml
       '002': definitions/types/data.channel.gt/002.yaml
       '001': definitions/types/data.channel.gt/001.yaml
@@ -1061,9 +1062,10 @@ types:
       '300': definitions/types/spaceheat.node.gt/300.yaml
       '200': definitions/types/spaceheat.node.gt/200.yaml
   spaceheat.telemetry.quantity.projection:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/spaceheat.telemetry.quantity.projection/001.yaml
       '000': definitions/types/spaceheat.telemetry.quantity.projection/000.yaml
   synced.readings:
     latest_version: '000'

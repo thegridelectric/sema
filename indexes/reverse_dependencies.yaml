@@ -74,12 +74,14 @@ types:
       - layout.lite:012
     '003':
       used_by:
+      - gw.readings:000
+      - scada.control.capabilities:001
+    '004':
+      used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
-      - gw.readings:000
       - gw.readings:001
       - layout.lite:013
-      - scada.control.capabilities:001
       - scada.control.capabilities:002
   derived.channel.gt:
     '000':
@@ -658,6 +660,9 @@ types:
       used_by:
       - data.channel.gt:002
       - data.channel.gt:003
+    '001':
+      used_by:
+      - data.channel.gt:004
   synth.channel.gt:
     '000':
       used_by:
@@ -873,11 +878,13 @@ enums:
       - gw.weather.forecast.bundle.gt:000
     '003':
       used_by:
+      - data.channel.gt:004
       - derived.channel.gt:003
       - gw.house0.layout:000
       - gw.nolan.layout:000
       - gw.weather.channel.gt:001
       - gw1.unit.quantity.projection:001
+      - spaceheat.telemetry.quantity.projection:001
   gw1.seasonal.storage.mode:
     '000':
       used_by:
@@ -1080,6 +1087,7 @@ enums:
       - ads111x.based.device.type.gt:000
       - data.channel.gt:002
       - data.channel.gt:003
+      - data.channel.gt:004
       - electric.meter.cac.gt:001
       - electric.meter.device.type.gt:000
       - gw1.scada.device.type.gt:000
@@ -1087,6 +1095,7 @@ enums:
       - maker.api.attribute.gt:001
       - multichannel.snapshot:000
       - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
       - synced.readings.bundle:001
       - synced.readings.bundle:002
       - synced.readings.bundle:003
@@ -1187,6 +1196,7 @@ formats:
     - data.channel.gt:001
     - data.channel.gt:002
     - data.channel.gt:003
+    - data.channel.gt:004
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002
@@ -1555,6 +1565,7 @@ formats:
     - data.channel.gt:001
     - data.channel.gt:002
     - data.channel.gt:003
+    - data.channel.gt:004
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002
@@ -1754,6 +1765,7 @@ formats:
     - data.channel.gt:001
     - data.channel.gt:002
     - data.channel.gt:003
+    - data.channel.gt:004
     - energy.instruction:000
     - flo.params.house0:000
     - flo.params.house0:001
@@ -1783,6 +1795,7 @@ formats:
     - data.channel.gt:001
     - data.channel.gt:002
     - data.channel.gt:003
+    - data.channel.gt:004
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002

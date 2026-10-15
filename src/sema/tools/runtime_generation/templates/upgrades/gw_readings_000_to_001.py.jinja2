@@ -1,11 +1,9 @@
     def upgrade(self) -> {{ gw_readings_001_class_name }}:
         """
+        - Channels[]: data.channel.gt 003 -> 004
         - Channels[]: derived.channel.gt 002 -> 003
         """
         data = self.model_dump()
-        data["channels"] = [
-            c.model_dump() if isinstance(c, {{ data_channel_gt_003_class_name }}) else c.upgrade().model_dump()
-            for c in self.channels
-        ]
+        data["channels"] = [c.upgrade().model_dump() for c in self.channels]
         data["version"] = "001"
         return {{ gw_readings_001_class_name }}.model_validate(data)

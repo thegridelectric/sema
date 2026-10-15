@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ data_channel_gt_004_class_name }}:
+        """
+        - Quantity: gw1.quantity 000 -> 003
+        - TelemetryQuantityConsistency axiom: spaceheat.telemetry.quantity.projection 000 -> 001
+        """
+        data = self.model_dump()
+        data["version"] = "004"
+        return {{ data_channel_gt_004_class_name }}.model_validate(data)

@@ -4,8 +4,8 @@ from sema.runtime.base import SemaType
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.types.channel_readings import ChannelReadings
-from sema.runtime.types.data_channel_gt import DataChannelGt
 from sema.runtime.types.gw_readings import GwReadings
+from sema.runtime.types.old_versions.data_channel_gt_003 import DataChannelGt003
 from sema.runtime.types.old_versions.derived_channel_gt_002 import DerivedChannelGt002
 
 
@@ -15,7 +15,7 @@ class GwReadings000(SemaType):
     ta_alias: LeftRightDot
     start_unix_ms: UTCMilliseconds
     end_unix_ms: UTCMilliseconds
-    channels: list[DataChannelGt | DerivedChannelGt002]
+    channels: list[DataChannelGt003 | DerivedChannelGt002]
     channel_readings_list: list[ChannelReadings]
     type_name: Literal["gw.readings"] = "gw.readings"
     version: Literal["000"] = "000"
@@ -52,12 +52,10 @@ class GwReadings000(SemaType):
 
     def upgrade(self) -> GwReadings:
         """
+        - Channels[]: data.channel.gt 003 -> 004
         - Channels[]: derived.channel.gt 002 -> 003
         """
         data = self.model_dump()
-        data["channels"] = [
-            c.model_dump() if isinstance(c, DataChannelGt) else c.upgrade().model_dump()
-            for c in self.channels
-        ]
+        data["channels"] = [c.upgrade().model_dump() for c in self.channels]
         data["version"] = "001"
         return GwReadings.model_validate(data)
