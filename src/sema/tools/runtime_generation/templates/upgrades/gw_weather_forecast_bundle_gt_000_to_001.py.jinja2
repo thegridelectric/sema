@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ gw_weather_forecast_bundle_gt_001_class_name }}:
+        """
+        - TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001
+        """
+        data = self.model_dump()
+        data["temp_observation_channel"] = self.temp_observation_channel.upgrade()
+        data["wind_speed_observation_channel"] = (
+            self.wind_speed_observation_channel.upgrade()
+        )
+        data["version"] = "001"
+        return {{ gw_weather_forecast_bundle_gt_001_class_name }}.model_validate(data)

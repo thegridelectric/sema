@@ -152,9 +152,14 @@ types:
         summary: "Baseline runtime version (no prior version tracked)."
 
   derived.channel.gt:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: >
+          - OutputUnit: gw1.unit 001 -> 003
+          - OutputQuantity: gw1.quantity 001 -> 003
+          - OutputUnitQuantityConsistency axiom: gw1.unit.quantity.projection 000 -> 001
       "002":
         summary: >
           - OutputUnit: gw1.unit 000 -> 001
@@ -699,9 +704,11 @@ types:
         summary: "Initial version: ScadaAlias and SetpointList of single.reading. Axiom 1: ChannelName unique across SetpointList."
 
   gw.readings:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- Channels[]: derived.channel.gt 002 -> 003"
       "000":
         summary: "Initial version."
 
@@ -734,9 +741,13 @@ types:
         summary: "TotalStoreTanks (positive.int), at most 6 (axiom TankCount). Carried by gw.hydronic as the optional WaterStore."
 
   gw.weather.channel.gt:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - Quantity: gw1.quantity 002 -> 003
+          - Unit: gw1.unit 002 -> 003
       "000":
         summary: "Initial version."
 
@@ -759,7 +770,9 @@ types:
     versioning_strategy: "literal"
     versions:
       "001":
-        summary: "- Record: oneOf gains gw.weather.seasonal.template.gt/000"
+        summary: >
+          - Record: oneOf gains gw.weather.seasonal.template.gt/000
+          - Record: gw.weather.channel.gt and gw.weather.forecast.bundle.gt at 001
       "000":
         summary: "Initial version."
 
@@ -771,9 +784,11 @@ types:
         summary: "Initial version."
 
   gw.weather.forecast.bundle.gt:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001"
       "000":
         summary: "Initial version."
 
@@ -870,9 +885,14 @@ types:
         summary: "Initial Sema version"
 
   gw1.unit.quantity.projection:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - Unit: gw1.unit 001 -> 003
+          - Quantity: gw1.quantity 001 -> 003
+          - projection.table: add DollarsX1000 -> Currency, MilesPerHourX1000 -> WindSpeed, KilowattHoursX1000 -> Energy, WattsPerSquareMeter -> Irradiance
       "000":
         summary: "Initial Sema version"
 
@@ -2086,6 +2106,10 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "003":
+        added_values:
+          - "Irradiance"
+          - "Currency"
       "002":
         added_values:
           - "WindSpeed"
@@ -2128,6 +2152,11 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "003":
+        added_values:
+          - "WattsPerSquareMeter"
+          - "MilesPerHourX10"
+          - "FahrenheitX10"
       "002":
         added_values:
           - "DollarsX1000"

@@ -109,9 +109,10 @@ types:
       '002': definitions/types/data.channel.gt/002.yaml
       '001': definitions/types/data.channel.gt/001.yaml
   derived.channel.gt:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/derived.channel.gt/003.yaml
       '002': definitions/types/derived.channel.gt/002.yaml
       '001': definitions/types/derived.channel.gt/001.yaml
       '000': definitions/types/derived.channel.gt/000.yaml
@@ -454,9 +455,10 @@ types:
     versions:
       '000': definitions/types/gw.recorded.setpoints/000.yaml
   gw.readings:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.readings/001.yaml
       '000': definitions/types/gw.readings/000.yaml
   gw.scada.commit:
     latest_version: '000'
@@ -479,9 +481,10 @@ types:
     versions:
       '000': definitions/types/gw.water.store/000.yaml
   gw.weather.channel.gt:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.weather.channel.gt/001.yaml
       '000': definitions/types/gw.weather.channel.gt/000.yaml
   gw.weather.cmd.ack:
     latest_version: '000'
@@ -505,9 +508,10 @@ types:
     versions:
       '000': definitions/types/gw.weather.forecast/000.yaml
   gw.weather.forecast.bundle.gt:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.weather.forecast.bundle.gt/001.yaml
       '000': definitions/types/gw.weather.forecast.bundle.gt/000.yaml
   gw.weather.forecast.channel.gt:
     latest_version: '000'
@@ -572,9 +576,10 @@ types:
     versions:
       '000': definitions/types/gw1.telemetry.name.quantity.projection/000.yaml
   gw1.unit.quantity.projection:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw1.unit.quantity.projection/001.yaml
       '000': definitions/types/gw1.unit.quantity.projection/000.yaml
   gw1.zone.call.circuit:
     latest_version: '000'
@@ -1360,8 +1365,9 @@ enums:
       '001': definitions/enums/gw1.main.auto.state/001.yaml
   gw1.quantity:
     enum_type: versioned
-    latest_version: '002'
+    latest_version: '003'
     versions:
+      '003': definitions/enums/gw1.quantity/003.yaml
       '002': definitions/enums/gw1.quantity/002.yaml
       '001': definitions/enums/gw1.quantity/001.yaml
       '000': definitions/enums/gw1.quantity/000.yaml
@@ -1392,8 +1398,9 @@ enums:
       '000': definitions/enums/gw1.system.mode/000.yaml
   gw1.unit:
     enum_type: versioned
-    latest_version: '002'
+    latest_version: '003'
     versions:
+      '003': definitions/enums/gw1.unit/003.yaml
       '002': definitions/enums/gw1.unit/002.yaml
       '001': definitions/enums/gw1.unit/001.yaml
       '000': definitions/enums/gw1.unit/000.yaml

@@ -1,34 +1,40 @@
 from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums.old_versions.gw1_quantity_001 import Gw1Quantity001
-from sema.runtime.enums.old_versions.gw1_unit_001 import Gw1Unit001
+from sema.runtime.enums import Gw1Quantity
+from sema.runtime.enums import Gw1Unit
 
 
 _PROJECTION = {
-    Gw1Unit001.Unknown: Gw1Quantity001.Unknown,
-    Gw1Unit001.Unitless: Gw1Quantity001.Unitless,
-    Gw1Unit001.FahrenheitX100: Gw1Quantity001.Temperature,
-    Gw1Unit001.Watts: Gw1Quantity001.Power,
-    Gw1Unit001.WattHours: Gw1Quantity001.Energy,
-    Gw1Unit001.Gallons: Gw1Quantity001.Volume,
-    Gw1Unit001.GpmX100: Gw1Quantity001.FlowRate,
-    Gw1Unit001.Seconds: Gw1Quantity001.Time,
-    Gw1Unit001.SecondsX10: Gw1Quantity001.Time,
-    Gw1Unit001.Milliseconds: Gw1Quantity001.Time,
+    Gw1Unit.Unknown: Gw1Quantity.Unknown,
+    Gw1Unit.Unitless: Gw1Quantity.Unitless,
+    Gw1Unit.FahrenheitX100: Gw1Quantity.Temperature,
+    Gw1Unit.Watts: Gw1Quantity.Power,
+    Gw1Unit.WattHours: Gw1Quantity.Energy,
+    Gw1Unit.Gallons: Gw1Quantity.Volume,
+    Gw1Unit.GpmX100: Gw1Quantity.FlowRate,
+    Gw1Unit.Seconds: Gw1Quantity.Time,
+    Gw1Unit.SecondsX10: Gw1Quantity.Time,
+    Gw1Unit.Milliseconds: Gw1Quantity.Time,
+    Gw1Unit.DollarsX1000: Gw1Quantity.Currency,
+    Gw1Unit.MilesPerHourX1000: Gw1Quantity.WindSpeed,
+    Gw1Unit.KilowattHoursX1000: Gw1Quantity.Energy,
+    Gw1Unit.WattsPerSquareMeter: Gw1Quantity.Irradiance,
+    Gw1Unit.MilesPerHourX10: Gw1Quantity.WindSpeed,
+    Gw1Unit.FahrenheitX10: Gw1Quantity.Temperature,
 }
 
 
 class Gw1UnitQuantityProjection(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw1.unit.quantity.projection/000"""
+    """Sema: https://schemas.electricity.works/types/gw1.unit.quantity.projection/001"""
 
-    unit: Gw1Unit001
-    quantity: Gw1Quantity001
+    unit: Gw1Unit
+    quantity: Gw1Quantity
     type_name: Literal["gw1.unit.quantity.projection"] = "gw1.unit.quantity.projection"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @classmethod
-    def project(cls, unit: Gw1Unit001) -> Gw1Quantity001:
+    def project(cls, unit: Gw1Unit) -> Gw1Quantity:
         expected = _PROJECTION.get(unit)
         if expected is None:
             raise ValueError(f"No projection defined for unit {unit!r}.")

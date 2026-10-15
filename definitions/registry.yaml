@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-14T21:30:00Z"
+  last_updated: "2026-10-15T15:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -749,12 +749,20 @@ enums:
         status: "published"
 
   gw1.quantity:
-    latest_version: "002"
+    latest_version: "003"
     owner: gridworks-energy
     enum_type: "versioned"
     description: "High-level physical or semantic quantity classification for telemetry values."
 
     versions:
+      "003":
+        schema_url: "https://schemas.electricity.works/enums/gw1.quantity/003"
+        created: "2026-10-15T11:35:00Z"
+        status: "published"
+        added_values:
+          - "Irradiance"
+          - "Currency"
+
       "002":
         schema_url: "https://schemas.electricity.works/enums/gw1.quantity/002"
         created: "2026-08-11T14:20:00Z"
@@ -836,12 +844,21 @@ enums:
         status: "published"
 
   gw1.unit:
-    latest_version: "002"
+    latest_version: "003"
     owner: gridworks-energy
     enum_type: "versioned"
     description: "Measurement-unit vocabulary used for derived channels."
 
     versions:
+      "003":
+        schema_url: "https://schemas.electricity.works/enums/gw1.unit/003"
+        created: "2026-10-15T11:35:00Z"
+        status: "published"
+        added_values:
+          - "WattsPerSquareMeter"
+          - "MilesPerHourX10"
+          - "FahrenheitX10"
+
       "002":
         schema_url: "https://schemas.electricity.works/enums/gw1.unit/002"
         created: "2026-06-05T10:00:00Z"
@@ -1818,12 +1835,32 @@ types:
             - "uuid4.str"
 
   derived.channel.gt:
-    latest_version: "002"
+    latest_version: "003"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "Canonical definition of computed telemetry channels within a GridWorks system."
 
     versions:
+      "003":
+        schema_url: "https://schemas.electricity.works/types/derived.channel.gt/003"
+        created: "2026-10-15T11:35:00Z"
+        status: "staging"
+        summary: >-
+          - OutputUnit: gw1.unit 001 -> 003
+          - OutputQuantity: gw1.quantity 001 -> 003
+          - OutputUnitQuantityConsistency axiom: gw1.unit.quantity.projection 000 -> 001
+        direct_dependencies:
+          structural:
+            - "gw1.emission.method:000"
+            - "gw1.quantity:003"
+            - "gw1.unit:003"
+            - "left.right.dot"
+            - "positive.int"
+            - "spaceheat.name"
+            - "uuid4.str"
+          axiom:
+            - "gw1.unit.quantity.projection:001"
+
       "002":
         schema_url: "https://schemas.electricity.works/types/derived.channel.gt/002"
         created: "2026-03-04T19:00:00Z"
@@ -3312,7 +3349,7 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.house0.layout/000"
-        created: "2026-10-06T18:10:00Z"
+        created: "2026-10-15T11:35:00Z"
         status: "staging"
         summary: "The complete deployable artifact for a House0-fleet home: every collection and Hydronic required. The word MEANS has-a-siegenthaler-loop (beech, maple); sieg-less homes are gw.house0.no.sieg. Components: eGauge, ADS111x thermistor snaps, the House0 board record (Krida expanders and GP8403 DACs) with per-relay and per-output components, pico flow and BTU meters, tank modules real and sim, Hubitat with poller, web-server, all over the DeviceType record model. The axioms carry the layout invariants; wording is identical across layout words where the axiom name is shared. The cold-override command node is required; the backup command node exists if and only if Hydronic.Backup is present, and the relays a backup names are Relay ShNodes (axiom BackupRelays)."
         direct_dependencies:
@@ -3320,7 +3357,7 @@ types:
             - "ads111x.based.component.gt:000"
             - "ads111x.based.device.type.gt:000"
             - "data.channel.gt:003"
-            - "derived.channel.gt:002"
+            - "derived.channel.gt:003"
             - "device.component.gt:000"
             - "electric.meter.component.gt:001"
             - "electric.meter.device.type.gt:000"
@@ -3353,7 +3390,7 @@ types:
             - "gw0.required.energy.layered:000"
             - "gw0.usable.energy.layered:000"
             - "gw1.actor.class:014"
-            - "gw1.quantity:001"
+            - "gw1.quantity:003"
             - "gw2.lc.top.state:000"
             - "zone.setpoint.source:000"
 
@@ -3430,14 +3467,14 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.nolan.layout/000"
-        created: "2026-10-06T18:10:00Z"
+        created: "2026-10-15T11:35:00Z"
         status: "staging"
         summary: "The complete deployable artifact for a Nolan home: monobloc heat pump, one store tank, the gw108 board. Components are the cac-free DeviceType versions; DeviceTypes holds the per-family device-type records; every relay is a per-relay component against the board record. The axioms carry the layout invariants; wording is identical across layout words where the axiom name is shared. The cold-override command node is required; the backup command node exists if and only if Hydronic.Backup is present, and the relays a backup names are Relay ShNodes (axiom BackupRelays)."
         direct_dependencies:
           structural:
             - "ads111x.based.device.type.gt:000"
             - "data.channel.gt:003"
-            - "derived.channel.gt:002"
+            - "derived.channel.gt:003"
             - "device.component.gt:000"
             - "electric.meter.component.gt:001"
             - "electric.meter.device.type.gt:000"
@@ -3466,7 +3503,7 @@ types:
             - "gw.element.backup:000"
             - "gw.zone.emitter.type:000"
             - "gw1.actor.class:014"
-            - "gw1.quantity:001"
+            - "gw1.quantity:003"
             - "gw2.lc.top.state:000"
             - "zone.setpoint.source:000"
 
@@ -3520,12 +3557,26 @@ types:
             - "single.reading:000"
 
   gw.readings:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "A terminal asset's channel words together with their timestamped readings over a window."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.readings/001"
+        created: "2026-10-15T11:35:00Z"
+        status: "staging"
+        summary: >-
+          - Channels[]: derived.channel.gt 002 -> 003
+        direct_dependencies:
+          structural:
+            - "channel.readings:002"
+            - "data.channel.gt:003"
+            - "derived.channel.gt:003"
+            - "left.right.dot"
+            - "utc.milliseconds"
+
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.readings/000"
         created: "2026-08-07T13:20:00Z"
@@ -3609,12 +3660,29 @@ types:
             - "positive.int"
 
   gw.weather.channel.gt:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "An observed weather series: one quantity at one place, the ground-truth series forecasters are scored against."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.channel.gt/001"
+        created: "2026-10-15T14:55:00Z"
+        status: "published"
+        summary: >-
+          - Quantity: gw1.quantity 002 -> 003
+          - Unit: gw1.unit 002 -> 003
+        direct_dependencies:
+          structural:
+            - "gw1.quantity:003"
+            - "gw1.unit:003"
+            - "left.right.dot"
+            - "non.empty.string"
+            - "non.negative.int"
+            - "positive.int"
+            - "utc.iso8601.seconds"
+            - "uuid4.str"
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.channel.gt/000"
         created: "2026-08-11T14:20:00Z"
@@ -3670,14 +3738,15 @@ types:
     versions:
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.create.cmd/001"
-        created: "2026-10-07T22:15:00Z"
-        status: "staging"
+        created: "2026-10-15T14:55:00Z"
+        status: "published"
         summary: >-
           - Record: oneOf gains gw.weather.seasonal.template.gt/000
+          - Record: gw.weather.channel.gt and gw.weather.forecast.bundle.gt at 001
         direct_dependencies:
           structural:
-            - "gw.weather.channel.gt:000"
-            - "gw.weather.forecast.bundle.gt:000"
+            - "gw.weather.channel.gt:001"
+            - "gw.weather.forecast.bundle.gt:001"
             - "gw.weather.forecast.channel.gt:000"
             - "gw.weather.location.gt:000"
             - "gw.weather.seasonal.template.gt:000"
@@ -3713,12 +3782,28 @@ types:
             - "utc.milliseconds"
 
   gw.weather.forecast.bundle.gt:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "The subscribable curated set of forecast channels sharing one slice grid and emission schedule; embeds the forecast channels and their observed targets."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/001"
+        created: "2026-10-15T14:55:00Z"
+        status: "published"
+        summary: >-
+          - TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001
+        direct_dependencies:
+          structural:
+            - "gw.weather.channel.gt:001"
+            - "gw.weather.forecast.channel.gt:000"
+            - "left.right.dot"
+            - "non.empty.string"
+            - "non.negative.int"
+            - "positive.int"
+            - "utc.iso8601.seconds"
+            - "uuid4.str"
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/000"
         created: "2026-08-12T13:10:00Z"
@@ -3802,7 +3887,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.seasonal.template.gt/000"
         created: "2026-10-07T22:15:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version."
         direct_dependencies:
           structural:
@@ -3969,12 +4054,25 @@ types:
             - "spaceheat.telemetry.name:006"
 
   gw1.unit.quantity.projection:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "Canonical projection from gw1.unit to gw1.quantity."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw1.unit.quantity.projection/001"
+        created: "2026-10-15T11:35:00Z"
+        status: "staging"
+        summary: >-
+          - Unit: gw1.unit 001 -> 003
+          - Quantity: gw1.quantity 001 -> 003
+          - projection.table: add DollarsX1000 -> Currency, MilesPerHourX1000 -> WindSpeed, KilowattHoursX1000 -> Energy, WattsPerSquareMeter -> Irradiance
+        direct_dependencies:
+          structural:
+            - "gw1.quantity:003"
+            - "gw1.unit:003"
+
       "000":
         schema_url: "https://schemas.electricity.works/types/gw1.unit.quantity.projection/000"
         created: "2026-03-04T19:00:00Z"
@@ -4890,7 +4988,7 @@ types:
     versions:
       "013":
         schema_url: "https://schemas.electricity.works/types/layout.lite/013"
-        created: "2026-09-30T18:35:00Z"
+        created: "2026-10-15T11:35:00Z"
         status: "staging"
         summary: >-
           - ShNodes: spaceheat.node.gt:301 -> 303
@@ -4902,8 +5000,8 @@ types:
         direct_dependencies:
           structural:
             - "data.channel.gt:003"
-            - "derived.channel.gt:001"
-            - "gw1.tank.temp.calibration.map:000"
+            - "derived.channel.gt:003"
+            - "gw1.tank.temp.calibration.map:001"
             - "ha1.params:006"
             - "i2c.multichannel.dt.relay.component.gt:004"
             - "left.right.dot"
@@ -6474,7 +6572,7 @@ types:
       "003":
         schema_url: "https://schemas.electricity.works/types/synced.readings.bundle/003"
         status: "staging"
-        created: "2026-07-31T21:07:41Z"
+        created: "2026-10-15T11:35:00Z"
         summary: >-
           - Add LatePersistenceTimePeriodList: array of utc.iso8601.seconds arrays
           - Add OperatingStateSequenceList: array of operating.state.sequence:000
@@ -6485,7 +6583,7 @@ types:
             - "operating.state.sequence:000"
             - "utc.iso8601.seconds"
           axiom:
-            - "gw1.unit:001"
+            - "gw1.unit:003"
             - "spaceheat.telemetry.name:007"
       "002":
         schema_url: "https://schemas.electricity.works/types/synced.readings.bundle/002"

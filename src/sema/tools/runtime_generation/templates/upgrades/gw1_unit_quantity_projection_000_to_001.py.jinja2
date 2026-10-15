@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ gw1_unit_quantity_projection_001_class_name }}:
+        """
+        - Unit: gw1.unit 001 -> 003
+        - Quantity: gw1.quantity 001 -> 003
+        - projection.table: add DollarsX1000 -> Currency, MilesPerHourX1000 -> WindSpeed, KilowattHoursX1000 -> Energy, WattsPerSquareMeter -> Irradiance
+        """
+        data = self.model_dump()
+        data["unit"] = self.unit.value
+        data["quantity"] = self.quantity.value
+        data["version"] = "001"
+        return {{ gw1_unit_quantity_projection_001_class_name }}.model_validate(data)

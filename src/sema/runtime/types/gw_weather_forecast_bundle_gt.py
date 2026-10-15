@@ -12,7 +12,7 @@ from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastC
 
 
 class GwWeatherForecastBundleGt(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/000"""
+    """Sema: https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/001"""
 
     name: LeftRightDot
     display_name: NonEmptyString
@@ -28,7 +28,7 @@ class GwWeatherForecastBundleGt(SemaType):
     type_name: Literal["gw.weather.forecast.bundle.gt"] = (
         "gw.weather.forecast.bundle.gt"
     )
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwWeatherForecastBundleGt":

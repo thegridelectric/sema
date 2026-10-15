@@ -45,7 +45,7 @@ properties:
   DerivedChannels:
     type: array
     items:
-      $ref: "https://schemas.electricity.works/types/derived.channel.gt/002"
+      $ref: "https://schemas.electricity.works/types/derived.channel.gt/003"
     description: >
       List of computed telemetry channels derived from other sources,
       including raw data channels.

@@ -5,17 +5,17 @@ from sema.runtime.codec import default_codec
 from sema.runtime.types.gw_readings import GwReadings
 from tests.runtime.refusal import assert_refused, axioms, mutated
 
-# The word declares no example; its positive fixture is the mutation base.
+# The latest version declares no example; its positive fixture is the mutation base.
 BASE = json.loads(
-    (Path(__file__).parent / "fixtures" / "v000" / "default.json").read_text()
+    (Path(__file__).parent / "fixtures" / "v001" / "default.json").read_text()
 )
 
 
-def test_gw_readings_latest_version_is_000() -> None:
-    assert GwReadings.version_value() == "000"
+def test_gw_readings_latest_version_is_001() -> None:
+    assert GwReadings.version_value() == "001"
 
 
-def test_default_v000_loads_as_gw_readings() -> None:
+def test_default_v000_upgrades_to_latest() -> None:
     fixture = Path(__file__).parent / "fixtures" / "v000" / "default.json"
     payload = json.loads(fixture.read_text())
 
@@ -23,13 +23,22 @@ def test_default_v000_loads_as_gw_readings() -> None:
 
     assert isinstance(decoded, GwReadings)
     assert decoded.type_name == "gw.readings"
-    assert decoded.version == "000"
+    assert decoded.version == "001"
     assert decoded.channels[0].name == "vdc-relay"
     assert decoded.channel_readings_list[0].channel_name == "vdc-relay"
 
 
+def test_default_v001_loads_as_gw_readings() -> None:
+    fixture = Path(__file__).parent / "fixtures" / "v001" / "default.json"
+    payload = json.loads(fixture.read_text())
+    decoded = default_codec.from_dict(payload)
+    assert isinstance(decoded, GwReadings)
+    assert decoded.type_name == "gw.readings"
+    assert decoded.version == "001"
+
+
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("gw.readings", "000") == {1: [], 2: []}
+    assert axioms("gw.readings", "001") == {1: [], 2: []}
 
 
 def test_axiom_1_refuses_window_end_not_after_start() -> None:

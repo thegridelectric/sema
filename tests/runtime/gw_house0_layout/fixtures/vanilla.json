@@ -1724,7 +1724,7 @@
   "DerivedChannels": [
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "0d594efd-8128-46d1-9911-e52bf1dd9f00",
       "Name": "transactive-power",
       "CreatedByNodeName": "power-meter",
@@ -1741,7 +1741,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "34bf8e48-4201-4805-aff5-20099cc09767",
       "Name": "primary-flow",
       "CreatedByNodeName": "derived-generator",
@@ -1758,7 +1758,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "552099e3-d749-46e8-b697-c4aea295361f",
       "Name": "usable-energy",
       "CreatedByNodeName": "derived-generator",
@@ -1779,7 +1779,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "76ecde85-6779-412c-8b60-6e2a8a19b843",
       "Name": "required-energy",
       "CreatedByNodeName": "derived-generator",
@@ -1800,7 +1800,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "9dc078f8-8d98-485b-87bb-74e3bdd1524f",
       "Name": "zone1-living-rm-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -1822,7 +1822,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "2ad64f86-4cc9-4019-88e7-f35fdaa602d4",
       "Name": "zone2-bedroom-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -1844,7 +1844,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "cf45e5ed-4941-46ed-b0c1-4a94001e69e1",
       "Name": "buffer-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -1868,7 +1868,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "7b47e856-51c7-4201-b080-ddf7ab7ee994",
       "Name": "buffer-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -1884,7 +1884,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "688f4d2c-bd5b-4fd0-b873-0efe34e42c10",
       "Name": "buffer-depth3",
       "CreatedByNodeName": "derived-generator",
@@ -1908,7 +1908,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "fa6349ab-1568-4130-86de-fc9990d926eb",
       "Name": "tank1-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -1932,7 +1932,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "be1d6066-3dc8-4b41-80f5-b492b432e5b2",
       "Name": "tank1-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -1948,7 +1948,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "8bd72e90-4cfa-4e3a-a867-14939e91d75e",
       "Name": "tank1-depth3",
       "CreatedByNodeName": "derived-generator",
@@ -1972,7 +1972,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "0863966d-b9bd-49ce-95a6-68482a96c084",
       "Name": "tank2-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -1996,7 +1996,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "6b667006-af7d-493c-b355-2aadc1434e12",
       "Name": "tank2-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -2012,7 +2012,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "9ba8bcaf-6cbf-4891-84b0-459e48b51921",
       "Name": "tank2-depth3",
       "CreatedByNodeName": "derived-generator",
@@ -2036,7 +2036,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "11a38810-2000-4f06-8e81-84602eb00c71",
       "Name": "tank3-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -2060,7 +2060,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "b2cf55dd-e99b-4c77-b803-4da037c4dcb8",
       "Name": "tank3-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -2076,7 +2076,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "d35deec2-bdee-471a-939e-1f6e2bd7a7c9",
       "Name": "tank3-depth3",
       "CreatedByNodeName": "derived-generator",

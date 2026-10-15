@@ -177,7 +177,7 @@ x-gridworks:
 
           - Unit SHALL be a valid value from the specified UnitType version:
 
-            gw1.unit → version 001
+            gw1.unit → version 003
             spaceheat.telemetry.name → version 007
 
     - number: 6

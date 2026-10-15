@@ -32,6 +32,7 @@ types:
       used_by:
       - gw.alert:000
       - gw.readings:000
+      - gw.readings:001
       - report:001
       - report:002
       - report:003
@@ -76,6 +77,7 @@ types:
       - gw.house0.layout:000
       - gw.nolan.layout:000
       - gw.readings:000
+      - gw.readings:001
       - layout.lite:013
       - scada.control.capabilities:001
       - scada.control.capabilities:002
@@ -91,12 +93,15 @@ types:
       used_by:
       - layout.lite:011
       - layout.lite:012
-      - layout.lite:013
     '002':
+      used_by:
+      - gw.readings:000
+    '003':
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
-      - gw.readings:000
+      - gw.readings:001
+      - layout.lite:013
   device.component.gt:
     '000':
       used_by:
@@ -224,12 +229,17 @@ types:
     '000':
       used_by:
       - gw.weather.create.cmd:000
-      - gw.weather.create.cmd:001
       - gw.weather.forecast.bundle.gt:000
+    '001':
+      used_by:
+      - gw.weather.create.cmd:001
+      - gw.weather.forecast.bundle.gt:001
   gw.weather.forecast.bundle.gt:
     '000':
       used_by:
       - gw.weather.create.cmd:000
+    '001':
+      used_by:
       - gw.weather.create.cmd:001
   gw.weather.forecast.channel.gt:
     '000':
@@ -237,6 +247,7 @@ types:
       - gw.weather.create.cmd:000
       - gw.weather.create.cmd:001
       - gw.weather.forecast.bundle.gt:000
+      - gw.weather.forecast.bundle.gt:001
   gw.weather.location.gt:
     '000':
       used_by:
@@ -279,11 +290,16 @@ types:
       - layout.lite:010
       - layout.lite:011
       - layout.lite:012
+    '001':
+      used_by:
       - layout.lite:013
   gw1.unit.quantity.projection:
     '000':
       used_by:
       - derived.channel.gt:002
+    '001':
+      used_by:
+      - derived.channel.gt:003
   gw1.zone.call.circuit:
     '000':
       used_by:
@@ -839,6 +855,7 @@ enums:
       used_by:
       - derived.channel.gt:001
       - derived.channel.gt:002
+      - derived.channel.gt:003
   gw1.quantity:
     '000':
       used_by:
@@ -849,13 +866,18 @@ enums:
     '001':
       used_by:
       - derived.channel.gt:002
-      - gw.house0.layout:000
-      - gw.nolan.layout:000
       - gw1.unit.quantity.projection:000
     '002':
       used_by:
       - gw.weather.channel.gt:000
       - gw.weather.forecast.bundle.gt:000
+    '003':
+      used_by:
+      - derived.channel.gt:003
+      - gw.house0.layout:000
+      - gw.nolan.layout:000
+      - gw.weather.channel.gt:001
+      - gw1.unit.quantity.projection:001
   gw1.seasonal.storage.mode:
     '000':
       used_by:
@@ -896,10 +918,15 @@ enums:
       - gw1.unit.quantity.projection:000
       - synced.readings.bundle:001
       - synced.readings.bundle:002
-      - synced.readings.bundle:003
     '002':
       used_by:
       - gw.weather.channel.gt:000
+    '003':
+      used_by:
+      - derived.channel.gt:003
+      - gw.weather.channel.gt:001
+      - gw1.unit.quantity.projection:001
+      - synced.readings.bundle:003
   gw2.lc.top.state:
     '000':
       used_by:
@@ -1163,6 +1190,7 @@ formats:
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002
+    - derived.channel.gt:003
     - energy.instruction:000
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
@@ -1206,11 +1234,14 @@ formats:
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
     - gw.readings:000
+    - gw.readings:001
     - gw.recorded.setpoints:000
     - gw.scada.commit:000
     - gw.tou.tariff:000
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.channel.gt:000
     - gw.weather.forecast:000
     - gw.weather.location.gt:000
@@ -1301,7 +1332,9 @@ formats:
     - gw.opsgenie.alert.create:000
     - gw.opsgenie.alert:000
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.channel.gt:000
     - gw.weather.location.gt:000
     - hp.device.type.gt:000
@@ -1316,7 +1349,9 @@ formats:
     - gw.native.gpio.pin:000
     - gw.operational.params:000
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw1.scada.device.type.gt:000
     - i2c.bit.address:000
     - i2c.bus:000
@@ -1407,6 +1442,7 @@ formats:
     - component.attribute.class.gt:001
     - derived.channel.gt:001
     - derived.channel.gt:002
+    - derived.channel.gt:003
     - dfr.component.gt:000
     - dfr.config:000
     - electric.meter.cac.gt:001
@@ -1434,7 +1470,9 @@ formats:
     - gw.opsgenie.alert:000
     - gw.water.store:000
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.channel.gt:000
     - gw1.hvac.zone:000
     - gw1.scada.device.type.gt:000
@@ -1519,6 +1557,7 @@ formats:
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002
+    - derived.channel.gt:003
     - dfr.config:000
     - electric.meter.channel.config:000
     - flow.hall.params:101
@@ -1608,7 +1647,9 @@ formats:
   utc.iso8601.seconds:
     used_by:
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.channel.gt:000
     - gw.weather.forecast:000
     - gw.weather.observation:000
@@ -1652,6 +1693,7 @@ formats:
     - gw.house.operating.status:000
     - gw.opsgenie.alert:000
     - gw.readings:000
+    - gw.readings:001
     - gw.scada.commit:000
     - gw.weather.forecast:000
     - i2c.result:000
@@ -1743,6 +1785,7 @@ formats:
     - derived.channel.gt:000
     - derived.channel.gt:001
     - derived.channel.gt:002
+    - derived.channel.gt:003
     - device.component.gt:000
     - dfr.component.gt:000
     - electric.meter.cac.gt:001
@@ -1789,7 +1832,9 @@ formats:
     - gw.opsgenie.alert.create:000
     - gw.opsgenie.alert:000
     - gw.weather.channel.gt:000
+    - gw.weather.channel.gt:001
     - gw.weather.forecast.bundle.gt:000
+    - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.channel.gt:000
     - gw.weather.location.gt:000
     - gw.weather.seasonal.template.gt:000

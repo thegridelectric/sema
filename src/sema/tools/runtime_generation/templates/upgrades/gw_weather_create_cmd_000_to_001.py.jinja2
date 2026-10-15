@@ -1,6 +1,7 @@
     def upgrade(self) -> {{ gw_weather_create_cmd_001_class_name }}:
         """
         - Record: oneOf gains gw.weather.seasonal.template.gt/000
+        - Record: gw.weather.channel.gt and gw.weather.forecast.bundle.gt at 001
         """
         data = self.model_dump()
         data["version"] = "001"

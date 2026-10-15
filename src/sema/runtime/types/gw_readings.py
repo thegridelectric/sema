@@ -9,7 +9,7 @@ from sema.runtime.types.derived_channel_gt import DerivedChannelGt
 
 
 class GwReadings(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.readings/000"""
+    """Sema: https://schemas.electricity.works/types/gw.readings/001"""
 
     ta_alias: LeftRightDot
     start_unix_ms: UTCMilliseconds
@@ -17,7 +17,7 @@ class GwReadings(SemaType):
     channels: list[DataChannelGt | DerivedChannelGt]
     channel_readings_list: list[ChannelReadings]
     type_name: Literal["gw.readings"] = "gw.readings"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwReadings":

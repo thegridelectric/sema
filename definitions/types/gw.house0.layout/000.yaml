@@ -47,7 +47,7 @@ properties:
   DerivedChannels:
     type: array
     items:
-      $ref: "https://schemas.electricity.works/types/derived.channel.gt/002"
+      $ref: "https://schemas.electricity.works/types/derived.channel.gt/003"
     description: >
       Computed telemetry channels (calibrated tank depths, zone heat-call +
       predicted setpoint, usable/required energy, ...).

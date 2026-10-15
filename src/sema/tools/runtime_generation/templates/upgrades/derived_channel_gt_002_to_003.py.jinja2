@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ derived_channel_gt_003_class_name }}:
+        """
+        - OutputUnit: gw1.unit 001 -> 003
+        - OutputQuantity: gw1.quantity 001 -> 003
+        - OutputUnitQuantityConsistency axiom: gw1.unit.quantity.projection 000 -> 001
+        """
+        data = self.model_dump()
+        data["output_unit"] = self.output_unit.value
+        data["output_quantity"] = self.output_quantity.value
+        data["version"] = "003"
+        return {{ derived_channel_gt_003_class_name }}.model_validate(data)

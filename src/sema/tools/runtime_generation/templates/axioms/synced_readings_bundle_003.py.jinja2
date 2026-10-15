@@ -69,11 +69,11 @@
         Axiom 5: UnitTypeAndValueRepresentationConsistency
         For each entry in ChannelReadingsList: - UnitType SHALL equal one of: gw1.unit
         spaceheat.telemetry.name - Unit SHALL be a valid value from the specified UnitType
-        version: gw1.unit → version 001 spaceheat.telemetry.name → version 007
+        version: gw1.unit → version 003 spaceheat.telemetry.name → version 007
         """
-        if {{ gw1_unit_001_class_name }}.enum_version() != "001":
+        if {{ gw1_unit_003_class_name }}.enum_version() != "003":
             raise ValueError(
-                f'UnitTypeAndValueRepresentationConsistency: Gw1Unit version should be "001", is { {{ gw1_unit_001_class_name }}.enum_version()}'
+                f'UnitTypeAndValueRepresentationConsistency: Gw1Unit version should be "003", is { {{ gw1_unit_003_class_name }}.enum_version()}'
             )
 
         if {{ spaceheat_telemetry_name_007_class_name }}.enum_version() != "007":
@@ -84,8 +84,8 @@
 
         errors = []
         for crl in self.channel_readings_list:
-            if crl.unit_type == {{ gw1_unit_001_class_name }}.enum_name():
-                if crl.unit not in {{ gw1_unit_001_class_name }}.values():
+            if crl.unit_type == {{ gw1_unit_003_class_name }}.enum_name():
+                if crl.unit not in {{ gw1_unit_003_class_name }}.values():
                     errors.append(f"{crl.channel_name}: {crl.unit} not found in {crl.unit_type}")
             elif crl.unit_type == {{ spaceheat_telemetry_name_007_class_name }}.enum_name():
                 if crl.unit not in {{ spaceheat_telemetry_name_007_class_name }}.values():

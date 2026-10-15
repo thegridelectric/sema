@@ -2118,7 +2118,7 @@
   "DerivedChannels": [
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "abaadb0a-b385-4264-8a32-f5327ab7a33e",
       "Name": "transactive-power",
       "CreatedByNodeName": "power-meter",
@@ -2140,7 +2140,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "b802a494-d0ab-412f-90f8-858e76b3835c",
       "Name": "usable-energy",
       "CreatedByNodeName": "derived-generator",
@@ -2161,7 +2161,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "2d36d128-2faa-4cb9-9db5-f1ce4a10f14c",
       "Name": "required-energy",
       "CreatedByNodeName": "derived-generator",
@@ -2182,7 +2182,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "621a3ff0-f0b9-476b-92df-5bf56529a42c",
       "Name": "zone1-bedrooms-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -2203,7 +2203,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "551007e2-2cfe-45e3-949e-98cbcbaf3aab",
       "Name": "zone2-living-rm-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -2224,7 +2224,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "1ce13259-7dec-4dcf-ab14-deb0ef3bc1c6",
       "Name": "zone3-upstairs-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -2245,7 +2245,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "6926ff94-ab56-4c6a-b774-810995a0fe96",
       "Name": "zone4-garage-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -2266,7 +2266,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "27af42a4-32b0-4177-a5a5-9207c35c1792",
       "Name": "zone5-living-rm-fancoil-heat-call",
       "CreatedByNodeName": "derived-generator",
@@ -2287,7 +2287,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "396bbdb3-f376-4f07-90d1-bfa754dfa6e7",
       "Name": "buffer-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -2311,7 +2311,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "f4dfac21-26bb-44df-8d2c-e1047aba0896",
       "Name": "buffer-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -2327,7 +2327,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "01eb3f0c-e18b-46f0-85f0-e9839b2becee",
       "Name": "buffer-depth3",
       "CreatedByNodeName": "derived-generator",
@@ -2351,7 +2351,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "a3c75832-3045-4c19-bd85-a6f81374a3ba",
       "Name": "tank1-depth1",
       "CreatedByNodeName": "derived-generator",
@@ -2375,7 +2375,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "86be75af-3c6f-4b8f-b678-7d62c1e84607",
       "Name": "tank1-depth2",
       "CreatedByNodeName": "derived-generator",
@@ -2391,7 +2391,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "483f826d-d15b-4f5b-a9fb-fcbce79d52d3",
       "Name": "tank1-depth3",
       "CreatedByNodeName": "derived-generator",
@@ -2415,7 +2415,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "71ba9a78-d5e7-413e-95c6-bb2b143cdf51",
       "Name": "fancoil-swt",
       "CreatedByNodeName": "derived-generator",
@@ -2431,7 +2431,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "bde02a52-8a46-418b-b8b2-c8ef45795ac4",
       "Name": "fancoil-rwt",
       "CreatedByNodeName": "derived-generator",
@@ -2447,7 +2447,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "edfa99b2-4565-4da8-b5af-2d2b769a0bd4",
       "Name": "floor-swt",
       "CreatedByNodeName": "derived-generator",
@@ -2463,7 +2463,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "b9ee2663-f253-49ea-9973-da344ba482c8",
       "Name": "floor-rwt",
       "CreatedByNodeName": "derived-generator",
@@ -2479,7 +2479,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "3d82a3d9-bd27-45f6-bbcc-3279d2a63b4f",
       "Name": "zone1-bedrooms-floor-temp",
       "CreatedByNodeName": "derived-generator",
@@ -2495,7 +2495,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "b27c2d74-2c9f-4a3b-bea7-ac7497e792d8",
       "Name": "zone2-living-rm-floor-temp",
       "CreatedByNodeName": "derived-generator",
@@ -2511,7 +2511,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "6765e5a1-6981-4e93-88fd-eb461697f967",
       "Name": "zone4-garage-floor-temp",
       "CreatedByNodeName": "derived-generator",
@@ -2527,7 +2527,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "3f1bb4af-d193-4fba-be4f-73f0b376b75f",
       "Name": "zone1-bedrooms-set",
       "CreatedByNodeName": "derived-generator",
@@ -2549,7 +2549,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "4da8eb97-eab8-4d9b-80c9-98078e275341",
       "Name": "zone2-living-rm-set",
       "CreatedByNodeName": "derived-generator",
@@ -2571,7 +2571,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "332990e1-44f8-4252-8830-793d916dcf1e",
       "Name": "zone3-upstairs-set",
       "CreatedByNodeName": "derived-generator",
@@ -2593,7 +2593,7 @@
     },
     {
       "TypeName": "derived.channel.gt",
-      "Version": "002",
+      "Version": "003",
       "Id": "6ed9fe4f-ff19-4438-b815-3722959c2855",
       "Name": "zone4-garage-set",
       "CreatedByNodeName": "derived-generator",

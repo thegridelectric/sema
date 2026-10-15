@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ gw_weather_channel_gt_001_class_name }}:
+        """
+        - Quantity: gw1.quantity 002 -> 003
+        - Unit: gw1.unit 002 -> 003
+        """
+        data = self.model_dump()
+        data["quantity"] = self.quantity.value
+        data["unit"] = self.unit.value
+        data["version"] = "001"
+        return {{ gw_weather_channel_gt_001_class_name }}.model_validate(data)

@@ -9,8 +9,10 @@ from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UUID4Str
-from sema.runtime.types.derived_channel_gt import DerivedChannelGt
-from sema.runtime.types.gw1_unit_quantity_projection import Gw1UnitQuantityProjection
+from sema.runtime.types.old_versions.derived_channel_gt_002 import DerivedChannelGt002
+from sema.runtime.types.old_versions.gw1_unit_quantity_projection_000 import (
+    Gw1UnitQuantityProjection000,
+)
 
 
 class DerivedChannelGt001(SemaType):
@@ -59,7 +61,7 @@ class DerivedChannelGt001(SemaType):
                 )
         return self
 
-    def upgrade(self) -> DerivedChannelGt:
+    def upgrade(self) -> DerivedChannelGt002:
         """
         - OutputUnit: gw1.unit 000 -> 001
         - OutputUnit: required
@@ -74,9 +76,9 @@ class DerivedChannelGt001(SemaType):
             data["output_quantity"] = Gw1Quantity001.Unknown
         else:
             data["output_unit"] = self.output_unit.value
-            data["output_quantity"] = Gw1UnitQuantityProjection.project(
+            data["output_quantity"] = Gw1UnitQuantityProjection000.project(
                 Gw1Unit001(self.output_unit.value)
             )
 
         data["version"] = "002"
-        return DerivedChannelGt.model_validate(data)
+        return DerivedChannelGt002.model_validate(data)
