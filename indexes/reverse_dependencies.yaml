@@ -1229,6 +1229,7 @@ formats:
     - gw.command.interface:000
     - gw.experiment.run:000
     - gw.experiment.run:001
+    - gw.hack.alert.silences:000
     - gw.house.operating.status:000
     - gw.operational.params:000
     - gw.opsgenie.alert.close:000

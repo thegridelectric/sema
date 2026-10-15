@@ -283,6 +283,8 @@ types:
     '000': sha256:a35d69a7acb0a96791ba74ef1f880d1570d74a52577d6581f866de8a024e8b9a
   gw.experiment.run:
     '000': sha256:99b1fec0f628c5d7289908af7714cdf85d441ae5efc03f6acfa411262f983d52
+  gw.hack.alert.silences:
+    '000': sha256:9ef25128d7cdf6d2f84b4618af3b146360869bc99b86f26309e657a1168f55df
   gw.opsgenie.alert:
     '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a
   gw.opsgenie.alert.close:
@@ -312,6 +314,8 @@ types:
     '000': sha256:2b8d9bc2c4227f63bf5d75b843d14edaaee1d9177c5c4f28812b94e535562d95
   gw.weather.observation:
     '000': sha256:fc01375d1c4175dde196dd50ca5e36a7bd45824398fbfd97079c25ff0ebe275c
+  gw.weather.seasonal.template.gt:
+    '000': sha256:913e11a5031eb213a649edd015fb9078f39d9bbff17c238ab62b9b27ca88e9eb
   gw0.required.energy.layered:
     '000': sha256:5b91598780765c52c427380282941c4bc778a98aa46ed0e54f1abfe770504718
   gw0.usable.energy.layered:
@@ -484,5 +488,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  gw.weather.seasonal.template.gt:
-    '000': sha256:913e11a5031eb213a649edd015fb9078f39d9bbff17c238ab62b9b27ca88e9eb

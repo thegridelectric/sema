@@ -969,6 +969,13 @@ types:
       - utc.milliseconds
       types: []
       versionless_types: []
+  gw.hack.alert.silences:
+    '000':
+      enums: []
+      formats:
+      - left.right.dot
+      types: []
+      versionless_types: []
   gw.house.operating.status:
     '000':
       enums:

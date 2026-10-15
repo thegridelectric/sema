@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_hack_alert_silences_000_class_name }}":
+        """
+        Axiom 1: TerminalAssetAliases
+        Every value of SilencedGNodeAliases SHALL identify a TerminalAsset and therefore
+        SHALL end with the suffix ".ta".
+        """
+        for alias in self.silenced_g_node_aliases:
+            if not alias.endswith(".ta"):
+                raise ValueError(
+                    f'TerminalAssetAliases: Axiom 1: SilencedGNodeAliases entry ({alias}) does not end with the suffix ".ta".'
+                )
+        return self

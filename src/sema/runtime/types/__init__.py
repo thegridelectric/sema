@@ -96,6 +96,7 @@ from sema.runtime.types.gw_dispatch_hold import GwDispatchHold
 from sema.runtime.types.gw_dispatch_nack import GwDispatchNack
 from sema.runtime.types.gw_element_backup import GwElementBackup
 from sema.runtime.types.gw_experiment_run import GwExperimentRun
+from sema.runtime.types.gw_hack_alert_silences import GwHackAlertSilences
 from sema.runtime.types.gw_house0_family_params import GwHouse0FamilyParams
 from sema.runtime.types.gw_house0_layout import GwHouse0Layout
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
@@ -322,6 +323,7 @@ __all__ = [
     "GwDispatchNack",
     "GwElementBackup",
     "GwExperimentRun",
+    "GwHackAlertSilences",
     "GwHouse0FamilyParams",
     "GwHouse0Layout",
     "GwHouseOperatingStatus",

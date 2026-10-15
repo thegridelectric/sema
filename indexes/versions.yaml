@@ -640,6 +640,13 @@ types:
       "000":
         summary: "Initial Sema version. House and About present together (axiom 1)."
 
+  gw.hack.alert.silences:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial Sema version. Src and the list of silenced terminal asset aliases (axiom 1: every alias ends in .ta). A stop gap until an alert manager service owns silencing."
+
   gw.house.operating.status:
     latest_version: "000"
     versioning_strategy: "literal"

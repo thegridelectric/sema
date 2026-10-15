@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-15T15:00:00Z"
+  last_updated: "2026-10-15T15:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3316,6 +3316,22 @@ types:
             - "left.right.dot"
             - "non.empty.string"
             - "uuid4.str"
+
+  gw.hack.alert.silences:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The houses whose alerts an alerting service is not paging right now, as a whole-list snapshot."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.hack.alert.silences/000"
+        created: "2026-10-15T15:30:00Z"
+        status: "published"
+        summary: "Initial Sema version. Src and the list of silenced terminal asset aliases (axiom 1: every alias ends in .ta). A stop gap until an alert manager service owns silencing."
+        direct_dependencies:
+          structural:
+            - "left.right.dot"
 
   gw.house.operating.status:
     latest_version: "000"

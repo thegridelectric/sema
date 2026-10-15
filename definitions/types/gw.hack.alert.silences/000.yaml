@@ -1,0 +1,49 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.hack.alert.silences/000"
+
+title: "gw.hack.alert.silences"
+type: object
+description: >
+  The houses whose alerts an alerting service is not paging right now,
+  as a whole-list snapshot.
+
+properties:
+
+  Src:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The service that published the list.
+
+  SilencedGNodeAliases:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The terminal assets whose alerts are not paged. Empty means every
+      house pages.
+
+  TypeName:
+    const: "gw.hack.alert.silences"
+
+  Version:
+    const: "000"
+
+required:
+  - Src
+  - SilencedGNodeAliases
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "TerminalAssetAliases"
+      statement: >
+        Every value of SilencedGNodeAliases SHALL identify a TerminalAsset
+        and therefore SHALL end with the suffix ".ta".
+  extended_description: >
+    This is a stop gap until a GridWorks alert manager service
+    responsible for silencing is built.

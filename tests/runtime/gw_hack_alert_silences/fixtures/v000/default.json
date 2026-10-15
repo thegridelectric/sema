@@ -1,0 +1,8 @@
+{
+  "TypeName": "gw.hack.alert.silences",
+  "Version": "000",
+  "Src": "hw1.alerts",
+  "SilencedGNodeAliases": [
+    "hw1.isone.me.versant.keene.elm.ta"
+  ]
+}
