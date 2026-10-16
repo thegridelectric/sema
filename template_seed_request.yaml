@@ -6,8 +6,10 @@
 # directly; they are pulled in through type dependencies.
 #
 # For each type or enum, choose exactly one of:
-#   {}                         Use only the latest registry version.
-#   include_all_versions: true Include every registry-declared version.
+#   {}                         Use only the latest version (published-only
+#                              builds: the latest published version).
+#   include_all_versions: true Include every registry-declared version
+#                              (published-only builds: every published one).
 #   versions: ["001", "003"]   Include explicit versions. For types, seed
 #                              expansion also fills in intermediate versions.
 

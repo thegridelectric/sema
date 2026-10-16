@@ -274,7 +274,7 @@ def prepare_snapshot(seed_request: Path, *, allow_staged: bool = False) -> Path:
     # silently guts whatever a consumer mirrors next (rsync --delete).
     with tempfile.TemporaryDirectory() as tmp_dir:
         expanded_tmp = Path(tmp_dir) / "seed_expanded.yaml"
-        expand_seed(seed_request_path, expanded_tmp)
+        expand_seed(seed_request_path, expanded_tmp, published_only=not allow_staged)
         seed = load_seed(expanded_tmp)
         staging = _validate_staging_closure(
             seed, public_registry, allow_staged=allow_staged
