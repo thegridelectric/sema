@@ -1,0 +1,79 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_weather_forecast_001_class_name }}":
+        """
+        Axiom 1: NonEmptyValues
+        TempValues, WindSpeedValues and IrradianceValues SHALL be non-empty.
+        """
+        if (
+            len(self.temp_values) == 0
+            or len(self.wind_speed_values) == 0
+            or len(self.irradiance_values) == 0
+        ):
+            raise ValueError(
+                "Axiom 1 (NonEmptyValues) failed: TempValues, WindSpeedValues "
+                "and IrradianceValues must be non-empty."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ gw_weather_forecast_001_class_name }}":
+        """
+        Axiom 2: EqualValueLengths
+        len(TempValues), len(WindSpeedValues) and len(IrradianceValues) SHALL be
+        equal.
+        """
+        if not (
+            len(self.temp_values)
+            == len(self.wind_speed_values)
+            == len(self.irradiance_values)
+        ):
+            raise ValueError(
+                "Axiom 2 (EqualValueLengths) failed: "
+                f"len(TempValues)={len(self.temp_values)}, "
+                f"len(WindSpeedValues)={len(self.wind_speed_values)} and "
+                f"len(IrradianceValues)={len(self.irradiance_values)} must be equal."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> "{{ gw_weather_forecast_001_class_name }}":
+        """
+        Axiom 3: DistinctChannels
+        TempChannelName, WindSpeedChannelName and IrradianceChannelName SHALL be
+        pairwise distinct.
+        """
+        names = (
+            self.temp_channel_name,
+            self.wind_speed_channel_name,
+            self.irradiance_channel_name,
+        )
+        if len(set(names)) != len(names):
+            raise ValueError(
+                "Axiom 3 (DistinctChannels) failed: TempChannelName, "
+                "WindSpeedChannelName and IrradianceChannelName must be pairwise "
+                f"distinct; got {names!r}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_4(self) -> "{{ gw_weather_forecast_001_class_name }}":
+        """
+        Axiom 4: ForecastNaming
+        a. BundleName SHALL contain "forecast" as an interior segment.
+        b. TempChannelName SHALL contain "forecast" as an interior segment.
+        c. WindSpeedChannelName SHALL contain "forecast" as an interior segment.
+        d. IrradianceChannelName SHALL contain "forecast" as an interior segment.
+        """
+        for label, value in (
+            ("a", self.bundle_name),
+            ("b", self.temp_channel_name),
+            ("c", self.wind_speed_channel_name),
+            ("d", self.irradiance_channel_name),
+        ):
+            if "forecast" not in value.split(".")[1:-1]:
+                raise ValueError(
+                    f"Axiom 4 (ForecastNaming, clause {label}) failed: "
+                    f"{value!r} must contain 'forecast' as an interior "
+                    "segment."
+                )
+        return self

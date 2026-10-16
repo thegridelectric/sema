@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ gw_weather_forecast_001_class_name }}:
+        """
+        - Fidelity: removed; TempFidelity, WindSpeedFidelity, IrradianceFidelity: add
+        - IrradianceChannelName, IrradianceValues, IrradianceSourceUpdatedTime: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ gw_weather_forecast_000_class_name }} cannot be upgraded to "
+            "{{ gw_weather_forecast_001_class_name }} without context: v001 adds an "
+            "irradiance series that only the emitting service's irradiance "
+            "forecaster holds, and it SHALL NOT be fabricated."
+        )
