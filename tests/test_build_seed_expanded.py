@@ -6,12 +6,47 @@ import yaml
 from sema.tools.build_seed_expanded import expand_seed
 
 
-def expand_request(tmp_path: Path, request: str) -> dict:
+def expand_request(tmp_path: Path, request: str, *, published_only: bool = False) -> dict:
     request_path = tmp_path / "seed_request.yaml"
     output_path = tmp_path / "seed_expanded.yaml"
     request_path.write_text(request)
-    expand_seed(request_path, output_path)
+    expand_seed(request_path, output_path, published_only=published_only)
     return yaml.safe_load(output_path.read_text())
+
+
+# layout.lite: 001-012 published, 013 staging (the registry as it stands).
+LAYOUT_LITE = """
+initial_targets:
+  types:
+    layout.lite: %s
+"""
+
+
+def test_published_only_bare_target_is_latest_published(tmp_path: Path) -> None:
+    expanded = expand_request(tmp_path, LAYOUT_LITE % "{}", published_only=True)
+
+    assert expanded["initial_targets"] == ["layout.lite:012"]
+    assert "013" not in expanded["worklist"]["types"]["layout.lite"]
+
+
+def test_published_only_include_all_passes_over_staging(tmp_path: Path) -> None:
+    expanded = expand_request(
+        tmp_path, LAYOUT_LITE % "\n      include_all_versions: true", published_only=True
+    )
+
+    versions = set(expanded["worklist"]["types"]["layout.lite"])
+    assert "012" in versions
+    assert "013" not in versions
+
+
+def test_published_only_keeps_an_explicit_staging_version(tmp_path: Path) -> None:
+    # Listed outright, a staging version is taken as written; the snapshot's
+    # closure check is what refuses it.
+    expanded = expand_request(
+        tmp_path, LAYOUT_LITE % '\n      versions: ["013"]', published_only=True
+    )
+
+    assert expanded["initial_targets"] == ["layout.lite:013"]
 
 
 def test_structured_seed_request_uses_latest_for_empty_options(tmp_path: Path) -> None:

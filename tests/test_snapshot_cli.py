@@ -19,6 +19,25 @@ def test_snapshot_prepare_rejects_staging_by_default(
     assert "layout.lite:013" in str(excinfo.value)
 
 
+def test_published_only_prepare_passes_over_staging_versions(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # A seed that names no staging version outright builds published-only
+    # although the word's latest version is staging: no marker, no banner.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    seed = tmp_path / "seed_request.yaml"
+    seed.write_text(
+        "initial_targets:\n  types:\n    layout.lite:\n      include_all_versions: true\n"
+    )
+    target_root = snapshot.prepare_snapshot(seed)
+
+    expanded = (target_root / "indexes" / "seed_expanded.yaml").read_text()
+    assert "layout.lite:012" in expanded
+    assert "013" not in expanded
+    assert not (target_root / "indexes" / "staging.yaml").exists()
+    assert "PLEASE ONLY USE IN DEV" not in (target_root / "README.md").read_text()
+
+
 def test_refused_prepare_leaves_previous_output_intact(
     monkeypatch, tmp_path: Path
 ) -> None:

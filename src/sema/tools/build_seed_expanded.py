@@ -65,40 +65,65 @@ def add_intermediate_type_versions(types: dict[str, set[str]], registry: dict) -
     return added
 
 
-def available_versions(category: str, name: str, registry: dict) -> list[str | None]:
+def available_versions(
+    category: str, name: str, registry: dict, *, published_only: bool = False
+) -> list[str | None]:
+    """The registry-declared versions of a word, oldest first.
+
+    With ``published_only`` a versioned word's staging versions are passed
+    over. A versionless type or literal enum carries its status at the word
+    level and is returned regardless; the snapshot's closure check refuses
+    it when it is staging, so a staging word named outright still fails.
+    """
     if category == "types":
         if name not in registry["types"]:
             raise ValueError(f"Unknown type target: {name}")
         type_entry = registry["types"][name]
         if type_entry.get("versioning_strategy") == "none":
             return [None]
-        return sorted(type_entry.get("versions", {}), key=int)
-
-    if category == "enums":
+        versions = type_entry.get("versions", {})
+    elif category == "enums":
         if name not in registry["enums"]:
             raise ValueError(f"Unknown enum target: {name}")
         enum_entry = registry["enums"][name]
         if enum_entry["enum_type"] == "literal":
             return ["000"]
-        return sorted(enum_entry.get("versions", {}), key=int)
+        versions = enum_entry.get("versions", {})
+    else:
+        raise ValueError(f"Unsupported initial_targets section: {category}")
 
-    raise ValueError(f"Unsupported initial_targets section: {category}")
+    if published_only:
+        versions = {v: e for v, e in versions.items() if e["status"] == "published"}
+    return sorted(versions, key=int)
 
 
-def latest_version(category: str, name: str, registry: dict) -> str | None:
+def latest_version(
+    category: str, name: str, registry: dict, *, published_only: bool = False
+) -> str | None:
+    """The word's latest version; with ``published_only``, its latest
+    published version."""
     if category == "types":
         type_entry = registry["types"][name]
         if type_entry.get("versioning_strategy") == "none":
             return None
-        return type_entry["latest_version"]
+        latest = type_entry["latest_version"]
+    else:
+        enum_entry = registry["enums"][name]
+        if enum_entry["enum_type"] == "literal":
+            return "000"
+        latest = enum_entry["latest_version"]
 
-    enum_entry = registry["enums"][name]
-    if enum_entry["enum_type"] == "literal":
-        return "000"
-    return enum_entry["latest_version"]
+    if not published_only:
+        return latest
+    published = available_versions(category, name, registry, published_only=True)
+    if not published:
+        raise ValueError(f"{category[:-1]} {name} has no published version")
+    return published[-1]
 
 
-def select_initial_versions(category: str, name: str, options: object, registry: dict) -> list[str | None]:
+def select_initial_versions(
+    category: str, name: str, options: object, registry: dict, *, published_only: bool = False
+) -> list[str | None]:
     if not isinstance(options, dict):
         raise ValueError(f"initial_targets.{category}.{name} must be a mapping.")
 
@@ -112,14 +137,16 @@ def select_initial_versions(category: str, name: str, options: object, registry:
     if has_include_all and has_versions:
         raise ValueError(f"{category}.{name} cannot set both include_all_versions and versions.")
 
+    # An explicit `versions` list is taken as written: a staging version
+    # listed outright reaches the snapshot's closure check and fails there.
     available = available_versions(category, name, registry)
     if not options:
-        return [latest_version(category, name, registry)]
+        return [latest_version(category, name, registry, published_only=published_only)]
 
     if has_include_all:
         if options["include_all_versions"] is not True:
             raise ValueError(f"{category}.{name}.include_all_versions must be true.")
-        return available
+        return available_versions(category, name, registry, published_only=published_only)
 
     versions = options["versions"]
     if not isinstance(versions, list) or not versions:
@@ -137,7 +164,9 @@ def select_initial_versions(category: str, name: str, options: object, registry:
     return selected
 
 
-def iter_initial_targets(initial_targets: object, registry: dict) -> list[tuple[str, str, str | None]]:
+def iter_initial_targets(
+    initial_targets: object, registry: dict, *, published_only: bool = False
+) -> list[tuple[str, str, str | None]]:
     if not isinstance(initial_targets, dict) or not initial_targets:
         raise ValueError("seed request must contain a non-empty initial_targets mapping.")
 
@@ -156,7 +185,9 @@ def iter_initial_targets(initial_targets: object, registry: dict) -> list[tuple[
         for name, options in section.items():
             if not isinstance(name, str):
                 raise ValueError(f"initial_targets.{category} names must be strings.")
-            for version in select_initial_versions(category, name, options, registry):
+            for version in select_initial_versions(
+                category, name, options, registry, published_only=published_only
+            ):
                 targets.append((category, name, version))
 
     if not targets:
@@ -172,14 +203,22 @@ def resolve_output_name(name: str) -> Path:
     return OUTPUT_DIR / name
 
 
-def expand_seed(seed_request_path: Path, output_path: Path) -> None:
+def expand_seed(
+    seed_request_path: Path, output_path: Path, *, published_only: bool = False
+) -> None:
+    """Expand a seed request into the worklist. With ``published_only`` a
+    bare target means the latest published version and
+    ``include_all_versions`` the published versions, so a published-only
+    seed needs no edit when a word stages a new version."""
     registry = load_yaml(REGISTRY_PATH)
     lookup = load_yaml(LOOKUP_PATH)
     closure = load_yaml(CLOSURE_PATH)
     request = load_yaml(seed_request_path)
 
     initial_targets = request.get("initial_targets")
-    requested_targets = iter_initial_targets(initial_targets, registry)
+    requested_targets = iter_initial_targets(
+        initial_targets, registry, published_only=published_only
+    )
 
     formats: set[str] = set()
     enums: dict[str, set[str]] = {}
@@ -319,12 +358,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("seed_request", type=Path)
     parser.add_argument("--out", default=DEFAULT_OUTPUT_NAME)
+    parser.add_argument(
+        "--published-only",
+        action="store_true",
+        help="bare and include_all_versions targets take published versions only",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    expand_seed(args.seed_request.resolve(), resolve_output_name(args.out))
+    expand_seed(
+        args.seed_request.resolve(),
+        resolve_output_name(args.out),
+        published_only=args.published_only,
+    )
 
 
 if __name__ == "__main__":

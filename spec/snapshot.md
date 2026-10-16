@@ -21,9 +21,13 @@ does NOT vendor a test suite.
 
 ## Published-only by default
 
-A snapshot build SHALL default to a **published-only** closure: if the
-expanded seed reaches any staging word, the build fails and lists the
-staging offenders. An explicit opt-in (`--allow-staged` in the reference
+A snapshot build SHALL default to a **published-only** closure. In a
+published-only build a seed target with `include_all_versions` expands
+to the word's published versions and a bare target to its latest
+published version; staging versions are passed over, so a published-only
+seed needs no edit when a word stages a new version. A staging version
+listed explicitly, and any staging word the closure reaches, fails the
+build, which lists the staging offenders. An explicit opt-in (`--allow-staged` in the reference
 implementation) permits staging words — never drafts — and the resulting
 snapshot SHALL be marked as a staging snapshot, both machine-readably (a
 marker in the snapshot indexes) and for humans (a README stating the
