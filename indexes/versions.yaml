@@ -779,9 +779,11 @@ types:
         summary: "Initial version."
 
   gw.weather.create.cmd:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: "- Record: gw.weather.forecast.bundle.gt 001 -> 002"
       "001":
         summary: >
           - Record: oneOf gains gw.weather.seasonal.template.gt/000
@@ -790,16 +792,22 @@ types:
         summary: "Initial version."
 
   gw.weather.forecast:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - Fidelity: removed; TempFidelity, WindSpeedFidelity, IrradianceFidelity: add
+          - IrradianceChannelName, IrradianceValues, IrradianceSourceUpdatedTime: add
       "000":
         summary: "Initial version."
 
   gw.weather.forecast.bundle.gt:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: "- IrradianceForecastChannel, IrradianceObservationChannel: add"
       "001":
         summary: "- TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001"
       "000":

@@ -7,10 +7,12 @@ from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
-from sema.runtime.types.gw_weather_forecast_bundle_gt import GwWeatherForecastBundleGt
 from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastChannelGt
 from sema.runtime.types.old_versions.gw_weather_channel_gt_000 import (
     GwWeatherChannelGt000,
+)
+from sema.runtime.types.old_versions.gw_weather_forecast_bundle_gt_001 import (
+    GwWeatherForecastBundleGt001,
 )
 
 
@@ -155,7 +157,7 @@ class GwWeatherForecastBundleGt000(SemaType):
             )
         return self
 
-    def upgrade(self) -> GwWeatherForecastBundleGt:
+    def upgrade(self) -> GwWeatherForecastBundleGt001:
         """
         - TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001
         """
@@ -165,4 +167,4 @@ class GwWeatherForecastBundleGt000(SemaType):
             self.wind_speed_observation_channel.upgrade()
         )
         data["version"] = "001"
-        return GwWeatherForecastBundleGt.model_validate(data)
+        return GwWeatherForecastBundleGt001.model_validate(data)

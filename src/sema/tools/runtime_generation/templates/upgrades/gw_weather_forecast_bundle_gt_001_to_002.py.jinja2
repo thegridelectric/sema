@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ gw_weather_forecast_bundle_gt_002_class_name }}:
+        """
+        - IrradianceForecastChannel, IrradianceObservationChannel: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ gw_weather_forecast_bundle_gt_001_class_name }} cannot be upgraded to "
+            "{{ gw_weather_forecast_bundle_gt_002_class_name }} without context: v002 adds "
+            "an irradiance channel pair that only the weather service's records "
+            "hold, and it SHALL NOT be fabricated."
+        )

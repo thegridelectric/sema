@@ -10,7 +10,7 @@ from sema.runtime.types.gw_weather_seasonal_template_gt import (
 
 
 class GwWeatherCreateCmd(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.weather.create.cmd/001"""
+    """Sema: https://schemas.electricity.works/types/gw.weather.create.cmd/002"""
 
     record: (
         GwWeatherChannelGt
@@ -21,4 +21,4 @@ class GwWeatherCreateCmd(SemaType):
     )
     proof: str | None = None
     type_name: Literal["gw.weather.create.cmd"] = "gw.weather.create.cmd"
-    version: Literal["001"] = "001"
+    version: Literal["002"] = "002"

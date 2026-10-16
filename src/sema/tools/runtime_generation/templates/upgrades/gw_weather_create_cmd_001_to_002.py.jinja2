@@ -1,0 +1,9 @@
+    def upgrade(self) -> {{ gw_weather_create_cmd_002_class_name }}:
+        """
+        - Record: gw.weather.forecast.bundle.gt 001 -> 002
+        """
+        data = self.model_dump()
+        if isinstance(self.record, {{ gw_weather_forecast_bundle_gt_001_class_name }}):
+            data["record"] = self.record.upgrade()
+        data["version"] = "002"
+        return {{ gw_weather_create_cmd_002_class_name }}.model_validate(data)
