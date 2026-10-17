@@ -119,8 +119,10 @@ from sema.runtime.types.gw_weather_cmd_ack import GwWeatherCmdAck
 from sema.runtime.types.gw_weather_cmd_nack import GwWeatherCmdNack
 from sema.runtime.types.gw_weather_create_cmd import GwWeatherCreateCmd
 from sema.runtime.types.gw_weather_forecast import GwWeatherForecast
+from sema.runtime.types.gw_weather_forecast_binding import GwWeatherForecastBinding
 from sema.runtime.types.gw_weather_forecast_bundle_gt import GwWeatherForecastBundleGt
 from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastChannelGt
+from sema.runtime.types.gw_weather_forecast_series import GwWeatherForecastSeries
 from sema.runtime.types.gw_weather_location_gt import GwWeatherLocationGt
 from sema.runtime.types.gw_weather_observation import GwWeatherObservation
 from sema.runtime.types.gw_weather_seasonal_template_gt import (
@@ -346,8 +348,10 @@ __all__ = [
     "GwWeatherCmdNack",
     "GwWeatherCreateCmd",
     "GwWeatherForecast",
+    "GwWeatherForecastBinding",
     "GwWeatherForecastBundleGt",
     "GwWeatherForecastChannelGt",
+    "GwWeatherForecastSeries",
     "GwWeatherLocationGt",
     "GwWeatherObservation",
     "GwWeatherSeasonalTemplateGt",

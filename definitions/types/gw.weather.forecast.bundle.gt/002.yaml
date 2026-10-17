@@ -4,13 +4,14 @@ $id: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/002"
 title: "gw.weather.forecast.bundle.gt"
 type: object
 description: >
-  A curated, subscribable set of forecast channels for air
-  temperature, wind speed and solar irradiance sharing one time-slice
-  grid and one emission schedule, together with the observed channels
-  they target — the unit a consumer designates and
-  receives. The GridWorks-run weather forecast service emits one
-  gw.weather.forecast per bundle per emission slot. `.gt`: coupled
-  with the weather service's database, which is the canonical seed.
+  A curated, subscribable set of forecast channels sharing one
+  time-slice grid and one emission schedule, together with the
+  observed channels they target — the unit a consumer designates and
+  receives. The bundle declares which series its gw.weather.forecast
+  broadcasts hold, one per quantity. The GridWorks-run weather
+  forecast service emits one gw.weather.forecast per bundle per
+  emission slot. `.gt`: coupled with the weather service's database,
+  which is the canonical seed.
 
 properties:
   Name:
@@ -18,8 +19,7 @@ properties:
     description: >
       The stream name consumers subscribe to for this bundle's
       gw.weather.forecast broadcasts, carried on each message as
-      BundleName. Equals LocationAlias + ".forecast." + a
-      forecaster-and-shape slug.
+      BundleName. Equals LocationAlias + ".forecast." + a slug.
 
   DisplayName:
     $ref: "https://schemas.electricity.works/formats/non.empty.string"
@@ -33,36 +33,13 @@ properties:
       forecasts. The observation stream for the same place is named
       by this alias.
 
-  TempForecastChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.forecast.channel.gt/000"
+  BindingList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/gw.weather.forecast.binding/000"
     description: >
-      The forecast channel serving air temperatures.
-
-  TempObservationChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.channel.gt/001"
-    description: >
-      The observed channel TempForecastChannel targets — the series its skill
-      is scored against.
-
-  WindSpeedForecastChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.forecast.channel.gt/000"
-    description: >
-      The forecast channel serving wind speeds.
-
-  WindSpeedObservationChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.channel.gt/001"
-    description: >
-      The observed channel WindSpeedForecastChannel targets — the series its
-      skill is scored against.
-  IrradianceForecastChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.forecast.channel.gt/000"
-    description: >
-      The forecast channel serving global horizontal irradiance.
-  IrradianceObservationChannel:
-    $ref: "https://schemas.electricity.works/types/gw.weather.channel.gt/001"
-    description: >
-      The observed channel IrradianceForecastChannel targets — the series
-      its skill is scored against.
+      The forecast channels this bundle serves, each with the observed
+      channel it targets; one per quantity.
 
   EmitPeriodS:
     $ref: "https://schemas.electricity.works/formats/positive.int"
@@ -99,12 +76,7 @@ required:
   - Name
   - DisplayName
   - LocationAlias
-  - TempForecastChannel
-  - TempObservationChannel
-  - WindSpeedForecastChannel
-  - WindSpeedObservationChannel
-  - IrradianceForecastChannel
-  - IrradianceObservationChannel
+  - BindingList
   - EmitPeriodS
   - EmitOffsetS
   - Start
@@ -120,234 +92,248 @@ examples:
       "Name": "us.me.millinocket.forecast.hourly",
       "DisplayName": "Millinocket hourly forecast bundle",
       "LocationAlias": "us.me.millinocket",
-      "TempForecastChannel": {
-        "Name": "us.me.millinocket.temperature.forecast.nws.hourly",
-        "TargetChannelName": "us.me.millinocket.temperature",
-        "Forecaster": "us.nws.gridpoint",
-        "Method": "api.weather.gov.gridpoint.hourly",
-        "SourceLocator": "car.60.114",
-        "TotalSlices": 48,
-        "SliceDurationSList": [
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600
-        ],
-        "ForecastDurationMinutes": 2880,
-        "Start": "2026-08-11T00:00:00Z",
-        "Id": "dc3d3844-6c8c-466b-8140-eb06900b4bf8",
-        "TypeName": "gw.weather.forecast.channel.gt",
-        "Version": "000"
-      },
-      "TempObservationChannel": {
-        "Name": "us.me.millinocket.temperature",
-        "DisplayName": "Millinocket temperature",
-        "Quantity": "Temperature",
-        "Unit": "FahrenheitX10",
-        "LocationAlias": "us.me.millinocket",
-        "EmitPeriodS": 3600,
-        "EmitOffsetS": 0,
-        "Start": "2026-10-16T00:00:00Z",
-        "Id": "0f8c2a6e-5b1d-4e7a-9c3f-2d6b8a4e1c57",
-        "TypeName": "gw.weather.channel.gt",
-        "Version": "001"
-      },
-      "WindSpeedForecastChannel": {
-        "Name": "us.me.millinocket.windspeed.forecast.nws.hourly",
-        "TargetChannelName": "us.me.millinocket.windspeed",
-        "Forecaster": "us.nws.gridpoint",
-        "Method": "api.weather.gov.gridpoint.hourly",
-        "SourceLocator": "car.60.114",
-        "TotalSlices": 48,
-        "SliceDurationSList": [
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600
-        ],
-        "ForecastDurationMinutes": 2880,
-        "Start": "2026-08-11T00:00:00Z",
-        "Id": "23cc841c-8e12-4d1e-9030-ed9ef8923592",
-        "TypeName": "gw.weather.forecast.channel.gt",
-        "Version": "000"
-      },
-      "WindSpeedObservationChannel": {
-        "Name": "us.me.millinocket.windspeed",
-        "DisplayName": "Millinocket windspeed",
-        "Quantity": "WindSpeed",
-        "Unit": "MilesPerHourX10",
-        "LocationAlias": "us.me.millinocket",
-        "EmitPeriodS": 3600,
-        "EmitOffsetS": 0,
-        "Start": "2026-10-16T00:00:00Z",
-        "Id": "7a1d9e3c-4f6b-4b2a-8e5d-1c9f3b7a6d24",
-        "TypeName": "gw.weather.channel.gt",
-        "Version": "001"
-      },
-      "IrradianceForecastChannel": {
-        "Name": "us.me.millinocket.irradiance.forecast.openmeteo.hourly",
-        "TargetChannelName": "us.me.millinocket.irradiance",
-        "Forecaster": "open.meteo",
-        "Method": "open.meteo.gfs.seamless.hourly",
-        "SourceLocator": "45.6573,-68.7098",
-        "TotalSlices": 48,
-        "SliceDurationSList": [
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600,
-          3600
-        ],
-        "ForecastDurationMinutes": 2880,
-        "Start": "2026-10-16T00:00:00Z",
-        "Id": "b4e7c1a9-3d2f-4a8b-9e6c-5f1d7b3a8c42",
-        "TypeName": "gw.weather.forecast.channel.gt",
-        "Version": "000"
-      },
-      "IrradianceObservationChannel": {
-        "Name": "us.me.millinocket.irradiance",
-        "DisplayName": "Millinocket irradiance",
-        "Quantity": "Irradiance",
-        "Unit": "WattsPerSquareMeter",
-        "LocationAlias": "us.me.millinocket",
-        "EmitPeriodS": 3600,
-        "EmitOffsetS": 0,
-        "Start": "2026-10-16T00:00:00Z",
-        "Id": "c9d2f4b7-6a1e-4c3d-8b5f-7e2a9c4d1b68",
-        "TypeName": "gw.weather.channel.gt",
-        "Version": "001"
-      },
+      "BindingList": [
+        {
+          "ForecastChannel": {
+            "Name": "us.me.millinocket.temperature.forecast.nws.hourly",
+            "TargetChannelName": "us.me.millinocket.temperature",
+            "Forecaster": "us.nws.gridpoint",
+            "Method": "api.weather.gov.gridpoint.hourly",
+            "SourceLocator": "car.60.114",
+            "TotalSlices": 48,
+            "SliceDurationSList": [
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600
+            ],
+            "ForecastDurationMinutes": 2880,
+            "Start": "2026-08-11T00:00:00Z",
+            "Id": "dc3d3844-6c8c-466b-8140-eb06900b4bf8",
+            "TypeName": "gw.weather.forecast.channel.gt",
+            "Version": "000"
+          },
+          "ObservationChannel": {
+            "Name": "us.me.millinocket.temperature",
+            "DisplayName": "Millinocket temperature",
+            "Quantity": "Temperature",
+            "Unit": "FahrenheitX10",
+            "LocationAlias": "us.me.millinocket",
+            "EmitPeriodS": 3600,
+            "EmitOffsetS": 0,
+            "Start": "2026-10-16T00:00:00Z",
+            "Id": "0f8c2a6e-5b1d-4e7a-9c3f-2d6b8a4e1c57",
+            "TypeName": "gw.weather.channel.gt",
+            "Version": "001"
+          },
+          "TypeName": "gw.weather.forecast.binding",
+          "Version": "000"
+        },
+        {
+          "ForecastChannel": {
+            "Name": "us.me.millinocket.windspeed.forecast.nws.hourly",
+            "TargetChannelName": "us.me.millinocket.windspeed",
+            "Forecaster": "us.nws.gridpoint",
+            "Method": "api.weather.gov.gridpoint.hourly",
+            "SourceLocator": "car.60.114",
+            "TotalSlices": 48,
+            "SliceDurationSList": [
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600
+            ],
+            "ForecastDurationMinutes": 2880,
+            "Start": "2026-08-11T00:00:00Z",
+            "Id": "23cc841c-8e12-4d1e-9030-ed9ef8923592",
+            "TypeName": "gw.weather.forecast.channel.gt",
+            "Version": "000"
+          },
+          "ObservationChannel": {
+            "Name": "us.me.millinocket.windspeed",
+            "DisplayName": "Millinocket windspeed",
+            "Quantity": "WindSpeed",
+            "Unit": "MilesPerHourX10",
+            "LocationAlias": "us.me.millinocket",
+            "EmitPeriodS": 3600,
+            "EmitOffsetS": 0,
+            "Start": "2026-10-16T00:00:00Z",
+            "Id": "7a1d9e3c-4f6b-4b2a-8e5d-1c9f3b7a6d24",
+            "TypeName": "gw.weather.channel.gt",
+            "Version": "001"
+          },
+          "TypeName": "gw.weather.forecast.binding",
+          "Version": "000"
+        },
+        {
+          "ForecastChannel": {
+            "Name": "us.me.millinocket.irradiance.forecast.openmeteo.hourly",
+            "TargetChannelName": "us.me.millinocket.irradiance",
+            "Forecaster": "open.meteo",
+            "Method": "open.meteo.gfs.seamless.hourly",
+            "SourceLocator": "45.6573,-68.7098",
+            "TotalSlices": 48,
+            "SliceDurationSList": [
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600,
+              3600
+            ],
+            "ForecastDurationMinutes": 2880,
+            "Start": "2026-10-16T00:00:00Z",
+            "Id": "b4e7c1a9-3d2f-4a8b-9e6c-5f1d7b3a8c42",
+            "TypeName": "gw.weather.forecast.channel.gt",
+            "Version": "000"
+          },
+          "ObservationChannel": {
+            "Name": "us.me.millinocket.irradiance",
+            "DisplayName": "Millinocket irradiance",
+            "Quantity": "Irradiance",
+            "Unit": "WattsPerSquareMeter",
+            "LocationAlias": "us.me.millinocket",
+            "EmitPeriodS": 3600,
+            "EmitOffsetS": 0,
+            "Start": "2026-10-16T00:00:00Z",
+            "Id": "c9d2f4b7-6a1e-4c3d-8b5f-7e2a9c4d1b68",
+            "TypeName": "gw.weather.channel.gt",
+            "Version": "001"
+          },
+          "TypeName": "gw.weather.forecast.binding",
+          "Version": "000"
+        }
+      ],
       "EmitPeriodS": 3600,
       "EmitOffsetS": 60,
       "Start": "2026-10-16T00:00:00Z",
@@ -361,41 +347,32 @@ x-gridworks:
 
   axioms:
     - number: 1
+      name: "NonEmptyBindings"
+      statement: >
+        BindingList SHALL be non-empty.
+    - number: 2
       name: "SharedSliceGrid"
       statement: >
-        TempForecastChannel, WindSpeedForecastChannel and
-        IrradianceForecastChannel SHALL declare identical
+        Every ForecastChannel in BindingList SHALL declare identical
         SliceDurationSList.
-    - number: 2
+    - number: 3
       name: "EmitOffsetBound"
       statement: >
         EmitOffsetS SHALL be strictly less than EmitPeriodS.
-    - number: 3
+    - number: 4
       name: "DistinctChannels"
       statement: >
-        TempForecastChannel.Name, WindSpeedForecastChannel.Name and
-        IrradianceForecastChannel.Name SHALL be pairwise distinct.
-    - number: 4
-      name: "TargetBinding"
-      statement: >
-        TempForecastChannel.TargetChannelName SHALL equal
-        TempObservationChannel.Name, WindSpeedForecastChannel.TargetChannelName
-        SHALL equal WindSpeedObservationChannel.Name, and
-        IrradianceForecastChannel.TargetChannelName SHALL equal
-        IrradianceObservationChannel.Name.
+        ForecastChannel.Name SHALL be distinct across BindingList.
     - number: 5
-      name: "QuantityTargeting"
+      name: "DistinctQuantities"
       statement: >
-        TempObservationChannel.Quantity SHALL be Temperature,
-        WindSpeedObservationChannel.Quantity SHALL be WindSpeed, and
-        IrradianceObservationChannel.Quantity SHALL be Irradiance.
+        ObservationChannel.Quantity SHALL be distinct across
+        BindingList.
     - number: 6
       name: "LocationConsistency"
       statement: >
-        TempObservationChannel.LocationAlias,
-        WindSpeedObservationChannel.LocationAlias and
-        IrradianceObservationChannel.LocationAlias SHALL equal
-        LocationAlias.
+        Every ObservationChannel.LocationAlias in BindingList SHALL
+        equal LocationAlias.
     - number: 7
       name: "ForecastNaming"
       statement: >
@@ -406,12 +383,15 @@ x-gridworks:
     The bundle is the sign-up object: a record fetched rarely (seed,
     record listing), never carted per-message — each
     gw.weather.forecast carries only BundleName as the join key.
-    Embedding the forecast channels AND their observed targets makes
+    Embedding each forecast channel with its observed target makes
     every cross-channel fact — shared grid, shared schedule, target
-    binding, quantity targeting, location consistency — verifiable
-    from the instance alone, and ties the forecast stream to its
-    observation stream explicitly: the bundle Name extends
+    binding, one series per quantity, location consistency —
+    verifiable from the instance alone, and ties the forecast stream
+    to its observation stream explicitly: the bundle Name extends
     LocationAlias, which names the observation broadcasts for the
-    same place. The weather forecast service additionally enforces
-    the embedded copies' agreement with its canonical channel records
-    at seed/boot time.
+    same place. The Name is a handle, not a description: it does not
+    encode which quantities or forecasters the bundle holds, so a
+    bundle keeps its name across the records that serve it. The
+    weather forecast service additionally enforces the embedded
+    copies' agreement with its canonical channel records at
+    seed/boot time, and emits exactly the series the bundle binds.

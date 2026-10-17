@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-15T21:35:00Z"
+  last_updated: "2026-10-17T16:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3772,7 +3772,7 @@ types:
     versions:
       "002":
         schema_url: "https://schemas.electricity.works/types/gw.weather.create.cmd/002"
-        created: "2026-10-15T21:35:00Z"
+        created: "2026-10-17T16:00:00Z"
         status: "staging"
         summary: >-
           - Record: gw.weather.forecast.bundle.gt 001 -> 002
@@ -3813,19 +3813,19 @@ types:
     latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "Temperatures, wind speeds and solar irradiance over a shared slice grid for a location, emitted per bundle by the GridWorks weather forecast service for flexible-load optimization; each series declares its own fidelity."
+    description: "Weather series over a shared slice grid for a location, emitted per bundle by the GridWorks weather forecast service for flexible-load optimization; the bundle declares which series, each with its own fidelity."
 
     versions:
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast/001"
-        created: "2026-10-15T21:35:00Z"
+        created: "2026-10-17T16:00:00Z"
         status: "staging"
         summary: >-
-          - Fidelity: removed; TempFidelity, WindSpeedFidelity, IrradianceFidelity: add
-          - IrradianceChannelName, IrradianceValues, IrradianceSourceUpdatedTime: add
+          - SourceUpdatedTime, Fidelity, TempChannelName, TempValues, WindSpeedChannelName, WindSpeedValues: removed
+          - SeriesList: add (gw.weather.forecast.series 000, one per bound channel)
         direct_dependencies:
           structural:
-            - "gw.weather.forecast.fidelity:000"
+            - "gw.weather.forecast.series:000"
             - "left.right.dot"
             - "utc.iso8601.seconds"
             - "utc.milliseconds"
@@ -3841,31 +3841,46 @@ types:
             - "utc.iso8601.seconds"
             - "utc.milliseconds"
 
-  gw.weather.forecast.bundle.gt:
-    latest_version: "002"
+  gw.weather.forecast.binding:
+    latest_version: "000"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "The subscribable curated set of forecast channels sharing one slice grid and emission schedule; embeds the forecast channels and their observed targets."
+    description: "One forecast channel with the observed channel it targets, as a bundle embeds it; the bundle's membership, not a record of its own."
 
     versions:
-      "002":
-        schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/002"
-        created: "2026-10-15T21:35:00Z"
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.binding/000"
+        created: "2026-10-17T16:00:00Z"
         status: "staging"
-        summary: >-
-          - IrradianceForecastChannel, IrradianceObservationChannel: add
+        summary: "Initial version."
         direct_dependencies:
           structural:
             - "gw.weather.channel.gt:001"
             - "gw.weather.forecast.channel.gt:000"
+
+  gw.weather.forecast.bundle.gt:
+    latest_version: "002"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "The subscribable curated set of forecast channels sharing one slice grid and emission schedule; embeds each forecast channel with its observed target and declares which series its broadcasts hold."
+
+    versions:
+      "002":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/002"
+        created: "2026-10-17T16:00:00Z"
+        status: "staging"
+        summary: >-
+          - TempForecastChannel, TempObservationChannel, WindSpeedForecastChannel, WindSpeedObservationChannel: removed
+          - BindingList: add (gw.weather.forecast.binding 000, one per quantity)
+        direct_dependencies:
+          structural:
+            - "gw.weather.forecast.binding:000"
             - "left.right.dot"
             - "non.empty.string"
             - "non.negative.int"
             - "positive.int"
             - "utc.iso8601.seconds"
             - "uuid4.str"
-          axiom:
-            - "gw1.quantity:003"
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/001"
         created: "2026-10-15T14:55:00Z"
@@ -3919,6 +3934,25 @@ types:
             - "positive.int"
             - "utc.iso8601.seconds"
             - "uuid4.str"
+
+  gw.weather.forecast.series:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "One forecast series inside a gw.weather.forecast: a channel's values over the message's slice grid with its own fidelity and source revision time."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.series/000"
+        created: "2026-10-17T16:00:00Z"
+        status: "staging"
+        summary: "Initial version."
+        direct_dependencies:
+          structural:
+            - "gw.weather.forecast.fidelity:000"
+            - "gw1.quantity:003"
+            - "left.right.dot"
+            - "utc.iso8601.seconds"
 
   gw.weather.location.gt:
     latest_version: "000"

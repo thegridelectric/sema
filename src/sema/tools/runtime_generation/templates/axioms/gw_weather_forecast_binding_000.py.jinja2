@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_weather_forecast_binding_000_class_name }}":
+        """
+        Axiom 1: TargetBinding
+        ForecastChannel.TargetChannelName SHALL equal ObservationChannel.Name.
+        """
+        if self.forecast_channel.target_channel_name != self.observation_channel.name:
+            raise ValueError(
+                "Axiom 1 (TargetBinding) failed: ForecastChannel.TargetChannelName "
+                f"({self.forecast_channel.target_channel_name!r}) must equal "
+                f"ObservationChannel.Name ({self.observation_channel.name!r})."
+            )
+        return self

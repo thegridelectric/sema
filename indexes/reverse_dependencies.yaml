@@ -236,7 +236,11 @@ types:
       used_by:
       - gw.weather.create.cmd:001
       - gw.weather.create.cmd:002
+      - gw.weather.forecast.binding:000
       - gw.weather.forecast.bundle.gt:001
+  gw.weather.forecast.binding:
+    '000':
+      used_by:
       - gw.weather.forecast.bundle.gt:002
   gw.weather.forecast.bundle.gt:
     '000':
@@ -254,9 +258,13 @@ types:
       - gw.weather.create.cmd:000
       - gw.weather.create.cmd:001
       - gw.weather.create.cmd:002
+      - gw.weather.forecast.binding:000
       - gw.weather.forecast.bundle.gt:000
       - gw.weather.forecast.bundle.gt:001
-      - gw.weather.forecast.bundle.gt:002
+  gw.weather.forecast.series:
+    '000':
+      used_by:
+      - gw.weather.forecast:001
   gw.weather.location.gt:
     '000':
       used_by:
@@ -834,8 +842,8 @@ enums:
   gw.weather.forecast.fidelity:
     '000':
       used_by:
+      - gw.weather.forecast.series:000
       - gw.weather.forecast:000
-      - gw.weather.forecast:001
   gw.zone.emitter.type:
     '000':
       used_by:
@@ -893,7 +901,7 @@ enums:
       - gw.house0.layout:000
       - gw.nolan.layout:000
       - gw.weather.channel.gt:001
-      - gw.weather.forecast.bundle.gt:002
+      - gw.weather.forecast.series:000
       - gw1.unit.quantity.projection:001
       - spaceheat.telemetry.quantity.projection:001
   gw1.seasonal.storage.mode:
@@ -1266,6 +1274,7 @@ formats:
     - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.bundle.gt:002
     - gw.weather.forecast.channel.gt:000
+    - gw.weather.forecast.series:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
     - gw.weather.location.gt:000
@@ -1680,6 +1689,7 @@ formats:
     - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.bundle.gt:002
     - gw.weather.forecast.channel.gt:000
+    - gw.weather.forecast.series:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
     - gw.weather.observation:000

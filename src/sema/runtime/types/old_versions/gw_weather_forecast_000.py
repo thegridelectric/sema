@@ -86,12 +86,13 @@ class GwWeatherForecast000(SemaType):
 
     def upgrade(self) -> GwWeatherForecast:
         """
-        - Fidelity: removed; TempFidelity, WindSpeedFidelity, IrradianceFidelity: add
-        - IrradianceChannelName, IrradianceValues, IrradianceSourceUpdatedTime: add
+        - SourceUpdatedTime, Fidelity, TempChannelName, TempValues, WindSpeedChannelName, WindSpeedValues: removed
+        - SeriesList: add (gw.weather.forecast.series 000, one per bound channel)
         """
         raise SemaType.upgrade_requires_context(
             "GwWeatherForecast000 cannot be upgraded to "
-            "GwWeatherForecast without context: v001 adds an "
-            "irradiance series that only the emitting service's irradiance "
-            "forecaster holds, and it SHALL NOT be fabricated."
+            "GwWeatherForecast without context: v001 holds "
+            "exactly the series its bundle binds, and only the emitting "
+            "service's bundle record and forecasters hold them; they SHALL NOT "
+            "be fabricated."
         )

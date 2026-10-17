@@ -7,8 +7,7 @@ from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
-from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
-from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastChannelGt
+from sema.runtime.types.gw_weather_forecast_binding import GwWeatherForecastBinding
 
 
 class GwWeatherForecastBundleGt(SemaType):
@@ -17,12 +16,7 @@ class GwWeatherForecastBundleGt(SemaType):
     name: LeftRightDot
     display_name: NonEmptyString
     location_alias: LeftRightDot
-    temp_forecast_channel: GwWeatherForecastChannelGt
-    temp_observation_channel: GwWeatherChannelGt
-    wind_speed_forecast_channel: GwWeatherForecastChannelGt
-    wind_speed_observation_channel: GwWeatherChannelGt
-    irradiance_forecast_channel: GwWeatherForecastChannelGt
-    irradiance_observation_channel: GwWeatherChannelGt
+    binding_list: list[GwWeatherForecastBinding]
     emit_period_s: PositiveInt
     emit_offset_s: NonNegativeInt
     start: UtcIso8601Seconds
@@ -35,98 +29,74 @@ class GwWeatherForecastBundleGt(SemaType):
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 1: SharedSliceGrid
-        TempForecastChannel, WindSpeedForecastChannel and
-        IrradianceForecastChannel SHALL declare identical SliceDurationSList.
+        Axiom 1: NonEmptyBindings
+        BindingList SHALL be non-empty.
         """
-        grid = self.temp_forecast_channel.slice_duration_s_list
-        if (
-            self.wind_speed_forecast_channel.slice_duration_s_list != grid
-            or self.irradiance_forecast_channel.slice_duration_s_list != grid
-        ):
+        if len(self.binding_list) == 0:
             raise ValueError(
-                "Axiom 1 (SharedSliceGrid) failed: TempForecastChannel, "
-                "WindSpeedForecastChannel and IrradianceForecastChannel must "
-                "declare identical SliceDurationSList."
+                "Axiom 1 (NonEmptyBindings) failed: BindingList must be non-empty."
             )
         return self
 
     @model_validator(mode="after")
     def check_axiom_2(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 2: EmitOffsetBound
-        EmitOffsetS SHALL be strictly less than EmitPeriodS.
+        Axiom 2: SharedSliceGrid
+        Every ForecastChannel in BindingList SHALL declare identical
+        SliceDurationSList.
         """
-        if not self.emit_offset_s < self.emit_period_s:
+        grids = {
+            b.forecast_channel.name: b.forecast_channel.slice_duration_s_list
+            for b in self.binding_list
+        }
+        if len({tuple(g) for g in grids.values()}) > 1:
             raise ValueError(
-                "Axiom 2 (EmitOffsetBound) failed: EmitOffsetS "
-                f"({self.emit_offset_s}) must be strictly less than "
-                f"EmitPeriodS ({self.emit_period_s})."
+                "Axiom 2 (SharedSliceGrid) failed: every ForecastChannel must "
+                f"declare identical SliceDurationSList; got {list(grids)!r} "
+                "with differing grids."
             )
         return self
 
     @model_validator(mode="after")
     def check_axiom_3(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 3: DistinctChannels
-        TempForecastChannel.Name, WindSpeedForecastChannel.Name and
-        IrradianceForecastChannel.Name SHALL be pairwise distinct.
+        Axiom 3: EmitOffsetBound
+        EmitOffsetS SHALL be strictly less than EmitPeriodS.
         """
-        names = (
-            self.temp_forecast_channel.name,
-            self.wind_speed_forecast_channel.name,
-            self.irradiance_forecast_channel.name,
-        )
-        if len(set(names)) != len(names):
+        if self.emit_offset_s >= self.emit_period_s:
             raise ValueError(
-                "Axiom 3 (DistinctChannels) failed: the three forecast "
-                f"channel Names must be pairwise distinct; got {names!r}."
+                "Axiom 3 (EmitOffsetBound) failed: EmitOffsetS "
+                f"({self.emit_offset_s}) must be strictly less than EmitPeriodS "
+                f"({self.emit_period_s})."
             )
         return self
 
     @model_validator(mode="after")
     def check_axiom_4(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 4: TargetBinding
-        TempForecastChannel.TargetChannelName SHALL equal
-        TempObservationChannel.Name, WindSpeedForecastChannel.TargetChannelName
-        SHALL equal WindSpeedObservationChannel.Name, and
-        IrradianceForecastChannel.TargetChannelName SHALL equal
-        IrradianceObservationChannel.Name.
+        Axiom 4: DistinctChannels
+        ForecastChannel.Name SHALL be distinct across BindingList.
         """
-        if (
-            self.temp_forecast_channel.target_channel_name
-            != self.temp_observation_channel.name
-            or self.wind_speed_forecast_channel.target_channel_name
-            != self.wind_speed_observation_channel.name
-            or self.irradiance_forecast_channel.target_channel_name
-            != self.irradiance_observation_channel.name
-        ):
+        names = [b.forecast_channel.name for b in self.binding_list]
+        if len(set(names)) != len(names):
             raise ValueError(
-                "Axiom 4 (TargetBinding) failed: each forecast channel's "
-                "TargetChannelName must equal its paired observation "
-                "channel's Name."
+                "Axiom 4 (DistinctChannels) failed: ForecastChannel.Name must be "
+                f"distinct across BindingList; got {names!r}."
             )
         return self
 
     @model_validator(mode="after")
     def check_axiom_5(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 5: QuantityTargeting
-        TempObservationChannel.Quantity SHALL be Temperature,
-        WindSpeedObservationChannel.Quantity SHALL be WindSpeed, and
-        IrradianceObservationChannel.Quantity SHALL be Irradiance.
+        Axiom 5: DistinctQuantities
+        ObservationChannel.Quantity SHALL be distinct across BindingList.
         """
-        got = (
-            self.temp_observation_channel.quantity.value,
-            self.wind_speed_observation_channel.quantity.value,
-            self.irradiance_observation_channel.quantity.value,
-        )
-        if got != ("Temperature", "WindSpeed", "Irradiance"):
+        quantities = [b.observation_channel.quantity for b in self.binding_list]
+        if len(set(quantities)) != len(quantities):
             raise ValueError(
-                "Axiom 5 (QuantityTargeting) failed: the observation channels "
-                "must have Quantity Temperature, WindSpeed and Irradiance in "
-                f"that order; got {got!r}."
+                "Axiom 5 (DistinctQuantities) failed: ObservationChannel.Quantity "
+                "must be distinct across BindingList; got "
+                f"{[q.value for q in quantities]!r}."
             )
         return self
 
@@ -134,20 +104,17 @@ class GwWeatherForecastBundleGt(SemaType):
     def check_axiom_6(self) -> "GwWeatherForecastBundleGt":
         """
         Axiom 6: LocationConsistency
-        TempObservationChannel.LocationAlias,
-        WindSpeedObservationChannel.LocationAlias and
-        IrradianceObservationChannel.LocationAlias SHALL equal LocationAlias.
+        Every ObservationChannel.LocationAlias in BindingList SHALL equal
+        LocationAlias.
         """
-        if (
-            self.temp_observation_channel.location_alias != self.location_alias
-            or self.wind_speed_observation_channel.location_alias != self.location_alias
-            or self.irradiance_observation_channel.location_alias != self.location_alias
-        ):
-            raise ValueError(
-                "Axiom 6 (LocationConsistency) failed: every observation "
-                "channel's LocationAlias must equal "
-                f"{self.location_alias!r}."
-            )
+        for b in self.binding_list:
+            if b.observation_channel.location_alias != self.location_alias:
+                raise ValueError(
+                    "Axiom 6 (LocationConsistency) failed: ObservationChannel "
+                    f"{b.observation_channel.name!r} has LocationAlias "
+                    f"{b.observation_channel.location_alias!r}; must equal "
+                    f"LocationAlias ({self.location_alias!r})."
+                )
         return self
 
     @model_validator(mode="after")
@@ -160,7 +127,8 @@ class GwWeatherForecastBundleGt(SemaType):
         prefix = f"{self.location_alias}.forecast."
         if not (self.name.startswith(prefix) and len(self.name) > len(prefix)):
             raise ValueError(
-                f"Axiom 7 (ForecastNaming) failed: {self.name!r} must equal "
-                f"{prefix!r} followed by one or more further segments."
+                f"Axiom 7 (ForecastNaming) failed: Name ({self.name!r}) must "
+                f"equal LocationAlias + '.forecast.' + one or more segments "
+                f"(expected prefix {prefix!r})."
             )
         return self

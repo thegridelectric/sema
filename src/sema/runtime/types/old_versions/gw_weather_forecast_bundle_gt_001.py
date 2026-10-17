@@ -155,11 +155,12 @@ class GwWeatherForecastBundleGt001(SemaType):
 
     def upgrade(self) -> GwWeatherForecastBundleGt:
         """
-        - IrradianceForecastChannel, IrradianceObservationChannel: add
+        - TempForecastChannel, TempObservationChannel, WindSpeedForecastChannel, WindSpeedObservationChannel: removed
+        - BindingList: add (gw.weather.forecast.binding 000, one per quantity)
         """
         raise SemaType.upgrade_requires_context(
             "GwWeatherForecastBundleGt001 cannot be upgraded to "
-            "GwWeatherForecastBundleGt without context: v002 adds "
-            "an irradiance channel pair that only the weather service's records "
-            "hold, and it SHALL NOT be fabricated."
+            "GwWeatherForecastBundleGt without context: v002 "
+            "binds the series the weather service's records declare for the "
+            "bundle, and they SHALL NOT be fabricated."
         )

@@ -797,8 +797,15 @@ types:
     versions:
       "001":
         summary: >
-          - Fidelity: removed; TempFidelity, WindSpeedFidelity, IrradianceFidelity: add
-          - IrradianceChannelName, IrradianceValues, IrradianceSourceUpdatedTime: add
+          - SourceUpdatedTime, Fidelity, TempChannelName, TempValues, WindSpeedChannelName, WindSpeedValues: removed
+          - SeriesList: add (gw.weather.forecast.series 000, one per bound channel)
+      "000":
+        summary: "Initial version."
+
+  gw.weather.forecast.binding:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
       "000":
         summary: "Initial version."
 
@@ -807,13 +814,22 @@ types:
     versioning_strategy: "literal"
     versions:
       "002":
-        summary: "- IrradianceForecastChannel, IrradianceObservationChannel: add"
+        summary: >
+          - TempForecastChannel, TempObservationChannel, WindSpeedForecastChannel, WindSpeedObservationChannel: removed
+          - BindingList: add (gw.weather.forecast.binding 000, one per quantity)
       "001":
         summary: "- TempObservationChannel, WindSpeedObservationChannel: gw.weather.channel.gt 000 -> 001"
       "000":
         summary: "Initial version."
 
   gw.weather.forecast.channel.gt:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
+
+  gw.weather.forecast.series:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:
