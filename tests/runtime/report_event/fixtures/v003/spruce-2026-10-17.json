@@ -1,0 +1,1588 @@
+{
+  "Src": "hw1.isone.me.versant.keene.spruce.scada",
+  "Report": {
+    "Id": "2011feb9-7818-41ec-9407-0d138d8487af",
+    "Version": "003",
+    "TypeName": "report",
+    "StateList": [
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "relay.closed.or.open",
+        "StateList": [
+          "RelayClosed"
+        ],
+        "UnixMsList": [
+          1792273498000
+        ],
+        "MachineHandle": "auto.pico-cycler.vdc-relay-gpio-23"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "pico.cycler.state",
+        "StateList": [
+          "PicosLive"
+        ],
+        "UnixMsList": [
+          1792273498002
+        ],
+        "MachineHandle": "auto.pico-cycler"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "buffer"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "tank1"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "fancoil"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "floor1"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "pipes1"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "primary-btu"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "secondary-btu"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "store-btu"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "single.pico.state",
+        "StateList": [
+          "Alive"
+        ],
+        "UnixMsList": [
+          1792273498003
+        ],
+        "MachineHandle": "dist-btu"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "top.state",
+        "StateList": [
+          "Auto"
+        ],
+        "UnixMsList": [
+          1792273498801
+        ],
+        "MachineHandle": "s"
+      },
+      {
+        "Version": "000",
+        "TypeName": "machine.states",
+        "StateEnum": "gw1.main.auto.state",
+        "StateList": [
+          "LocalControl"
+        ],
+        "UnixMsList": [
+          1792273498801
+        ],
+        "MachineHandle": "auto"
+      }
+    ],
+    "FsmReportList": [],
+    "SlotDurationS": 300,
+    "FromGNodeAlias": "hw1.isone.me.versant.keene.spruce.scada",
+    "SlotStartUnixS": 1792273200,
+    "AboutGNodeAlias": "hw1.isone.me.versant.keene.spruce.ta",
+    "MessageCreatedMs": 1792273500085,
+    "ChannelReadingList": [
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          49110,
+          49100,
+          49080,
+          49070,
+          49060,
+          49050
+        ],
+        "ChannelName": "buffer-depth1-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926,
+          1792273492212
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          32430,
+          32430,
+          32430,
+          32430,
+          32430
+        ],
+        "ChannelName": "buffer-depth2-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          30150,
+          30140,
+          30150,
+          30140,
+          30140,
+          30140
+        ],
+        "ChannelName": "buffer-depth3-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273221689,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1302155,
+          1302514,
+          1302980,
+          1303421,
+          1303724,
+          1304039
+        ],
+        "ChannelName": "buffer-depth1-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926,
+          1792273492212
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1852071,
+          1852037,
+          1852047,
+          1852168,
+          1852129
+        ],
+        "ChannelName": "buffer-depth2-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1931295,
+          1931415,
+          1931331,
+          1931491,
+          1931683,
+          1931672
+        ],
+        "ChannelName": "buffer-depth3-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273221689,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          24300,
+          24300,
+          24300,
+          24300,
+          24300
+        ],
+        "ChannelName": "tank1-depth1-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          24290,
+          24290,
+          24290,
+          24290,
+          24290
+        ],
+        "ChannelName": "tank1-depth2-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          23430,
+          23430,
+          23430,
+          23430,
+          23430
+        ],
+        "ChannelName": "tank1-depth3-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2132297,
+          2132336,
+          2132313,
+          2132378,
+          2132363
+        ],
+        "ChannelName": "tank1-depth1-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2132855,
+          2132847,
+          2132890,
+          2132894,
+          2132903
+        ],
+        "ChannelName": "tank1-depth2-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2161904,
+          2161909,
+          2161911,
+          2161947,
+          2161933
+        ],
+        "ChannelName": "tank1-depth3-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          22340,
+          22320,
+          22310,
+          22300,
+          22290,
+          22270
+        ],
+        "ChannelName": "fancoil-depth1-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273263195,
+          1792273322865,
+          1792273359532,
+          1792273383628,
+          1792273443313
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          22860,
+          22840,
+          22830,
+          22800,
+          22780,
+          22760,
+          22730,
+          22720
+        ],
+        "ChannelName": "fancoil-depth2-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273232715,
+          1792273263195,
+          1792273322865,
+          1792273351143,
+          1792273383628,
+          1792273443313,
+          1792273463221
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          -126200,
+          -126200,
+          -123970,
+          -126200,
+          -126200
+        ],
+        "ChannelName": "fancoil-depth3-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273263195,
+          1792273322865,
+          1792273383628,
+          1792273443313
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2198370,
+          2199128,
+          2199601,
+          2199993,
+          2200316,
+          2200985
+        ],
+        "ChannelName": "fancoil-depth1-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273263195,
+          1792273322865,
+          1792273359532,
+          1792273383628,
+          1792273443313
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2181166,
+          2181734,
+          2182219,
+          2183162,
+          2183735,
+          2184303,
+          2185487,
+          2185752
+        ],
+        "ChannelName": "fancoil-depth2-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273232715,
+          1792273263195,
+          1792273322865,
+          1792273351143,
+          1792273383628,
+          1792273443313,
+          1792273463221
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          3299998,
+          3299998,
+          3299997,
+          3299998,
+          3299998
+        ],
+        "ChannelName": "fancoil-depth3-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273263195,
+          1792273322865,
+          1792273383628,
+          1792273443313
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          17940,
+          17940,
+          17940,
+          17940,
+          17940
+        ],
+        "ChannelName": "floor1-depth1-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          20760,
+          20750,
+          20750,
+          20750,
+          20750
+        ],
+        "ChannelName": "floor1-depth2-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          20440,
+          20440,
+          20440,
+          20440,
+          20440
+        ],
+        "ChannelName": "floor1-depth3-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2342491,
+          2342539,
+          2342513,
+          2342548,
+          2342546
+        ],
+        "ChannelName": "floor1-depth1-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2251169,
+          2251256,
+          2251296,
+          2251394,
+          2251448
+        ],
+        "ChannelName": "floor1-depth2-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2261548,
+          2261624,
+          2261591,
+          2261653,
+          2261630
+        ],
+        "ChannelName": "floor1-depth3-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          21560,
+          21550,
+          21540,
+          21520,
+          21530,
+          21520
+        ],
+        "ChannelName": "pipes1-depth1-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273261541,
+          1792273321301,
+          1792273375862,
+          1792273381127,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          23230,
+          23200,
+          23180,
+          23150,
+          23140,
+          23100,
+          23080,
+          23060
+        ],
+        "ChannelName": "pipes1-depth2-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273245783,
+          1792273261541,
+          1792273321301,
+          1792273330776,
+          1792273381127,
+          1792273420975,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          -126200,
+          -126200,
+          -129860,
+          -123970,
+          -129860
+        ],
+        "ChannelName": "pipes1-depth3-device",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273261541,
+          1792273321301,
+          1792273381127,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2224392,
+          2224831,
+          2225203,
+          2225714,
+          2225690,
+          2225980
+        ],
+        "ChannelName": "pipes1-depth1-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273261541,
+          1792273321301,
+          1792273375862,
+          1792273381127,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2168588,
+          2169734,
+          2170161,
+          2171484,
+          2171749,
+          2173063,
+          2173783,
+          2174257
+        ],
+        "ChannelName": "pipes1-depth2-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273245783,
+          1792273261541,
+          1792273321301,
+          1792273330776,
+          1792273381127,
+          1792273420975,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          3299998,
+          3299998,
+          3299999,
+          3299997,
+          3299999
+        ],
+        "ChannelName": "pipes1-depth3-micro-v",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273261541,
+          1792273321301,
+          1792273381127,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "primary-flow",
+        "ScadaReadTimeUnixMsList": [
+          1792273386415
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          20640
+        ],
+        "ChannelName": "hp-lwt",
+        "ScadaReadTimeUnixMsList": [
+          1792273386415
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          20220
+        ],
+        "ChannelName": "hp-ewt",
+        "ScadaReadTimeUnixMsList": [
+          1792273386415
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "secondary-flow",
+        "ScadaReadTimeUnixMsList": [
+          1792273384106
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          23760
+        ],
+        "ChannelName": "secondary-lwt",
+        "ScadaReadTimeUnixMsList": [
+          1792273384106
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          21780
+        ],
+        "ChannelName": "secondary-ewt",
+        "ScadaReadTimeUnixMsList": [
+          1792273384106
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          169,
+          168,
+          169,
+          168,
+          167,
+          169,
+          167,
+          169,
+          168
+        ],
+        "ChannelName": "secondary-pump-ct",
+        "ScadaReadTimeUnixMsList": [
+          1792273306107,
+          1792273307106,
+          1792273366110,
+          1792273367128,
+          1792273384106,
+          1792273422121,
+          1792273425106,
+          1792273435106,
+          1792273437174
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "store-flow",
+        "ScadaReadTimeUnixMsList": [
+          1792273382651
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "dist-flow",
+        "ScadaReadTimeUnixMsList": [
+          1792273387062
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          27210,
+          27010,
+          26960
+        ],
+        "ChannelName": "dist-swt",
+        "ScadaReadTimeUnixMsList": [
+          1792273210148,
+          1792273352059,
+          1792273387062
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          24950,
+          24920
+        ],
+        "ChannelName": "dist-rwt",
+        "ScadaReadTimeUnixMsList": [
+          1792273327060,
+          1792273387062
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "elt-buffer-top-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273364454
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "elt-buffer-bottom-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273364454
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "elt-store-top-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273364454
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "elt-store-bottom-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273364454
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "dist-pump-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273293443
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          6
+        ],
+        "ChannelName": "hp-ctrl-box-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273206425
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          148,
+          172,
+          34,
+          14
+        ],
+        "ChannelName": "hp-odu-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273306445,
+          1792273307445,
+          1792273366456,
+          1792273367455
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          9
+        ],
+        "ChannelName": "economy-energy-l1-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273268439
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          8
+        ],
+        "ChannelName": "economy-energy-l2-pwr",
+        "ScadaReadTimeUnixMsList": [
+          1792273268439
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1
+        ],
+        "ChannelName": "zone1-bedrooms-opto-input",
+        "ScadaReadTimeUnixMsList": [
+          1792273200820
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1935,
+          1937,
+          1934,
+          1935,
+          1937
+        ],
+        "ChannelName": "zone1-bedrooms-gw-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2307750,
+          2307250,
+          2308250,
+          2307750,
+          2307375
+        ],
+        "ChannelName": "zone1-bedrooms-gw-microvolts",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1
+        ],
+        "ChannelName": "zone2-living-rm-opto-input",
+        "ScadaReadTimeUnixMsList": [
+          1792273200820
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2046,
+          2050,
+          2046,
+          2046,
+          2046
+        ],
+        "ChannelName": "zone2-living-rm-gw-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2271750,
+          2270625,
+          2271875,
+          2271875,
+          2271875
+        ],
+        "ChannelName": "zone2-living-rm-gw-microvolts",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1
+        ],
+        "ChannelName": "zone3-upstairs-opto-input",
+        "ScadaReadTimeUnixMsList": [
+          1792273200821
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1957,
+          1959,
+          1956,
+          1956,
+          1956
+        ],
+        "ChannelName": "zone3-upstairs-gw-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2300750,
+          2300125,
+          2301125,
+          2301125,
+          2301000
+        ],
+        "ChannelName": "zone3-upstairs-gw-microvolts",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1
+        ],
+        "ChannelName": "zone4-garage-opto-input",
+        "ScadaReadTimeUnixMsList": [
+          1792273200827
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2120,
+          2120,
+          2117,
+          2120,
+          2117
+        ],
+        "ChannelName": "zone4-garage-gw-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          2247625,
+          2247375,
+          2248375,
+          2247500,
+          2248375
+        ],
+        "ChannelName": "zone4-garage-gw-microvolts",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138,
+          1792273260048,
+          1792273320047,
+          1792273380057,
+          1792273440047
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          1
+        ],
+        "ChannelName": "zone5-living-rm-fancoil-opto-input",
+        "ScadaReadTimeUnixMsList": [
+          1792273200819
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          12039,
+          12038,
+          12034,
+          12032,
+          12030,
+          12029
+        ],
+        "ChannelName": "buffer-depth1",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926,
+          1792273492212
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          9037,
+          9037,
+          9037,
+          9037,
+          9037
+        ],
+        "ChannelName": "buffer-depth2",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          8627,
+          8625,
+          8627,
+          8625,
+          8625,
+          8625
+        ],
+        "ChannelName": "buffer-depth3",
+        "ScadaReadTimeUnixMsList": [
+          1792273202797,
+          1792273221689,
+          1792273262585,
+          1792273322350,
+          1792273383206,
+          1792273442926
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7574,
+          7574,
+          7574,
+          7574,
+          7574
+        ],
+        "ChannelName": "tank1-depth1",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7572,
+          7572,
+          7572,
+          7572,
+          7572
+        ],
+        "ChannelName": "tank1-depth2",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7417,
+          7417,
+          7417,
+          7417,
+          7417
+        ],
+        "ChannelName": "tank1-depth3",
+        "ScadaReadTimeUnixMsList": [
+          1792273202531,
+          1792273262362,
+          1792273322193,
+          1792273383076,
+          1792273442912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "zone1-bedrooms-heat-call",
+        "ScadaReadTimeUnixMsList": [
+          1792273200820
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "zone2-living-rm-heat-call",
+        "ScadaReadTimeUnixMsList": [
+          1792273200820
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "zone3-upstairs-heat-call",
+        "ScadaReadTimeUnixMsList": [
+          1792273200821
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "zone4-garage-heat-call",
+        "ScadaReadTimeUnixMsList": [
+          1792273200827
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          6886
+        ],
+        "ChannelName": "zone2-living-rm-set",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7026
+        ],
+        "ChannelName": "zone4-garage-set",
+        "ScadaReadTimeUnixMsList": [
+          1792273200138
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          0
+        ],
+        "ChannelName": "zone5-living-rm-fancoil-heat-call",
+        "ScadaReadTimeUnixMsList": [
+          1792273200819
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7221,
+          7217,
+          7215,
+          7214,
+          7212,
+          7208
+        ],
+        "ChannelName": "fancoil-swt",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273263195,
+          1792273322865,
+          1792273359532,
+          1792273383628,
+          1792273443313
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7314,
+          7311,
+          7309,
+          7304,
+          7300,
+          7296,
+          7291,
+          7289
+        ],
+        "ChannelName": "fancoil-rwt",
+        "ScadaReadTimeUnixMsList": [
+          1792273203387,
+          1792273232715,
+          1792273263195,
+          1792273322865,
+          1792273351143,
+          1792273383628,
+          1792273443313,
+          1792273463221
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7080,
+          7079,
+          7077,
+          7073,
+          7075,
+          7073
+        ],
+        "ChannelName": "floor-swt",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273261541,
+          1792273321301,
+          1792273375862,
+          1792273381127,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          7381,
+          7375,
+          7372,
+          7367,
+          7365,
+          7358,
+          7354,
+          7350
+        ],
+        "ChannelName": "floor-rwt",
+        "ScadaReadTimeUnixMsList": [
+          1792273201646,
+          1792273245783,
+          1792273261541,
+          1792273321301,
+          1792273330776,
+          1792273381127,
+          1792273420975,
+          1792273440912
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          6429,
+          6429,
+          6429,
+          6429,
+          6429
+        ],
+        "ChannelName": "zone1-bedrooms-floor-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          6936,
+          6934,
+          6934,
+          6934,
+          6934
+        ],
+        "ChannelName": "zone2-living-rm-floor-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      },
+      {
+        "Version": "002",
+        "TypeName": "channel.readings",
+        "ValueList": [
+          6879,
+          6879,
+          6879,
+          6879,
+          6879
+        ],
+        "ChannelName": "zone4-garage-floor-temp",
+        "ScadaReadTimeUnixMsList": [
+          1792273203789,
+          1792273264544,
+          1792273324268,
+          1792273383995,
+          1792273443723
+        ]
+      }
+    ],
+    "FromGNodeInstanceId": "9024e45e-f49e-42fa-b863-b3b951ec80f6"
+  },
+  "Version": "003",
+  "TypeName": "report.event",
+  "MessageId": "c0d876b7-e2cd-4b00-b6fd-d596ec5170fa",
+  "TimeCreatedMs": 1792273500086
+}

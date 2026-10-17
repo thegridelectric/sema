@@ -35,5 +35,7 @@ class ReportEvent003(SemaType):
         - Axioms: reinstate ReportIdentityPropagation, ReportCreatedTimePropagation and ReportSourcePropagation
         """
         data = self.model_dump()
+        data["message_id"] = self.report.id
+        data["time_created_ms"] = self.report.message_created_ms
         data["version"] = "004"
         return ReportEvent.model_validate(data)
