@@ -297,6 +297,7 @@ types:
   gw.weather.channel.gt:
     '000': sha256:9aa447f00597c9696d4c3cea92cf27066d486a545248f7ccbe5ed92cc0f02209
     '001': sha256:3ceda53c51d0f6269c4e629440ab84f6580aba0094d272976624ac79085aa1dc
+    '002': sha256:81e60842564ade836c1a9970adffa9cca94bc0db2bf076c1c428357ecd31c963
   gw.weather.cmd.ack:
     '000': sha256:646e00a97962e5691db5a2622f152c71cc1eb93e6781c9e7a618735063fe91c3
   gw.weather.cmd.nack:
@@ -304,17 +305,22 @@ types:
   gw.weather.create.cmd:
     '000': sha256:ebd24bf738d3f8552544f35a2a6b18e1908f0491e70879793174589e37fd5ebb
     '001': sha256:3e8181b2e70ac9cc5e2831f123ca56dea50a3281738428cc34593d395c39207b
+    '002': sha256:a23ff608063918da2d0a6e17ea40923e903d659c9c81f187e7269ad766b6ca48
   gw.weather.forecast:
     '000': sha256:e598746ccb2e3a028d6de46e407f88dac42a83ebbeefe4f8596a01adfd77a2c2
+    '001': sha256:c5faee27a0cdb3f286e47aa0829ca25cb6ab1534b124b47d2ad1363c633e4a26
   gw.weather.forecast.bundle.gt:
     '000': sha256:6388ddd7773693c38105cdf655c52c4305a47e515d64e6186e8696d356c16ee7
     '001': sha256:2c18ae11f3d741671b7f73ee63d8e4df6a5c81d587be65b033ad0624737ce987
+    '002': sha256:2176d5f106850650b13acd411f97c55c777581df36d26cb8c152deda4280dcfc
   gw.weather.forecast.channel.gt:
     '000': sha256:c190d97d4c12bc6a6e2e921e279bc575b831a4bfaac0890edf7caae2ae7076b7
   gw.weather.location.gt:
     '000': sha256:2b8d9bc2c4227f63bf5d75b843d14edaaee1d9177c5c4f28812b94e535562d95
+    '001': sha256:e340a893245a49a3eb0c871fbb4bb1b51df6392dcc86a8a5eee0c064e7828b38
   gw.weather.observation:
     '000': sha256:fc01375d1c4175dde196dd50ca5e36a7bd45824398fbfd97079c25ff0ebe275c
+    '001': sha256:7ecabd4290b8ab104a0afcc01599ebc1f7916643baac640addfe3cc95361b051
   gw.weather.seasonal.template.gt:
     '000': sha256:913e11a5031eb213a649edd015fb9078f39d9bbff17c238ab62b9b27ca88e9eb
   gw0.required.energy.layered:
@@ -489,3 +495,11 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
+  gw.weather.station.gt:
+    '000': sha256:4daadc5637b96addce3282d288ef160592dc69110039e11009ac4d357d153826
+  gw.weather.observation.reading:
+    '000': sha256:0fdfb0672005a0cfaa13b46fc48a43215417a870912ce6caed0888d71dc6e79f
+  gw.weather.forecast.series:
+    '000': sha256:d4d697997aa3de9063b891a14f97b0710eb0c641f5490fca9d5c463a146cb90b
+  gw.weather.forecast.binding:
+    '000': sha256:83019b591d0414314a076085021ce516a89dc807886ff72bbf6a2896f7ab3186

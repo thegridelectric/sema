@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-18T15:30:00Z"
+  last_updated: "2026-10-18T18:50:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -3710,7 +3710,7 @@ types:
       "002":
         schema_url: "https://schemas.electricity.works/types/gw.weather.channel.gt/002"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - LocationAlias: removed; StationAlias: add (the gw.weather.station.gt whose readings this series is)
           - Name: derived from StationAlias and Quantity
@@ -3798,7 +3798,7 @@ types:
       "002":
         schema_url: "https://schemas.electricity.works/types/gw.weather.create.cmd/002"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Record: gw.weather.forecast.bundle.gt 001 -> 002
           - Record: gw.weather.channel.gt 001 -> 002
@@ -3848,7 +3848,7 @@ types:
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast/001"
         created: "2026-10-17T16:00:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - SourceUpdatedTime, Fidelity, TempChannelName, TempValues, WindSpeedChannelName, WindSpeedValues: removed
           - SeriesList: add (gw.weather.forecast.series 000, one per bound channel)
@@ -3880,7 +3880,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.binding/000"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version."
         direct_dependencies:
           structural:
@@ -3897,7 +3897,7 @@ types:
       "002":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/002"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - TempForecastChannel, TempObservationChannel, WindSpeedForecastChannel, WindSpeedObservationChannel: removed
           - BindingList: add (gw.weather.forecast.binding 000, one per quantity)
@@ -3974,7 +3974,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.forecast.series/000"
         created: "2026-10-17T16:00:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version."
         direct_dependencies:
           structural:
@@ -3993,7 +3993,7 @@ types:
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.location.gt/001"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - IcaoId, WbanId, GhcnId, CoopId: removed (station identifiers live on gw.weather.station.gt)
           - Timezone: iana.timezone.str
@@ -4023,7 +4023,7 @@ types:
       "001":
         schema_url: "https://schemas.electricity.works/types/gw.weather.observation/001"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - LocationAlias, TempChannelName, TempValue, WindSpeedChannelName, WindSpeedValue: removed
           - StationAlias: add; ReadingList: add (gw.weather.observation.reading 000, one per reported channel)
@@ -4052,7 +4052,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.observation.reading/000"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version."
         direct_dependencies:
           structural:
@@ -4087,7 +4087,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.weather.station.gt/000"
         created: "2026-10-18T15:30:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version."
         direct_dependencies:
           structural:
