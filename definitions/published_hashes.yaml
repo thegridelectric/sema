@@ -267,7 +267,7 @@ types:
   gridworks.ping: sha256:2d9b1cbcc31974562514f23fc41ffc3b69de136642788ba0a0c0d413ab5c3c87
   gw: sha256:7cc842d93a9e1e9cf7ebacdafb945a6baadd1692ac626cdf2155b90dbbf32629
   gw.alert:
-    '000': sha256:fe0b76b49cc56796b17f46e1ce9026b31ff688bda54f6e17c7cda6e1997476c1
+    '000': sha256:7f7d89ed9017570ca8f40311ec87864aee58158f9e6cbace5eaf4ef2977e1ad2
   gw.channel.gap.stats:
     '000': sha256:87dd64d79061813560f3becced73d908f0d6066c21d805edb36d88434452670a
   gw.channel.jump.stats:
@@ -285,13 +285,13 @@ types:
   gw.experiment.run:
     '000': sha256:99b1fec0f628c5d7289908af7714cdf85d441ae5efc03f6acfa411262f983d52
   gw.hack.alert.silences:
-    '000': sha256:9ef25128d7cdf6d2f84b4618af3b146360869bc99b86f26309e657a1168f55df
+    '000': sha256:f9c16f52fb0aaf8bd2e5b9d5a8cd90b2ee964c59e1267bb6262fd1b9d560a5cc
   gw.opsgenie.alert:
     '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a
   gw.opsgenie.alert.close:
-    '000': sha256:4158c170dff653eca1816934b73f1ad07800a99014e97f2421fc1af21d23e86e
+    '000': sha256:f8f66b65508cf948c99209d2343a2c8503c5b0990a26059811cece6efd502464
   gw.opsgenie.alert.create:
-    '000': sha256:3e9af85a4f47864b85b73c3d3581c0e6fa0eefca6cf5bbca6ede5bd598129d84
+    '000': sha256:b0f464c07e7984ddd289d6b0590fd7a9eb58f4ca739e33b9732f00ae88a11d32
   gw.readings:
     '000': sha256:8d045c857d2c696f61ae7c16b7a61231d2aafce56f5b8b55dc7f9dbb416fd127
   gw.weather.channel.gt:

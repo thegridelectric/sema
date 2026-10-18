@@ -40,5 +40,15 @@ required:
 
 additionalProperties: false
 
+examples:
+  - |
+    {
+      "TypeName": "gw.opsgenie.alert.close",
+      "Version": "000",
+      "Alias": "99af8401-9c4a-4ab9-a584-a96ca8f09b46",
+      "Source": "hw1.alerts",
+      "Note": "data again after 11.0 minutes (hw1.isone.me.versant.keene.oak.ta)"
+    }
+
 x-gridworks:
   owner: "gridworks-energy"

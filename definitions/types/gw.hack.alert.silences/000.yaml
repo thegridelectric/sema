@@ -36,6 +36,17 @@ required:
 
 additionalProperties: false
 
+examples:
+  - |
+    {
+      "Src": "hw1.alerts",
+      "Version": "000",
+      "TypeName": "gw.hack.alert.silences",
+      "SilencedGNodeAliases": [
+        "hw1.isone.me.versant.keene.elm.ta"
+      ]
+    }
+
 x-gridworks:
   owner: "gridworks-energy"
   axioms:

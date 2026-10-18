@@ -108,6 +108,29 @@ required:
 
 additionalProperties: false
 
+examples:
+  - |
+    {
+      "TypeName": "gw.opsgenie.alert.create",
+      "Version": "000",
+      "Alias": "99af8401-9c4a-4ab9-a584-a96ca8f09b46",
+      "Message": "[Oak] ltn silent for 10.1 minutes; scada does not send up reports with no ltn (hw1.isone.me.versant.keene.oak.ta)",
+      "Description": "ltn silent for 10.1 minutes; scada does not send up reports with no ltn (hw1.isone.me.versant.keene.oak.ta)",
+      "Entity": "hw1.isone.me.versant.keene.oak.ta",
+      "Source": "hw1.alerts",
+      "Priority": "P1",
+      "ResponderTeamId": "9f7c6a1e-3b2d-4e8f-a5c1-0d2e4f6a8b1c",
+      "Tags": [
+        "House",
+        "NoData"
+      ],
+      "Kind": "NoData",
+      "Category": "House",
+      "Subject": "hw1.isone.me.versant.keene.oak.ta",
+      "House": "oak",
+      "About": "hw1.isone.me.versant.keene.oak.ta (Oak)"
+    }
+
 x-gridworks:
   owner: "gridworks-energy"
   axioms:
