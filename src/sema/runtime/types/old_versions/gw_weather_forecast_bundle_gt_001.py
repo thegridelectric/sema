@@ -7,9 +7,11 @@ from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
-from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
 from sema.runtime.types.gw_weather_forecast_bundle_gt import GwWeatherForecastBundleGt
 from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastChannelGt
+from sema.runtime.types.old_versions.gw_weather_channel_gt_001 import (
+    GwWeatherChannelGt001,
+)
 
 
 class GwWeatherForecastBundleGt001(SemaType):
@@ -19,9 +21,9 @@ class GwWeatherForecastBundleGt001(SemaType):
     display_name: NonEmptyString
     location_alias: LeftRightDot
     temp_forecast_channel: GwWeatherForecastChannelGt
-    temp_observation_channel: GwWeatherChannelGt
+    temp_observation_channel: GwWeatherChannelGt001
     wind_speed_forecast_channel: GwWeatherForecastChannelGt
-    wind_speed_observation_channel: GwWeatherChannelGt
+    wind_speed_observation_channel: GwWeatherChannelGt001
     emit_period_s: PositiveInt
     emit_offset_s: NonNegativeInt
     start: UtcIso8601Seconds

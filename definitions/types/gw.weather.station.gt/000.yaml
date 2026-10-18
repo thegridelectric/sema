@@ -1,0 +1,118 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.weather.station.gt/000"
+
+title: "gw.weather.station.gt"
+type: object
+description: >
+  An observing instrument: the station whose readings an observed
+  weather series is. The instrument is identity — a different station
+  at the same coordinates is a different station record and different
+  channels — while the path its readings arrive by (live API, archive
+  backfill) is provenance recorded per reading, so the record names no
+  source or method. A station belongs to no fleet location; a forecast
+  bundle pairs it with the place it serves. The network identifiers key
+  the station in the external systems that publish or archive it; a
+  private instrument has none. Coupled bijectively with a table in the
+  gridworks-weather DB. Changing a structural fact is a new record (new
+  Id); the Alias persists, and Start scopes which record an archived
+  message resolves against.
+
+properties:
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/lowercase.token"
+    description: >
+      The station's fleet-scoped alias, one segment with no separator
+      (e.g. kmlt): the first segment of every channel name on this
+      station, and the stream name consumers subscribe to for its
+      gw.weather.observation broadcasts.
+
+  DisplayName:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Human-facing name for display tooling.
+
+  LatitudeMicrodegrees:
+    type: integer
+    description: >
+      Latitude of the instrument in integer microdegrees (degrees times
+      10^6); north positive.
+
+  LongitudeMicrodegrees:
+    type: integer
+    description: >
+      Longitude of the instrument in integer microdegrees (degrees times
+      10^6); east positive.
+
+  IcaoId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      ICAO station identifier (e.g. KMLT), when the station has one.
+
+  GhcnId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      GHCN identifier keying NOAA archive records (e.g. USW00014610),
+      when the station has one.
+
+  WundergroundId:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Weather Underground station identifier (e.g. KMEMILLI18), when the
+      station has one.
+
+  Start:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      When this record became the active record for Alias; an archived
+      message resolves against the record active at its time.
+
+  Id:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Immutable identifier of this record. A structural change is a
+      new record with a new Id under the persisting Alias.
+
+  TypeName:
+    const: "gw.weather.station.gt"
+
+  Version:
+    const: "000"
+
+required:
+  - Alias
+  - DisplayName
+  - LatitudeMicrodegrees
+  - LongitudeMicrodegrees
+  - Start
+  - Id
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Alias": "kmlt",
+      "DisplayName": "Millinocket Municipal Airport ASOS (KMLT)",
+      "LatitudeMicrodegrees": 45647800,
+      "LongitudeMicrodegrees": -68685800,
+      "IcaoId": "KMLT",
+      "GhcnId": "USW00014610",
+      "Start": "2026-10-18T00:00:00Z",
+      "Id": "5d2a7c4e-9b1f-4e6a-8c3d-7f0b2e9a4c61",
+      "TypeName": "gw.weather.station.gt",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "CoordinateBounds"
+      statement: >
+        a. The absolute value of LatitudeMicrodegrees SHALL be at most
+        90000000.
+        b. The absolute value of LongitudeMicrodegrees SHALL be at most
+        180000000.

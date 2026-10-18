@@ -7,6 +7,7 @@ from sema.runtime.types.gw_weather_location_gt import GwWeatherLocationGt
 from sema.runtime.types.gw_weather_seasonal_template_gt import (
     GwWeatherSeasonalTemplateGt,
 )
+from sema.runtime.types.gw_weather_station_gt import GwWeatherStationGt
 
 
 class GwWeatherCreateCmd(SemaType):
@@ -18,6 +19,7 @@ class GwWeatherCreateCmd(SemaType):
         | GwWeatherForecastChannelGt
         | GwWeatherLocationGt
         | GwWeatherSeasonalTemplateGt
+        | GwWeatherStationGt
     )
     proof: str | None = None
     type_name: Literal["gw.weather.create.cmd"] = "gw.weather.create.cmd"

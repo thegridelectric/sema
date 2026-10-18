@@ -1,0 +1,54 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.weather.observation.reading/000"
+
+title: "gw.weather.observation.reading"
+type: object
+description: >
+  One reading inside a gw.weather.observation: the value one observed
+  channel took at the message's ObservationTime. The Quantity lets a
+  consumer pick a reading without a record lookup; the channel record
+  binds it and gives the unit.
+
+properties:
+  ChannelName:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Name of the gw.weather.channel.gt this reading is on.
+
+  Quantity:
+    $ref: "https://schemas.electricity.works/enums/gw1.quantity/003"
+    description: >
+      The physical quantity observed; equals the channel's Quantity.
+
+  Value:
+    type: integer
+    description: >
+      The observed value, scaled per the channel's Unit.
+
+  TypeName:
+    const: "gw.weather.observation.reading"
+
+  Version:
+    const: "000"
+
+required:
+  - ChannelName
+  - Quantity
+  - Value
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "ChannelName": "kmlt.temperature",
+      "Quantity": "Temperature",
+      "Value": 481,
+      "TypeName": "gw.weather.observation.reading",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"

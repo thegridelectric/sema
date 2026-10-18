@@ -16,7 +16,6 @@ def test_every_axiom_has_a_mutation() -> None:
         2: [],
         3: [],
         4: [],
-        5: [],
     }
 
 
@@ -46,10 +45,3 @@ def test_axiom_4_refuses_repeated_quantity() -> None:
         p["SeriesList"][1]["Quantity"] = p["SeriesList"][0]["Quantity"]
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 4)
-
-
-def test_axiom_5_refuses_bundle_name_without_forecast_segment() -> None:
-    def mutate(p: dict) -> None:
-        p["BundleName"] = "us.me.millinocket.nws.hourly"
-
-    assert_refused(default_codec, mutated(EXAMPLE, mutate), 5)

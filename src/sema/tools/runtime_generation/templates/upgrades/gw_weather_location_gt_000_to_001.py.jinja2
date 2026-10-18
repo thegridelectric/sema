@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ gw_weather_location_gt_001_class_name }}:
+        """
+        - IcaoId, WbanId, GhcnId, CoopId: removed (station identifiers live on gw.weather.station.gt)
+        - Timezone: iana.timezone.str
+        """
+        data = self.model_dump()
+        for field in ("icao_id", "wban_id", "ghcn_id", "coop_id"):
+            data.pop(field, None)
+        data["version"] = "001"
+        return {{ gw_weather_location_gt_001_class_name }}.model_validate(data)

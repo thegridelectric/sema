@@ -62,12 +62,12 @@ additionalProperties: false
 examples:
   - |
     {
-      "BundleName": "us.me.millinocket.forecast.hourly",
+      "BundleName": "us.me.millinocket.raccoon",
       "MessageCreatedMs": 1792094460033,
       "FirstSliceStart": "2026-10-15T21:00:00Z",
       "SeriesList": [
         {
-          "ChannelName": "us.me.millinocket.temperature.forecast.nws.hourly",
+          "ChannelName": "kmlt.temperature.forecast.nws.hourly",
           "Quantity": "Temperature",
           "Values": [
             512,
@@ -79,7 +79,7 @@ examples:
           "Version": "000"
         },
         {
-          "ChannelName": "us.me.millinocket.windspeed.forecast.nws.hourly",
+          "ChannelName": "kmlt.windspeed.forecast.nws.hourly",
           "Quantity": "WindSpeed",
           "Values": [
             60,
@@ -91,7 +91,7 @@ examples:
           "Version": "000"
         },
         {
-          "ChannelName": "us.me.millinocket.irradiance.forecast.openmeteo.hourly",
+          "ChannelName": "kmlt.irradiance.forecast.openmeteo.hourly",
           "Quantity": "Irradiance",
           "Values": [
             120,
@@ -127,10 +127,6 @@ x-gridworks:
       name: "DistinctQuantities"
       statement: >
         Quantity SHALL be distinct across SeriesList.
-    - number: 5
-      name: "ForecastNaming"
-      statement: >
-        BundleName SHALL contain "forecast" as an interior segment.
 
   extended_description: >
     Structure, units, and emission schedule live on the bundle's

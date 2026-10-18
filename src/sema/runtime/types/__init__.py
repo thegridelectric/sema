@@ -125,9 +125,13 @@ from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastC
 from sema.runtime.types.gw_weather_forecast_series import GwWeatherForecastSeries
 from sema.runtime.types.gw_weather_location_gt import GwWeatherLocationGt
 from sema.runtime.types.gw_weather_observation import GwWeatherObservation
+from sema.runtime.types.gw_weather_observation_reading import (
+    GwWeatherObservationReading,
+)
 from sema.runtime.types.gw_weather_seasonal_template_gt import (
     GwWeatherSeasonalTemplateGt,
 )
+from sema.runtime.types.gw_weather_station_gt import GwWeatherStationGt
 from sema.runtime.types.ha1_params import Ha1Params
 from sema.runtime.types.heartbeat_a import HeartbeatA
 from sema.runtime.types.heating_curve import HeatingCurve
@@ -354,7 +358,9 @@ __all__ = [
     "GwWeatherForecastSeries",
     "GwWeatherLocationGt",
     "GwWeatherObservation",
+    "GwWeatherObservationReading",
     "GwWeatherSeasonalTemplateGt",
+    "GwWeatherStationGt",
     "Ha1Params",
     "HeartbeatA",
     "HeatingCurve",

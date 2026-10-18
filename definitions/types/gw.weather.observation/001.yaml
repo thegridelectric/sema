@@ -1,0 +1,117 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.weather.observation/001"
+
+title: "gw.weather.observation"
+type: object
+description: >
+  One station observation: the readings one station took at
+  ObservationTime, published by a GridWorks-run weather forecast
+  service that ingests external weather services. The claim is
+  archive-honest — the station observed these values at that time —
+  whenever Interpolated is false; publication lateness is provenance,
+  not part of the claim. Gap recovery replays ordinary observation
+  messages, one per missed grid point, with fabricated fills marked
+  Interpolated. Which channels a message reads is whatever the station
+  reported, one reading per quantity; a quantity the station did not
+  report is absent. Values are scaled integers per the channel records.
+
+properties:
+  StationAlias:
+    $ref: "https://schemas.electricity.works/formats/lowercase.token"
+    description: >
+      Alias of the gw.weather.station.gt that took these readings — the
+      stream name consumers subscribe to for these broadcasts, and the
+      join key to the station and channel records.
+
+  ObservationTime:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      When the station observed these values. Never the publication
+      time.
+
+  Interpolated:
+    type: boolean
+    description: >
+      True when the values are fabricated — interpolated between the
+      bracketing real observations during gap recovery. False for
+      every real station observation, however late it arrives.
+
+  ReadingList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/types/gw.weather.observation.reading/000"
+    description: >
+      The station's readings at ObservationTime, one per observed
+      channel it reported.
+
+  TypeName:
+    const: "gw.weather.observation"
+
+  Version:
+    const: "001"
+
+required:
+  - StationAlias
+  - ObservationTime
+  - Interpolated
+  - ReadingList
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "StationAlias": "kmlt",
+      "ObservationTime": "2026-10-18T13:35:00Z",
+      "Interpolated": false,
+      "ReadingList": [
+        {
+          "ChannelName": "kmlt.temperature",
+          "Quantity": "Temperature",
+          "Value": 481,
+          "TypeName": "gw.weather.observation.reading",
+          "Version": "000"
+        },
+        {
+          "ChannelName": "kmlt.windspeed",
+          "Quantity": "WindSpeed",
+          "Value": 45,
+          "TypeName": "gw.weather.observation.reading",
+          "Version": "000"
+        }
+      ],
+      "TypeName": "gw.weather.observation",
+      "Version": "001"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "NonEmptyReadings"
+      statement: >
+        ReadingList SHALL be non-empty.
+    - number: 2
+      name: "DistinctChannels"
+      statement: >
+        ChannelName SHALL be distinct across ReadingList.
+    - number: 3
+      name: "DistinctQuantities"
+      statement: >
+        Quantity SHALL be distinct across ReadingList.
+    - number: 4
+      name: "StationNaming"
+      statement: >
+        Every ChannelName in ReadingList SHALL begin with StationAlias
+        followed by ".".
+
+  extended_description: >
+    Structure and units live on the observed-channel records
+    (gw.weather.channel.gt), each naming the station; the weather
+    forecast service ensures their consistency with the station
+    record. StationAlias is on the payload because the routing key's
+    radio channel does not survive archival; the archived message
+    stays self-describing.

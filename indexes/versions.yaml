@@ -754,9 +754,13 @@ types:
         summary: "TotalStoreTanks (positive.int), at most 6 (axiom TankCount). Carried by gw.hydronic as the optional WaterStore."
 
   gw.weather.channel.gt:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: >
+          - LocationAlias: removed; StationAlias: add (the gw.weather.station.gt whose readings this series is)
+          - Name: derived from StationAlias and Quantity
       "001":
         summary: >
           - Quantity: gw1.quantity 002 -> 003
@@ -783,7 +787,11 @@ types:
     versioning_strategy: "literal"
     versions:
       "002":
-        summary: "- Record: gw.weather.forecast.bundle.gt 001 -> 002"
+        summary: >
+          - Record: gw.weather.forecast.bundle.gt 001 -> 002
+          - Record: gw.weather.channel.gt 001 -> 002
+          - Record: gw.weather.location.gt 000 -> 001
+          - Record: oneOf gains gw.weather.station.gt/000
       "001":
         summary: >
           - Record: oneOf gains gw.weather.seasonal.template.gt/000
@@ -837,13 +845,28 @@ types:
         summary: "Initial version."
 
   gw.weather.location.gt:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - IcaoId, WbanId, GhcnId, CoopId: removed (station identifiers live on gw.weather.station.gt)
+          - Timezone: iana.timezone.str
       "000":
         summary: "Initial version."
 
   gw.weather.observation:
+    latest_version: "001"
+    versioning_strategy: "literal"
+    versions:
+      "001":
+        summary: >
+          - LocationAlias, TempChannelName, TempValue, WindSpeedChannelName, WindSpeedValue: removed
+          - StationAlias: add; ReadingList: add (gw.weather.observation.reading 000, one per reported channel)
+      "000":
+        summary: "Initial version."
+
+  gw.weather.observation.reading:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:
@@ -851,6 +874,13 @@ types:
         summary: "Initial version."
 
   gw.weather.seasonal.template.gt:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
+
+  gw.weather.station.gt:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:

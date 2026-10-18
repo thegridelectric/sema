@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ gw_weather_channel_gt_002_class_name }}:
+        """
+        - LocationAlias: removed; StationAlias: add (the gw.weather.station.gt whose readings this series is)
+        - Name: derived from StationAlias and Quantity
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ gw_weather_channel_gt_001_class_name }} cannot be upgraded to "
+            "{{ gw_weather_channel_gt_002_class_name }} without context: v002 names "
+            "the station whose readings the series is, which the old record does "
+            "not say and SHALL NOT be guessed."
+        )

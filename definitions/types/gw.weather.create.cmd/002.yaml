@@ -18,14 +18,15 @@ properties:
 
   Record:
     description: >
-      The record entering the service — one of the five weather record
+      The record entering the service — one of the six weather record
       words, discriminated by its own TypeName.
     oneOf:
-      - $ref: "https://schemas.electricity.works/types/gw.weather.channel.gt/001"
+      - $ref: "https://schemas.electricity.works/types/gw.weather.channel.gt/002"
       - $ref: "https://schemas.electricity.works/types/gw.weather.forecast.bundle.gt/002"
       - $ref: "https://schemas.electricity.works/types/gw.weather.forecast.channel.gt/000"
-      - $ref: "https://schemas.electricity.works/types/gw.weather.location.gt/000"
+      - $ref: "https://schemas.electricity.works/types/gw.weather.location.gt/001"
       - $ref: "https://schemas.electricity.works/types/gw.weather.seasonal.template.gt/000"
+      - $ref: "https://schemas.electricity.works/types/gw.weather.station.gt/000"
 
   Proof:
     type: string
@@ -67,7 +68,7 @@ x-gridworks:
   owner: "gridworks-energy"
 
   extended_description: >
-    The command, the reply, and the record broadcast all ride the bus,
+    The command, the reply, and the record broadcast all go over the bus,
     so the ear's capture holds the full provenance of every record's
     existence: who asked, the service's verdict, and the record itself.
     One command word covers every record kind because the act is the

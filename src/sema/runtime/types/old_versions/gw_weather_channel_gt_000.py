@@ -9,7 +9,9 @@ from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
-from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
+from sema.runtime.types.old_versions.gw_weather_channel_gt_001 import (
+    GwWeatherChannelGt001,
+)
 
 
 class GwWeatherChannelGt000(SemaType):
@@ -58,7 +60,7 @@ class GwWeatherChannelGt000(SemaType):
             )
         return self
 
-    def upgrade(self) -> GwWeatherChannelGt:
+    def upgrade(self) -> GwWeatherChannelGt001:
         """
         - Quantity: gw1.quantity 002 -> 003
         - Unit: gw1.unit 002 -> 003
@@ -67,4 +69,4 @@ class GwWeatherChannelGt000(SemaType):
         data["quantity"] = self.quantity.value
         data["unit"] = self.unit.value
         data["version"] = "001"
-        return GwWeatherChannelGt.model_validate(data)
+        return GwWeatherChannelGt001.model_validate(data)

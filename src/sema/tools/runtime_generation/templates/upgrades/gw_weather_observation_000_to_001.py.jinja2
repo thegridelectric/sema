@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ gw_weather_observation_001_class_name }}:
+        """
+        - LocationAlias, TempChannelName, TempValue, WindSpeedChannelName, WindSpeedValue: removed
+        - StationAlias: add; ReadingList: add (gw.weather.observation.reading 000, one per reported channel)
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ gw_weather_observation_000_class_name }} cannot be upgraded to "
+            "{{ gw_weather_observation_001_class_name }} without context: v001 names "
+            "the station that took the readings, which the old message does not "
+            "say and SHALL NOT be guessed."
+        )

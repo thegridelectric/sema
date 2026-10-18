@@ -103,32 +103,16 @@ class GwWeatherForecastBundleGt(SemaType):
     @model_validator(mode="after")
     def check_axiom_6(self) -> "GwWeatherForecastBundleGt":
         """
-        Axiom 6: LocationConsistency
-        Every ObservationChannel.LocationAlias in BindingList SHALL equal
-        LocationAlias.
+        Axiom 6: NameShape
+        Name SHALL equal LocationAlias + "." followed by exactly one further
+        segment.
         """
-        for b in self.binding_list:
-            if b.observation_channel.location_alias != self.location_alias:
-                raise ValueError(
-                    "Axiom 6 (LocationConsistency) failed: ObservationChannel "
-                    f"{b.observation_channel.name!r} has LocationAlias "
-                    f"{b.observation_channel.location_alias!r}; must equal "
-                    f"LocationAlias ({self.location_alias!r})."
-                )
-        return self
-
-    @model_validator(mode="after")
-    def check_axiom_7(self) -> "GwWeatherForecastBundleGt":
-        """
-        Axiom 7: ForecastNaming
-        Name SHALL equal LocationAlias + ".forecast." followed by one or more
-        further segments.
-        """
-        prefix = f"{self.location_alias}.forecast."
-        if not (self.name.startswith(prefix) and len(self.name) > len(prefix)):
+        prefix = f"{self.location_alias}."
+        tail = self.name[len(prefix) :] if self.name.startswith(prefix) else ""
+        if not tail or "." in tail:
             raise ValueError(
-                f"Axiom 7 (ForecastNaming) failed: Name ({self.name!r}) must "
-                f"equal LocationAlias + '.forecast.' + one or more segments "
+                f"Axiom 6 (NameShape) failed: Name ({self.name!r}) must equal "
+                f"LocationAlias + '.' + exactly one further segment "
                 f"(expected prefix {prefix!r})."
             )
         return self

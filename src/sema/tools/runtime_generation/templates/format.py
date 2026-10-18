@@ -51,6 +51,26 @@ LeftRightDot = Annotated[
 """,
     },
 
+    "lowercase.token": {
+        "class_name": "LowercaseToken",
+        "pattern": r"^[a-z][a-z0-9]*$",
+        "methods": """
+def is_lowercase_token(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: LowercaseToken must be a string.")
+
+    if not LOWERCASE_TOKEN_PATTERN.fullmatch(v):
+        raise ValueError(f"<{v}>: Fails LowercaseToken format.")
+
+    return v
+""",
+        "annotated_type": """
+LowercaseToken = Annotated[
+    str,
+    BeforeValidator(is_lowercase_token),
+]
+""",
+    },
     "spaceheat.name": {
         "class_name": "SpaceheatName",
         "pattern": r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",

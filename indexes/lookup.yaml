@@ -487,9 +487,10 @@ types:
     versions:
       '000': definitions/types/gw.water.store/000.yaml
   gw.weather.channel.gt:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/gw.weather.channel.gt/002.yaml
       '001': definitions/types/gw.weather.channel.gt/001.yaml
       '000': definitions/types/gw.weather.channel.gt/000.yaml
   gw.weather.cmd.ack:
@@ -538,20 +539,32 @@ types:
     versions:
       '000': definitions/types/gw.weather.forecast.series/000.yaml
   gw.weather.location.gt:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.weather.location.gt/001.yaml
       '000': definitions/types/gw.weather.location.gt/000.yaml
   gw.weather.observation:
+    latest_version: '001'
+    versioning_strategy: literal
+    versions:
+      '001': definitions/types/gw.weather.observation/001.yaml
+      '000': definitions/types/gw.weather.observation/000.yaml
+  gw.weather.observation.reading:
     latest_version: '000'
     versioning_strategy: literal
     versions:
-      '000': definitions/types/gw.weather.observation/000.yaml
+      '000': definitions/types/gw.weather.observation.reading/000.yaml
   gw.weather.seasonal.template.gt:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.weather.seasonal.template.gt/000.yaml
+  gw.weather.station.gt:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.weather.station.gt/000.yaml
   gw0.required.energy.layered:
     latest_version: '000'
     versioning_strategy: literal
@@ -1643,6 +1656,7 @@ formats:
   hh.mm: definitions/formats/hh.mm.yaml
   iana.timezone.str: definitions/formats/iana.timezone.str.yaml
   left.right.dot: definitions/formats/left.right.dot.yaml
+  lowercase.token: definitions/formats/lowercase.token.yaml
   mac.address: definitions/formats/mac.address.yaml
   market.slot.name: definitions/formats/market.slot.name.yaml
   non.empty.string: definitions/formats/non.empty.string.yaml

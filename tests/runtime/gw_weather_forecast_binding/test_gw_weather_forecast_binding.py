@@ -12,6 +12,6 @@ def test_every_axiom_has_a_mutation() -> None:
 
 def test_axiom_1_refuses_unbound_target() -> None:
     def mutate(p: dict) -> None:
-        p["ObservationChannel"]["Name"] = "us.me.millinocket.temperature.tmy"
+        p["ObservationChannel"]["Name"] = "kmlt.temperature.tmy"
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 1)

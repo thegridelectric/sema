@@ -70,17 +70,3 @@ class GwWeatherForecast(SemaType):
                 f"across SeriesList; got {[q.value for q in quantities]!r}."
             )
         return self
-
-    @model_validator(mode="after")
-    def check_axiom_5(self) -> "GwWeatherForecast":
-        """
-        Axiom 5: ForecastNaming
-        BundleName SHALL contain "forecast" as an interior segment.
-        """
-        if "forecast" not in self.bundle_name.split(".")[1:-1]:
-            raise ValueError(
-                "Axiom 5 (ForecastNaming) failed: BundleName "
-                f"{self.bundle_name!r} must contain 'forecast' as an interior "
-                "segment."
-            )
-        return self

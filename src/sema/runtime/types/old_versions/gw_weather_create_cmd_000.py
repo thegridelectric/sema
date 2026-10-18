@@ -1,7 +1,6 @@
 from typing import Literal
 from sema.runtime.base import SemaType
 from sema.runtime.types.gw_weather_forecast_channel_gt import GwWeatherForecastChannelGt
-from sema.runtime.types.gw_weather_location_gt import GwWeatherLocationGt
 from sema.runtime.types.old_versions.gw_weather_channel_gt_000 import (
     GwWeatherChannelGt000,
 )
@@ -10,6 +9,9 @@ from sema.runtime.types.old_versions.gw_weather_create_cmd_001 import (
 )
 from sema.runtime.types.old_versions.gw_weather_forecast_bundle_gt_000 import (
     GwWeatherForecastBundleGt000,
+)
+from sema.runtime.types.old_versions.gw_weather_location_gt_000 import (
+    GwWeatherLocationGt000,
 )
 
 
@@ -20,7 +22,7 @@ class GwWeatherCreateCmd000(SemaType):
         GwWeatherChannelGt000
         | GwWeatherForecastBundleGt000
         | GwWeatherForecastChannelGt
-        | GwWeatherLocationGt
+        | GwWeatherLocationGt000
     )
     proof: str | None = None
     type_name: Literal["gw.weather.create.cmd"] = "gw.weather.create.cmd"

@@ -1,9 +1,17 @@
     def upgrade(self) -> {{ gw_weather_create_cmd_002_class_name }}:
         """
         - Record: gw.weather.forecast.bundle.gt 001 -> 002
+        - Record: gw.weather.channel.gt 001 -> 002
+        - Record: gw.weather.location.gt 000 -> 001
+        - Record: oneOf gains gw.weather.station.gt/000
         """
         data = self.model_dump()
-        if isinstance(self.record, {{ gw_weather_forecast_bundle_gt_001_class_name }}):
+        if isinstance(
+            self.record,
+            {{ gw_weather_forecast_bundle_gt_001_class_name }}
+            | {{ gw_weather_channel_gt_001_class_name }}
+            | {{ gw_weather_location_gt_000_class_name }},
+        ):
             data["record"] = self.record.upgrade()
         data["version"] = "002"
         return {{ gw_weather_create_cmd_002_class_name }}.model_validate(data)

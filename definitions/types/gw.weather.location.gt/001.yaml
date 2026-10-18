@@ -1,0 +1,81 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.weather.location.gt/001"
+
+title: "gw.weather.location.gt"
+type: object
+description: >
+  The place anchor for weather bundles, stations and templates:
+  resolution target for a LocationAlias. Purely the place — coordinates
+  and timezone. Instruments are gw.weather.station.gt records, paired
+  with a place by the bundles that serve it; forecaster-grid identity is acquisition detail on the
+  forecast channel record. Coupled bijectively with the locations table
+  in the gridworks-weather DB.
+
+properties:
+  Alias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The location's fleet-scoped alias (e.g. us.me.millinocket).
+
+  LatitudeMicrodegrees:
+    type: integer
+    description: >
+      Latitude in integer microdegrees (degrees times 10^6); north
+      positive.
+
+  LongitudeMicrodegrees:
+    type: integer
+    description: >
+      Longitude in integer microdegrees (degrees times 10^6); east
+      positive.
+
+  Timezone:
+    $ref: "https://schemas.electricity.works/formats/iana.timezone.str"
+    description: >
+      IANA time zone name (e.g. America/New_York).
+
+  Id:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Immutable identifier of this location record.
+
+  TypeName:
+    const: "gw.weather.location.gt"
+
+  Version:
+    const: "001"
+
+required:
+  - Alias
+  - LatitudeMicrodegrees
+  - LongitudeMicrodegrees
+  - Timezone
+  - Id
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Alias": "us.me.millinocket",
+      "LatitudeMicrodegrees": 45647800,
+      "LongitudeMicrodegrees": -68685800,
+      "Timezone": "America/New_York",
+      "Id": "8f4a2b6e-3c9d-4e1f-a7b5-2d8c6e4f9a1b",
+      "TypeName": "gw.weather.location.gt",
+      "Version": "001"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "CoordinateBounds"
+      statement: >
+        a. The absolute value of LatitudeMicrodegrees SHALL be at most
+        90000000.
+        b. The absolute value of LongitudeMicrodegrees SHALL be at most
+        180000000.
