@@ -43,13 +43,12 @@ def scaffold_axiom_template(
     if not axioms:
         raise ValueError(f"{type_name}:{version} has no x-gridworks.axioms")
 
-    class_name_variable = f"{sema_name_to_template_identifier(type_name)}_{version}_class_name"
+    class_name_variable = (
+        f"{sema_name_to_template_identifier(type_name)}_{version}_class_name"
+    )
     template_path.parent.mkdir(parents=True, exist_ok=True)
     template_path.write_text(
-        "\n\n".join(
-            _render_axiom_stub(axiom, class_name_variable)
-            for axiom in axioms
-        )
+        "\n\n".join(_render_axiom_stub(axiom, class_name_variable) for axiom in axioms)
         + "\n"
     )
     return template_path
@@ -102,9 +101,9 @@ def _render_axiom_stub(axiom: dict[str, Any], class_name_variable: str) -> str:
     statement_block = _format_axiom_statement(statement)
     return (
         '    @model_validator(mode="after")\n'
-        f"    def check_axiom_{axiom_number}(self) -> \"{{{{ {class_name_variable} }}}}\":\n"
+        f'    def check_axiom_{axiom_number}(self) -> "{{{{ {class_name_variable} }}}}":\n'
         '        """\n'
-        f'        Axiom {axiom_number}: {axiom["name"]}\n'
+        f"        Axiom {axiom_number}: {axiom['name']}\n"
         f"{statement_block}\n"
         '        """\n'
         f'        raise NotImplementedError("Axiom {axiom_number} validation is not implemented.")'

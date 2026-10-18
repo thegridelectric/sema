@@ -7,6 +7,7 @@ auto_upgrade must reach the latest version — or deliberately refuse with
 `UpgradeRequiresContext` (the spec-sanctioned outcome for context-dependent
 upgrades). A `NotImplementedError` means the upgrade was never implemented.
 """
+
 import json
 from pathlib import Path
 

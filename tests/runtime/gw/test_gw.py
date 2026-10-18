@@ -20,4 +20,3 @@ def test_scada_glitch_fixture_decodes() -> None:
     assert decoded.header.type_name == "gridworks.header"
     assert decoded.header.version == "001"
     assert decoded.payload.type_name == "glitch"
-

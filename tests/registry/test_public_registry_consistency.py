@@ -99,6 +99,6 @@ def test_registry_schema_url_matches_status() -> None:
             if msg := _check_schema_url_status(f"type {name}:{version}", url, status):
                 findings.append(msg)
 
-    assert not findings, (
-        "Registry schema_url / status mismatches:\n  " + "\n  ".join(findings)
+    assert not findings, "Registry schema_url / status mismatches:\n  " + "\n  ".join(
+        findings
     )

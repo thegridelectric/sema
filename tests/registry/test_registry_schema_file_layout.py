@@ -62,7 +62,9 @@ def expected_enum_id_line(name: str, version: str, status: str = "published") ->
     )
 
 
-def expected_versioned_type_id_line(name: str, version: str, status: str = "published") -> str:
+def expected_versioned_type_id_line(
+    name: str, version: str, status: str = "published"
+) -> str:
     return (
         f'$id: "https://schemas.electricity.works/'
         f'{_draft_segment(status)}types/{name}/{version}"'
@@ -70,7 +72,9 @@ def expected_versioned_type_id_line(name: str, version: str, status: str = "publ
 
 
 def expected_versionless_type_id_line(name: str, status: str = "published") -> str:
-    return f'$id: "https://schemas.electricity.works/{_draft_segment(status)}types/{name}"'
+    return (
+        f'$id: "https://schemas.electricity.works/{_draft_segment(status)}types/{name}"'
+    )
 
 
 def _path_to_status_lookup(registry: dict) -> dict[Path, str]:
@@ -88,7 +92,9 @@ def _path_to_status_lookup(registry: dict) -> dict[Path, str]:
                 )
     for name, entry in registry["types"].items():
         if entry["versioning_strategy"] == "none":
-            statuses[expected_versionless_type_path(name)] = _registry_word_status(entry)
+            statuses[expected_versionless_type_path(name)] = _registry_word_status(
+                entry
+            )
         else:
             for version in entry["versions"]:
                 statuses[expected_versioned_type_path(name, version)] = (
@@ -121,7 +127,9 @@ def test_registry_entries_resolve_to_schema_files() -> None:
             )
             assert id_line(path) == expected_enum_id_line(name, "000", status)
             schema = load_yaml(path)
-            expected_type = "integer" if entry.get("value_type") == "integer" else "string"
+            expected_type = (
+                "integer" if entry.get("value_type") == "integer" else "string"
+            )
             assert schema.get("type") == expected_type, (
                 f"{path} schema type must be {expected_type} to match registry value_type"
             )
@@ -129,10 +137,14 @@ def test_registry_entries_resolve_to_schema_files() -> None:
             for version in entry["versions"]:
                 status = _registry_version_status(entry, version)
                 path = expected_enum_path(name, version)
-                assert path.exists(), f"Missing enum schema for {name}:{version}: {path}"
+                assert path.exists(), (
+                    f"Missing enum schema for {name}:{version}: {path}"
+                )
                 assert id_line(path) == expected_enum_id_line(name, version, status)
                 schema = load_yaml(path)
-                expected_type = "integer" if entry.get("value_type") == "integer" else "string"
+                expected_type = (
+                    "integer" if entry.get("value_type") == "integer" else "string"
+                )
                 assert schema.get("type") == expected_type, (
                     f"{path} schema type must be {expected_type} to match registry value_type"
                 )
@@ -147,8 +159,12 @@ def test_registry_entries_resolve_to_schema_files() -> None:
             for version in entry["versions"]:
                 status = _registry_version_status(entry, version)
                 path = expected_versioned_type_path(name, version)
-                assert path.exists(), f"Missing type schema for {name}:{version}: {path}"
-                assert id_line(path) == expected_versioned_type_id_line(name, version, status)
+                assert path.exists(), (
+                    f"Missing type schema for {name}:{version}: {path}"
+                )
+                assert id_line(path) == expected_versioned_type_id_line(
+                    name, version, status
+                )
 
 
 def test_schema_files_resolve_back_to_registry_entries() -> None:
@@ -173,7 +189,9 @@ def test_schema_files_resolve_back_to_registry_entries() -> None:
     """
     registry = load_yaml(DEFINITIONS_DIR / "registry.yaml")
 
-    format_files = {path.stem for path in sorted((DEFINITIONS_DIR / "formats").glob("*.yaml"))}
+    format_files = {
+        path.stem for path in sorted((DEFINITIONS_DIR / "formats").glob("*.yaml"))
+    }
     registry_formats = set(registry["formats"])
     extra_formats = sorted(format_files - registry_formats)
     missing_formats = sorted(registry_formats - format_files)
@@ -197,11 +215,11 @@ def test_schema_files_resolve_back_to_registry_entries() -> None:
         )
         enum_files.add(f"{name}:{version}")
     registry_enums = {
-        f"{name}:000"
-        if entry["enum_type"] == "literal"
-        else f"{name}:{version}"
+        f"{name}:000" if entry["enum_type"] == "literal" else f"{name}:{version}"
         for name, entry in registry["enums"].items()
-        for version in (["000"] if entry["enum_type"] == "literal" else entry["versions"])
+        for version in (
+            ["000"] if entry["enum_type"] == "literal" else entry["versions"]
+        )
     }
     extra_enums = sorted(enum_files - registry_enums)
     missing_enums = sorted(registry_enums - enum_files)

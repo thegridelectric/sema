@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 def build_all_registry_seed_request(registry: dict) -> dict:
     return {
         "initial_targets": {

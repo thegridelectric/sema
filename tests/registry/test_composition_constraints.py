@@ -5,7 +5,9 @@ def path_str(path: list[Any]) -> str:
     return ".".join(str(part) for part in path)
 
 
-def walk_schema(node: Any, path: list[Any] | None = None) -> list[tuple[list[Any], Any]]:
+def walk_schema(
+    node: Any, path: list[Any] | None = None
+) -> list[tuple[list[Any], Any]]:
     if path is None:
         path = []
 

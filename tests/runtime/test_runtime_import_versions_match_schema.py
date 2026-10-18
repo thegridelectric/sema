@@ -68,22 +68,25 @@ def expected_enum_import(
     )
 
 
-def runtime_type_file(registry_entry: dict[str, Any], type_name: str, version: str) -> Path:
+def runtime_type_file(
+    registry_entry: dict[str, Any], type_name: str, version: str
+) -> Path:
     module_name = sema_name_to_module(type_name)
     if version == registry_entry["latest_version"]:
         return RUNTIME_TYPES_DIR / f"{module_name}.py"
     return RUNTIME_TYPES_DIR / "old_versions" / f"{module_name}_{version}.py"
 
 
-def candidate_type_imports(dep_name: str, imports: set[tuple[str, str]]) -> set[tuple[str, str]]:
+def candidate_type_imports(
+    dep_name: str, imports: set[tuple[str, str]]
+) -> set[tuple[str, str]]:
     module_name = sema_name_to_module(dep_name)
     class_name = sema_name_to_class(dep_name)
     return {
         target
         for target in imports
         if (
-            target[0] == f"sema.runtime.types.{module_name}"
-            and target[1] == class_name
+            target[0] == f"sema.runtime.types.{module_name}" and target[1] == class_name
         )
         or (
             target[0].startswith(f"sema.runtime.types.old_versions.{module_name}_")
@@ -92,20 +95,18 @@ def candidate_type_imports(dep_name: str, imports: set[tuple[str, str]]) -> set[
     }
 
 
-def candidate_enum_imports(dep_name: str, imports: set[tuple[str, str]]) -> set[tuple[str, str]]:
+def candidate_enum_imports(
+    dep_name: str, imports: set[tuple[str, str]]
+) -> set[tuple[str, str]]:
     module_name = sema_name_to_module(dep_name)
     class_name = sema_name_to_class(dep_name)
     return {
         target
         for target in imports
         if (
-            target[0] == f"sema.runtime.enums.{module_name}"
-            and target[1] == class_name
+            target[0] == f"sema.runtime.enums.{module_name}" and target[1] == class_name
         )
-        or (
-            target[0] == "sema.runtime.enums"
-            and target[1] == class_name
-        )
+        or (target[0] == "sema.runtime.enums" and target[1] == class_name)
         or (
             target[0].startswith(f"sema.runtime.enums.old_versions.{module_name}_")
             and target[1].startswith(class_name)
@@ -149,7 +150,10 @@ def test_runtime_import_versions_match_schema() -> None:
                     expected = expected_enum_import(registry, dep_name, dep_version)
                     candidates = candidate_enum_imports(dep_name, imports)
                     acceptable = {expected}
-                    if expected[0].startswith("sema.runtime.enums.") and ".old_versions." not in expected[0]:
+                    if (
+                        expected[0].startswith("sema.runtime.enums.")
+                        and ".old_versions." not in expected[0]
+                    ):
                         acceptable.add(("sema.runtime.enums", expected[1]))
                     if not (acceptable & candidates):
                         findings.append(

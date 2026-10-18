@@ -25,7 +25,9 @@ def load_yaml(path: Path) -> dict:
         return yaml.safe_load(handle)
 
 
-def ensure_lookup_path(lookup: dict, category: str, name: str, version: str | None) -> str:
+def ensure_lookup_path(
+    lookup: dict, category: str, name: str, version: str | None
+) -> str:
     if category == "format":
         return lookup["formats"][name]
     if category == "enum":
@@ -34,7 +36,9 @@ def ensure_lookup_path(lookup: dict, category: str, name: str, version: str | No
             raise ValueError(f"Enum lookup requires version: {name}")
         if enum_entry.get("enum_type") == "literal":
             if version != "000":
-                raise ValueError(f"Literal enum lookup only supports version 000: {name}:{version}")
+                raise ValueError(
+                    f"Literal enum lookup only supports version 000: {name}:{version}"
+                )
             return enum_entry["schema"]
         return enum_entry["versions"][version]
     if version is None:
@@ -42,7 +46,9 @@ def ensure_lookup_path(lookup: dict, category: str, name: str, version: str | No
     return lookup[f"{category}s"][name]["versions"][version]
 
 
-def add_intermediate_type_versions(types: dict[str, set[str]], registry: dict) -> list[tuple[str, str]]:
+def add_intermediate_type_versions(
+    types: dict[str, set[str]], registry: dict
+) -> list[tuple[str, str]]:
     # Intermediate versions are included to ensure upgrade chains are complete,
     # using only registry-declared versions (no inferred versions).
     added: list[tuple[str, str]] = []
@@ -122,7 +128,12 @@ def latest_version(
 
 
 def select_initial_versions(
-    category: str, name: str, options: object, registry: dict, *, published_only: bool = False
+    category: str,
+    name: str,
+    options: object,
+    registry: dict,
+    *,
+    published_only: bool = False,
 ) -> list[str | None]:
     if not isinstance(options, dict):
         raise ValueError(f"initial_targets.{category}.{name} must be a mapping.")
@@ -130,12 +141,16 @@ def select_initial_versions(
     unknown_keys = set(options) - {"include_all_versions", "versions"}
     if unknown_keys:
         unknown = ", ".join(sorted(unknown_keys))
-        raise ValueError(f"Unknown initial target options for {category}.{name}: {unknown}")
+        raise ValueError(
+            f"Unknown initial target options for {category}.{name}: {unknown}"
+        )
 
     has_include_all = "include_all_versions" in options
     has_versions = "versions" in options
     if has_include_all and has_versions:
-        raise ValueError(f"{category}.{name} cannot set both include_all_versions and versions.")
+        raise ValueError(
+            f"{category}.{name} cannot set both include_all_versions and versions."
+        )
 
     # An explicit `versions` list is taken as written: a staging version
     # listed outright reaches the snapshot's closure check and fails there.
@@ -146,7 +161,9 @@ def select_initial_versions(
     if has_include_all:
         if options["include_all_versions"] is not True:
             raise ValueError(f"{category}.{name}.include_all_versions must be true.")
-        return available_versions(category, name, registry, published_only=published_only)
+        return available_versions(
+            category, name, registry, published_only=published_only
+        )
 
     versions = options["versions"]
     if not isinstance(versions, list) or not versions:
@@ -156,7 +173,9 @@ def select_initial_versions(
     available_set = {version for version in available if version is not None}
     for version in versions:
         if not isinstance(version, str) or not VERSION_KEY_PATTERN.fullmatch(version):
-            raise ValueError(f"{category}.{name}.versions entries must be 3-digit strings.")
+            raise ValueError(
+                f"{category}.{name}.versions entries must be 3-digit strings."
+            )
         if version not in available_set:
             raise ValueError(f"Unknown {category[:-1]} target: {name}:{version}")
         if version not in selected:
@@ -168,12 +187,16 @@ def iter_initial_targets(
     initial_targets: object, registry: dict, *, published_only: bool = False
 ) -> list[tuple[str, str, str | None]]:
     if not isinstance(initial_targets, dict) or not initial_targets:
-        raise ValueError("seed request must contain a non-empty initial_targets mapping.")
+        raise ValueError(
+            "seed request must contain a non-empty initial_targets mapping."
+        )
 
     unknown_sections = set(initial_targets) - {"types", "enums"}
     if unknown_sections:
         unknown = ", ".join(sorted(unknown_sections))
-        raise ValueError(f"initial_targets may only contain types and enums; found: {unknown}")
+        raise ValueError(
+            f"initial_targets may only contain types and enums; found: {unknown}"
+        )
 
     targets: list[tuple[str, str, str | None]] = []
     for category in ("types", "enums"):
@@ -191,7 +214,9 @@ def iter_initial_targets(
                 targets.append((category, name, version))
 
     if not targets:
-        raise ValueError("seed request initial_targets must include at least one type or enum.")
+        raise ValueError(
+            "seed request initial_targets must include at least one type or enum."
+        )
     return targets
 
 

@@ -53,6 +53,7 @@ EMPTY_LOCAL_NAMES: dict[LeftRightDot, LeftRightDot] = {}
 # --- naming helpers ---
 # ============================================================
 
+
 def pattern_const_name(format_name: str) -> str:
     """
     "utc.iso8601.seconds" -> "UTC_ISO8601_SECONDS_PATTERN"
@@ -72,6 +73,7 @@ def local_name_to_module(local_name: LeftRightDot) -> str:
 # ============================================================
 # --- local names yaml ---
 # ============================================================
+
 
 def apply_local_name_rules(
     name: str,
@@ -316,7 +318,9 @@ def render_init_module(
     for a snapshot, "sema.runtime" for the runtime itself).
     """
     if kind not in {"type", "enum"}:
-        raise ValueError(f"render_init_module only supports type/enum kinds, got {kind}")
+        raise ValueError(
+            f"render_init_module only supports type/enum kinds, got {kind}"
+        )
 
     entries: list[tuple[str, str]] = []  # (module_name, class_name)
     for node in dag.topo_sort():
@@ -334,9 +338,7 @@ def render_init_module(
 
     lines: list[str] = []
     for module_name, class_name in entries:
-        lines.append(
-            f"from {import_root}.{kind}s.{module_name} import {class_name}"
-        )
+        lines.append(f"from {import_root}.{kind}s.{module_name} import {class_name}")
     lines.append("")
     lines.append("__all__ = [")
     for _, class_name in entries:

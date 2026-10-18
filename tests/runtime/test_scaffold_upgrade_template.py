@@ -16,7 +16,13 @@ from sema.tools.runtime_generation.types import _render_upgrade_method
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = REPO_ROOT / "definitions" / "registry.yaml"
 UPGRADE_TEMPLATE_DIR = (
-    REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "upgrades"
+    REPO_ROOT
+    / "src"
+    / "sema"
+    / "tools"
+    / "runtime_generation"
+    / "templates"
+    / "upgrades"
 )
 JINJA_VARIABLE_RE = re.compile(r"{{\s*[a-zA-Z_][a-zA-Z0-9_]*\s*}}")
 
@@ -76,7 +82,7 @@ def test_scaffold_upgrade_template_creates_missing_template(tmp_path: Path) -> N
     assert "def upgrade(self) -> {{ example_type_001_class_name }}:" in text
     assert '"""Upgrade example.type:000 -> 001."""' in text
     assert (
-        'raise NotImplementedError(\n'
+        "raise NotImplementedError(\n"
         '            "example.type:000 -> 001 upgrade not implemented"'
     ) in text
 
@@ -136,8 +142,12 @@ def test_scaffold_upgrade_templates_for_seed_creates_scada_v000(tmp_path: Path) 
         "worklist": {
             "types": {
                 "scada.control.capabilities": {
-                    "000": {"path": "definitions/types/scada.control.capabilities/000.yaml"},
-                    "001": {"path": "definitions/types/scada.control.capabilities/001.yaml"},
+                    "000": {
+                        "path": "definitions/types/scada.control.capabilities/000.yaml"
+                    },
+                    "001": {
+                        "path": "definitions/types/scada.control.capabilities/001.yaml"
+                    },
                 }
             }
         }
@@ -154,7 +164,9 @@ def test_scaffold_upgrade_templates_for_seed_creates_scada_v000(tmp_path: Path) 
     assert paths == [expected]
     assert expected.exists()
     text = expected.read_text()
-    assert "def upgrade(self) -> {{ scada_control_capabilities_001_class_name }}:" in text
+    assert (
+        "def upgrade(self) -> {{ scada_control_capabilities_001_class_name }}:" in text
+    )
     assert '"""Upgrade scada.control.capabilities:000 -> 001."""' in text
 
 
@@ -174,8 +186,12 @@ def test_scaffold_upgrade_templates_for_seed_is_idempotent(tmp_path: Path) -> No
         "worklist": {
             "types": {
                 "scada.control.capabilities": {
-                    "000": {"path": "definitions/types/scada.control.capabilities/000.yaml"},
-                    "001": {"path": "definitions/types/scada.control.capabilities/001.yaml"},
+                    "000": {
+                        "path": "definitions/types/scada.control.capabilities/000.yaml"
+                    },
+                    "001": {
+                        "path": "definitions/types/scada.control.capabilities/001.yaml"
+                    },
                 }
             }
         }
@@ -230,7 +246,10 @@ def test_render_upgrade_method_errors_when_template_missing() -> None:
     next_node = ("type", "example.type", "001")
     dag = SimpleNamespace(upgrades={node: next_node})
     dag_max = {("type", "example.type"): "001"}
-    registry = {"types": {"example.type": {"versions": {"000": {}, "001": {}}}}, "enums": {}}
+    registry = {
+        "types": {"example.type": {"versions": {"000": {}, "001": {}}}},
+        "enums": {},
+    }
 
     ctx = SimpleNamespace(
         import_root="sema.runtime",

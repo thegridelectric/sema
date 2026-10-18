@@ -101,10 +101,11 @@ def test_axiom_3_setpoint_needs_temp(vanilla: dict[str, Any]) -> None:
     reject(vanilla, lambda d: d.pop("TempChannelName"), "Axiom 3")
 
 
-def test_a_circuit_with_neither_setpoint_nor_temp_is_accepted(vanilla: dict[str, Any]) -> None:
+def test_a_circuit_with_neither_setpoint_nor_temp_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d.pop("SetpointChannelName")
         d.pop("TempChannelName")
 
     Gw1ZoneCallCircuit.model_validate(mutated(vanilla, mutate))
-

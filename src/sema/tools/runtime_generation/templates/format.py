@@ -29,7 +29,6 @@ UUID4Str = Annotated[
 ]
 """,
     },
-
     "left.right.dot": {
         "class_name": "LeftRightDot",
         "pattern": r"^[a-z][a-z0-9]*(?:\.[a-z0-9]+)*$",
@@ -50,7 +49,6 @@ LeftRightDot = Annotated[
 ]
 """,
     },
-
     "lowercase.token": {
         "class_name": "LowercaseToken",
         "pattern": r"^[a-z][a-z0-9]*$",
@@ -94,7 +92,6 @@ SpaceheatName = Annotated[
 ]
 """,
     },
-
     "handle.name": {
         "class_name": "HandleName",
         "pattern": r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$",
@@ -115,7 +112,6 @@ HandleName = Annotated[
 ]
 """,
     },
-
     "hex.char": {
         "class_name": "HexChar",
         "pattern": r"^[0-9a-fA-F]$",
@@ -136,7 +132,6 @@ HexChar = Annotated[
 ]
 """,
     },
-
     "hh.mm": {
         "class_name": "HhMm",
         "pattern": r"^([01][0-9]|2[0-3]):[0-5][0-9]$",
@@ -157,7 +152,6 @@ HhMm = Annotated[
 ]
 """,
     },
-
     "iana.timezone.str": {
         "class_name": "IanaTimezoneStr",
         "pattern": r"^[A-Za-z_]+(/[A-Za-z0-9_+-]+){0,2}$",
@@ -178,7 +172,6 @@ IanaTimezoneStr = Annotated[
 ]
 """,
     },
-
     "market.slot.name": {
         "class_name": "MarketSlotName",
         # Self-contained leaf (no enum, no other-format calls):
@@ -216,7 +209,6 @@ MarketSlotName = Annotated[
 ]
 """,
     },
-
     "mac.address": {
         "class_name": "MacAddress",
         "pattern": r"^([0-9a-f]{2}:){5}[0-9a-f]{2}$",
@@ -239,7 +231,6 @@ MacAddress = Annotated[
 ]
 """,
     },
-
     "decimal.digit": {
         "class_name": "DecimalDigit",
         "imports": ["from pydantic import Field, StrictInt"],
@@ -258,7 +249,6 @@ DecimalDigit = Annotated[
 ]
 """,
     },
-
     "firmware.commit": {
         "class_name": "FirmwareCommit",
         "pattern": r"^([0-9a-f]{40}(-dirty)?|unstamped)$",
@@ -282,7 +272,6 @@ FirmwareCommit = Annotated[
 ]
 """,
     },
-
     "git.commit": {
         "class_name": "GitCommit",
         "pattern": r"^[0-9a-f]{40}(-dirty)?$",
@@ -306,7 +295,6 @@ GitCommit = Annotated[
 ]
 """,
     },
-
     "non.empty.string": {
         "class_name": "NonEmptyString",
         "imports": ["from pydantic import Field"],
@@ -318,7 +306,6 @@ NonEmptyString = Annotated[
 ]
 """,
     },
-
     "positive.int.as.str": {
         "class_name": "PositiveIntAsStr",
         "pattern": r"^[1-9][0-9]*$",
@@ -337,7 +324,6 @@ PositiveIntAsStr = Annotated[
 ]
 """,
     },
-
     "non.negative.int": {
         "class_name": "NonNegativeInt",
         "imports": ["from pydantic import Field, StrictInt"],
@@ -356,7 +342,6 @@ NonNegativeInt = Annotated[
 ]
 """,
     },
-
     "pascal.case": {
         "class_name": "PascalCase",
         "pattern": r"^[A-Z][A-Za-z0-9]*$",
@@ -377,7 +362,6 @@ PascalCase = Annotated[
 ]
 """,
     },
-
     "positive.int": {
         "class_name": "PositiveInt",
         "methods": """
@@ -395,7 +379,6 @@ PositiveInt = Annotated[
 ]
 """,
     },
-
     "positive.float": {
         "class_name": "PositiveFloat",
         "imports": ["from pydantic import Field, StrictFloat"],
@@ -407,7 +390,6 @@ PositiveFloat = Annotated[
 ]
 """,
     },
-
     "universe.run": {
         "class_name": "UniverseRun",
         "pattern": r"^[a-z][a-z0-9]*__[1-9][0-9]*$",
@@ -428,7 +410,6 @@ UniverseRun = Annotated[
 ]
 """,
     },
-
     "utc.iso8601.millis": {
         "class_name": "UtcIso8601Millis",
         "pattern": r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\.[0-9]{3}Z$",
@@ -467,7 +448,6 @@ class UtcIso8601MillisFormat:
         return is_utc_iso8601_millis(s)
 """,
     },
-
     "utc.iso8601.seconds": {
         "class_name": "UtcIso8601Seconds",
         "pattern": r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
@@ -505,7 +485,6 @@ class UtcIso8601SecondsFormat:
         return is_utc_iso8601_seconds(s)
 """,
     },
-
     "utc.milliseconds": {
         "class_name": "UTCMilliseconds",
         "imports": ["from datetime import UTC, datetime"],
@@ -532,7 +511,6 @@ UTCMilliseconds = Annotated[
 ]
 """,
     },
-
     "utc.seconds": {
         "class_name": "UTCSeconds",
         "imports": ["from datetime import UTC, datetime"],

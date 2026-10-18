@@ -38,5 +38,10 @@ def test_seed_definitions_contains_no_runtime(tmp_path: Path) -> None:
 
 
 def test_resolve_target_path_always_uses_sema_directory(tmp_path: Path) -> None:
-    assert resolve_target_path("gjk", str(tmp_path / "out")) == tmp_path / "out" / "sema"
-    assert resolve_target_path("gjk", str(tmp_path / "out" / "sema")) == tmp_path / "out" / "sema"
+    assert (
+        resolve_target_path("gjk", str(tmp_path / "out")) == tmp_path / "out" / "sema"
+    )
+    assert (
+        resolve_target_path("gjk", str(tmp_path / "out" / "sema"))
+        == tmp_path / "out" / "sema"
+    )

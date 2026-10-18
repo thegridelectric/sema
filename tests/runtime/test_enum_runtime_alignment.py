@@ -55,9 +55,7 @@ def load_old_runtime_enum(enum_name: str, version: str):
                     return obj
             except NotImplementedError:
                 continue
-    raise AssertionError(
-        f"Could not find old runtime enum for {enum_name}:{version}"
-    )
+    raise AssertionError(f"Could not find old runtime enum for {enum_name}:{version}")
 
 
 def test_enum_runtime_matches_schema() -> None:

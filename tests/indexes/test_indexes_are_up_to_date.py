@@ -36,8 +36,7 @@ def test_dependency_closure_is_up_to_date(tmp_path: Path) -> None:
     committed = _committed_text("dependency_closure.yaml")
 
     assert generated == committed, (
-        "Indexes are out of date.\n"
-        "Run: uv run sema build-indexes"
+        "Indexes are out of date.\nRun: uv run sema build-indexes"
     )
 
 
@@ -46,8 +45,7 @@ def test_public_registry_is_up_to_date(tmp_path: Path) -> None:
     committed = _committed_text("public_registry.yaml")
 
     assert generated == committed, (
-        "Indexes are out of date.\n"
-        "Run: uv run sema build-indexes"
+        "Indexes are out of date.\nRun: uv run sema build-indexes"
     )
 
 
@@ -56,8 +54,7 @@ def test_lookup_is_up_to_date(tmp_path: Path) -> None:
     committed = _committed_text("lookup.yaml")
 
     assert generated == committed, (
-        "Indexes are out of date.\n"
-        "Run: uv run sema build-indexes"
+        "Indexes are out of date.\nRun: uv run sema build-indexes"
     )
 
 
@@ -68,8 +65,7 @@ def test_reverse_dependencies_are_up_to_date(tmp_path: Path) -> None:
     committed = _committed_text("reverse_dependencies.yaml")
 
     assert generated == committed, (
-        "Indexes are out of date.\n"
-        "Run: uv run sema build-indexes"
+        "Indexes are out of date.\nRun: uv run sema build-indexes"
     )
 
 
@@ -78,6 +74,5 @@ def test_versions_are_up_to_date(tmp_path: Path) -> None:
     committed = _committed_text("versions.yaml")
 
     assert generated == committed, (
-        "Indexes are out of date.\n"
-        "Run: uv run sema build-indexes"
+        "Indexes are out of date.\nRun: uv run sema build-indexes"
     )

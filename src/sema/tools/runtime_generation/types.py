@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+import re
 import textwrap
 from dataclasses import dataclass, field
 from pathlib import Path
-import re
 from typing import Any
 
 from jinja2 import Environment, StrictUndefined
@@ -636,8 +636,12 @@ def _render_logic_template(
 
     if "ValidationError" in template_text:
         ctx.imports.add("ValidationError")
-    if "Self" in template_text:
+    if re.search(r"\bSelf\b", template_text):
         ctx.imports.add("Self")
+    # Any as a type annotation (dict[str, Any], -> Any, x: Any), not the
+    # English word in a docstring.
+    if re.search(r"[\[,|:>]\s*Any\b|\bAny\s*[\]|,]", template_text):
+        ctx.needs_any = True
 
     env = Environment(undefined=StrictUndefined, keep_trailing_newline=True)
     rendered = env.from_string(template_text).render(context).rstrip()

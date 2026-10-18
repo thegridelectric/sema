@@ -7,7 +7,10 @@ from typing import Any, Dict, List, Tuple
 # Helpers
 # ----------------------------
 
-def find_inline_objects(schema: Any, path: List[Any] | None = None) -> List[Tuple[List[Any], Dict]]:
+
+def find_inline_objects(
+    schema: Any, path: List[Any] | None = None
+) -> List[Tuple[List[Any], Dict]]:
     if path is None:
         path = []
 
@@ -42,7 +45,9 @@ def path_str(path: List[Any]) -> str:
     return ".".join(str(p) for p in path)
 
 
-def walk_schema(node: Any, path: List[Any] | None = None) -> List[Tuple[List[Any], Dict]]:
+def walk_schema(
+    node: Any, path: List[Any] | None = None
+) -> List[Tuple[List[Any], Dict]]:
     if path is None:
         path = []
 
@@ -60,6 +65,7 @@ def walk_schema(node: Any, path: List[Any] | None = None) -> List[Tuple[List[Any
 # ----------------------------
 # Tests
 # ----------------------------
+
 
 def test_inline_objects_are_structural_only(all_schemas):
     """
@@ -199,8 +205,6 @@ def test_inline_objects_do_not_nest_composition(all_schemas):
 
     for schema_name, schema in all_schemas.items():
         for path, obj in find_inline_objects(schema):
-            p = path_str(path)
-
             for inner_path, inner_obj in walk_schema(obj):
                 inner_p = path_str(path + inner_path)
                 assert "oneOf" not in inner_obj, (

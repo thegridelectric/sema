@@ -1,4 +1,4 @@
-from typing import Literal, Self
+from typing import Any, Literal, Self
 from pydantic import BaseModel, ConfigDict, StrictInt, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.property_format import LeftRightDot

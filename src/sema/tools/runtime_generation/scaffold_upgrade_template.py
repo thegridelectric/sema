@@ -12,7 +12,13 @@ from sema.tools.runtime_generation.helpers import (
 
 DEFINITIONS_TYPES_DIR = REPO_ROOT / "definitions" / "types"
 UPGRADE_TEMPLATE_DIR = (
-    REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "upgrades"
+    REPO_ROOT
+    / "src"
+    / "sema"
+    / "tools"
+    / "runtime_generation"
+    / "templates"
+    / "upgrades"
 )
 
 
@@ -31,8 +37,7 @@ def scaffold_upgrade_template(
     """
     template_id = sema_name_to_template_identifier(type_name)
     template_path = (
-        upgrade_template_dir
-        / f"{template_id}_{version}_to_{next_version}.py.jinja2"
+        upgrade_template_dir / f"{template_id}_{version}_to_{next_version}.py.jinja2"
     )
     if template_path.exists():
         return template_path

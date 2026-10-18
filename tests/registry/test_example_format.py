@@ -14,6 +14,7 @@ This test enforces both halves. It applies to type schemas only — formats
 and enums also have `examples` blocks, but those are scalar values, not
 JSON documents.
 """
+
 import json
 from typing import Any
 

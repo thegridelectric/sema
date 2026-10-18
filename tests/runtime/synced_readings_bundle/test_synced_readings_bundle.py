@@ -47,6 +47,7 @@ def test_valid_object() -> None:
         operating_state_sequence_list=[],
     )
 
+
 def test_axiom1() -> None:
     try:
         SyncedReadingsBundle(
@@ -61,7 +62,10 @@ def test_axiom1() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "TerminalAssetAliasConstraint" not in repr(e):
-            raise AssertionError("Expected TerminalAssetAliasConstraint error, found something else", e)
+            raise AssertionError(
+                "Expected TerminalAssetAliasConstraint error, found something else", e
+            )
+
 
 def test_axiom2() -> None:
     try:
@@ -90,7 +94,10 @@ def test_axiom2() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "ChannelDefinitionBijection" not in repr(e):
-            raise AssertionError("Expected ChannelDefinitionBijection error, found something else", e)
+            raise AssertionError(
+                "Expected ChannelDefinitionBijection error, found something else", e
+            )
+
 
 def test_axiom3() -> None:
     try:
@@ -106,7 +113,10 @@ def test_axiom3() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "StartTimestampBeforeEnd" not in repr(e):
-            raise AssertionError("Expected StartTimestampBeforeEnd error, found something else", e)
+            raise AssertionError(
+                "Expected StartTimestampBeforeEnd error, found something else", e
+            )
+
 
 def test_axiom4() -> None:
     try:
@@ -118,7 +128,7 @@ def test_axiom4() -> None:
             channel_readings_list=[
                 ChannelReadingsListItem(
                     channel_name="persistence-delay",
-                    value_list=[1,20],
+                    value_list=[1, 20],
                     unit="Milliseconds",
                     unit_type="gw1.unit",
                 ),
@@ -135,7 +145,11 @@ def test_axiom4() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "TimestampAndValueLengthAlignment" not in repr(e):
-            raise AssertionError("Expected TimestampAndValueLengthAlignment error, found something else", e)
+            raise AssertionError(
+                "Expected TimestampAndValueLengthAlignment error, found something else",
+                e,
+            )
+
 
 def test_axiom5_invalid_unit_type() -> None:
     try:
@@ -147,7 +161,7 @@ def test_axiom5_invalid_unit_type() -> None:
             channel_readings_list=[
                 ChannelReadingsListItem(
                     channel_name="persistence-delay",
-                    value_list=[1,20],
+                    value_list=[1, 20],
                     unit="Milliseconds",
                     unit_type="something.else",
                 ),
@@ -158,7 +172,11 @@ def test_axiom5_invalid_unit_type() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "UnitTypeAndValueRepresentationConsistency" not in repr(e):
-            raise AssertionError("Expected UnitTypeAndValueRepresentationConsistency error, found something else", e)
+            raise AssertionError(
+                "Expected UnitTypeAndValueRepresentationConsistency error, found something else",
+                e,
+            )
+
 
 def test_valid_late_persistence_and_states() -> None:
     SyncedReadingsBundle(
@@ -186,6 +204,7 @@ def test_valid_late_persistence_and_states() -> None:
         ],
     )
 
+
 def test_axiom6_a_pair_length() -> None:
     try:
         SyncedReadingsBundle(
@@ -201,6 +220,7 @@ def test_axiom6_a_pair_length() -> None:
     except ValidationError as e:
         if "Axiom 6.a" not in repr(e):
             raise AssertionError("Expected Axiom 6.a error, found something else", e)
+
 
 def test_axiom6_b_ordering() -> None:
     try:
@@ -220,6 +240,7 @@ def test_axiom6_b_ordering() -> None:
         if "Axiom 6.b" not in repr(e):
             raise AssertionError("Expected Axiom 6.b error, found something else", e)
 
+
 def test_axiom6_c_within_span() -> None:
     try:
         SyncedReadingsBundle(
@@ -238,6 +259,7 @@ def test_axiom6_c_within_span() -> None:
         if "Axiom 6.c" not in repr(e):
             raise AssertionError("Expected Axiom 6.c error, found something else", e)
 
+
 def test_axiom5_invalid_unit() -> None:
     try:
         SyncedReadingsBundle(
@@ -248,7 +270,7 @@ def test_axiom5_invalid_unit() -> None:
             channel_readings_list=[
                 ChannelReadingsListItem(
                     channel_name="persistence-delay",
-                    value_list=[1,20],
+                    value_list=[1, 20],
                     unit="SomethingElse",
                     unit_type="gw1.unit",
                 ),
@@ -259,4 +281,7 @@ def test_axiom5_invalid_unit() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError as e:
         if "UnitTypeAndValueRepresentationConsistency" not in repr(e):
-            raise AssertionError("Expected UnitTypeAndValueRepresentationConsistency error, found something else", e)
+            raise AssertionError(
+                "Expected UnitTypeAndValueRepresentationConsistency error, found something else",
+                e,
+            )

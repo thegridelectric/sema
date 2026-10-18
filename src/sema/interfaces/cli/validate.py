@@ -26,7 +26,9 @@ def add_parser(subparsers: argparse._SubParsersAction) -> None:
     )
     parser.add_argument("-h", "--help", action="help", help=argparse.SUPPRESS)
     parser.add_argument("file", nargs="?", default=None, help=argparse.SUPPRESS)
-    parser.add_argument("--type", dest="expected_type", default=None, help=argparse.SUPPRESS)
+    parser.add_argument(
+        "--type", dest="expected_type", default=None, help=argparse.SUPPRESS
+    )
     parser.set_defaults(handler=run)
 
 

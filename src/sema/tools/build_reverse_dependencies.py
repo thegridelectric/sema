@@ -22,6 +22,7 @@ HEADER = """# GENERATED FILE — DO NOT EDIT
 # LOAD
 # -----------------------------------------------------------------------------
 
+
 def load_registry() -> dict:
     with open(REGISTRY_PATH, "r") as f:
         return yaml.safe_load(f)
@@ -30,6 +31,7 @@ def load_registry() -> dict:
 # -----------------------------------------------------------------------------
 # HELPERS
 # -----------------------------------------------------------------------------
+
 
 def split_dep(dep: str) -> Tuple[str, str | None]:
     if ":" in dep:
@@ -64,6 +66,7 @@ def classify(dep: str, registry: dict) -> str:
 # BUILD
 # -----------------------------------------------------------------------------
 
+
 def build() -> None:
     registry = load_registry()
 
@@ -77,7 +80,6 @@ def build() -> None:
 
     for type_name, type_def in types_registry.items():
         for version, version_block in type_def.get("versions", {}).items():
-
             source = f"{type_name}:{version}"
             deps = get_direct_deps(version_block)
 
@@ -113,24 +115,18 @@ def build() -> None:
         output["types"][name] = {}
         for version in sorted(versions, key=int):
             users = versions[version]
-            output["types"][name][version] = {
-                "used_by": sorted(users)
-            }
+            output["types"][name][version] = {"used_by": sorted(users)}
 
     for name in sorted(reverse["enums"]):
         versions = reverse["enums"][name]
         output["enums"][name] = {}
         for version in sorted(versions, key=int):
             users = versions[version]
-            output["enums"][name][version] = {
-                "used_by": sorted(users)
-            }
+            output["enums"][name][version] = {"used_by": sorted(users)}
 
     for name in sorted(reverse["formats"]):
         users = reverse["formats"][name]
-        output["formats"][name] = {
-            "used_by": sorted(users)
-        }
+        output["formats"][name] = {"used_by": sorted(users)}
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 

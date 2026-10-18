@@ -16,9 +16,7 @@ def test_generated_base_matches_runtime_base(tmp_path: Path) -> None:
     _write_base(tmp_path)
     format_in_place(tmp_path)
 
-    assert (tmp_path / "base.py").read_text() == (
-        RUNTIME_ROOT / "base.py"
-    ).read_text()
+    assert (tmp_path / "base.py").read_text() == (RUNTIME_ROOT / "base.py").read_text()
 
 
 def test_generated_codec_matches_runtime_codec(tmp_path: Path) -> None:

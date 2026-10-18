@@ -16,7 +16,9 @@ def elements(names: list[str]) -> dict[str, object]:
 
 
 def test_buffer_elements_validate() -> None:
-    e = GwElementBackup.model_validate(elements(["elt-buffer-top", "elt-buffer-bottom"]))
+    e = GwElementBackup.model_validate(
+        elements(["elt-buffer-top", "elt-buffer-bottom"])
+    )
     assert not e.in_service
 
 

@@ -12,7 +12,13 @@ AXIOM_TEMPLATE_DIR = (
     REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "axioms"
 )
 UPGRADE_TEMPLATE_DIR = (
-    REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "upgrades"
+    REPO_ROOT
+    / "src"
+    / "sema"
+    / "tools"
+    / "runtime_generation"
+    / "templates"
+    / "upgrades"
 )
 JINJA_VARIABLE_RE = re.compile(r"{{\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*}}")
 
@@ -84,14 +90,19 @@ def test_logic_template_class_refs_are_in_dependency_closure() -> None:
 
     for template_path in sorted(AXIOM_TEMPLATE_DIR.glob("*.py.jinja2")):
         sema_name, version = axiom_template_target(template_path)
-        if sema_name not in closure["types"] or version not in closure["types"][sema_name]:
+        if (
+            sema_name not in closure["types"]
+            or version not in closure["types"][sema_name]
+        ):
             continue
         allowed_refs = closure_refs(closure, sema_name, version)
 
         for variable in sorted(class_name_variable_refs(template_path)):
             ref = variable_to_ref.get(variable)
             if ref is None:
-                findings.append(f"{template_path.name}: unknown template variable {variable}")
+                findings.append(
+                    f"{template_path.name}: unknown template variable {variable}"
+                )
             elif ref not in allowed_refs:
                 findings.append(
                     f"{template_path.name}: {ref} is referenced by template logic "
@@ -99,7 +110,9 @@ def test_logic_template_class_refs_are_in_dependency_closure() -> None:
                 )
 
     for template_path in sorted(UPGRADE_TEMPLATE_DIR.glob("*.py.jinja2")):
-        sema_name, source_version, target_version = upgrade_template_target(template_path)
+        sema_name, source_version, target_version = upgrade_template_target(
+            template_path
+        )
         if (
             sema_name not in closure["types"]
             or source_version not in closure["types"][sema_name]
@@ -113,7 +126,9 @@ def test_logic_template_class_refs_are_in_dependency_closure() -> None:
         for variable in sorted(class_name_variable_refs(template_path)):
             ref = variable_to_ref.get(variable)
             if ref is None:
-                findings.append(f"{template_path.name}: unknown template variable {variable}")
+                findings.append(
+                    f"{template_path.name}: unknown template variable {variable}"
+                )
             elif ref not in allowed_refs:
                 findings.append(
                     f"{template_path.name}: {ref} is referenced by template logic "

@@ -17,7 +17,9 @@ def boiler(failsafe: str, aquastat_ctrl: str) -> dict[str, object]:
 
 
 def test_two_relays_validate() -> None:
-    b = GwBoilerBackup.model_validate(boiler("hp-failsafe-relay", "aquastat-ctrl-relay"))
+    b = GwBoilerBackup.model_validate(
+        boiler("hp-failsafe-relay", "aquastat-ctrl-relay")
+    )
     assert b.in_service
 
 

@@ -6,9 +6,7 @@ from typing import Any
 import yaml
 
 
-RFC3339_SECONDS_PATTERN = re.compile(
-    r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$"
-)
+RFC3339_SECONDS_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
 FORMAT_SCHEMA_URL_PATTERN = re.compile(
     r"^https://schemas\.electricity\.works/(?:draft/)?formats/"
     r"(?P<name>[a-z0-9]+(?:[.-][a-z0-9]+)*)$"
@@ -76,9 +74,7 @@ def get_created_for_dep(registry: dict[str, Any], dep: str) -> str:
         return entry["created"]
 
     if dep in registry.get("enums", {}):
-        raise AssertionError(
-            f"{dep} is referenced without a version but is an enum"
-        )
+        raise AssertionError(f"{dep} is referenced without a version but is an enum")
 
     raise AssertionError(f"Unknown dependency: {dep}")
 
@@ -210,7 +206,6 @@ def test_registry_format_structure():
     assert isinstance(formats, dict)
 
     for format_name, entry in formats.items():
-
         # -----------------------------------------------------------------
         # Required fields
         # -----------------------------------------------------------------
@@ -226,7 +221,9 @@ def test_registry_format_structure():
         # -----------------------------------------------------------------
 
         assert "versions" not in entry, f"{format_name} must not have versions"
-        assert "latest_version" not in entry, f"{format_name} must not have latest_version"
+        assert "latest_version" not in entry, (
+            f"{format_name} must not have latest_version"
+        )
 
         # -----------------------------------------------------------------
         # No dependencies allowed (per spec)
@@ -275,7 +272,6 @@ def test_registry_enum_structure():
     enums = registry.get("enums", {})
 
     for enum_name, entry in enums.items():
-
         # -----------------------------------------------------------------
         # Required fields
         # -----------------------------------------------------------------
@@ -330,7 +326,9 @@ def test_registry_enum_structure():
                 timestamps.append((v, parse_ts(v_entry["created"])))
 
             ts_values = [t for _, t in timestamps]
-            assert len(ts_values) == len(set(ts_values)), f"{enum_name} duplicate timestamps"
+            assert len(ts_values) == len(set(ts_values)), (
+                f"{enum_name} duplicate timestamps"
+            )
 
             for i in range(len(timestamps) - 1):
                 v_new, t_new = timestamps[i]
@@ -369,7 +367,6 @@ def test_registry_type_structure():
     assert isinstance(registry["types"], dict)
 
     for type_name, entry in registry["types"].items():
-
         # ---------------------------------------------------------------------
         # Required top-level fields
         # ---------------------------------------------------------------------
@@ -477,7 +474,9 @@ def test_registry_type_structure():
 
             # uniqueness
             ts_values = [t for _, t in timestamps]
-            assert len(ts_values) == len(set(ts_values)), f"{type_name} duplicate timestamps"
+            assert len(ts_values) == len(set(ts_values)), (
+                f"{type_name} duplicate timestamps"
+            )
 
             # ordering consistency
             for i in range(len(timestamps) - 1):
@@ -501,7 +500,6 @@ def test_registry_type_structure():
             # -----------------------------------------------------------------
 
             for v, v_entry in versions.items():
-
                 assert "schema_url" in v_entry
                 assert "created" in v_entry
                 assert "summary" in v_entry
@@ -626,7 +624,10 @@ def test_type_versioning_strategy_evolution_is_monotonic():
             strategy = infer_schema_versioning_strategy(
                 schema, version, f"{type_name}:{version}"
             )
-            if previous_strategy is not None and rank[strategy] < rank[previous_strategy]:
+            if (
+                previous_strategy is not None
+                and rank[strategy] < rank[previous_strategy]
+            ):
                 raise AssertionError(
                     f"{type_name}:{version} uses versioning strategy {strategy!r}, "
                     f"which is earlier than {type_name}:{previous_version} strategy "
@@ -739,6 +740,7 @@ def test_const_usage_restricted(all_schemas):
 # HELPERS
 # -----------------------------------------------------------------------------
 
+
 def infer_schema_versioning_strategy(
     schema: dict[str, Any],
     version: str | None,
@@ -790,9 +792,7 @@ def assert_schema_url_matches_format_name(format_name: str, schema_url: str) -> 
             f"{format_name} has invalid format schema_url: {schema_url}"
         )
     if match.group("name") != format_name:
-        raise AssertionError(
-            f"{format_name} schema_url name mismatch: {schema_url}"
-        )
+        raise AssertionError(f"{format_name} schema_url name mismatch: {schema_url}")
 
 
 def assert_schema_url_matches_enum_name_and_version(
@@ -840,6 +840,4 @@ def assert_schema_url_matches_versionless_type_name(
             f"{type_name} has invalid versionless type schema_url: {schema_url}"
         )
     if match.group("name") != type_name:
-        raise AssertionError(
-            f"{type_name} schema_url name mismatch: {schema_url}"
-        )
+        raise AssertionError(f"{type_name} schema_url name mismatch: {schema_url}")

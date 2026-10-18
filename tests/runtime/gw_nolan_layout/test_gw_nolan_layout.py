@@ -222,6 +222,7 @@ def test_axiom_25_disabled_channel_name_must_resolve(vanilla: dict[str, Any]) ->
 
     reject(vanilla, mutate, "Axiom 25")
 
+
 def sensor_off_the_meter(d: dict[str, Any]) -> str:
     """A node capturing channels that feed no transactive-power channel and
     is not an actuator: the one a disabled-list test may disable without
@@ -233,7 +234,9 @@ def sensor_off_the_meter(d: dict[str, Any]) -> str:
         for n in x["InputChannelNames"]
     }
     actuators = {
-        n["Name"] for n in d["ShNodes"] if n["ActorClass"] in ("Relay", "ZeroTenOutputer")
+        n["Name"]
+        for n in d["ShNodes"]
+        if n["ActorClass"] in ("Relay", "ZeroTenOutputer")
     }
     captured: dict[str, set[str]] = {}
     for c in d["DataChannels"]:
@@ -384,13 +387,19 @@ def test_axiom_30_command_node_declared_under_lc(vanilla: dict[str, Any]) -> Non
 
 
 def test_axiom_30_fixed_relay_declared_flat(vanilla: dict[str, Any]) -> None:
-    reject(vanilla, set_handle("hp-scada-ops-relay", "auto.hp-scada-ops-relay"), "Axiom 30")
+    reject(
+        vanilla, set_handle("hp-scada-ops-relay", "auto.hp-scada-ops-relay"), "Axiom 30"
+    )
 
 
 def test_axiom_30_floating_actuator_declared_under_a_boss(
     vanilla: dict[str, Any],
 ) -> None:
-    reject(vanilla, set_handle("store-pump-relay", "auto.lc.n.store-pump-relay"), "Axiom 30")
+    reject(
+        vanilla,
+        set_handle("store-pump-relay", "auto.lc.n.store-pump-relay"),
+        "Axiom 30",
+    )
 
 
 def test_axiom_1_transactive_input_disabled(vanilla: dict[str, Any]) -> None:
@@ -417,9 +426,11 @@ def test_axiom_26_disabled_actuator_channel(vanilla: dict[str, Any]) -> None:
 
 def test_axiom_31_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        stray = json.loads(json.dumps(
-            next(c for c in d["DerivedChannels"] if c["Strategy"] == "heat-call")
-        ))
+        stray = json.loads(
+            json.dumps(
+                next(c for c in d["DerivedChannels"] if c["Strategy"] == "heat-call")
+            )
+        )
         stray["Name"] = "stray-heat-call"
         stray["Id"] = "6f1e2d3c-4b5a-4c6d-8e9f-0a1b2c3d4e5f"
         stray["InputChannelNames"] = ["hp-odu-pwr"]
@@ -445,12 +456,16 @@ def test_axiom_32_hp_watch_wrong_actor_class(vanilla: dict[str, Any]) -> None:
     reject(vanilla, mutate, "Axiom 32")
 
 
-def test_axiom_12_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any]) -> None:
+def test_axiom_12_c_no_actor_under_lc_beyond_its_states(
+    vanilla: dict[str, Any],
+) -> None:
     """A NoActor node under lc other than n, backup, scada-blind or standby fails, though
     clause b reads it as a command node."""
 
     def mutate(d: dict[str, Any]) -> None:
-        stray = json.loads(json.dumps(next(n for n in d["ShNodes"] if n["Name"] == "n")))
+        stray = json.loads(
+            json.dumps(next(n for n in d["ShNodes"] if n["Name"] == "n"))
+        )
         stray["Name"] = "stray"
         stray["Handle"] = "auto.lc.stray"
         stray["ShNodeId"] = "3b9e2c71-5d4a-4f6e-9a8b-1c2d3e4f5a6b"
@@ -459,7 +474,9 @@ def test_axiom_12_c_no_actor_under_lc_beyond_its_states(vanilla: dict[str, Any])
     reject(vanilla, mutate, "Axiom 12")
 
 
-def test_axiom_13_a_circuit_temp_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
+def test_axiom_13_a_circuit_temp_channel_that_is_no_channel(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["Hydronic"]["ZoneCallCircuits"][0]["TempChannelName"] = "no-such-temp"
 
@@ -476,14 +493,18 @@ def test_axiom_13_b_circuit_temp_channel_that_is_not_a_temperature(
     reject(vanilla, mutate, "Axiom 13")
 
 
-def test_axiom_33_a_setpoint_channel_that_is_no_channel(vanilla: dict[str, Any]) -> None:
+def test_axiom_33_a_setpoint_channel_that_is_no_channel(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "no-such-set"
 
     reject(vanilla, mutate, "Axiom 33")
 
 
-def test_axiom_33_b_setpoint_channel_that_is_not_a_temperature(vanilla: dict[str, Any]) -> None:
+def test_axiom_33_b_setpoint_channel_that_is_not_a_temperature(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         circuit = d["Hydronic"]["ZoneCallCircuits"][0]
         circuit["SetpointChannelName"] = circuit["WhitewireChannelName"]
@@ -495,14 +516,20 @@ def test_axiom_33_c_learned_setpoint_on_a_data_channel(vanilla: dict[str, Any]) 
     """A Learned circuit whose setpoint channel is a reported channel fails."""
 
     def mutate(d: dict[str, Any]) -> None:
-        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "zone1-bedrooms-gw-temp"
+        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = (
+            "zone1-bedrooms-gw-temp"
+        )
 
     reject(vanilla, mutate, "SHALL be a channel in DerivedChannels")
 
 
-def test_axiom_33_d_learned_setpoint_without_its_heat_call(vanilla: dict[str, Any]) -> None:
+def test_axiom_33_d_learned_setpoint_without_its_heat_call(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        setpoint = next(c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set")
+        setpoint = next(
+            c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set"
+        )
         setpoint["InputChannelNames"] = ["zone1-bedrooms-gw-temp"]
 
     reject(vanilla, mutate, "Axiom 33")
@@ -512,21 +539,32 @@ def test_axiom_33_d_learned_setpoint_from_another_circuits_temp(
     vanilla: dict[str, Any],
 ) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        setpoint = next(c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set")
-        setpoint["InputChannelNames"] = ["zone2-living-rm-gw-temp", "zone1-bedrooms-heat-call"]
+        setpoint = next(
+            c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set"
+        )
+        setpoint["InputChannelNames"] = [
+            "zone2-living-rm-gw-temp",
+            "zone1-bedrooms-heat-call",
+        ]
 
     reject(vanilla, mutate, "Axiom 33")
 
 
-def test_axiom_33_e_learned_setpoint_with_another_strategy(vanilla: dict[str, Any]) -> None:
+def test_axiom_33_e_learned_setpoint_with_another_strategy(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        setpoint = next(c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set")
+        setpoint = next(
+            c for c in d["DerivedChannels"] if c["Name"] == "zone1-bedrooms-set"
+        )
         setpoint["Strategy"] = "identity"
 
     reject(vanilla, mutate, "Axiom 33")
 
 
-def test_hydronic_axiom_2_b_circuit_position_is_not_its_place(vanilla: dict[str, Any]) -> None:
+def test_hydronic_axiom_2_b_circuit_position_is_not_its_place(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         circuits = d["Hydronic"]["ZoneCallCircuits"]
         circuits[0]["CircuitPosition"], circuits[1]["CircuitPosition"] = 2, 1
@@ -541,7 +579,9 @@ def test_hydronic_axiom_3_a_primary_is_no_circuit(vanilla: dict[str, Any]) -> No
     reject(vanilla, mutate, "PrimaryCircuit")
 
 
-def test_hydronic_axiom_3_a_primary_serves_another_zone(vanilla: dict[str, Any]) -> None:
+def test_hydronic_axiom_3_a_primary_serves_another_zone(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 2
 
@@ -568,7 +608,9 @@ def test_hydronic_axiom_3_b_primary_without_a_setpoint(vanilla: dict[str, Any]) 
         "OpsRelayNode",
     ],
 )
-def test_hydronic_axiom_4_two_circuits_share(vanilla: dict[str, Any], field: str) -> None:
+def test_hydronic_axiom_4_two_circuits_share(
+    vanilla: dict[str, Any], field: str
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
         circuits = d["Hydronic"]["ZoneCallCircuits"]
         circuits[2][field] = circuits[0][field]
@@ -603,7 +645,6 @@ def test_no_circuits_fails_in_the_hydronic_word(vanilla: dict[str, Any]) -> None
         d["Hydronic"]["ZoneCallCircuits"] = []
 
     reject(vanilla, mutate, "Axiom 3")
-
 
 
 def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) -> None:

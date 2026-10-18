@@ -23,7 +23,7 @@ def test_synced_readings_bundle_002_uses_channel_readings_list_item(
         "initial_targets:\n"
         "  types:\n"
         "    synced.readings.bundle:\n"
-        "      versions: [\"001\", \"002\"]\n"
+        '      versions: ["001", "002"]\n'
     )
     expand_seed(seed_request, expanded_seed)
 
@@ -44,8 +44,7 @@ def test_synced_readings_bundle_002_uses_channel_readings_list_item(
     assert "class ChannelReadingsListItem(SemaType):" in item_text
     assert "value_list: list[StrictInt | None]" in item_text
     assert (
-        "from gjk.sema.types.channel_readings_list_item import "
-        "ChannelReadingsListItem"
+        "from gjk.sema.types.channel_readings_list_item import ChannelReadingsListItem"
     ) in bundle_text
     assert "channel_readings_list: list[ChannelReadingsListItem]" in bundle_text
     assert "def check_axiom_5(self) -> Self:" in bundle_text

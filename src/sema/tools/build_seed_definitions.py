@@ -75,7 +75,14 @@ def ensure_clean_dir(path: Path) -> None:
 
 
 def _worklist_versions(word_entry: dict) -> list[str]:
-    return sorted({_normalize_version_key(version) for version in word_entry.keys() if _is_version_key(version)}, key=int)
+    return sorted(
+        {
+            _normalize_version_key(version)
+            for version in word_entry.keys()
+            if _is_version_key(version)
+        },
+        key=int,
+    )
 
 
 def copy_seed_definitions(target_root: Path, seed: dict) -> None:
@@ -114,7 +121,9 @@ def build_restricted_registry(seed: dict, registry: dict) -> dict:
     }
 
     for format_name in sorted(seed["worklist"]["formats"]):
-        restricted["formats"][format_name] = copy.deepcopy(registry["formats"][format_name])
+        restricted["formats"][format_name] = copy.deepcopy(
+            registry["formats"][format_name]
+        )
 
     for enum_name, enum_entry in seed["worklist"]["enums"].items():
         registry_entry = registry["enums"][enum_name]
@@ -123,7 +132,9 @@ def build_restricted_registry(seed: dict, registry: dict) -> dict:
             continue
 
         selected = set(_worklist_versions(enum_entry))
-        restricted["enums"][enum_name] = _restrict_versioned_entry(registry_entry, selected)
+        restricted["enums"][enum_name] = _restrict_versioned_entry(
+            registry_entry, selected
+        )
 
     for type_name, type_entry in seed["worklist"]["types"].items():
         registry_entry = registry["types"][type_name]
@@ -132,12 +143,16 @@ def build_restricted_registry(seed: dict, registry: dict) -> dict:
             continue
 
         selected = set(_worklist_versions(type_entry))
-        restricted["types"][type_name] = _restrict_versioned_entry(registry_entry, selected)
+        restricted["types"][type_name] = _restrict_versioned_entry(
+            registry_entry, selected
+        )
 
     return restricted
 
 
-def _restrict_versioned_entry(registry_entry: dict, selected_versions: set[str]) -> dict:
+def _restrict_versioned_entry(
+    registry_entry: dict, selected_versions: set[str]
+) -> dict:
     restricted: dict[str, object] = {}
     restricted_versions = {
         version: copy.deepcopy(version_entry)
@@ -222,7 +237,9 @@ def _render_sequence(values: list, indent: int) -> str:
     return "\n".join(lines)
 
 
-def _render_scalar(value: object, key: object | None = None, parent: dict | None = None) -> str:
+def _render_scalar(
+    value: object, key: object | None = None, parent: dict | None = None
+) -> str:
     if isinstance(value, str):
         if _should_render_plain_string(value, key=key, parent=parent):
             return value
@@ -243,7 +260,9 @@ def _render_key(value: object) -> str:
     return str(value)
 
 
-def _should_render_plain_string(value: str, key: object | None = None, parent: dict | None = None) -> bool:
+def _should_render_plain_string(
+    value: str, key: object | None = None, parent: dict | None = None
+) -> bool:
     if key == "owner" and parent is not None and not _is_metadata_mapping(parent):
         return bool(re.fullmatch(r"[a-z_][a-z0-9_-]*", value))
     return False
@@ -252,7 +271,11 @@ def _should_render_plain_string(value: str, key: object | None = None, parent: d
 def _needs_entry_spacing(indent: int, mapping: dict, index: int) -> bool:
     if index == 0:
         return False
-    return indent == 2 and not _is_top_level_sections_mapping(mapping) and not _is_metadata_mapping(mapping)
+    return (
+        indent == 2
+        and not _is_top_level_sections_mapping(mapping)
+        and not _is_metadata_mapping(mapping)
+    )
 
 
 def _needs_section_spacing(indent: int, mapping: dict, index: int) -> bool:
@@ -288,7 +311,9 @@ def write_restricted_indexes(target_root: Path, restricted: dict) -> None:
         INDEX_HEADER,
         build_restricted_reverse_dependencies(restricted),
     )
-    (indexes_root / "versions.yaml").write_text(build_restricted_versions_text(restricted))
+    (indexes_root / "versions.yaml").write_text(
+        build_restricted_versions_text(restricted)
+    )
 
 
 def _write_yaml_with_header(
@@ -360,7 +385,9 @@ def build_restricted_dependency_closure(registry: dict) -> dict:
             continue
         output["types"][type_name] = {}
         for version in type_def["versions"]:
-            output["types"][type_name][version] = _compute_closure(type_name, version, registry)
+            output["types"][type_name][version] = _compute_closure(
+                type_name, version, registry
+            )
 
     return output
 
@@ -377,7 +404,11 @@ def _compute_closure(type_name: str, version: str | None, registry: dict) -> dic
 
     while stack:
         current_name, current_version = stack.pop()
-        key = f"{current_name}:{current_version}" if current_version is not None else current_name
+        key = (
+            f"{current_name}:{current_version}"
+            if current_version is not None
+            else current_name
+        )
         if key in visited:
             continue
         visited.add(key)
@@ -428,11 +459,15 @@ def build_restricted_reverse_dependencies(registry: dict) -> dict:
                 if category == "type":
                     if dep_version is None:
                         raise ValueError(f"Type dependency missing version: {dep}")
-                    type_reverse.setdefault(dep_name, {}).setdefault(dep_version, set()).add(source)
+                    type_reverse.setdefault(dep_name, {}).setdefault(
+                        dep_version, set()
+                    ).add(source)
                 elif category == "enum":
                     if dep_version is None:
                         raise ValueError(f"Enum dependency missing version: {dep}")
-                    enum_reverse.setdefault(dep_name, {}).setdefault(dep_version, set()).add(source)
+                    enum_reverse.setdefault(dep_name, {}).setdefault(
+                        dep_version, set()
+                    ).add(source)
                 else:
                     format_reverse.setdefault(dep_name, set()).add(source)
 
@@ -444,11 +479,15 @@ def build_restricted_reverse_dependencies(registry: dict) -> dict:
     for name in sorted(type_reverse):
         reverse["types"][name] = {}
         for version in sorted(type_reverse[name], key=int):
-            reverse["types"][name][version] = {"used_by": sorted(type_reverse[name][version])}
+            reverse["types"][name][version] = {
+                "used_by": sorted(type_reverse[name][version])
+            }
     for name in sorted(enum_reverse):
         reverse["enums"][name] = {}
         for version in sorted(enum_reverse[name], key=int):
-            reverse["enums"][name][version] = {"used_by": sorted(enum_reverse[name][version])}
+            reverse["enums"][name][version] = {
+                "used_by": sorted(enum_reverse[name][version])
+            }
     for name in sorted(format_reverse):
         reverse["formats"][name] = {"used_by": sorted(format_reverse[name])}
     return reverse

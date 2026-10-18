@@ -7,7 +7,9 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-AXIOM_TEMPLATE_DIR = REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "axioms"
+AXIOM_TEMPLATE_DIR = (
+    REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "axioms"
+)
 DEFINITIONS_TYPES_DIR = REPO_ROOT / "definitions" / "types"
 JINJA_VARIABLE_RE = re.compile(r"{{\s*[a-zA-Z_][a-zA-Z0-9_]*\s*}}")
 AXIOM_METHOD_RE = re.compile(r"check_axiom_(\d+)$")
@@ -51,8 +53,8 @@ def expected_axiom_docstrings(sema_name: str, version: str) -> dict[int, str]:
     axioms = schema.get("x-gridworks", {}).get("axioms", [])
     return {
         int(axiom["number"]): (
-            f'Axiom {axiom["number"]}: {axiom["name"]} '
-            f'{axiom.get("statement", axiom.get("description", ""))}'
+            f"Axiom {axiom['number']}: {axiom['name']} "
+            f"{axiom.get('statement', axiom.get('description', ''))}"
         )
         for axiom in axioms
     }

@@ -20,7 +20,7 @@ def test_runtime_generation_uses_local_enum_class_name(tmp_path: Path) -> None:
         "initial_targets:\n"
         "  types:\n"
         "    pico.flow.module.component.gt:\n"
-        "      versions: [\"000\"]\n"
+        '      versions: ["000"]\n'
     )
     expanded_seed = tmp_path / "seed_expanded.yaml"
     expand_seed(seed_request, expanded_seed)
@@ -58,9 +58,9 @@ def test_runtime_generation_allows_extra_fields_only_for_additional_properties_t
         "initial_targets:\n"
         "  types:\n"
         "    fsm.full.report:\n"
-        "      versions: [\"001\"]\n"
+        '      versions: ["001"]\n'
         "    channel.config:\n"
-        "      versions: [\"000\"]\n"
+        '      versions: ["000"]\n'
     )
     expanded_seed = tmp_path / "seed_expanded.yaml"
     expand_seed(seed_request, expanded_seed)

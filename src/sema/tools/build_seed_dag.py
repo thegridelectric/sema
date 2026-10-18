@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 import re
-from collections import defaultdict, deque
+from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TypeAlias
@@ -73,7 +73,9 @@ def build_seed_dag_from_data(seed: dict, registry: dict) -> SeedDag:
     upgrades: dict[NodeKey, NodeKey] = {}
 
     for node in sorted(nodes):
-        node_registry_entry = resolve_registry_entry(node, type_registry, enum_registry, format_registry)
+        node_registry_entry = resolve_registry_entry(
+            node, type_registry, enum_registry, format_registry
+        )
         schema_path = ROOT / schema_path_for_node(seed, node)
         schema = load_yaml(schema_path)
 
@@ -97,8 +99,13 @@ def build_seed_dag_from_data(seed: dict, registry: dict) -> SeedDag:
             dependencies[node].add(dep)
 
         if node[0] == "type" and node[2] is not None:
-            for dep in node_registry_entry.get("direct_dependencies", {}).get("axiom", []) or []:
-                dep_node = resolve_registry_dependency(dep, type_registry, enum_registry, format_registry)
+            for dep in (
+                node_registry_entry.get("direct_dependencies", {}).get("axiom", [])
+                or []
+            ):
+                dep_node = resolve_registry_dependency(
+                    dep, type_registry, enum_registry, format_registry
+                )
                 if dep_node not in nodes:
                     raise ValueError(
                         f"{node_to_string(node)} has axiom dependency {node_to_string(dep_node)} "
@@ -111,7 +118,9 @@ def build_seed_dag_from_data(seed: dict, registry: dict) -> SeedDag:
         available_versions = set(type_registry[type_name]["versions"].keys())
         for current, nxt in zip(ordered, ordered[1:]):
             if current not in available_versions or nxt not in available_versions:
-                raise ValueError(f"Type {type_name} has selected version not declared in registry")
+                raise ValueError(
+                    f"Type {type_name} has selected version not declared in registry"
+                )
             current_node: NodeKey = ("type", type_name, current)
             next_node: NodeKey = ("type", type_name, nxt)
             upgrades[current_node] = next_node
@@ -257,7 +266,9 @@ def normalize_ref(ref: str) -> str:
     return ref
 
 
-def resolve_ref_to_node(ref: str, type_registry: dict, enum_registry: dict) -> NodeKey | None:
+def resolve_ref_to_node(
+    ref: str, type_registry: dict, enum_registry: dict
+) -> NodeKey | None:
     format_match = FORMAT_REF_PATTERN.match(ref)
     if format_match:
         return ("format", format_match.group("name"), None)
@@ -268,7 +279,11 @@ def resolve_ref_to_node(ref: str, type_registry: dict, enum_registry: dict) -> N
 
     versioned_type_match = VERSIONED_TYPE_REF_PATTERN.match(ref)
     if versioned_type_match:
-        return ("type", versioned_type_match.group("name"), versioned_type_match.group("version"))
+        return (
+            "type",
+            versioned_type_match.group("name"),
+            versioned_type_match.group("version"),
+        )
 
     versionless_type_match = VERSIONLESS_TYPE_REF_PATTERN.match(ref)
     if versionless_type_match:
@@ -335,13 +350,19 @@ def topo_sort(
                 queue.append(nxt)
 
     if len(ordered) != len(nodes):
-        remaining = sorted(node_to_string(node) for node, degree in indegree.items() if degree > 0)
-        raise ValueError("Graph is not a DAG; cycle detected involving: " + ", ".join(remaining))
+        remaining = sorted(
+            node_to_string(node) for node, degree in indegree.items() if degree > 0
+        )
+        raise ValueError(
+            "Graph is not a DAG; cycle detected involving: " + ", ".join(remaining)
+        )
 
     return ordered
 
 
-def format_edges(dependencies: dict[NodeKey, set[NodeKey]], upgrades: dict[NodeKey, NodeKey]) -> str:
+def format_edges(
+    dependencies: dict[NodeKey, set[NodeKey]], upgrades: dict[NodeKey, NodeKey]
+) -> str:
     lines: list[str] = ["Dependencies:"]
     for node in sorted(dependencies):
         deps = sorted(dependencies[node])
@@ -354,7 +375,9 @@ def format_edges(dependencies: dict[NodeKey, set[NodeKey]], upgrades: dict[NodeK
     lines.append("")
     lines.append("Upgrades:")
     for source in sorted(upgrades):
-        lines.append(f"  {node_to_string(source)} -> {node_to_string(upgrades[source])}")
+        lines.append(
+            f"  {node_to_string(source)} -> {node_to_string(upgrades[source])}"
+        )
 
     return "\n".join(lines)
 

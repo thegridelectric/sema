@@ -30,7 +30,9 @@ def generate_enums(
         schema = load_schema_for_node(node, seed)
         target_path = target_path_for_node(node, dag_max, target_root, local_names)
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        target_path.write_text(render_enum(node, schema, dag_max, import_root, local_names))
+        target_path.write_text(
+            render_enum(node, schema, dag_max, import_root, local_names)
+        )
     (target_root / "enums" / "__init__.py").write_text(
         render_init_module("enum", dag, dag_max, import_root, local_names)
     )

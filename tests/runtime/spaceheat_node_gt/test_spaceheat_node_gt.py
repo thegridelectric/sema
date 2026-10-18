@@ -2,9 +2,6 @@ import json
 from pathlib import Path
 
 from sema.runtime.codec import default_codec
-from sema.runtime.enums.gw1_actor_class import Gw1ActorClass
-from sema.runtime.enums.old_versions.gw1_actor_class_009 import Gw1ActorClass009
-from sema.runtime.types.old_versions.spaceheat_node_gt_300 import SpaceheatNodeGt300
 from sema.runtime.types.spaceheat_node_gt import SpaceheatNodeGt
 
 

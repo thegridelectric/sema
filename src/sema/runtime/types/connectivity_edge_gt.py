@@ -1,4 +1,4 @@
-from typing import Literal, Self
+from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import GNodeStatus

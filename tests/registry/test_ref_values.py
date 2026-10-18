@@ -19,6 +19,7 @@ Per `sema/spec/authoring/types.md` §Referencing Other Vocabulary:
 This test catches mistakes like a stray `$ref: string` left in a schema
 during authoring.
 """
+
 import re
 from typing import Any
 

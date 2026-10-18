@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 
-from sema.tools.runtime_generation.scaffold_axiom_template import scaffold_axiom_template
+from sema.tools.runtime_generation.scaffold_axiom_template import (
+    scaffold_axiom_template,
+)
 from sema.tools.runtime_generation.scaffold_upgrade_template import (
     scaffold_upgrade_template,
 )

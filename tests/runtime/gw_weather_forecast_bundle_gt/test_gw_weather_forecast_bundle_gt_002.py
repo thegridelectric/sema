@@ -63,9 +63,7 @@ def test_axiom_5_refuses_repeated_quantity() -> None:
         obs["Name"] = "kmlt.temperature.alt"
         obs["Quantity"] = "Temperature"
         obs["Unit"] = "FahrenheitX10"
-        wind["ForecastChannel"]["Name"] = (
-            "kmlt.temperature.alt.forecast.nws.hourly"
-        )
+        wind["ForecastChannel"]["Name"] = "kmlt.temperature.alt.forecast.nws.hourly"
         wind["ForecastChannel"]["TargetChannelName"] = obs["Name"]
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 5)

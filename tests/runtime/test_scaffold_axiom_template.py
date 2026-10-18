@@ -58,12 +58,15 @@ x-gridworks:
     assert "\n\n          - First condition SHALL hold." in text
     assert 'raise NotImplementedError("Axiom 1 validation is not implemented.")' in text
 
-    assert scaffold_axiom_template(
-        "example.type",
-        "000",
-        definitions_types_dir=definitions_types,
-        axiom_template_dir=template_dir,
-    ) == path
+    assert (
+        scaffold_axiom_template(
+            "example.type",
+            "000",
+            definitions_types_dir=definitions_types,
+            axiom_template_dir=template_dir,
+        )
+        == path
+    )
 
 
 def test_runtime_generation_fails_when_axiom_template_is_missing() -> None:

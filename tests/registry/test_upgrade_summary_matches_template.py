@@ -26,7 +26,13 @@ from sema.tools.build_public_registry import load_registry
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 UPGRADES_DIR = (
-    REPO_ROOT / "src" / "sema" / "tools" / "runtime_generation" / "templates" / "upgrades"
+    REPO_ROOT
+    / "src"
+    / "sema"
+    / "tools"
+    / "runtime_generation"
+    / "templates"
+    / "upgrades"
 )
 _NAME_RE = re.compile(r"^(?P<snake>.+)_(?P<a>\d{3})_to_(?P<b>\d{3})$")
 _DOCSTRING_RE = re.compile(r'"""(.*?)"""', re.DOTALL)
@@ -58,7 +64,9 @@ def test_upgrade_template_docstring_matches_registry_summary() -> None:
 
         entry = types.get(dotted)
         if entry is None or "versions" not in entry:
-            findings.append(f"{path.name}: no versioned registry entry for type '{dotted}'")
+            findings.append(
+                f"{path.name}: no versioned registry entry for type '{dotted}'"
+            )
             continue
         version_entry = entry["versions"].get(target_version)
         if version_entry is None:

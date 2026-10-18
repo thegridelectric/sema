@@ -16,6 +16,7 @@ DEFINITIONS_DIR = REPO_ROOT / "definitions"
 # HELPERS
 # -----------------------------------------------------------------------------
 
+
 def load_yaml(path: Path) -> dict[str, Any]:
     with open(path, "r") as f:
         return yaml.safe_load(f)
@@ -107,6 +108,7 @@ def schema_path_for(kind: str, name: str, version: str | None) -> Path:
 # TEST
 # -----------------------------------------------------------------------------
 
+
 def test_structural_dependencies_match_schema_refs():
     registry = load_yaml(DEFINITIONS_DIR / "registry.yaml")
 
@@ -114,7 +116,6 @@ def test_structural_dependencies_match_schema_refs():
     mismatches: list[str] = []
 
     for type_name, entry in types.items():
-
         strategy = entry["versioning_strategy"]
         status = entry.get("status", "published")
 
@@ -143,9 +144,7 @@ def test_structural_dependencies_match_schema_refs():
                 continue
             refs = extract_refs(schema)
 
-            expected = set(
-                entry.get("direct_dependencies", {}).get("structural", [])
-            )
+            expected = set(entry.get("direct_dependencies", {}).get("structural", []))
 
             actual = set(refs)
 
@@ -173,7 +172,9 @@ def test_structural_dependencies_match_schema_refs():
                 continue
 
             schema_path = schema_path_for("types", type_name, version)
-            assert schema_path.exists(), f"Missing schema file for {type_name}:{version}"
+            assert schema_path.exists(), (
+                f"Missing schema file for {type_name}:{version}"
+            )
 
             try:
                 schema = load_yaml(schema_path)
@@ -188,9 +189,7 @@ def test_structural_dependencies_match_schema_refs():
                 continue
             refs = extract_refs(schema)
 
-            expected = set(
-                v_entry["direct_dependencies"]["structural"]
-            )
+            expected = set(v_entry["direct_dependencies"]["structural"])
 
             actual = set(refs)
 

@@ -16,7 +16,9 @@ class FormatOnlyDag:
         return [("format", name, None) for name in self.formats]
 
 
-def test_generated_property_format_matches_runtime_property_format(tmp_path: Path) -> None:
+def test_generated_property_format_matches_runtime_property_format(
+    tmp_path: Path,
+) -> None:
     format_names = sorted(
         path.stem for path in (REPO_ROOT / "definitions" / "formats").glob("*.yaml")
     )
@@ -39,5 +41,7 @@ def test_generated_property_format_matches_runtime_property_format(tmp_path: Pat
     format_in_place(target_root)
 
     generated = (target_root / "property_format.py").read_text()
-    checked_in = (REPO_ROOT / "src" / "sema" / "runtime" / "property_format.py").read_text()
+    checked_in = (
+        REPO_ROOT / "src" / "sema" / "runtime" / "property_format.py"
+    ).read_text()
     assert generated == checked_in

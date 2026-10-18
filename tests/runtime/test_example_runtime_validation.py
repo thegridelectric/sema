@@ -63,9 +63,9 @@ def test_example_decodes_against_runtime(schema_path: Path) -> None:
         if not isinstance(ex, str):
             raise AssertionError(
                 f"{schema_path.relative_to(REPO_ROOT)} examples[{i}] is a "
-                f"{type(ex).__name__}, not a JSON string. \"Examples SHALL be "
-                "serialized JSON documents, not YAML object representations\" "
-                "(spec/authoring/types.md \"Examples\"). Write it as a block "
+                f'{type(ex).__name__}, not a JSON string. "Examples SHALL be '
+                'serialized JSON documents, not YAML object representations" '
+                '(spec/authoring/types.md "Examples"). Write it as a block '
                 "scalar:\n"
                 "    examples:\n"
                 "      - |\n"

@@ -26,6 +26,7 @@ inner identity fields (`title`, `TypeName.const`, `Version` shape)
 against the same canonical name/version derived from `$id` and the
 type's strategy in the registry.
 """
+
 from pathlib import Path
 from typing import Any
 
@@ -168,7 +169,7 @@ def test_string_strategy_versions_use_type_string(
         strategy = entry.get("versioning_strategy")
         if strategy != "string":
             continue
-        for version in (entry.get("versions") or {}):
+        for version in entry.get("versions") or {}:
             key = f"{type_name}:{version}"
             schema = all_schemas.get(key)
             if schema is None:

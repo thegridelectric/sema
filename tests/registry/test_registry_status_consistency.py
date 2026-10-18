@@ -124,4 +124,6 @@ def _collect_mismatches() -> list[str]:
 
 def test_schema_status_matches_registry() -> None:
     mismatches = _collect_mismatches()
-    assert not mismatches, "Schema/registry status mismatches:\n  " + "\n  ".join(mismatches)
+    assert not mismatches, "Schema/registry status mismatches:\n  " + "\n  ".join(
+        mismatches
+    )

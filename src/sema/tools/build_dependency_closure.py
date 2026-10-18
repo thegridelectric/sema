@@ -48,10 +48,7 @@ def classify(dep: str, registry) -> str:
 
 def get_direct_deps(type_def: dict) -> list[str]:
     deps = type_def.get("direct_dependencies", {})
-    return list(set(
-        deps.get("structural", []) +
-        deps.get("axiom", [])
-    ))
+    return list(set(deps.get("structural", []) + deps.get("axiom", [])))
 
 
 def compute_closure(type_name: str, version: str | None, registry) -> dict:

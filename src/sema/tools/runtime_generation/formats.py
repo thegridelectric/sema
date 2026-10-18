@@ -81,11 +81,7 @@ def generate_property_format(formats, schemas) -> str:
 
         if pattern:
             const_name = _pattern_const_name(name)
-            pattern_lines.append(
-                f"{const_name} = re.compile(\n"
-                f"    r\"{pattern}\"\n"
-                ")"
-            )
+            pattern_lines.append(f'{const_name} = re.compile(\n    r"{pattern}"\n)')
 
         # sections
         methods = spec["methods"].strip()

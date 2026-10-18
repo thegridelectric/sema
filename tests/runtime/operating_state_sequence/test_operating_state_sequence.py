@@ -5,6 +5,7 @@ from sema.runtime.types.operating_state_sequence import OperatingStateSequence
 # The valid object is the beech 2026-02-10 local-control sequence from the
 # schema's extended_description example.
 
+
 def test_valid_object() -> None:
     OperatingStateSequence(
         channel_name="local-control-all-tanks-state",
@@ -18,6 +19,7 @@ def test_valid_object() -> None:
         ],
     )
 
+
 def test_axiom1_length_consistency() -> None:
     try:
         OperatingStateSequence(
@@ -29,6 +31,7 @@ def test_axiom1_length_consistency() -> None:
     except ValidationError as e:
         if "Axiom 1" not in repr(e):
             raise AssertionError("Expected Axiom 1 error, found something else", e)
+
 
 def test_axiom2_strictly_increasing() -> None:
     try:
@@ -42,6 +45,7 @@ def test_axiom2_strictly_increasing() -> None:
         if "Axiom 2" not in repr(e):
             raise AssertionError("Expected Axiom 2 error, found something else", e)
 
+
 def test_value_must_be_pascal_case() -> None:
     try:
         OperatingStateSequence(
@@ -52,6 +56,7 @@ def test_value_must_be_pascal_case() -> None:
         raise AssertionError("Expected validation failure")
     except ValidationError:
         pass
+
 
 def test_timestamp_must_have_millis() -> None:
     try:

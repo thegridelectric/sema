@@ -4,166 +4,188 @@ Script to generate an HTML table of types from registry.yaml
 """
 
 import yaml
-import os
+
 
 def load_registry():
     """Load the registry.yaml file"""
     registry_path = "type_definitions/registry.yaml"
-    with open(registry_path, 'r') as file:
+    with open(registry_path, "r") as file:
         return yaml.safe_load(file)
+
 
 def type_name_to_python_file(type_name):
     """Convert type name to Python file name"""
     # Convert dots to underscores and add .py extension
-    return type_name.replace('.', '_') + '.py'
+    return type_name.replace(".", "_") + ".py"
+
 
 def get_named_type_content(type_name):
     """Get the content of a named type Python file"""
     python_file = type_name_to_python_file(type_name)
     file_path = f"src/sema/named_types/{python_file}"
-    
+
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             return file.read()
     except FileNotFoundError:
         return f"# Type {type_name} - Python file not found: {python_file}"
 
+
 def get_file_content(file_path):
     """Get the content of a file"""
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             return file.read()
     except FileNotFoundError:
         return f"# File not found: {file_path}"
 
+
 def find_dependencies(python_content):
     """Find all sema imports in Python content"""
     import re
+
     dependencies = set()
-    
+
     # Find all sema imports
-    sema_imports = re.findall(r'from sema\.([^\s]+)', python_content)
+    sema_imports = re.findall(r"from sema\.([^\s]+)", python_content)
     for import_path in sema_imports:
         dependencies.add(import_path)
-    
+
     return dependencies
+
 
 def get_all_dependencies(selected_types):
     """Get all dependencies for selected types"""
     all_dependencies = set()
-    
+
     for type_name in selected_types:
         # Get the named type content
         python_file = type_name_to_python_file(type_name)
         file_path = f"src/sema/named_types/{python_file}"
-        
+
         try:
-            with open(file_path, 'r') as file:
+            with open(file_path, "r") as file:
                 content = file.read()
                 dependencies = find_dependencies(content)
                 all_dependencies.update(dependencies)
         except FileNotFoundError:
             continue
-    
+
     return all_dependencies
+
 
 def get_dependency_files(dependencies):
     """Get all files needed for dependencies"""
     files = {}
-    
+
     for dep in dependencies:
-        if dep == 'property_format':
+        if dep == "property_format":
             # Single file
-            files[f'sema/{dep}.py'] = get_file_content(f'src/sema/{dep}.py')
-        elif dep.startswith('enums.'):
+            files[f"sema/{dep}.py"] = get_file_content(f"src/sema/{dep}.py")
+        elif dep.startswith("enums."):
             # Enum file
-            enum_name = dep.split('.')[1]
-            files[f'sema/enums/{enum_name}.py'] = get_file_content(f'src/sema/enums/{enum_name}.py')
+            enum_name = dep.split(".")[1]
+            files[f"sema/enums/{enum_name}.py"] = get_file_content(
+                f"src/sema/enums/{enum_name}.py"
+            )
             # Also include __init__.py
-            files[f'sema/enums/__init__.py'] = get_file_content(f'src/sema/enums/__init__.py')
-        elif dep.startswith('type_helpers.'):
+            files["sema/enums/__init__.py"] = get_file_content(
+                "src/sema/enums/__init__.py"
+            )
+        elif dep.startswith("type_helpers."):
             # Type helper file
-            helper_name = dep.split('.')[1]
-            files[f'sema/type_helpers/{helper_name}.py'] = get_file_content(f'src/sema/type_helpers/{helper_name}.py')
+            helper_name = dep.split(".")[1]
+            files[f"sema/type_helpers/{helper_name}.py"] = get_file_content(
+                f"src/sema/type_helpers/{helper_name}.py"
+            )
             # Also include __init__.py
-            files[f'sema/type_helpers/__init__.py'] = get_file_content(f'src/sema/type_helpers/__init__.py')
-        elif dep.startswith('named_types.'):
+            files["sema/type_helpers/__init__.py"] = get_file_content(
+                "src/sema/type_helpers/__init__.py"
+            )
+        elif dep.startswith("named_types."):
             # Another named type file
-            type_name = dep.split('.')[1]
-            files[f'sema/named_types/{type_name}.py'] = get_file_content(f'src/sema/named_types/{type_name}.py')
-    
+            type_name = dep.split(".")[1]
+            files[f"sema/named_types/{type_name}.py"] = get_file_content(
+                f"src/sema/named_types/{type_name}.py"
+            )
+
     return files
+
 
 def get_registry_dependencies(registry):
     """Get all dependencies from registry for each type"""
     dependencies = {}
-    types = registry.get('types', {})
-    
+    types = registry.get("types", {})
+
     for type_name, type_data in types.items():
-        current_version = type_data.get('current_version', '000')
-        versions = type_data.get('versions', {})
-        
+        current_version = type_data.get("current_version", "000")
+        versions = type_data.get("versions", {})
+
         if current_version in versions:
             version_data = versions[current_version]
-            deps = version_data.get('dependencies', [])
+            deps = version_data.get("dependencies", [])
             dependencies[type_name] = deps
-    
+
     return dependencies
+
 
 def find_named_type_dependencies(selected_types, registry_dependencies):
     """Recursively find all named type dependencies"""
     all_deps = set(selected_types)
     to_process = list(selected_types)
-    
+
     while to_process:
         current_type = to_process.pop(0)
         deps = registry_dependencies.get(current_type, [])
-        
+
         for dep in deps:
             # Check if it's a named type dependency (format: "type.name:version" or just "type.name")
-            if ':' in dep:
-                dep_type = dep.split(':')[0]
+            if ":" in dep:
+                dep_type = dep.split(":")[0]
             else:
                 dep_type = dep
-            
+
             # Only include if it's a named type (not formats, enums, etc.)
             if dep_type in registry_dependencies and dep_type not in all_deps:
                 all_deps.add(dep_type)
                 to_process.append(dep_type)
-    
+
     return list(all_deps)
+
 
 def generate_html():
     """Generate HTML table of types"""
     registry = load_registry()
-    
+
     # Extract types
-    types = registry.get('types', {})
+    types = registry.get("types", {})
     type_names = list(types.keys())
-    
+
     # Sort types alphabetically
     type_names.sort()
-    
+
     # Count stable types
-    stable_types = [name for name in type_names if types[name].get('stable', False)]
-    
+    stable_types = [name for name in type_names if types[name].get("stable", False)]
+
     # Get Python file contents for all types
     python_files = {}
     for type_name in type_names:
         python_files[type_name] = get_named_type_content(type_name)
-    
+
     # Get all possible dependencies for all types
     all_dependencies = get_all_dependencies(type_names)
     dependency_files = get_dependency_files(all_dependencies)
-    
+
     # Get registry dependencies
     registry_dependencies = get_registry_dependencies(registry)
-    
+
     # Find named type dependencies
-    named_type_dependencies = find_named_type_dependencies(type_names, registry_dependencies)
-    
+    named_type_dependencies = find_named_type_dependencies(
+        type_names, registry_dependencies
+    )
+
     # Generate HTML
-    html_content = f"""<!DOCTYPE html>
+    html_content = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -171,44 +193,44 @@ def generate_html():
     <title>Sema Types</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
-        body {{
+        body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
-        }}
-        .container {{
+        }
+        .container {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 30px;
-        }}
-        h1 {{
+        }
+        h1 {
             color: #333;
             text-align: center;
             margin-bottom: 30px;
             font-size: 2.5em;
-        }}
-        .stats {{
+        }
+        .stats {
             text-align: center;
             color: #666;
             margin-bottom: 30px;
             font-size: 1.1em;
-        }}
-        .controls {{
+        }
+        .controls {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 10px;
-        }}
-        .selection-info {{
+        }
+        .selection-info {
             color: #666;
             font-size: 0.9em;
-        }}
-        .button {{
+        }
+        .button {
             background-color: #007bff;
             color: white;
             border: none;
@@ -216,88 +238,88 @@ def generate_html():
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-        }}
-        .button:hover {{
+        }
+        .button:hover {
             background-color: #0056b3;
-        }}
-        .button.secondary {{
+        }
+        .button.secondary {
             background-color: #6c757d;
-        }}
-        .button.secondary:hover {{
+        }
+        .button.secondary:hover {
             background-color: #545b62;
-        }}
-        .button.success {{
+        }
+        .button.success {
             background-color: #28a745;
-        }}
-        .button.success:hover {{
+        }
+        .button.success:hover {
             background-color: #1e7e34;
-        }}
-        .button:disabled {{
+        }
+        .button:disabled {
             background-color: #6c757d !important;
             cursor: not-allowed;
             opacity: 0.6;
-        }}
-        table {{
+        }
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             background: white;
-        }}
-        th, td {{
+        }
+        th, td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
-        }}
-        th {{
+        }
+        th {
             background-color: #f8f9fa;
             font-weight: 600;
             color: #495057;
             position: sticky;
             top: 0;
-        }}
-        tr:hover {{
+        }
+        tr:hover {
             background-color: #f8f9fa;
-        }}
-        tr.selected {{
+        }
+        tr.selected {
             background-color: #e3f2fd !important;
-        }}
-        tr.unstable {{
+        }
+        tr.unstable {
             opacity: 0.6;
-        }}
-        .checkbox {{
+        }
+        .checkbox {
             width: 18px;
             height: 18px;
             cursor: pointer;
-        }}
-        .checkbox:disabled {{
+        }
+        .checkbox:disabled {
             cursor: not-allowed;
             opacity: 0.5;
-        }}
-        .type-name {{
+        }
+        .type-name {
             font-family: 'Courier New', monospace;
             font-weight: 600;
             color: #007bff;
-        }}
-        .version {{
+        }
+        .version {
             background-color: #e9ecef;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.9em;
             font-weight: 500;
-        }}
-        .stable-true {{
+        }
+        .stable-true {
             color: #28a745;
             font-weight: 600;
-        }}
-        .stable-false {{
+        }
+        .stable-false {
             color: #dc3545;
             font-weight: 600;
-        }}
-        .description {{
+        }
+        .description {
             color: #6c757d;
             font-size: 0.95em;
             line-height: 1.4;
-        }}
+        }
     </style>
 </head>
 <body>
@@ -317,21 +339,23 @@ def generate_html():
             </thead>
             <tbody>
 """
-    
+
     for type_name in type_names:
         type_data = types[type_name]
-        current_version = type_data.get('current_version', 'N/A')
-        stable = type_data.get('stable', False)
-        description = type_data.get('description', 'No description available')
-        
+        current_version = type_data.get("current_version", "N/A")
+        stable = type_data.get("stable", False)
+        description = type_data.get("description", "No description available")
+
         stable_class = "stable-true" if stable else "stable-false"
         stable_text = "True" if stable else "False"
-        
+
         # Add row class and checkbox attributes based on stability
         row_class = "unstable" if not stable else ""
         checkbox_disabled = "disabled" if not stable else ""
-        checkbox_class = "checkbox row-checkbox" + (" stable-checkbox" if stable else "")
-        
+        checkbox_class = "checkbox row-checkbox" + (
+            " stable-checkbox" if stable else ""
+        )
+
         html_content += f"""                <tr class="{row_class}">
                     <td><input type="checkbox" class="{checkbox_class}" data-type="{type_name}" {checkbox_disabled} onchange="updateSelection()"></td>
                     <td><span class="type-name">{type_name}</span></td>
@@ -341,30 +365,34 @@ def generate_html():
                     <td></td>
                 </tr>
 """
-    
+
     # Convert Python files to JavaScript object
     python_files_js = "{\n"
     for type_name, content in python_files.items():
         # Escape the content for JavaScript
-        escaped_content = content.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
+        escaped_content = (
+            content.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+        )
         python_files_js += f'    "{type_name}": "{escaped_content}",\n'
-    python_files_js = python_files_js.rstrip(',\n') + "\n}"
-    
+    python_files_js = python_files_js.rstrip(",\n") + "\n}"
+
     # Convert dependency files to JavaScript object
     dependency_files_js = "{\n"
     for file_path, content in dependency_files.items():
         # Escape the content for JavaScript
-        escaped_content = content.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
+        escaped_content = (
+            content.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+        )
         dependency_files_js += f'    "{file_path}": "{escaped_content}",\n'
-    dependency_files_js = dependency_files_js.rstrip(',\n') + "\n}"
-    
+    dependency_files_js = dependency_files_js.rstrip(",\n") + "\n}"
+
     # Convert registry dependencies to JavaScript object
     registry_deps_js = "{\n"
     for type_name, deps in registry_dependencies.items():
-        deps_str = '[' + ', '.join(f'"{dep}"' for dep in deps) + ']'
+        deps_str = "[" + ", ".join(f'"{dep}"' for dep in deps) + "]"
         registry_deps_js += f'    "{type_name}": {deps_str},\n'
-    registry_deps_js = registry_deps_js.rstrip(',\n') + "\n}"
-    
+    registry_deps_js = registry_deps_js.rstrip(",\n") + "\n}"
+
     html_content += f"""            </tbody>
         </table>
     </div>
@@ -584,20 +612,22 @@ def generate_html():
     </script>
 </body>
 </html>"""
-    
+
     return html_content
+
 
 def main():
     """Main function to generate and save the HTML file"""
     html_content = generate_html()
-    
+
     # Write to file
     output_file = "ui/types_table.html"
-    with open(output_file, 'w') as file:
+    with open(output_file, "w") as file:
         file.write(html_content)
-    
+
     print(f"Generated {output_file} successfully!")
     print(f"Open {output_file} in your web browser to view the types table.")
 
+
 if __name__ == "__main__":
-    main() 
+    main()

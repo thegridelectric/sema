@@ -38,7 +38,9 @@ def entry_status(label: str, entry: dict[str, Any]) -> str:
     if status is None:
         raise ValueError(f"{label}: missing required 'status' field")
     if status not in ALLOWED_STATUSES:
-        raise ValueError(f"{label}: status {status!r} is not one of {sorted(ALLOWED_STATUSES)}")
+        raise ValueError(
+            f"{label}: status {status!r} is not one of {sorted(ALLOWED_STATUSES)}"
+        )
     return status
 
 
@@ -180,9 +182,8 @@ def validate_dependency_closure(registry: dict[str, Any]) -> None:
         for version, version_entry in version_entries.items():
             source = type_name if version is None else f"{type_name}:{version}"
             direct_dependencies = version_entry.get("direct_dependencies", {})
-            deps = (
-                direct_dependencies.get("structural", [])
-                + direct_dependencies.get("axiom", [])
+            deps = direct_dependencies.get("structural", []) + direct_dependencies.get(
+                "axiom", []
             )
 
             for dep in deps:
@@ -193,7 +194,9 @@ def validate_dependency_closure(registry: dict[str, Any]) -> None:
                     dep_type = registry["types"].get(dep_name)
                     if dep_type and dep_type["versioning_strategy"] == "none":
                         continue
-                    missing.append(f"{source} references missing public dependency {dep}")
+                    missing.append(
+                        f"{source} references missing public dependency {dep}"
+                    )
                     continue
 
                 dep_type = registry["types"].get(dep_name)
@@ -220,7 +223,9 @@ def validate_dependency_closure(registry: dict[str, Any]) -> None:
         )
 
 
-def _active_status(registry: dict[str, Any], dep_name: str, dep_version: str | None) -> str | None:
+def _active_status(
+    registry: dict[str, Any], dep_name: str, dep_version: str | None
+) -> str | None:
     """Status of a dependency within the active registry, or None if absent."""
     if dep_version is None:
         fmt = registry["formats"].get(dep_name)
@@ -265,9 +270,8 @@ def validate_published_closure(registry: dict[str, Any]) -> None:
                 continue
             source = type_name if version is None else f"{type_name}:{version}"
             direct_dependencies = version_entry.get("direct_dependencies", {})
-            deps = (
-                direct_dependencies.get("structural", [])
-                + direct_dependencies.get("axiom", [])
+            deps = direct_dependencies.get("structural", []) + direct_dependencies.get(
+                "axiom", []
             )
             for dep in deps:
                 dep_name, dep_version = split_dep(dep)

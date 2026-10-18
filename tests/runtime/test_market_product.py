@@ -37,7 +37,9 @@ def _instance(product_name_enum: str, name: str) -> dict:
 def test_market_product_decode_is_maker_agnostic() -> None:
     # A non-GridWorks maker's vocabulary decodes just as well; Name is a bare
     # token, not validated against any enum.
-    decoded = default_codec.from_dict(_instance("acme.market.product.name", "wholesale7"))
+    decoded = default_codec.from_dict(
+        _instance("acme.market.product.name", "wholesale7")
+    )
     assert isinstance(decoded, MarketProduct)
     assert decoded.product_name_enum == "acme.market.product.name"
     assert decoded.name == "wholesale7"
@@ -49,7 +51,9 @@ def test_market_product_decode_is_maker_agnostic() -> None:
 
 
 def test_market_product_pulls_quantity_unit_but_no_product_name_enum() -> None:
-    closure = yaml.safe_load((REPO_ROOT / "indexes" / "dependency_closure.yaml").read_text())
+    closure = yaml.safe_load(
+        (REPO_ROOT / "indexes" / "dependency_closure.yaml").read_text()
+    )
     entry = closure["types"]["market.product"]["000"]
     # It carries the name-encoded decode as fields, so it depends on the shared
     # market.quantity.unit enum (QuantityUnit $ref) ...

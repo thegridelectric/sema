@@ -6,7 +6,9 @@ import yaml
 from sema.tools.build_seed_expanded import expand_seed
 
 
-def expand_request(tmp_path: Path, request: str, *, published_only: bool = False) -> dict:
+def expand_request(
+    tmp_path: Path, request: str, *, published_only: bool = False
+) -> dict:
     request_path = tmp_path / "seed_request.yaml"
     output_path = tmp_path / "seed_expanded.yaml"
     request_path.write_text(request)
@@ -31,7 +33,9 @@ def test_published_only_bare_target_is_latest_published(tmp_path: Path) -> None:
 
 def test_published_only_include_all_passes_over_staging(tmp_path: Path) -> None:
     expanded = expand_request(
-        tmp_path, LAYOUT_LITE % "\n      include_all_versions: true", published_only=True
+        tmp_path,
+        LAYOUT_LITE % "\n      include_all_versions: true",
+        published_only=True,
     )
 
     versions = set(expanded["worklist"]["types"]["layout.lite"])
@@ -63,7 +67,9 @@ initial_targets:
     assert "013" in expanded["worklist"]["types"]["layout.lite"]
 
 
-def test_structured_seed_request_adds_intermediate_type_versions(tmp_path: Path) -> None:
+def test_structured_seed_request_adds_intermediate_type_versions(
+    tmp_path: Path,
+) -> None:
     expanded = expand_request(
         tmp_path,
         """
@@ -89,7 +95,10 @@ initial_targets:
 """,
     )
 
-    assert expanded["initial_targets"] == ["fsm.atomic.report:000", "fsm.atomic.report:001"]
+    assert expanded["initial_targets"] == [
+        "fsm.atomic.report:000",
+        "fsm.atomic.report:001",
+    ]
     assert set(expanded["worklist"]["types"]["fsm.atomic.report"]) == {"000", "001"}
     assert "002" not in expanded["worklist"]["types"]["fsm.atomic.report"]
 

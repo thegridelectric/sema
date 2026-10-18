@@ -32,11 +32,7 @@ def test_string_enum_uses_schema_values_as_member_names() -> None:
 
 def test_integer_enum_uses_value_descriptions_as_member_names() -> None:
     schema = load_yaml(
-        REPO_ROOT
-        / "definitions"
-        / "enums"
-        / "relay.energization.state"
-        / "000.yaml"
+        REPO_ROOT / "definitions" / "enums" / "relay.energization.state" / "000.yaml"
     )
     code = render_enum(
         ("enum", "relay.energization.state", "000"),

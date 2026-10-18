@@ -87,11 +87,7 @@ def test_frozen_word_has_no_version_created_after_freeze() -> None:
 
 def test_replaced_by_targets_exist() -> None:
     registry = _load()
-    known = {
-        name
-        for section in SECTIONS
-        for name in registry.get(section, {})
-    }
+    known = {name for section in SECTIONS for name in registry.get(section, {})}
     findings: list[str] = []
 
     for section in SECTIONS:
@@ -102,8 +98,12 @@ def test_replaced_by_targets_exist() -> None:
             assert isinstance(replaced_by, list), f"{name}: replaced_by must be a list"
             for target in replaced_by:
                 if ":" in str(target):
-                    findings.append(f"{name}: replaced_by {target!r} must not carry a version")
+                    findings.append(
+                        f"{name}: replaced_by {target!r} must not carry a version"
+                    )
                 elif target not in known:
-                    findings.append(f"{name}: replaced_by {target!r} is not a registered word")
+                    findings.append(
+                        f"{name}: replaced_by {target!r} is not a registered word"
+                    )
 
     assert not findings, "\n".join(findings)
