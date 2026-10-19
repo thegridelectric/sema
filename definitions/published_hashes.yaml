@@ -60,6 +60,7 @@ enums:
     '000': sha256:492ac9defec62dc025adc0dccf8d2198acd9fb22d1c21f56ac33f07c06fbbee2
   gw.house.alert.kind:
     '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
+    '001': sha256:87bb9beae383669aed670f502ea8146c3bf49150dcf6d1eb592fb5ce145721b3
   gw.market.product.name:
     '000': sha256:b1c91cdca4978f783c836abd6e1e646df2fd940c2cd240cc4f852788e4046324
   gw.opsgenie.alert.status: sha256:4ad9b70197037d190423690ad082f84b8edca0c6c366c0628cf750a36700e7e9
@@ -268,6 +269,7 @@ types:
   gw: sha256:7cc842d93a9e1e9cf7ebacdafb945a6baadd1692ac626cdf2155b90dbbf32629
   gw.alert:
     '000': sha256:7f7d89ed9017570ca8f40311ec87864aee58158f9e6cbace5eaf4ef2977e1ad2
+    '001': sha256:491c2b81b04b33a27e063098c5e2a01a31ea6cd94732307214c5c336a872d9a7
   gw.channel.gap.stats:
     '000': sha256:87dd64d79061813560f3becced73d908f0d6066c21d805edb36d88434452670a
   gw.channel.jump.stats:

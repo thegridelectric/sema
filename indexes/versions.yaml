@@ -531,9 +531,11 @@ types:
         summary: "Initial version."
 
   gw.alert:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- Kind: gw.house.alert.kind 000 -> 001"
       "000":
         summary: "Initial Sema version. One word for both transitions (State), a Category choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias (axiom 2), ResolvedMs iff Resolved (axiom 3)."
 
@@ -1987,6 +1989,10 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "001":
+        added_values:
+          - "ScadaSilent"
+          - "LtnSilent"
       "000": {}
 
   gw.primary.flow.source:

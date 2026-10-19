@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-18T18:50:00Z"
+  last_updated: "2026-10-19T12:25:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -390,12 +390,19 @@ enums:
         status: "published"
 
   gw.house.alert.kind:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     enum_type: "versioned"
     description: "The condition a house alert is about, one value per detector, named for what a human acts on rather than the detector's mechanism."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/enums/gw.house.alert.kind/001"
+        created: "2026-10-19T12:10:00Z"
+        status: "published"
+        added_values:
+          - "ScadaSilent"
+          - "LtnSilent"
       "000":
         schema_url: "https://schemas.electricity.works/enums/gw.house.alert.kind/000"
         created: "2026-09-15T19:35:00Z"
@@ -3025,12 +3032,29 @@ types:
             - "uuid4.str"
 
   gw.alert:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "An alerting service's report that a condition needing human attention has started (Firing) or stopped (Resolved) holding, about a house, the fleet, or a platform service."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/types/gw.alert/001"
+        created: "2026-10-19T12:15:00Z"
+        status: "published"
+        summary: >-
+          - Kind: gw.house.alert.kind 000 -> 001
+        direct_dependencies:
+          structural:
+            - "channel.readings:002"
+            - "gw.alert.category:000"
+            - "gw.alert.state:000"
+            - "gw.fleet.alert.kind:000"
+            - "gw.house.alert.kind:001"
+            - "gw.platform.alert.kind:000"
+            - "left.right.dot"
+            - "utc.milliseconds"
+            - "uuid4.str"
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.alert/000"
         created: "2026-09-16T17:45:00Z"

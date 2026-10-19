@@ -31,6 +31,7 @@ types:
     '002':
       used_by:
       - gw.alert:000
+      - gw.alert:001
       - gw.readings:000
       - gw.readings:001
       - report:001
@@ -791,10 +792,12 @@ enums:
     '000':
       used_by:
       - gw.alert:000
+      - gw.alert:001
   gw.alert.state:
     '000':
       used_by:
       - gw.alert:000
+      - gw.alert:001
   gw.dispatch.refusal.reason:
     '000':
       used_by:
@@ -809,10 +812,14 @@ enums:
     '000':
       used_by:
       - gw.alert:000
+      - gw.alert:001
   gw.house.alert.kind:
     '000':
       used_by:
       - gw.alert:000
+    '001':
+      used_by:
+      - gw.alert:001
   gw.opsgenie.alert.status:
     '000':
       used_by:
@@ -826,6 +833,7 @@ enums:
     '000':
       used_by:
       - gw.alert:000
+      - gw.alert:001
   gw.primary.flow.source:
     '000':
       used_by:
@@ -1268,6 +1276,7 @@ formats:
     - gridworks.header:001
     - gw.adc.waveform:000
     - gw.alert:000
+    - gw.alert:001
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
@@ -1754,6 +1763,7 @@ formats:
     - gridworks.event.shutdown:001
     - gw.adc.waveform:000
     - gw.alert:000
+    - gw.alert:001
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
@@ -1900,6 +1910,7 @@ formats:
     - gridworks.event.shutdown:001
     - gw.adc.waveform:000
     - gw.alert:000
+    - gw.alert:001
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
     - gw.opsgenie.alert.close:000

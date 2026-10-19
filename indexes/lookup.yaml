@@ -335,9 +335,10 @@ types:
     versions:
       '000': definitions/types/gw.adc.waveform/000.yaml
   gw.alert:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.alert/001.yaml
       '000': definitions/types/gw.alert/000.yaml
   gw.boiler.backup:
     latest_version: '000'
@@ -1257,8 +1258,9 @@ enums:
       '000': definitions/enums/gw.g.node.class/000.yaml
   gw.house.alert.kind:
     enum_type: versioned
-    latest_version: '000'
+    latest_version: '001'
     versions:
+      '001': definitions/enums/gw.house.alert.kind/001.yaml
       '000': definitions/enums/gw.house.alert.kind/000.yaml
   gw.primary.flow.source:
     enum_type: versioned

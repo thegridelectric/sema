@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ gw_alert_001_class_name }}:
+        """
+        - Kind: gw.house.alert.kind 000 -> 001
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ gw_alert_001_class_name }}.model_validate(data)
