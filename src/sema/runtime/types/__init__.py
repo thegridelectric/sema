@@ -176,6 +176,7 @@ from sema.runtime.types.i2c_write_byte import I2cWriteByte
 from sema.runtime.types.i2c_write_reg import I2cWriteReg
 from sema.runtime.types.keyparam_change_log import KeyparamChangeLog
 from sema.runtime.types.latest_price import LatestPrice
+from sema.runtime.types.layout_bundle import LayoutBundle
 from sema.runtime.types.layout_lite import LayoutLite
 from sema.runtime.types.linear_one_dimensional_calibration import (
     LinearOneDimensionalCalibration,
@@ -400,6 +401,7 @@ __all__ = [
     "I2cWriteReg",
     "KeyparamChangeLog",
     "LatestPrice",
+    "LayoutBundle",
     "LayoutLite",
     "LinearOneDimensionalCalibration",
     "MachineStates",

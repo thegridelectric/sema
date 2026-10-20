@@ -835,6 +835,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/latest.price/000.yaml
+  layout.bundle:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/layout.bundle/000.yaml
   layout.lite:
     latest_version: '013'
     versioning_strategy: literal

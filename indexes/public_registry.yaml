@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-20T12:55:00Z'
+  last_updated: '2026-10-20T21:40:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -5021,6 +5021,25 @@ types:
           - market.price.unit:000
           - market.slot.name
           - uuid4.str
+  layout.bundle:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: A set of terminal-asset layouts sent together with the sender's clock;
+      the reusable layout payload for read responses and change broadcasts.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/layout.bundle/000
+        created: '2026-10-20T21:40:00Z'
+        status: staging
+        summary: Initial version. Layouts is a union of the layout.lite versions the
+          deployed fleet sends (011, 012); SendTimeMs is the sender-time standard;
+          Proof is the distributed-authority seam.
+        direct_dependencies:
+          structural:
+          - layout.lite:011
+          - layout.lite:012
+          - utc.milliseconds
   layout.lite:
     latest_version: '013'
     owner: gridworks-energy

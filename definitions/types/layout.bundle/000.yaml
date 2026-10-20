@@ -1,0 +1,79 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/layout.bundle/000"
+
+title: "layout.bundle"
+type: object
+description: >
+  A set of terminal-asset layouts sent together with the sender's clock.
+  The reusable layout payload: returned in response to a read query, or
+  broadcast after a layout change so consumers can converge.
+
+properties:
+
+  Layouts:
+    type: array
+    items:
+      oneOf:
+        - $ref: "https://schemas.electricity.works/types/layout.lite/011"
+        - $ref: "https://schemas.electricity.works/types/layout.lite/012"
+    description: >
+      The layouts in the bundle, each in its current form.
+
+  SendTimeMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      The sender's clock reading at the moment the bundle is assembled for
+      sending (the sender-time standard). A consumer projecting the bundle
+      MAY use SendTimeMs to refuse letting an older assertion overwrite a
+      newer one.
+
+  Proof:
+    type: string
+    description: >
+      Optional placeholder for a verifiable proof of the bundle's veracity.
+
+  TypeName:
+    const: "layout.bundle"
+
+  Version:
+    const: "000"
+
+required:
+  - Layouts
+  - SendTimeMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Layouts": [],
+      "SendTimeMs": 1792014000000,
+      "TypeName": "layout.bundle",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "OneLayoutPerSender"
+      statement: >
+        No two entries in Layouts SHALL have the same FromGNodeAlias.
+
+  extended_description: >
+    A bundle is the layout twin of g.node.forest. A read query returns the
+    layouts of the requested terminal assets; a layout change publishes
+    the affected layouts so consumers can converge. A projection keyed on
+    the terminal asset upserts one row per entry and uses SendTimeMs as
+    the assertion time of every row the bundle writes.
+
+    The entries are the layout words the deployed fleet sends. A later
+    version of the bundle widens the union to the full layout words once
+    those are published.
+
+    Proof is the distributed-authority seam, as on g.node.forest. It is
+    optional and has no meaning until that mechanism exists.

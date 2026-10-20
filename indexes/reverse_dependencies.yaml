@@ -495,6 +495,13 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
+  layout.lite:
+    '011':
+      used_by:
+      - layout.bundle:000
+    '012':
+      used_by:
+      - layout.bundle:000
   machine.states:
     '000':
       used_by:
@@ -1781,6 +1788,7 @@ formats:
     - gw.weather.forecast:001
     - i2c.result:000
     - i2c.result:001
+    - layout.bundle:000
     - layout.lite:001
     - layout.lite:002
     - layout.lite:003

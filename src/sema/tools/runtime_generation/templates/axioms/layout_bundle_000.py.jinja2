@@ -1,0 +1,10 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ layout_bundle_000_class_name }}":
+        """
+        Axiom 1: OneLayoutPerSender
+        No two entries in Layouts SHALL have the same FromGNodeAlias.
+        """
+        senders = [layout.from_g_node_alias for layout in self.layouts]
+        if len(senders) != len(set(senders)):
+            raise ValueError("Axiom 1 failed: each FromGNodeAlias may appear once in layouts.")
+        return self
