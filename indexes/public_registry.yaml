@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-19T12:25:00Z'
+  last_updated: '2026-10-20T12:55:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3485,6 +3485,27 @@ types:
           - git.commit
           - left.right.dot
           - utc.milliseconds
+  gw.stopgap.price.forecast:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: Hourly LMP and delivery price lists for one pricing node under one
+      tariff, served by the stopgap price-forecast service to the LTN; retires with
+      the service's own forecast word.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.stopgap.price.forecast/000
+        created: '2026-10-20T12:55:00Z'
+        status: published
+        summary: 'Initial version: FromGNodeAlias, PNodeAlias, TariffAlias (left.right.dot),
+          HourStartS (utc.seconds list), LmpList, DistList (USD/MWh numbers), PriceUid
+          (uuid4.str), ForecastCreatedS (utc.seconds). Axioms 1-3: equal list lengths,
+          HourStartS strictly increasing, ForecastCreatedS before the first hour.'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - utc.seconds
+          - uuid4.str
   gw.tou.tariff:
     latest_version: '000'
     owner: gridworks-energy

@@ -1292,6 +1292,7 @@ formats:
     - gw.readings:001
     - gw.recorded.setpoints:000
     - gw.scada.commit:000
+    - gw.stopgap.price.forecast:000
     - gw.tou.tariff:000
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
@@ -1845,6 +1846,7 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - gw.stopgap.price.forecast:000
     - heating.forecast:000
     - report:001
     - report:002
@@ -1916,6 +1918,7 @@ formats:
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
     - gw.opsgenie.alert:000
+    - gw.stopgap.price.forecast:000
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002

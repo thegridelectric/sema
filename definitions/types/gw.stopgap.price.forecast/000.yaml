@@ -1,0 +1,118 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.stopgap.price.forecast/000"
+
+title: "gw.stopgap.price.forecast"
+type: object
+description: >
+  An hourly electricity price forecast for one pricing node under one
+  delivery tariff, as the stopgap price-forecast service serves it to a
+  LeafTransactiveNode. Each forecast hour has an entry in the parallel
+  HourStartS, LmpList and DistList lists. The word retires with the
+  price-forecast service's own forecast word; nothing else takes a
+  dependency on it.
+
+properties:
+
+  FromGNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the service that produced this forecast.
+
+  PNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Alias of the pricing node whose locational marginal prices the
+      forecast covers, for example hw1.isone.ver.keene for Keene Rd.
+
+  TariffAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Alias of the delivery tariff the DistList prices are drawn from, for
+      example versant.a1.home.eco.bonus. A consumer on a different tariff
+      cannot use this forecast.
+
+  HourStartS:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/utc.seconds"
+    description: >
+      Start of each forecast hour, in ascending order.
+
+  LmpList:
+    type: array
+    items:
+      type: number
+    description: >
+      Forecast energy price at the pricing node, in USD per MWh, for each
+      hour in HourStartS. Day-ahead cleared prices where the market has
+      published them.
+
+  DistList:
+    type: array
+    items:
+      type: number
+    description: >
+      Delivery price under the tariff, in USD per MWh, for each hour in
+      HourStartS.
+
+  PriceUid:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Unique identifier for this forecast, used to trace which forecast fed
+      a downstream calculation.
+
+  ForecastCreatedS:
+    $ref: "https://schemas.electricity.works/formats/utc.seconds"
+    description: >
+      Time at which this forecast was created.
+
+  TypeName:
+    const: "gw.stopgap.price.forecast"
+
+  Version:
+    const: "000"
+
+required:
+  - FromGNodeAlias
+  - PNodeAlias
+  - TariffAlias
+  - HourStartS
+  - LmpList
+  - DistList
+  - PriceUid
+  - ForecastCreatedS
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "FromGNodeAlias": "hw1.isone.price",
+      "PNodeAlias": "hw1.isone.ver.keene",
+      "TariffAlias": "versant.a1.home.eco.bonus",
+      "HourStartS": [1792422000, 1792425600, 1792429200],
+      "LmpList": [41.12, 39.87, 38.5],
+      "DistList": [612.1, 612.1, 70.34],
+      "PriceUid": "6b9e3b1c-2d3a-4f7e-9a1b-5c8d7e6f0a21",
+      "ForecastCreatedS": 1792419900,
+      "TypeName": "gw.stopgap.price.forecast",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ListLengthConsistency"
+      statement: >
+        HourStartS, LmpList and DistList SHALL all have the same length.
+    - number: 2
+      name: "HoursAscending"
+      statement: >
+        HourStartS SHALL be strictly increasing.
+    - number: 3
+      name: "ForecastCreatedBeforeFirstHour"
+      statement: >
+        ForecastCreatedS SHALL be less than the first element of HourStartS.

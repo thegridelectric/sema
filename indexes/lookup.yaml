@@ -472,6 +472,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.scada.commit/000.yaml
+  gw.stopgap.price.forecast:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.stopgap.price.forecast/000.yaml
   gw.tou.tariff:
     latest_version: '000'
     versioning_strategy: literal
