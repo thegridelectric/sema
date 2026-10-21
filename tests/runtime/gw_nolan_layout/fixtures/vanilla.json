@@ -421,7 +421,7 @@
       "Version": "303",
       "Name": "secondary-pump-relay",
       "ActorHierarchyName": "s.secondary-pump-relay",
-      "Handle": "auto.secondary-pump-relay",
+      "Handle": "auto.hp-boss.secondary-pump-relay",
       "ActorClass": "Relay",
       "DisplayName": "Secondary Pump Relay",
       "ComponentId": "94dfc016-de3e-4aee-9e8f-7f1a2b0da765",
