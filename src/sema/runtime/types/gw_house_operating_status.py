@@ -25,7 +25,7 @@ class GwHouseOperatingStatus(SemaType):
     top_state: GwTopState
     scada_blind: bool
     ltn_dispatching: bool
-    unix_ms: UTCMilliseconds
+    created_ms: UTCMilliseconds
     type_name: Literal["gw.house.operating.status"] = "gw.house.operating.status"
     version: Literal["000"] = "000"
 

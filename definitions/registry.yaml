@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-20T21:40:00Z"
+  last_updated: "2026-10-21T17:40:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -567,6 +567,18 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/gw1.actor.class/009"
         created: "2026-01-15T18:00:00Z"
         status: "published"
+
+  gw.dashboard.role:
+    latest_version: "000"
+    owner: gridworks-energy
+    enum_type: "versioned"
+    description: "What a dashboard login may do with a house: Admin, Owner or Viewer. Default Viewer so an unknown role grants the least."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/enums/gw.dashboard.role/000"
+        created: "2026-10-21T17:40:00Z"
+        status: "staging"
 
   gw.top.state:
     latest_version: "000"
@@ -3392,7 +3404,7 @@ types:
         status: "staging"
         schema_url: "https://schemas.electricity.works/types/gw.house.operating.status/000"
         created: "2026-09-30T18:35:00Z"
-        summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + UnixMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
+        summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + CreatedMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
         direct_dependencies:
           structural:
             - "gw.dispatch.refusal.reason:000"
@@ -3403,6 +3415,30 @@ types:
             - "left.right.dot"
             - "ta.validation.state:000"
             - "utc.milliseconds"
+
+  gw.house.summary:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "One house as a dashboard login sees it: role, registry identity, current layout, operating status and the latest snapshot's facts; reassembled per request, nothing about a person."
+
+    versions:
+      "000":
+        status: "staging"
+        schema_url: "https://schemas.electricity.works/types/gw.house.summary/000"
+        created: "2026-10-21T17:40:00Z"
+        summary: "Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias + DisplayName + Layout (a union of layout.lite 011 and 012) + OperatingStatus (gw.house.operating.status) + LatestSnapshotTime + the longest-running zone pair (axiom 1: together or not at all) + SendTimeMs (the sender-time standard: a reassembled read response)."
+        direct_dependencies:
+          structural:
+            - "gw.dashboard.role:000"
+            - "gw.house.operating.status:000"
+            - "layout.lite:011"
+            - "layout.lite:012"
+            - "left.right.dot"
+            - "spaceheat.name"
+            - "utc.iso8601.seconds"
+            - "utc.milliseconds"
+            - "uuid4.str"
 
   gw.house0.layout:
     latest_version: "000"

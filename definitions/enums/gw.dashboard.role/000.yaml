@@ -1,0 +1,33 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.dashboard.role/000"
+
+title: "gw.dashboard.role"
+type: "string"
+
+description: >
+  What a dashboard login may do with a house: administer it, own it, or
+  only view it.
+
+enum:
+  - "Admin"
+  - "Owner"
+  - "Viewer"
+
+default: "Viewer"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+
+  value_descriptions:
+    "Admin": >
+      Operates the house and manages who else may see it. An admin login
+      with no house named sees every house.
+
+    "Owner": >
+      The household's own login: sees everything about the house and
+      changes its settings.
+
+    "Viewer": >
+      Sees the house and changes nothing. The default, so a role this
+      version does not know grants the least.

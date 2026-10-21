@@ -426,6 +426,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.house.operating.status/000.yaml
+  gw.house.summary:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.house.summary/000.yaml
   gw.house0.layout:
     latest_version: '000'
     versioning_strategy: literal
@@ -1328,6 +1333,11 @@ enums:
       '011': definitions/enums/gw1.actor.class/011.yaml
       '010': definitions/enums/gw1.actor.class/010.yaml
       009: definitions/enums/gw1.actor.class/009.yaml
+  gw.dashboard.role:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.dashboard.role/000.yaml
   gw.top.state:
     enum_type: versioned
     latest_version: '000'

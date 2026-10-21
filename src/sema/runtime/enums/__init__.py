@@ -44,6 +44,7 @@ from sema.runtime.enums.gw1_unit import Gw1Unit
 from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
 from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
+from sema.runtime.enums.gw_dashboard_role import GwDashboardRole
 from sema.runtime.enums.gw_dispatch_refusal_reason import GwDispatchRefusalReason
 from sema.runtime.enums.gw_experiment_verdict import GwExperimentVerdict
 from sema.runtime.enums.gw_fleet_alert_kind import GwFleetAlertKind
@@ -147,6 +148,7 @@ __all__ = [
     "Gw2LcTopState",
     "GwAlertCategory",
     "GwAlertState",
+    "GwDashboardRole",
     "GwDispatchRefusalReason",
     "GwExperimentVerdict",
     "GwFleetAlertKind",
