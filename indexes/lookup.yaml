@@ -477,6 +477,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.scada.commit/000.yaml
+  gw.state.machine:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.state.machine/000.yaml
   gw.stopgap.price.forecast:
     latest_version: '000'
     versioning_strategy: literal
@@ -1687,6 +1692,7 @@ formats:
   positive.float: definitions/formats/positive.float.yaml
   positive.int: definitions/formats/positive.int.yaml
   positive.int.as.str: definitions/formats/positive.int.as.str.yaml
+  sema.version: definitions/formats/sema.version.yaml
   spaceheat.name: definitions/formats/spaceheat.name.yaml
   universe.run: definitions/formats/universe.run.yaml
   utc.iso8601.millis: definitions/formats/utc.iso8601.millis.yaml

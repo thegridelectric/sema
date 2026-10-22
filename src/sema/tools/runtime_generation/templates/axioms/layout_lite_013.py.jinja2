@@ -54,3 +54,19 @@
                 raise ValueError("Axiom 4 failed: derived channel created_by_node_name must reference an active node.")
         return self
 
+    @model_validator(mode="after")
+    def check_axiom_5(self) -> "{{ layout_lite_013_class_name }}":
+        """
+        Axiom 5: StateMachineNodeConsistency
+        Every StateMachines.NodeName SHALL reference an existing ShNodes.Name, and no two
+        StateMachines entries SHALL share a NodeName.
+        """
+        node_names = {node.name for node in self.sh_nodes}
+        seen: set[str] = set()
+        for machine in self.state_machines:
+            if machine.node_name not in node_names:
+                raise ValueError("Axiom 5 failed: state machine node_name must reference an existing sh_node.")
+            if machine.node_name in seen:
+                raise ValueError("Axiom 5 failed: two state machines declared on one node_name.")
+            seen.add(machine.node_name)
+        return self

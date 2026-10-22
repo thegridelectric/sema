@@ -27,6 +27,7 @@ RUNTIME_FORMAT_TYPES: dict[str, Any] = {
     "positive.float": property_format.PositiveFloat,
     "positive.int": property_format.PositiveInt,
     "positive.int.as.str": property_format.PositiveIntAsStr,
+    "sema.version": property_format.SemaVersion,
     "spaceheat.name": property_format.SpaceheatName,
     "universe.run": property_format.UniverseRun,
     "utc.iso8601.millis": property_format.UtcIso8601Millis,

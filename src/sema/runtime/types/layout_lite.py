@@ -2,21 +2,11 @@ from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.property_format import LeftRightDot
-from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.types.data_channel_gt import DataChannelGt
 from sema.runtime.types.derived_channel_gt import DerivedChannelGt
-from sema.runtime.types.gw1_tank_temp_calibration_map import Gw1TankTempCalibrationMap
-from sema.runtime.types.ha1_params import Ha1Params
-from sema.runtime.types.i2c_multichannel_dt_relay_component_gt import (
-    I2cMultichannelDtRelayComponentGt,
-)
-from sema.runtime.types.pico_flow_module_component_gt import PicoFlowModuleComponentGt
-from sema.runtime.types.pico_tank_module_component_gt import PicoTankModuleComponentGt
-from sema.runtime.types.sim_pico_tank_module_component_gt import (
-    SimPicoTankModuleComponentGt,
-)
+from sema.runtime.types.gw_state_machine import GwStateMachine
 from sema.runtime.types.spaceheat_node_gt import SpaceheatNodeGt
 
 
@@ -24,23 +14,15 @@ class LayoutLite(SemaType):
     """Sema: https://schemas.electricity.works/types/layout.lite/013"""
 
     from_g_node_alias: LeftRightDot
-    message_created_ms: UTCMilliseconds
+    created_ms: UTCMilliseconds
     message_id: UUID4Str
     hardware_layout_type_name: LeftRightDot
-    keep_buffer_full: bool
     zone_list: list[str]
     critical_zone_list: list[str]
-    total_store_tanks: PositiveInt
     sh_nodes: list[SpaceheatNodeGt]
     data_channels: list[DataChannelGt]
     derived_channels: list[DerivedChannelGt]
-    tank_module_components: list[
-        PicoTankModuleComponentGt | SimPicoTankModuleComponentGt
-    ]
-    flow_module_components: list[PicoFlowModuleComponentGt]
-    ha1_params: Ha1Params
-    i2c_relay_component: I2cMultichannelDtRelayComponentGt | None = None
-    t_map: Gw1TankTempCalibrationMap | None = None
+    state_machines: list[GwStateMachine]
     type_name: Literal["layout.lite"] = "layout.lite"
     version: Literal["013"] = "013"
 
@@ -115,4 +97,25 @@ class LayoutLite(SemaType):
                 raise ValueError(
                     "Axiom 4 failed: derived channel created_by_node_name must reference an active node."
                 )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_5(self) -> "LayoutLite":
+        """
+        Axiom 5: StateMachineNodeConsistency
+        Every StateMachines.NodeName SHALL reference an existing ShNodes.Name, and no two
+        StateMachines entries SHALL share a NodeName.
+        """
+        node_names = {node.name for node in self.sh_nodes}
+        seen: set[str] = set()
+        for machine in self.state_machines:
+            if machine.node_name not in node_names:
+                raise ValueError(
+                    "Axiom 5 failed: state machine node_name must reference an existing sh_node."
+                )
+            if machine.node_name in seen:
+                raise ValueError(
+                    "Axiom 5 failed: two state machines declared on one node_name."
+                )
+            seen.add(machine.node_name)
         return self

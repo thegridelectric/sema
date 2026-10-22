@@ -132,14 +132,17 @@ class LayoutLite012(SemaType):
         """
         - ShNodes: spaceheat.node.gt:301 -> 303
         - DataChannels: data.channel.gt:002 -> 004
-        - TankModuleComponents / FlowModuleComponents / I2cRelayComponent: cac-carrying component versions -> cac-free DeviceType versions (pico.tank.module 011->012, sim.pico.tank.module 000->001, pico.flow.module 000->001, i2c.multichannel.dt.relay 003->004). Context-dependent: the embedded components' DeviceType lives on their cac, not the component.
+        - TankModuleComponents, FlowModuleComponents and TMap leave: no consumer reads the pico components or the calibration map off the projection; the hardware layout is their source.
+        - I2cRelayComponent leaves: the relay component is read off the hardware layout, and the projection has no reader for it.
         - SystemMode and SeasonalStorageMode leave: the posture facts (Standby, StandbyPosture, SeasonalStorageMode, ServiceMode, AcceptsDispatch, DispatchRefusalReason) ride gw.house.operating.status, sent after the startup announcements and on change, so the LTN has one source for them.
         - Strategy (free manifold-variant string) -> HardwareLayoutTypeName (left.right.dot): the loaded layout word's TypeName is the family; a format, not an enum of layout words, so this word publishes independently of the layout words' status.
-        - BufferShortCycling -> KeepBufferFull: the running scada's KeepBufferFull setting, named for what the flag does.
+        - BufferShortCycling, Ha1Params and TotalStoreTanks leave: operational parameters are not layout; the LTN gets them from its own settings and its own hardware layout until it holds the ops word, and a layout with no store tanks cannot fill a positive tank count.
+        - MessageCreatedMs -> CreatedMs: the sender-clock name every word takes by default.
+        - StateMachines: one gw.state.machine per machine the running scada hosts (hosting node Name, state enum, enum version), so a report's MachineHandle resolves by its last dotted segment to a declared, versioned enum.
         """
         raise SemaType.upgrade_requires_context(
             "LayoutLite012 cannot be upgraded to "
-            "LayoutLite without the source layout context: the embedded "
-            "components migrate cac_id -> DeviceType, which is derived from the cac the "
-            "components referenced, not carried on the standalone projection."
+            "LayoutLite without the running scada's context: "
+            "StateMachines is declared from the machines the scada hosts, which a standalone "
+            "projection does not carry."
         )

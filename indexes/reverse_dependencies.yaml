@@ -220,6 +220,10 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+  gw.state.machine:
+    '000':
+      used_by:
+      - layout.lite:013
   gw.tou.tariff:
     '000':
       used_by:
@@ -326,9 +330,6 @@ types:
       - layout.lite:010
       - layout.lite:011
       - layout.lite:012
-    '001':
-      used_by:
-      - layout.lite:013
   gw1.unit.quantity.projection:
     '000':
       used_by:
@@ -383,7 +384,6 @@ types:
       used_by:
       - layout.lite:011
       - layout.lite:012
-      - layout.lite:013
       - scada.params:005
   heating.curve:
     '000':
@@ -465,9 +465,6 @@ types:
     '003':
       used_by:
       - layout.lite:012
-    '004':
-      used_by:
-      - layout.lite:013
   i2c.mux:
     '000':
       used_by:
@@ -548,7 +545,6 @@ types:
     '001':
       used_by:
       - gw.house0.layout:000
-      - layout.lite:013
   pico.tank.module.component.gt:
     '000':
       used_by:
@@ -575,7 +571,6 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
-      - layout.lite:013
   price.quantity.unitless:
     '000':
       used_by:
@@ -640,7 +635,6 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.nolan.layout:000
-      - layout.lite:013
   sim.sensor.component.gt:
     '000':
       used_by:
@@ -1310,6 +1304,7 @@ formats:
     - gw.readings:001
     - gw.recorded.setpoints:000
     - gw.scada.commit:000
+    - gw.state.machine:000
     - gw.stopgap.price.forecast:000
     - gw.tou.tariff:000
     - gw.weather.channel.gt:000
@@ -1599,7 +1594,6 @@ formats:
     - layout.lite:010
     - layout.lite:011
     - layout.lite:012
-    - layout.lite:013
     - pico.tank.module.component.gt:000
     - pico.tank.module.component.gt:010
     - pico.tank.module.component.gt:011
@@ -1628,6 +1622,9 @@ formats:
     used_by:
     - gw1.tank.temp.calibration.map:000
     - gw1.tank.temp.calibration.map:001
+  sema.version:
+    used_by:
+    - gw.state.machine:000
   spaceheat.name:
     used_by:
     - ads.channel.config:000
@@ -1673,6 +1670,7 @@ formats:
     - gw.hydronic:000
     - gw.nolan.layout:000
     - gw.operational.params:000
+    - gw.state.machine:000
     - gw1.hvac.zone:000
     - gw1.zone.call.circuit:000
     - i2c.multichannel.dt.relay.component.gt:003

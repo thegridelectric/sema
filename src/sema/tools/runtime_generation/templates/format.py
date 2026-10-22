@@ -92,6 +92,26 @@ SpaceheatName = Annotated[
 ]
 """,
     },
+    "sema.version": {
+        "class_name": "SemaVersion",
+        "pattern": r"^[0-9]{3}$",
+        "methods": """
+def is_sema_version(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: SemaVersion must be a string.")
+
+    if not SEMA_VERSION_PATTERN.fullmatch(v):
+        raise ValueError(f"<{v}>: Fails SemaVersion format (three digits).")
+
+    return v
+""",
+        "annotated_type": """
+SemaVersion = Annotated[
+    str,
+    BeforeValidator(is_sema_version),
+]
+""",
+    },
     "handle.name": {
         "class_name": "HandleName",
         "pattern": r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$",
