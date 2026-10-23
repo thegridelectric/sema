@@ -11,12 +11,13 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_snapshot_prepare_rejects_staging_by_default(
     monkeypatch, tmp_path: Path
 ) -> None:
-    # The template seed pulls layout.lite:013, which is staging — so the
-    # published-only default must fail and name the staging offenders.
+    # The template seed lists synced.readings.bundle:003 outright, which is
+    # staging — so the published-only default must fail and name the staging
+    # offenders.
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
     with pytest.raises(ValueError, match="STAGING") as excinfo:
         snapshot.prepare_snapshot(ROOT / "template_seed_request.yaml")
-    assert "layout.lite:013" in str(excinfo.value)
+    assert "synced.readings.bundle:003" in str(excinfo.value)
 
 
 def test_published_only_prepare_passes_over_staging_versions(
@@ -27,13 +28,14 @@ def test_published_only_prepare_passes_over_staging_versions(
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
     seed = tmp_path / "seed_request.yaml"
     seed.write_text(
-        "initial_targets:\n  types:\n    layout.lite:\n      include_all_versions: true\n"
+        "initial_targets:\n  types:\n    pico.tank.module.component.gt:\n"
+        "      include_all_versions: true\n"
     )
     target_root = snapshot.prepare_snapshot(seed)
 
     expanded = (target_root / "indexes" / "seed_expanded.yaml").read_text()
-    assert "layout.lite:012" in expanded
-    assert "013" not in expanded
+    assert "pico.tank.module.component.gt:011" in expanded
+    assert "pico.tank.module.component.gt:012" not in expanded
     assert not (target_root / "indexes" / "staging.yaml").exists()
     assert "PLEASE ONLY USE IN DEV" not in (target_root / "README.md").read_text()
 
@@ -79,7 +81,7 @@ def test_snapshot_prepare_and_build_write_sema_at_output_root(
     assert (target_root / "indexes" / "staging.yaml").exists()
     readme = (target_root / "README.md").read_text()
     assert "PLEASE ONLY USE IN DEV" in readme
-    assert "layout.lite:013" in readme
+    assert "synced.readings.bundle:003" in readme
 
     stale_file = output_root / "stale.txt"
     stale_file.write_text("remove me")

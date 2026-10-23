@@ -16,41 +16,42 @@ def expand_request(
     return yaml.safe_load(output_path.read_text())
 
 
-# layout.lite: 001-012 published, 013 staging (the registry as it stands).
-LAYOUT_LITE = """
+# pico.tank.module.component.gt: 000, 010, 011 published, 012 staging (the
+# registry as it stands).
+TANK_MODULE = """
 initial_targets:
   types:
-    layout.lite: %s
+    pico.tank.module.component.gt: %s
 """
 
 
 def test_published_only_bare_target_is_latest_published(tmp_path: Path) -> None:
-    expanded = expand_request(tmp_path, LAYOUT_LITE % "{}", published_only=True)
+    expanded = expand_request(tmp_path, TANK_MODULE % "{}", published_only=True)
 
-    assert expanded["initial_targets"] == ["layout.lite:012"]
-    assert "013" not in expanded["worklist"]["types"]["layout.lite"]
+    assert expanded["initial_targets"] == ["pico.tank.module.component.gt:011"]
+    assert "012" not in expanded["worklist"]["types"]["pico.tank.module.component.gt"]
 
 
 def test_published_only_include_all_passes_over_staging(tmp_path: Path) -> None:
     expanded = expand_request(
         tmp_path,
-        LAYOUT_LITE % "\n      include_all_versions: true",
+        TANK_MODULE % "\n      include_all_versions: true",
         published_only=True,
     )
 
-    versions = set(expanded["worklist"]["types"]["layout.lite"])
-    assert "012" in versions
-    assert "013" not in versions
+    versions = set(expanded["worklist"]["types"]["pico.tank.module.component.gt"])
+    assert "011" in versions
+    assert "012" not in versions
 
 
 def test_published_only_keeps_an_explicit_staging_version(tmp_path: Path) -> None:
     # Listed outright, a staging version is taken as written; the snapshot's
     # closure check is what refuses it.
     expanded = expand_request(
-        tmp_path, LAYOUT_LITE % '\n      versions: ["013"]', published_only=True
+        tmp_path, TANK_MODULE % '\n      versions: ["012"]', published_only=True
     )
 
-    assert expanded["initial_targets"] == ["layout.lite:013"]
+    assert expanded["initial_targets"] == ["pico.tank.module.component.gt:012"]
 
 
 def test_structured_seed_request_uses_latest_for_empty_options(tmp_path: Path) -> None:

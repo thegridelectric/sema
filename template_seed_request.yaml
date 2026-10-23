@@ -15,7 +15,8 @@
 
 initial_targets:
   types:
-    synced.readings.bundle: {}
+    synced.readings.bundle:
+      versions: ["002", "003"]
 
     snapshot.spaceheat:
       include_all_versions: true
