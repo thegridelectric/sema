@@ -665,7 +665,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias + DisplayName + Layout (a union of layout.lite 011 and 012) + OperatingStatus (gw.house.operating.status) + LatestSnapshotTime + the longest-running zone pair (axiom 1: together or not at all) + SendTimeMs (the sender-time standard: a reassembled read response)."
+        summary: "Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias + DisplayName + Layout (a union of layout.lite 011 through 013) + OperatingStatus (gw.house.operating.status) + LatestSnapshotTime + the longest-running zone pair (axiom 1: together or not at all) + SendTimeMs (the sender-time standard: a reassembled read response)."
 
   gw.house0.layout:
     latest_version: "000"

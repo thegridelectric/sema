@@ -111,10 +111,14 @@ canonical (non-draft) URL: publication is a status change and a later
 serving event, not a URL change. Draft schemas use the `/draft/` URL
 segment.
 
-For draft and staging definitions, `created` records the time the entry
-was first added to the working registry. Promotion — draft to staging, or
-staging to published — never changes `created`. From publication forward,
-`created` is governed by the immutability rules for published definitions.
+For draft and staging definitions, `created` records the time of the
+entry's latest revision: it is set when the entry is first added and
+moved forward on each in-place revision, so that it stays no earlier
+than the `created` of every word the revision depends on (the ordering
+rule in [types.md](types.md) "Ordering and Uniqueness"). Promotion — draft to
+staging, or staging to published — never changes `created`. From
+publication forward, `created` is governed by the immutability rules for
+published definitions.
 
 If a draft schema file appears under `definitions/`, it SHALL remain
 parseable YAML and SHALL use the normal Sema schema file layout. Draft and

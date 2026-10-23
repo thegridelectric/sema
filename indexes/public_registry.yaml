@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-23T01:25:00Z'
+  last_updated: '2026-10-23T02:25:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3240,9 +3240,9 @@ types:
       '000':
         status: staging
         schema_url: https://schemas.electricity.works/types/gw.house.summary/000
-        created: '2026-10-21T17:40:00Z'
+        created: '2026-10-23T02:22:00Z'
         summary: 'Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias
-          + DisplayName + Layout (a union of layout.lite 011 and 012) + OperatingStatus
+          + DisplayName + Layout (a union of layout.lite 011 through 013) + OperatingStatus
           (gw.house.operating.status) + LatestSnapshotTime + the longest-running zone
           pair (axiom 1: together or not at all) + SendTimeMs (the sender-time standard:
           a reassembled read response).'
@@ -3252,6 +3252,7 @@ types:
           - gw.house.operating.status:000
           - layout.lite:011
           - layout.lite:012
+          - layout.lite:013
           - left.right.dot
           - spaceheat.name
           - utc.iso8601.seconds
