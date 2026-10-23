@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-23T02:25:00Z'
+  last_updated: '2026-10-23T02:35:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -564,7 +564,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.dashboard.role/000
         created: '2026-10-21T17:40:00Z'
-        status: staging
+        status: published
   gw.top.state:
     latest_version: '000'
     owner: gridworks-energy
@@ -3238,7 +3238,7 @@ types:
       per request, nothing about a person.'
     versions:
       '000':
-        status: staging
+        status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/000
         created: '2026-10-23T02:22:00Z'
         summary: 'Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias
