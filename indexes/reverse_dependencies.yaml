@@ -505,6 +505,9 @@ types:
       used_by:
       - gw.house.summary:000
       - layout.bundle:000
+    '013':
+      used_by:
+      - gw.house.summary:000
   machine.states:
     '000':
       used_by:

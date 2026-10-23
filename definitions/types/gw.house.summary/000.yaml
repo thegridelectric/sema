@@ -36,6 +36,7 @@ properties:
     oneOf:
       - $ref: "https://schemas.electricity.works/types/layout.lite/011"
       - $ref: "https://schemas.electricity.works/types/layout.lite/012"
+      - $ref: "https://schemas.electricity.works/types/layout.lite/013"
     description: >
       The house's current layout, in the form its scada last sent. Absent
       for a house whose layout the journal has not yet seen.
