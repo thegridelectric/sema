@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-23T02:35:00Z'
+  last_updated: '2026-10-23T03:20:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -5657,7 +5657,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/operating.state.sequence/000
         created: '2026-07-07T05:06:00Z'
-        status: staging
+        status: published
         summary: 'Initial version: ChannelName (spaceheat.name), ValueList (pascal.case),
           TimestampList (utc.iso8601.millis).'
         direct_dependencies:
@@ -6696,7 +6696,7 @@ types:
     versions:
       '003':
         schema_url: https://schemas.electricity.works/types/synced.readings.bundle/003
-        status: staging
+        status: published
         created: '2026-10-15T11:35:00Z'
         summary: '- Add LatePersistenceTimePeriodList: array of utc.iso8601.seconds
           arrays - Add OperatingStateSequenceList: array of operating.state.sequence:000'
