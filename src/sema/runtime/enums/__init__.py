@@ -1,3 +1,4 @@
+from sema.runtime.enums.aquastat_control_state import AquastatControlState
 from sema.runtime.enums.base_g_node_class import BaseGNodeClass
 from sema.runtime.enums.buffer_regulation_mode import BufferRegulationMode
 from sema.runtime.enums.change_heatcall_source import ChangeHeatcallSource
@@ -62,8 +63,10 @@ from sema.runtime.enums.gw_standby_posture import GwStandbyPosture
 from sema.runtime.enums.gw_top_state import GwTopState
 from sema.runtime.enums.gw_weather_forecast_fidelity import GwWeatherForecastFidelity
 from sema.runtime.enums.gw_zone_emitter_type import GwZoneEmitterType
+from sema.runtime.enums.heat_pump_control import HeatPumpControl
 from sema.runtime.enums.heatcall_source import HeatcallSource
 from sema.runtime.enums.hp_boss_state import HpBossState
+from sema.runtime.enums.hp_loop_keep_send import HpLoopKeepSend
 from sema.runtime.enums.hz_calc_method import HzCalcMethod
 from sema.runtime.enums.i2c_adc_channel import I2cAdcChannel
 from sema.runtime.enums.i2c_adc_type import I2cAdcType
@@ -82,6 +85,7 @@ from sema.runtime.enums.pico_board_variant import PicoBoardVariant
 from sema.runtime.enums.pico_cycler_event import PicoCyclerEvent
 from sema.runtime.enums.pico_cycler_state import PicoCyclerState
 from sema.runtime.enums.pico_reset_cause import PicoResetCause
+from sema.runtime.enums.primary_pump_control import PrimaryPumpControl
 from sema.runtime.enums.reboot_picos import RebootPicos
 from sema.runtime.enums.relay_closed_or_open import RelayClosedOrOpen
 from sema.runtime.enums.relay_energization_state import RelayEnergizationState
@@ -95,6 +99,7 @@ from sema.runtime.enums.spaceheat_make_model import SpaceheatMakeModel
 from sema.runtime.enums.spaceheat_telemetry_name import SpaceheatTelemetryName
 from sema.runtime.enums.spaceheat_unit import SpaceheatUnit
 from sema.runtime.enums.spruce_hack_hp_state import SpruceHackHpState
+from sema.runtime.enums.store_flow_relay import StoreFlowRelay
 from sema.runtime.enums.ta_validation_state import TaValidationState
 from sema.runtime.enums.temp_calc_method import TempCalcMethod
 from sema.runtime.enums.thermistor_data_method import ThermistorDataMethod
@@ -110,6 +115,7 @@ from sema.runtime.enums.zone_circuit_governance_state import ZoneCircuitGovernan
 from sema.runtime.enums.zone_setpoint_source import ZoneSetpointSource
 
 __all__ = [
+    "AquastatControlState",
     "BaseGNodeClass",
     "BufferRegulationMode",
     "ChangeHeatcallSource",
@@ -166,8 +172,10 @@ __all__ = [
     "GwTopState",
     "GwWeatherForecastFidelity",
     "GwZoneEmitterType",
+    "HeatPumpControl",
     "HeatcallSource",
     "HpBossState",
+    "HpLoopKeepSend",
     "HzCalcMethod",
     "I2cAdcChannel",
     "I2cAdcType",
@@ -186,6 +194,7 @@ __all__ = [
     "PicoCyclerEvent",
     "PicoCyclerState",
     "PicoResetCause",
+    "PrimaryPumpControl",
     "RebootPicos",
     "RelayClosedOrOpen",
     "RelayEnergizationState",
@@ -199,6 +208,7 @@ __all__ = [
     "SpaceheatTelemetryName",
     "SpaceheatUnit",
     "SpruceHackHpState",
+    "StoreFlowRelay",
     "TaValidationState",
     "TempCalcMethod",
     "ThermistorDataMethod",

@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-10-22T21:20:00Z"
+  last_updated: "2026-10-23T00:15:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -180,6 +180,14 @@ formats:
     description: "Canonical lowercase UUIDv4 string (RFC 4122) in 8-4-4-4-12 format"
 
 enums:
+  aquastat.control.state:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Controller the aquastat relay hands the aquastat circuit to."
+    schema_url: "https://schemas.electricity.works/enums/aquastat.control.state/000"
+    created: "2026-10-23T00:15:00Z"
+    status: "published"
+
   base.g.node.class:
     latest_version: "000"
     owner: gridworks-energy
@@ -635,6 +643,22 @@ enums:
         created: "2026-09-30T18:35:00Z"
         status: "staging"
 
+  heat.pump.control:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Controller the heat pump relay hands the heat pump call to."
+    schema_url: "https://schemas.electricity.works/enums/heat.pump.control/000"
+    created: "2026-10-23T00:15:00Z"
+    status: "published"
+
+  hp.loop.keep.send:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Position of the heat pump loop keep/send relay."
+    schema_url: "https://schemas.electricity.works/enums/hp.loop.keep.send/000"
+    created: "2026-10-23T00:15:00Z"
+    status: "published"
+
   pico.reset.cause:
     latest_version: "000"
     owner: gridworks-energy
@@ -646,6 +670,14 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/pico.reset.cause/000"
         created: "2026-10-14T18:55:00Z"
         status: "published"
+
+  primary.pump.control:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Controller the primary pump relay hands the primary pump to."
+    schema_url: "https://schemas.electricity.works/enums/primary.pump.control/000"
+    created: "2026-10-23T00:15:00Z"
+    status: "published"
 
   spruce.hack.hp.state:
     latest_version: "000"
@@ -1298,6 +1330,14 @@ enums:
         schema_url: "https://schemas.electricity.works/enums/spaceheat.unit/001"
         created: "2024-09-02T15:00:00Z"
         status: "published"
+
+  store.flow.relay:
+    owner: gridworks-energy
+    enum_type: "literal"
+    description: "Direction the store flow relay sets for water through the thermal store."
+    schema_url: "https://schemas.electricity.works/enums/store.flow.relay/000"
+    created: "2026-10-23T00:15:00Z"
+    status: "published"
 
   ta.validation.state:
     latest_version: "000"
