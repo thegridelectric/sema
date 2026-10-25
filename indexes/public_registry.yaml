@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-23T03:20:00Z'
+  last_updated: '2026-10-25T21:04:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -575,6 +575,32 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.top.state/000
         created: '2026-09-29T22:05:00Z'
+        status: published
+  gw.channel.kind:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'What kind of thing a reading channel records, named by the declaring
+      list: a layout''s DataChannel or DerivedChannel, a layout''s StateMachine, or
+      a journal service''s HeatCallSynth, WeatherForecast, WeatherObserved or FloParams.
+      Default Unknown so a reader does not act on a kind it does not know.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.channel.kind/000
+        created: '2026-10-25T11:55:00Z'
+        status: published
+  gw.house.control.mode:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Who decides what a house''s heating plant does: LocalControl (the
+      scada''s own control), Ltn (the leaf transactive node under a live dispatch
+      contract) or Admin (an admin session). A projection across the scada''s top-level
+      machines. Default Unknown so a reader does not act on a mode it does not know.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.house.control.mode/000
+        created: '2026-10-25T11:55:00Z'
         status: published
   gw.standby.posture:
     latest_version: '000'

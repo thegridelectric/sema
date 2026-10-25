@@ -56,6 +56,12 @@ enums:
   gw.alert.category:
     '000': sha256:3d7c17adce5393dffc925b0d67d38920f03b478ef17a67a4ee4d2d1dbbec0bc5
   gw.alert.state: sha256:4dad5b94506e499c2b3971317050b77916ae9451cfcc8cc9770954fe937ad380
+  gw.channel.kind:
+    '000': sha256:f9a021076b97d63df29d692842ebd8c071e7cb7526ec870d76ce125b0e1a0d54
+  gw.dashboard.role:
+    '000': sha256:7c03ead560faa493f7016f544f1062e0194a1365a2796e1b5adee198356ed86b
+  gw.dispatch.refusal.reason:
+    '000': sha256:3e5ec75f891cf8bf747c0efb36b25782497acb2b404e33c35a0db92bbb752263
   gw.fleet.alert.kind:
     '000': sha256:d3300159974505bbe8e304f5f07cfbc90324f7e37121811c18e4e5bf0d052521
   gw.g.node.class:
@@ -63,6 +69,8 @@ enums:
   gw.house.alert.kind:
     '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
     '001': sha256:87bb9beae383669aed670f502ea8146c3bf49150dcf6d1eb592fb5ce145721b3
+  gw.house.control.mode:
+    '000': sha256:a4184b160dfc9efc66431f3be7d0a8f5f61ae373c03a893d80638fbe25ecab5b
   gw.market.product.name:
     '000': sha256:b1c91cdca4978f783c836abd6e1e646df2fd940c2cd240cc4f852788e4046324
   gw.opsgenie.alert.status: sha256:4ad9b70197037d190423690ad082f84b8edca0c6c366c0628cf750a36700e7e9
@@ -71,6 +79,10 @@ enums:
     '000': sha256:25020b860aa7d8b2f4ba70086c19965cdbceef0caa521836aa27b52b83c7c24c
   gw.scada.cmd.refusal.reason:
     '000': sha256:b0ecf6dc537707fc149d5ff96f10764740264799902e5eb236ace7c4906090ca
+  gw.standby.posture:
+    '000': sha256:d44eaa6613b4c544afd130b97c32b35aad9684eab42a9b788597d78aeff6fc1a
+  gw.top.state:
+    '000': sha256:17d9257e2f57b938cf7c06fed51aca686fdfa4dfd6f033b4ea42571b040f74bf
   gw.weather.forecast.fidelity:
     '000': sha256:aba01cfd92b80487f55a9baaf9228b9086445f3a727c63203d14cb34a7560007
   gw1.actor.class:
@@ -96,6 +108,8 @@ enums:
     '001': sha256:3f6b5146a9811741c2b63aaa54e44550e9eec4ff40dd8b5e80e2eb4d5d21f72c
   gw1.main.auto.state:
     '001': sha256:8a1adb8574450dc582ef1e48cc6b17aeecda07f27df78a07b632526d580943df
+  gw1.nolan.lc.buffer.only.state:
+    '000': sha256:3100d589a24424d42155cd03481d57ce583681abb7d4c28a5f1ad368d0e36769
   gw1.quantity:
     '000': sha256:a10290f710eeba99d2c8dc8e64ae66942a01879a0bc96b63c5c073efdda57013
     '001': sha256:bb7089d99ec32f0a02874088c6632d501b5500b775eaa1c84e9ad307bd38a5cb
@@ -103,6 +117,8 @@ enums:
     '003': sha256:593c68cf1c0b9ed7946acba80d1fe4ccd7a58aa4b50ece922cda3941fa147a2b
   gw1.seasonal.storage.mode:
     '000': sha256:f245d03751f1a574eb360c4cef74e59825745f2410e8e28d1d5a6d98ea27448d
+  gw1.service.mode:
+    '000': sha256:f3fbde84e3d1f6972bbbdcef9fd87eddf1dd9930fe255448f39c205f015c3682
   gw1.slow.dispatch.contract.status:
     '000': sha256:3c1b668963e80f472bbf938c6e3e2206e1ff456dbfb993ea89c859b3089e0971
   gw1.system.mode:
@@ -112,6 +128,8 @@ enums:
     '001': sha256:d5c1897ec2006fdf0e8a53c594738efe335c14292674af81911134443b6b75da
     '002': sha256:d12e4b1cdc84c6c018d2466b813c486546525a82774776daab9ae807276f9d33
     '003': sha256:3fba2fc5de254e44c37d9bea7b33bfdec18c6ebf134f0189972f5708fc7d245e
+  gw2.lc.top.state:
+    '000': sha256:fed602ab97463c3b9e539e62ad460c34bf7be243102b78706503afcc4cff2e32
   heat.pump.control: sha256:1d02578b6b77a79e9241c1b4e1ca1350bf7fd431ab83c1706bfe5945ed21230c
   heatcall.source: sha256:ebcfcba38a9a0c299e2f68f87a4e3aeb6c4aa109dfd2b82f4dacee951212340b
   hp.boss.state:
@@ -158,32 +176,18 @@ enums:
     '007': sha256:246b55063cac9b95a2a07f61c306fc00d09e18c5ff36cb20329d3947b5b617d1
   spaceheat.unit:
     '001': sha256:b20627885ed36e161aba50aea71ebf9bae27319518c6b8a4330245eba51a7364
+  spruce.hack.hp.state:
+    '000': sha256:4498737ef5332a9f54584a6337822654f57312f92c8f9024cafdc9224d2523ac
   store.flow.relay: sha256:d9ecfc7e8c4fa972195603de3921e2c46da8d4895a27724e9821c5fb5baa201a
+  ta.validation.state:
+    '000': sha256:7fbbe96982138a6708c706e27fff7a37646cabe8577092f06fa03b6c5bc83df4
   temp.calc.method:
     '000': sha256:d2062d94e196d585c3c3f7ad60ca8165b1980b0a2d5a2f1cf5039d303d179817
   turn.5v.on.off:
     '000': sha256:f75f5eed7fadc0f59bbe2eab98a46fb1ce7180800c0b6149f8cb0ccd3d7c216b
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
-  gw.dispatch.refusal.reason:
-    '000': sha256:3e5ec75f891cf8bf747c0efb36b25782497acb2b404e33c35a0db92bbb752263
-  gw.standby.posture:
-    '000': sha256:d44eaa6613b4c544afd130b97c32b35aad9684eab42a9b788597d78aeff6fc1a
-  gw.top.state:
-    '000': sha256:17d9257e2f57b938cf7c06fed51aca686fdfa4dfd6f033b4ea42571b040f74bf
-  gw1.service.mode:
-    '000': sha256:f3fbde84e3d1f6972bbbdcef9fd87eddf1dd9930fe255448f39c205f015c3682
-  ta.validation.state:
-    '000': sha256:7fbbe96982138a6708c706e27fff7a37646cabe8577092f06fa03b6c5bc83df4
-  zone.call.source: sha256:3f0ad484d9f528de60e235ff6a773e9e8ed0e4a00818c7e117cde1d74512d067
   valve.open.or.closed: sha256:6d597f8c42190e1f2b71ae13ec9931607986a360c822e0cd88b000f77a9fa76e
-  gw2.lc.top.state:
-    '000': sha256:fed602ab97463c3b9e539e62ad460c34bf7be243102b78706503afcc4cff2e32
-  gw1.nolan.lc.buffer.only.state:
-    '000': sha256:3100d589a24424d42155cd03481d57ce583681abb7d4c28a5f1ad368d0e36769
-  spruce.hack.hp.state:
-    '000': sha256:4498737ef5332a9f54584a6337822654f57312f92c8f9024cafdc9224d2523ac
-  gw.dashboard.role:
-    '000': sha256:7c03ead560faa493f7016f544f1062e0194a1365a2796e1b5adee198356ed86b
+  zone.call.source: sha256:3f0ad484d9f528de60e235ff6a773e9e8ed0e4a00818c7e117cde1d74512d067
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -317,6 +321,10 @@ types:
     '000': sha256:99b1fec0f628c5d7289908af7714cdf85d441ae5efc03f6acfa411262f983d52
   gw.hack.alert.silences:
     '000': sha256:f9c16f52fb0aaf8bd2e5b9d5a8cd90b2ee964c59e1267bb6262fd1b9d560a5cc
+  gw.house.operating.status:
+    '000': sha256:04360f242f6ff7ccb7f53feb377b520d9a4cef9912cd84ddc8e06ecd1d16230e
+  gw.house.summary:
+    '000': sha256:8556a099ee72360af4b11926e00fade7d9b65f4fe0e155a954e8358edf1d5d95
   gw.opsgenie.alert:
     '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a
   gw.opsgenie.alert.close:
@@ -325,6 +333,10 @@ types:
     '000': sha256:b0f464c07e7984ddd289d6b0590fd7a9eb58f4ca739e33b9732f00ae88a11d32
   gw.readings:
     '000': sha256:8d045c857d2c696f61ae7c16b7a61231d2aafce56f5b8b55dc7f9dbb416fd127
+  gw.scada.commit:
+    '000': sha256:b241da1e25c41abb07ad195c0aeedfb898ad7e6d9f7a103ee5ff8e92f8585679
+  gw.state.machine:
+    '000': sha256:70b99e254a72c31c6f2d642d5424a35d219dd91ce946e52eb827cdecf60c0ee1
   gw.stopgap.price.forecast:
     '000': sha256:b0a259f269a2308f3be680d540e01144543c45b8115d913794c90d0ff1ba24a7
   gw.weather.channel.gt:
@@ -450,6 +462,8 @@ types:
     '003': sha256:00593571d6aea0e866566b70faaf7a22d20264771e16e08642be4bd743c4a091
   new.pico:
     '100': sha256:50f449b24290ddce7b83fa992deeec21723165a7ff6b2b672de4e7c8989e479a
+  operating.state.sequence:
+    '000': sha256:d4093900f735d24aed7651a0f01103d48f2ac4db2792d4a669d3b919f2df86d6
   pico.flow.module.component.gt:
     '000': sha256:53ec624eff03632e8417421cecf2c0b7c02169821f500eb5a1511a4bde3495ab
   pico.heartbeat:
@@ -528,6 +542,8 @@ types:
     '003': sha256:5e592a497caf711aee21dac25b90351bbdf3e8490c6894782f7044ccdfceba5a
   synth.channel.gt:
     '000': sha256:c8d7ac0ad56e4797302e1d4389e143439277a549bfd67f8c322a6d43dffca9bb
+  ta.deed:
+    '000': sha256:fc607fffa76d6a0ecb01fb2e29f42792d62b43700d71e66a51211e1a7024e9d0
   tank.module.params:
     '110': sha256:5ab1d5a4a1acec0a7314bf461af370bdf04f55c3a2e82ac857293b0f8053ccaa
     '200': sha256:1f6924ad517bab10c9fe06d774974675ad18071e58a79e48a2a0c50b9c546d33
@@ -544,15 +560,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  gw.scada.commit:
-    '000': sha256:b241da1e25c41abb07ad195c0aeedfb898ad7e6d9f7a103ee5ff8e92f8585679
-  gw.state.machine:
-    '000': sha256:70b99e254a72c31c6f2d642d5424a35d219dd91ce946e52eb827cdecf60c0ee1
-  gw.house.operating.status:
-    '000': sha256:04360f242f6ff7ccb7f53feb377b520d9a4cef9912cd84ddc8e06ecd1d16230e
-  ta.deed:
-    '000': sha256:fc607fffa76d6a0ecb01fb2e29f42792d62b43700d71e66a51211e1a7024e9d0
-  gw.house.summary:
-    '000': sha256:8556a099ee72360af4b11926e00fade7d9b65f4fe0e155a954e8358edf1d5d95
-  operating.state.sequence:
-    '000': sha256:d4093900f735d24aed7651a0f01103d48f2ac4db2792d4a669d3b919f2df86d6

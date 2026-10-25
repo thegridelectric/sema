@@ -1351,6 +1351,16 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/gw.top.state/000.yaml
+  gw.channel.kind:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.channel.kind/000.yaml
+  gw.house.control.mode:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/gw.house.control.mode/000.yaml
   gw.standby.posture:
     enum_type: versioned
     latest_version: '000'

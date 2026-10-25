@@ -45,12 +45,14 @@ from sema.runtime.enums.gw1_unit import Gw1Unit
 from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
 from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
+from sema.runtime.enums.gw_channel_kind import GwChannelKind
 from sema.runtime.enums.gw_dashboard_role import GwDashboardRole
 from sema.runtime.enums.gw_dispatch_refusal_reason import GwDispatchRefusalReason
 from sema.runtime.enums.gw_experiment_verdict import GwExperimentVerdict
 from sema.runtime.enums.gw_fleet_alert_kind import GwFleetAlertKind
 from sema.runtime.enums.gw_g_node_class import GwGNodeClass
 from sema.runtime.enums.gw_house_alert_kind import GwHouseAlertKind
+from sema.runtime.enums.gw_house_control_mode import GwHouseControlMode
 from sema.runtime.enums.gw_market_product_name import GwMarketProductName
 from sema.runtime.enums.gw_opsgenie_alert_status import GwOpsgenieAlertStatus
 from sema.runtime.enums.gw_opsgenie_priority import GwOpsgeniePriority
@@ -154,12 +156,14 @@ __all__ = [
     "Gw2LcTopState",
     "GwAlertCategory",
     "GwAlertState",
+    "GwChannelKind",
     "GwDashboardRole",
     "GwDispatchRefusalReason",
     "GwExperimentVerdict",
     "GwFleetAlertKind",
     "GwGNodeClass",
     "GwHouseAlertKind",
+    "GwHouseControlMode",
     "GwMarketProductName",
     "GwOpsgenieAlertStatus",
     "GwOpsgeniePriority",

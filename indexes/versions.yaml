@@ -2131,6 +2131,18 @@ enums:
     versions:
       "000": {}
 
+  gw.channel.kind:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.house.control.mode:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
   gw.standby.posture:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."

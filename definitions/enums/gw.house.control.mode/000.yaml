@@ -1,0 +1,39 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.house.control.mode/000"
+
+title: "gw.house.control.mode"
+type: "string"
+
+description: >
+  Who decides what a house's heating plant does at a moment: the scada's
+  local control, the leaf transactive node under a live dispatch contract,
+  or an admin session holding the command tree. A projection across the
+  scada's top-level machines for readers that want the house's mode
+  without the machine hierarchy.
+
+enum:
+  - "Unknown"
+  - "LocalControl"
+  - "Ltn"
+  - "Admin"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+
+  value_descriptions:
+    "Unknown": >
+      The mode is not known here. A reader does not act on it.
+
+    "LocalControl": >
+      The scada's own local control decides, with no dispatch contract
+      live.
+
+    "Ltn": >
+      The leaf transactive node decides, under a live dispatch contract.
+
+    "Admin": >
+      An admin session holds the command tree. Automatic control is
+      dormant.
