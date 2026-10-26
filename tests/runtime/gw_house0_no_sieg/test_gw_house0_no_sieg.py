@@ -719,3 +719,20 @@ def test_axiom_38_c_threshold_is_a_positive_integer(vanilla: dict[str, Any]) -> 
         pump_running(d)["Parameters"] = {"ThresholdW": 0}
 
     reject(vanilla, mutate, "Axiom 38")
+
+
+def test_axiom_39_hp_watch_absent(vanilla: dict[str, Any]) -> None:
+    """No hp-watch node fails."""
+    reject(vanilla, drop_nodes({"hp-watch"}), "Axiom 39")
+
+
+def test_axiom_39_hp_watch_wrong_actor_class(vanilla: dict[str, Any]) -> None:
+    """An hp-watch node with an ActorClass other than HpWatch fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        for n in d["ShNodes"]:
+            if n["Name"] == "hp-watch":
+                n["ActorClass"] = "NoActor"
+                del n["ActorHierarchyName"]
+
+    reject(vanilla, mutate, "Axiom 39")

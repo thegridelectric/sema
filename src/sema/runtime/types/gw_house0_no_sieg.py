@@ -1501,3 +1501,17 @@ class GwHouse0NoSieg(SemaType):
                 f"be a positive integer, got {threshold!r}."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_39(self) -> Self:
+        """
+        Axiom 39: HpWatchNode ShNodes SHALL include a node named "hp-watch" with
+        ActorClass "HpWatch".
+        """
+        node = next((n for n in self.sh_nodes or [] if n.name == "hp-watch"), None)
+        if node is None or str(node.actor_class) != "HpWatch":
+            raise ValueError(
+                "Axiom 39 (HpWatchNode) failed: no ShNode named 'hp-watch' with "
+                "ActorClass 'HpWatch'."
+            )
+        return self

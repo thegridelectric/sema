@@ -50,7 +50,9 @@
         EnergizedStandbyRelays SHALL be exactly hp-failsafe-relay and
         aquastat-ctrl-relay. c. If FamilyParams.TypeName is gw.nolan.family.params
         and StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays SHALL be
-        empty.
+        empty. d. If FamilyParams.TypeName is gw.house0.no.sieg.family.params and
+        StandbyPosture is NoHeatingOrCooling, EnergizedStandbyRelays SHALL be
+        exactly hp-failsafe-relay and aquastat-ctrl-relay.
         """
         posture = self.standby_posture
         relays = set(self.energized_standby_relays)
@@ -63,6 +65,7 @@
         if posture is {{ gw_standby_posture_000_class_name }}.NoHeatingOrCooling:
             expected = {
                 "gw.house0.family.params": {"hp-failsafe-relay", "aquastat-ctrl-relay"},
+                "gw.house0.no.sieg.family.params": {"hp-failsafe-relay", "aquastat-ctrl-relay"},
                 "gw.nolan.family.params": set(),
             }[family]
             if relays != expected:

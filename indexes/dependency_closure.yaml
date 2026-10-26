@@ -1301,6 +1301,13 @@ types:
       - spaceheat.telemetry.quantity.projection:001
       - web.server.component.gt:001
       versionless_types: []
+  gw.house0.no.sieg.family.params:
+    '000':
+      enums:
+      - gw1.seasonal.storage.mode:000
+      formats: []
+      types: []
+      versionless_types: []
   gw.hydronic:
     '000':
       enums:
@@ -1449,6 +1456,7 @@ types:
       - cop.curve:000
       - gw.dispatch.hold:000
       - gw.house0.family.params:000
+      - gw.house0.no.sieg.family.params:000
       - gw.nolan.family.params:000
       - gw.tou.tariff:000
       - gw.tou.window:000

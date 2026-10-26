@@ -219,6 +219,10 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+  gw.house0.no.sieg.family.params:
+    '000':
+      used_by:
+      - gw.operational.params:000
   gw.hydronic:
     '000':
       used_by:
@@ -980,6 +984,7 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - gw.house0.family.params:000
+      - gw.house0.no.sieg.family.params:000
       - gw.nolan.family.params:000
       - layout.lite:008
       - layout.lite:009

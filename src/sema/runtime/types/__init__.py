@@ -100,6 +100,9 @@ from sema.runtime.types.gw_hack_alert_silences import GwHackAlertSilences
 from sema.runtime.types.gw_house0_family_params import GwHouse0FamilyParams
 from sema.runtime.types.gw_house0_layout import GwHouse0Layout
 from sema.runtime.types.gw_house0_no_sieg import GwHouse0NoSieg
+from sema.runtime.types.gw_house0_no_sieg_family_params import (
+    GwHouse0NoSiegFamilyParams,
+)
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
 from sema.runtime.types.gw_house_summary import GwHouseSummary
 from sema.runtime.types.gw_hydronic import GwHydronic
@@ -338,6 +341,7 @@ __all__ = [
     "GwHouse0FamilyParams",
     "GwHouse0Layout",
     "GwHouse0NoSieg",
+    "GwHouse0NoSiegFamilyParams",
     "GwHouseOperatingStatus",
     "GwHouseSummary",
     "GwHydronic",

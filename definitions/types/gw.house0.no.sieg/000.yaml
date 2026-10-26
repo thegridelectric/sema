@@ -488,3 +488,7 @@ x-gridworks:
         SHALL be the Name of a DataChannel with TelemetryName "PowerW".
         c. Its Parameters SHALL include "ThresholdW", a positive integer: the channel reads 1
         while the input power exceeds ThresholdW and 0 otherwise.
+    - number: 39
+      name: "HpWatchNode"
+      statement: >
+        ShNodes SHALL include a node named "hp-watch" with ActorClass "HpWatch".

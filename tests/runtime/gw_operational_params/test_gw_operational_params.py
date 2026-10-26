@@ -30,3 +30,25 @@ def test_axiom_5_refuses_standby_house0_loop_not_at_full_send() -> None:
         p["DispatchHold"]["OperatorHold"] = True
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 5)
+
+
+def no_sieg_family(p: dict) -> None:
+    p["FamilyParams"] = {
+        "KeepBufferFull": False,
+        "SeasonalStorageMode": "AllTanks",
+        "TypeName": "gw.house0.no.sieg.family.params",
+        "Version": "000",
+    }
+
+
+def test_the_no_sieg_family_is_a_family() -> None:
+    default_codec.from_dict(mutated(EXAMPLE, no_sieg_family))
+
+
+def test_axiom_4_d_refuses_no_sieg_no_heating_without_its_relays() -> None:
+    def mutate(p: dict) -> None:
+        no_sieg_family(p)
+        p["StandbyPosture"] = "NoHeatingOrCooling"
+        p["EnergizedStandbyRelays"] = []
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4)

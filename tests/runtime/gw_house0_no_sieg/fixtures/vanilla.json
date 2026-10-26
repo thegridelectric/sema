@@ -194,6 +194,15 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "hp-watch",
+      "ActorHierarchyName": "s.hp-watch",
+      "ActorClass": "HpWatch",
+      "DisplayName": "Hp Watch",
+      "ShNodeId": "6f0c2d8e-4b1a-4c7e-9a3d-2e5f7b8c1d40"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "power-meter",
       "ActorHierarchyName": "s.power-meter",
       "ActorClass": "PowerMeter",
