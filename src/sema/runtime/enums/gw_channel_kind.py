@@ -9,10 +9,10 @@ class GwChannelKind(SemaEnum):
     Unknown = auto()
     DataChannel = auto()
     DerivedChannel = auto()
-    SynthChannel = auto()
     StateMachine = auto()
     HeatCallSynth = auto()
     WeatherForecast = auto()
+    WeatherObserved = auto()
     FloParams = auto()
 
     @classmethod

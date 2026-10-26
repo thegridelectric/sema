@@ -1,0 +1,721 @@
+"""Rejecting tests for gw.house0.no.sieg/000's axioms.
+
+The vanilla fixture is the House0 vanilla fixture with its sieg surface removed,
+its primary flow measured and a secondary-pump relay under hp-boss. Each test Each test
+mutates a copy of it so that exactly one axiom fires, and asserts the word
+refuses it.
+"""
+
+import json
+from pathlib import Path
+from typing import Any, Callable
+
+import pytest
+
+from sema.runtime.enums.gw2_lc_top_state import Gw2LcTopState
+from sema.runtime.types.gw_house0_no_sieg import GwHouse0NoSieg
+
+FIXTURE = Path(__file__).parent / "fixtures" / "vanilla.json"
+
+
+@pytest.fixture(scope="module")
+def vanilla() -> dict[str, Any]:
+    return json.loads(FIXTURE.read_text())
+
+
+def mutated(
+    vanilla: dict[str, Any], mutate: Callable[[dict[str, Any]], None]
+) -> dict[str, Any]:
+    d = json.loads(json.dumps(vanilla))
+    mutate(d)
+    return d
+
+
+def reject(
+    vanilla: dict[str, Any], mutate: Callable[[dict[str, Any]], None], axiom: str
+) -> None:
+    with pytest.raises(ValueError, match=axiom):
+        GwHouse0NoSieg.model_validate(mutated(vanilla, mutate))
+
+
+def drop_channel(name: str) -> Callable[[dict[str, Any]], None]:
+    """Drop a channel, and drop it from the transactive-power input set with it —
+    otherwise TransactivePowerChannel fires first on a metered name."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != name]
+        d["DerivedChannels"] = [c for c in d["DerivedChannels"] if c["Name"] != name]
+        for c in d["DerivedChannels"]:
+            if c["Strategy"] == "transactive-power":
+                c["InputChannelNames"] = [
+                    n for n in c["InputChannelNames"] if n != name
+                ]
+
+    return mutate
+
+
+def test_vanilla_fixture_is_a_gw_house0_no_sieg(vanilla: dict[str, Any]) -> None:
+    layout = GwHouse0NoSieg.model_validate(vanilla)
+    assert layout.type_name == "gw.house0.no.sieg"
+    assert layout.version == "000"
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "hp-odu-pwr",
+        "hp-idu-pwr",
+        "primary-pump-pwr",
+        "store-pump-pwr",
+        "dist-pump-pwr",
+        "hp-lwt",
+        "hp-ewt",
+        "dist-swt",
+        "dist-rwt",
+        "store-hot-pipe",
+        "store-cold-pipe",
+        "buffer-hot-pipe",
+        "dist-flow",
+        "store-flow",
+        "secondary-flow",
+        "secondary-lwt",
+        "secondary-ewt",
+        "secondary-pump-pwr",
+    ],
+)
+def test_axiom_7_required_sensing(vanilla: dict[str, Any], name: str) -> None:
+    """Every name RequiredSensing lists is required in either channel collection."""
+    reject(vanilla, drop_channel(name), "Axiom 7")
+
+
+def test_axiom_16_buffer_tank(vanilla: dict[str, Any]) -> None:
+    """A missing buffer depth reading fails."""
+    reject(vanilla, drop_channel("buffer-depth2"), "Axiom 16")
+
+
+def test_axiom_16_buffer_node_name_is_not_required(vanilla: dict[str, Any]) -> None:
+    """The word requires the three depth readings; the node carrying them may be
+    named anything, so renaming it and its channel bindings is accepted."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        for n in d["ShNodes"]:
+            if n["Name"] == "buffer":
+                n["Name"] = "buffer-tank"
+                for key in ("ActorHierarchyName", "Handle"):
+                    if n.get(key, "").endswith("buffer"):
+                        n[key] = n[key][: -len("buffer")] + "buffer-tank"
+        for c in d["DataChannels"]:
+            if c["AboutNodeName"] == "buffer":
+                c["AboutNodeName"] = "buffer-tank"
+            if c["CapturedByNodeName"] == "buffer":
+                c["CapturedByNodeName"] = "buffer-tank"
+        for c in d["DerivedChannels"]:
+            if c["CreatedByNodeName"] == "buffer":
+                c["CreatedByNodeName"] = "buffer-tank"
+
+    GwHouse0NoSieg.model_validate(mutated(vanilla, mutate))
+
+
+def test_axiom_23_store_tank_temps(vanilla: dict[str, Any]) -> None:
+    """A store tank the layout counts must carry its three depth readings."""
+    reject(vanilla, drop_channel("tank2-depth3"), "Axiom 23")
+
+
+def test_axiom_23_store_tank_temps_counts_every_tank(vanilla: dict[str, Any]) -> None:
+    """Raising TotalStoreTanks demands the new tank's readings."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["WaterStore"]["TotalStoreTanks"] += 1
+
+    reject(vanilla, mutate, "Axiom 23")
+
+
+def test_axiom_24_web_server_node_absent(vanilla: dict[str, Any]) -> None:
+    """No web-server node fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["ShNodes"] = [n for n in d["ShNodes"] if n["Name"] != "web-server"]
+        d["Components"] = [
+            c for c in d["Components"] if c["TypeName"] != "web.server.component.gt"
+        ]
+
+    reject(vanilla, mutate, "Axiom 24")
+
+
+def test_axiom_24_web_server_node_wrong_actor_class(vanilla: dict[str, Any]) -> None:
+    """A web-server node with an ActorClass other than NoActor fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        for n in d["ShNodes"]:
+            if n["Name"] == "web-server":
+                n["ActorClass"] = "HpBoss"
+                n["ActorHierarchyName"] = "s.web-server"
+
+    reject(vanilla, mutate, "Axiom 24")
+
+
+def test_axiom_25_a_slab_circuit_without_a_floor_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    """A RadiantSlab circuit SHALL name a floor-temperature channel."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
+        circuit["EmitterType"] = "RadiantSlab"
+        circuit.pop("FloorTempChannelName", None)
+
+    reject(vanilla, mutate, "Axiom 25")
+
+
+def test_axiom_25_b_floor_channel_does_not_resolve(vanilla: dict[str, Any]) -> None:
+    """A FloorTempChannelName naming no channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["FloorTempChannelName"] = "no-such-channel"
+
+    reject(vanilla, mutate, "Axiom 25")
+
+
+def test_axiom_25_b_floor_channel_is_not_a_temperature(vanilla: dict[str, Any]) -> None:
+    """A FloorTempChannelName naming a non-temperature channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["FloorTempChannelName"] = "dist-flow"
+
+    reject(vanilla, mutate, "Axiom 25")
+
+
+def test_axiom_26_disabled_node_name_must_resolve(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledNodeNames"] = ["no-such-node"]
+
+    reject(vanilla, mutate, "Axiom 26")
+
+
+def test_axiom_26_disabled_channel_name_must_resolve(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledChannelNames"] = ["no-such-channel"]
+
+    reject(vanilla, mutate, "Axiom 26")
+
+
+def sensor_off_the_meter(d: dict[str, Any]) -> str:
+    """A node capturing channels that feed no transactive-power channel and
+    is not an actuator: the one a disabled-list test may disable without
+    tripping the transactive or actuator clauses."""
+    metered = {
+        n
+        for x in d["DerivedChannels"]
+        if x["Strategy"] == "transactive-power"
+        for n in x["InputChannelNames"]
+    }
+    actuators = {
+        n["Name"]
+        for n in d["ShNodes"]
+        if n["ActorClass"] in ("Relay", "ZeroTenOutputer")
+    }
+    captured: dict[str, set[str]] = {}
+    for c in d["DataChannels"]:
+        captured.setdefault(c["CapturedByNodeName"], set()).add(c["Name"])
+    return next(
+        node
+        for node, names in captured.items()
+        if not names & metered and node not in actuators
+    )
+
+
+def test_axiom_27_disabled_node_must_be_a_sensor(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledNodeNames"] = ["admin"]
+
+    reject(vanilla, mutate, "Axiom 27")
+
+
+def test_axiom_27_disabled_sensor_disables_every_channel_it_captures(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        sensor = sensor_off_the_meter(d)
+        d["DisabledNodeNames"] = [sensor]
+        d["DisabledChannelNames"] = []
+
+    reject(vanilla, mutate, "Axiom 27")
+
+
+def test_axiom_27_disabled_sensor_with_its_channels_disabled_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    d = mutated(vanilla, lambda d: None)
+    sensor = sensor_off_the_meter(d)
+    captured = [
+        c["Name"] for c in d["DataChannels"] if c["CapturedByNodeName"] == sensor
+    ]
+    derived_on = [
+        x["Name"]
+        for x in d["DerivedChannels"]
+        if any(n in captured for n in x.get("InputChannelNames", []))
+    ]
+    d["DisabledNodeNames"] = [sensor]
+    d["DisabledChannelNames"] = captured + derived_on
+    GwHouse0NoSieg.model_validate(d)
+
+
+def test_axiom_28_enabled_derived_channel_has_no_disabled_input(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        derived = next(x for x in d["DerivedChannels"] if x["Strategy"] == "heat-call")
+        d["DisabledChannelNames"] = [derived["InputChannelNames"][0]]
+
+    reject(vanilla, mutate, "Axiom 28")
+
+
+def test_axiom_29_a_actuator_without_a_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != "vdc-relay"]
+
+    reject(vanilla, mutate, "Axiom 29")
+
+
+def test_axiom_29_a_actuator_channel_about_another_node(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        channel = next(c for c in d["DataChannels"] if c["Name"] == "vdc-relay")
+        channel["AboutNodeName"] = "hp-scada-ops-relay"
+
+    reject(vanilla, mutate, "Axiom 29")
+
+
+def test_axiom_29_a_circuit_relay_without_a_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        relay = d["Hydronic"]["ZoneCallCircuits"][0]["OpsRelayNode"]
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] != relay]
+
+    reject(vanilla, mutate, "Axiom 29")
+
+
+@pytest.mark.parametrize(
+    ("name", "telemetry", "quantity"),
+    [
+        ("vdc-relay", "VoltsTimesTen", "Voltage"),
+        ("dist-010v", "RelayState", "Unitless"),
+    ],
+)
+def test_axiom_29_b_actuator_channel_telemetry(
+    vanilla: dict[str, Any], name: str, telemetry: str, quantity: str
+) -> None:
+    """A relay channel carrying a voltage, or an output channel carrying a relay
+    state, is refused; the quantity moves with the telemetry so data.channel.gt's
+    own consistency axiom is not what fires."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        channel = next(c for c in d["DataChannels"] if c["Name"] == name)
+        channel["TelemetryName"] = telemetry
+        channel["Quantity"] = quantity
+
+    reject(vanilla, mutate, "Axiom 29")
+
+
+def drop_nodes(names: set[str]) -> Callable[[dict[str, Any]], None]:
+    """Drop nodes with the components they bind, so ComponentBinding stays quiet."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        component_ids = {
+            n.get("ComponentId") for n in d["ShNodes"] if n["Name"] in names
+        }
+        d["ShNodes"] = [n for n in d["ShNodes"] if n["Name"] not in names]
+        d["Components"] = [
+            c for c in d["Components"] if c["ComponentId"] not in component_ids
+        ]
+
+    return mutate
+
+
+def test_axiom_30_scada_control_without_primary_010v(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        drop_nodes({"primary-010v"})(d)
+        d["DataChannels"] = [
+            c for c in d["DataChannels"] if c["Name"] != "primary-010v"
+        ]
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_scada_control_relay_without_a_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DataChannels"] = [
+            c for c in d["DataChannels"] if c["Name"] != "primary-pump-failsafe-relay"
+        ]
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_heat_pump_control_with_primary_pump_actuators(
+    vanilla: dict[str, Any],
+) -> None:
+    """The vanilla fixture carries the three primary-pump actuators, so declaring
+    HeatPump control is refused until they leave."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "HeatPump"
+
+    reject(vanilla, mutate, "Axiom 30")
+
+
+def test_axiom_30_heat_pump_control_without_primary_pump_actuators_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    names = {
+        "primary-pump-failsafe-relay",
+        "primary-pump-scada-ops-relay",
+        "primary-010v",
+    }
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryPumpOwner"] = "HeatPump"
+        drop_nodes(names)(d)
+        d["DataChannels"] = [c for c in d["DataChannels"] if c["Name"] not in names]
+
+    GwHouse0NoSieg.model_validate(mutated(vanilla, mutate))
+
+
+def hp_record(
+    device_type: str, factory_installed: bool, overridable: bool
+) -> dict[str, Any]:
+    return {
+        "TypeName": "hp.device.type.gt",
+        "Version": "000",
+        "DeviceType": device_type,
+        "DisplayName": "test record",
+        "MaxKwEl": 6.0,
+        "HeatingCapacityBtuHr": 48000,
+        "CoolingCapacityBtuHr": 48000,
+        "PrimaryPumpFactoryInstalled": factory_installed,
+        "PrimaryPumpOverridable": overridable,
+        "PrimaryPumpAlwaysOn": False,
+        "Refrigerant": "R32",
+        "CompressorRatedAmps": 20.0,
+        "Mca": 30.0,
+        "Mop": 40.0,
+        "ProductInfoUrl": "https://example.com",
+    }
+
+
+def test_axiom_31_scada_control_against_a_non_overridable_factory_pump(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DeviceTypes"].append(hp_record("MitsubishiWUZSA48NMZ", True, False))
+
+    reject(vanilla, mutate, "Axiom 31")
+
+
+def test_axiom_31_scada_control_against_an_overridable_factory_pump_is_accepted(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DeviceTypes"].append(hp_record("MitsubishiWUZSA48NMZ", True, True))
+
+    GwHouse0NoSieg.model_validate(mutated(vanilla, mutate))
+
+
+def set_handle(name: str, handle: str) -> Callable[[dict[str, Any]], None]:
+    def mutate(d: dict[str, Any]) -> None:
+        next(n for n in d["ShNodes"] if n["Name"] == name)["Handle"] = handle
+
+    return mutate
+
+
+def test_axiom_32_command_node_declared_under_lc(vanilla: dict[str, Any]) -> None:
+    """hp-boss and its relays move together so the tree stays prefix-closed
+    and the handle axiom is the one that rejects."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        set_handle("hp-boss", "auto.lc.n.hp-boss")(d)
+        set_handle("hp-scada-ops-relay", "auto.lc.n.hp-boss.hp-scada-ops-relay")(d)
+        set_handle("secondary-pump-relay", "auto.lc.n.hp-boss.secondary-pump-relay")(d)
+
+    reject(vanilla, mutate, "Axiom 32")
+
+
+def test_axiom_32_fixed_relay_declared_flat(vanilla: dict[str, Any]) -> None:
+    reject(
+        vanilla,
+        set_handle("secondary-pump-relay", "auto.secondary-pump-relay"),
+        "Axiom 32",
+    )
+
+
+def test_axiom_9_secondary_pump_relay_is_required(vanilla: dict[str, Any]) -> None:
+    reject(vanilla, drop_nodes({"secondary-pump-relay"}), "Axiom 9")
+
+
+def test_axiom_5_primary_flow_is_measured(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["PrimaryFlowSource"] = "DerivedSiegSum"
+
+    reject(vanilla, mutate, "Axiom 5")
+
+
+def test_axiom_5_measured_without_a_primary_flow_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    reject(vanilla, drop_channel("primary-flow"), "Axiom 5")
+
+
+def test_axiom_32_floating_actuator_declared_under_a_boss(
+    vanilla: dict[str, Any],
+) -> None:
+    reject(
+        vanilla,
+        set_handle("store-pump-relay", "auto.lc.n.store-pump-relay"),
+        "Axiom 32",
+    )
+
+
+def test_axiom_6_transactive_input_disabled(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledChannelNames"] = ["hp-odu-pwr"]
+
+    reject(vanilla, mutate, "Axiom 6")
+
+
+def test_axiom_27_disabled_actuator_node(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledNodeNames"] = ["store-pump-relay"]
+        d["DisabledChannelNames"] = ["store-pump-relay"]
+
+    reject(vanilla, mutate, "Axiom 27")
+
+
+def test_axiom_27_disabled_actuator_channel(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DisabledChannelNames"] = ["store-pump-relay"]
+
+    reject(vanilla, mutate, "Axiom 27")
+
+
+def test_axiom_33_heat_call_for_no_circuit(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        stray = json.loads(
+            json.dumps(
+                next(c for c in d["DerivedChannels"] if c["Strategy"] == "heat-call")
+            )
+        )
+        stray["Name"] = "stray-heat-call"
+        stray["Id"] = "6f1e2d3c-4b5a-4c6d-8e9f-0a1b2c3d4e5f"
+        stray["InputChannelNames"] = ["hp-odu-pwr"]
+        d["DerivedChannels"].append(stray)
+
+    reject(vanilla, mutate, "Axiom 33")
+
+
+def test_axiom_13_c_no_actor_under_lc_beyond_its_states(
+    vanilla: dict[str, Any],
+) -> None:
+    """A NoActor node under lc other than n, backup, scada-blind or standby fails, though
+    clause b reads it as a command node."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        stray = json.loads(
+            json.dumps(next(n for n in d["ShNodes"] if n["Name"] == "n"))
+        )
+        stray["Name"] = "stray"
+        stray["Handle"] = "auto.lc.stray"
+        stray["ShNodeId"] = "3b9e2c71-5d4a-4f6e-9a8b-1c2d3e4f5a6b"
+        d["ShNodes"].append(stray)
+
+    reject(vanilla, mutate, "Axiom 13")
+
+
+def test_axiom_17_a_circuit_temp_channel_that_is_no_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["TempChannelName"] = "no-such-temp"
+
+    reject(vanilla, mutate, "Axiom 17")
+
+
+def test_axiom_17_b_circuit_temp_channel_that_is_not_a_temperature(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
+        circuit["TempChannelName"] = circuit["WhitewireChannelName"]
+
+    reject(vanilla, mutate, "Axiom 17")
+
+
+def test_axiom_34_a_setpoint_channel_that_is_no_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = "no-such-set"
+
+    reject(vanilla, mutate, "Axiom 34")
+
+
+def test_axiom_34_b_setpoint_channel_that_is_not_a_temperature(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuit = d["Hydronic"]["ZoneCallCircuits"][0]
+        circuit["SetpointChannelName"] = circuit["WhitewireChannelName"]
+
+    reject(vanilla, mutate, "Axiom 34")
+
+
+def test_axiom_35_read_setpoint_on_a_derived_channel(vanilla: dict[str, Any]) -> None:
+    """A FromThermostat circuit whose setpoint channel is a derived channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        derived = next(
+            c for c in d["DerivedChannels"] if c["OutputQuantity"] == "Temperature"
+        )
+        d["Hydronic"]["ZoneCallCircuits"][0]["SetpointChannelName"] = derived["Name"]
+
+    reject(vanilla, mutate, "Axiom 35")
+
+
+def test_axiom_35_read_temp_not_captured_by_the_thermostat(
+    vanilla: dict[str, Any],
+) -> None:
+    """A FromThermostat circuit judged on a thermistor its thermostat does not read fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"][0]["TempChannelName"] = (
+            "zone1-living-rm-gw-temp"
+        )
+
+    reject(vanilla, mutate, "Axiom 35")
+
+
+def test_hydronic_axiom_2_b_circuit_position_is_not_its_place(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circuits = d["Hydronic"]["ZoneCallCircuits"]
+        circuits[0]["CircuitPosition"], circuits[1]["CircuitPosition"] = 2, 1
+
+    reject(vanilla, mutate, "1-based place")
+
+
+def test_hydronic_axiom_3_a_primary_is_no_circuit(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 9
+
+    reject(vanilla, mutate, "PrimaryCircuit")
+
+
+def test_hydronic_axiom_3_a_primary_serves_another_zone(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Zones"][0]["PrimaryCircuitPosition"] = 2
+
+    reject(vanilla, mutate, "PrimaryCircuit")
+
+
+def test_axiom_36_water_store_is_required(vanilla: dict[str, Any]) -> None:
+    """A House0 layout without its water store fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["WaterStore"]
+
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_no_circuits_fails_in_the_hydronic_word(vanilla: dict[str, Any]) -> None:
+    """An empty circuit list leaves every zone without its primary circuit."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["ZoneCallCircuits"] = []
+
+    reject(vanilla, mutate, "Axiom 3")
+
+
+@pytest.mark.parametrize("name", ["backup", "scada-blind", "standby"])
+def test_axiom_3_local_control_command_nodes(
+    vanilla: dict[str, Any], name: str
+) -> None:
+    """backup, scada-blind and standby are command nodes in every sieg-less House0 layout."""
+    reject(vanilla, drop_nodes({name}), "Axiom 3")
+
+
+def test_every_commanding_top_state_has_its_state_node(vanilla: dict[str, Any]) -> None:
+    """ActuatorLeaves names one state node for each gw2.lc.top.state value in
+    which local control holds the command tree. A value added to the enum
+    without a node fails here."""
+    state_nodes = {
+        "Normal": "n",
+        "InBackup": "backup",
+        "ColdOverride": "cold-override",
+        "ScadaBlind": "scada-blind",
+        "Standby": "standby",
+    }
+    assert set(Gw2LcTopState.values()) - {"Dormant"} == set(state_nodes)
+    under_lc = {
+        n["Name"]
+        for n in vanilla["ShNodes"]
+        if n["ActorClass"] == "NoActor" and n.get("Handle", "").startswith("auto.lc.")
+    }
+    assert under_lc == set(state_nodes.values())
+
+
+@pytest.mark.parametrize("name", ["backup", "cold-override"])
+def test_axiom_3_a_b_state_nodes(vanilla: dict[str, Any], name: str) -> None:
+    """cold-override is a command node in every sieg-less House0 layout; backup is one
+    where Hydronic.Backup is present, as in the fixture."""
+    reject(vanilla, drop_nodes({name}), "Axiom 3")
+
+
+def test_axiom_3_c_backup_node_without_a_backup(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]
+
+    reject(vanilla, mutate, "Axiom 3")
+
+
+def test_axiom_37_boiler_relay_is_not_a_relay(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["Hydronic"]["Backup"]["AquastatCtrlRelayName"] = "backup"
+
+    reject(vanilla, mutate, "Axiom 37")
+
+
+def pump_running(d: dict[str, Any]) -> dict[str, Any]:
+    return next(
+        c for c in d["DerivedChannels"] if c["Name"] == "secondary-pump-running"
+    )
+
+
+def test_axiom_38_a_secondary_pump_running_is_required(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DerivedChannels"].remove(pump_running(d))
+
+    reject(vanilla, mutate, "Axiom 38")
+
+
+def test_axiom_38_a_wrong_strategy(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        pump_running(d)["Strategy"] = "sum"
+
+    reject(vanilla, mutate, "Axiom 38")
+
+
+def test_axiom_38_b_input_is_the_pump_power(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        pump_running(d)["InputChannelNames"] = ["dist-pump-pwr"]
+
+    reject(vanilla, mutate, "Axiom 38")
+
+
+def test_axiom_38_c_threshold_is_a_positive_integer(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        pump_running(d)["Parameters"] = {"ThresholdW": 0}
+
+    reject(vanilla, mutate, "Axiom 38")

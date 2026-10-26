@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+import yaml
 
 from sema.interfaces.cli import snapshot
 
@@ -8,16 +9,33 @@ from sema.interfaces.cli import snapshot
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def staging_seed(tmp_path: Path) -> tuple[Path, str]:
+    """A seed naming one staging type version outright, chosen from the
+    registry at test time so the test survives promotions. Returns the seed
+    path and the word as the CLI prints it."""
+    registry = yaml.safe_load((ROOT / "definitions" / "registry.yaml").read_text())
+    for name, entry in sorted(registry["types"].items()):
+        for version, version_entry in sorted((entry.get("versions") or {}).items()):
+            if version_entry.get("status") == "staging":
+                seed = tmp_path / "staging_seed_request.yaml"
+                seed.write_text(
+                    f"initial_targets:\n  types:\n    {name}:\n"
+                    f'      versions: ["{version}"]\n'
+                )
+                return seed, f"type {name}:{version}"
+    pytest.skip("no staging type version in the registry")
+
+
 def test_snapshot_prepare_rejects_staging_by_default(
     monkeypatch, tmp_path: Path
 ) -> None:
-    # The template seed lists synced.readings.bundle:003 outright, which is
-    # staging — so the published-only default must fail and name the staging
-    # offenders.
+    # A seed that names a staging version outright fails the published-only
+    # default and names the staging offender.
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    seed, word = staging_seed(tmp_path)
     with pytest.raises(ValueError, match="STAGING") as excinfo:
-        snapshot.prepare_snapshot(ROOT / "template_seed_request.yaml")
-    assert "synced.readings.bundle:003" in str(excinfo.value)
+        snapshot.prepare_snapshot(seed)
+    assert word in str(excinfo.value)
 
 
 def test_published_only_prepare_passes_over_staging_versions(
@@ -47,17 +65,30 @@ def test_refused_prepare_leaves_previous_output_intact(
     # output/ silently guts whatever a consumer mirrors next (rsync --delete).
     output_root = tmp_path / "output"
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", output_root)
-    target_root = snapshot.prepare_snapshot(
-        ROOT / "template_seed_request.yaml", allow_staged=True
-    )
+    seed, _ = staging_seed(tmp_path)
+    target_root = snapshot.prepare_snapshot(seed, allow_staged=True)
     before = sorted(p.relative_to(target_root) for p in target_root.rglob("*"))
     assert before
 
     with pytest.raises(ValueError, match="STAGING"):
-        snapshot.prepare_snapshot(ROOT / "template_seed_request.yaml")
+        snapshot.prepare_snapshot(seed)
 
     after = sorted(p.relative_to(target_root) for p in target_root.rglob("*"))
     assert after == before
+
+
+def test_staging_closure_with_allow_staged_writes_the_dev_only_markers(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # staging closure + --allow-staged => the dev-only markers, both machine
+    # (indexes/staging.yaml) and human (README banner naming the word)
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    seed, word = staging_seed(tmp_path)
+    target_root = snapshot.prepare_snapshot(seed, allow_staged=True)
+    assert (target_root / "indexes" / "staging.yaml").exists()
+    readme = (target_root / "README.md").read_text()
+    assert "PLEASE ONLY USE IN DEV" in readme
+    assert word in readme
 
 
 def test_snapshot_prepare_and_build_write_sema_at_output_root(
@@ -76,12 +107,9 @@ def test_snapshot_prepare_and_build_write_sema_at_output_root(
     assert (target_root / "indexes" / "seed_expanded.yaml").exists()
     assert (target_root / "indexes" / "local_names.yaml").exists()
     assert not (target_root / "base.py").exists()
-    # staging closure + --allow-staged => the dev-only markers, both machine
-    # (indexes/staging.yaml) and human (README banner)
-    assert (target_root / "indexes" / "staging.yaml").exists()
-    readme = (target_root / "README.md").read_text()
-    assert "PLEASE ONLY USE IN DEV" in readme
-    assert "synced.readings.bundle:003" in readme
+    # The template seed's closure is published, so no dev-only markers.
+    assert not (target_root / "indexes" / "staging.yaml").exists()
+    assert "PLEASE ONLY USE IN DEV" not in (target_root / "README.md").read_text()
 
     stale_file = output_root / "stale.txt"
     stale_file.write_text("remove me")
