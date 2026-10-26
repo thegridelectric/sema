@@ -482,7 +482,7 @@ x-gridworks:
       name: "SecondaryPumpRunningChannel"
       statement: >
         a. DerivedChannels SHALL contain exactly one channel named "secondary-pump-running",
-        with Strategy "pump-running", CreatedByNodeName "derived-generator", OutputUnit
+        with Strategy "circulator-running", CreatedByNodeName "derived-generator", OutputUnit
         "Unitless" and OutputQuantity "Unitless".
         b. Its InputChannelNames SHALL equal ["secondary-pump-pwr"], and "secondary-pump-pwr"
         SHALL be the Name of a DataChannel with TelemetryName "PowerW".

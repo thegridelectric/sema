@@ -1445,7 +1445,7 @@ class GwHouse0NoSieg(SemaType):
     def check_axiom_38(self) -> Self:
         """
         Axiom 38: SecondaryPumpRunningChannel a. DerivedChannels SHALL contain exactly
-        one channel named "secondary-pump-running", with Strategy "pump-running",
+        one channel named "secondary-pump-running", with Strategy "circulator-running",
         CreatedByNodeName "derived-generator", OutputUnit "Unitless" and OutputQuantity
         "Unitless". b. Its InputChannelNames SHALL equal ["secondary-pump-pwr"], and
         "secondary-pump-pwr" SHALL be the Name of a DataChannel with TelemetryName
@@ -1464,14 +1464,14 @@ class GwHouse0NoSieg(SemaType):
             )
         d = matches[0]
         if (
-            d.strategy != "pump-running"
+            d.strategy != "circulator-running"
             or d.created_by_node_name != "derived-generator"
             or str(d.output_unit) != "Unitless"
             or str(d.output_quantity) != "Unitless"
         ):
             raise ValueError(
                 "Axiom 38 (SecondaryPumpRunningChannel) failed: 'secondary-pump-running' "
-                "SHALL have Strategy pump-running, CreatedByNodeName derived-generator and "
+                "SHALL have Strategy circulator-running, CreatedByNodeName derived-generator and "
                 f"Unitless output; got Strategy {d.strategy!r}, CreatedByNodeName "
                 f"{d.created_by_node_name!r}, OutputUnit {d.output_unit}, OutputQuantity "
                 f"{d.output_quantity}."

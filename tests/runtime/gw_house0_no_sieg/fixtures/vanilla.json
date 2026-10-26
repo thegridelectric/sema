@@ -2053,7 +2053,7 @@
       "Id": "e40b443d-9e12-49b4-a6b9-1c6a78840e68",
       "Name": "secondary-pump-running",
       "CreatedByNodeName": "derived-generator",
-      "Strategy": "pump-running",
+      "Strategy": "circulator-running",
       "InputChannelNames": [
         "secondary-pump-pwr"
       ],
