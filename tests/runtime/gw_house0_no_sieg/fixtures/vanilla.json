@@ -825,6 +825,17 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
+      "Name": "secondary-pump-hack-relay",
+      "ActorHierarchyName": "s.secondary-pump-hack-relay",
+      "Handle": "auto.hp-boss.secondary-pump-hack-relay",
+      "ActorClass": "Relay",
+      "DisplayName": "Secondary Pump Hack Relay",
+      "ComponentId": "9c3d767e-9c61-4c1b-8fc5-270d919648f6",
+      "ShNodeId": "c9e07e3c-20e8-4b2f-bfea-62e7270093e8"
+    },
+    {
+      "TypeName": "spaceheat.node.gt",
+      "Version": "303",
       "Name": "secondary-pump",
       "ActorClass": "NoActor",
       "DisplayName": "Secondary Pump",
@@ -1660,6 +1671,18 @@
       "Quantity": "Unitless",
       "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta",
       "Id": "74d89bd7-54aa-4aee-8a98-71f283d0d33b"
+    },
+    {
+      "TypeName": "data.channel.gt",
+      "Version": "004",
+      "Name": "secondary-pump-hack-relay",
+      "DisplayName": "Secondary Pump Hack Relay",
+      "AboutNodeName": "secondary-pump-hack-relay",
+      "CapturedByNodeName": "secondary-pump-hack-relay",
+      "TelemetryName": "RelayState",
+      "Quantity": "Unitless",
+      "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta",
+      "Id": "13d7ae8c-83cd-462b-90cd-7fe97f900967"
     },
     {
       "TypeName": "data.channel.gt",
@@ -2915,6 +2938,29 @@
         }
       ],
       "DisplayName": "Secondary Pump Relay"
+    },
+    {
+      "TypeName": "i2c.relay.component.gt",
+      "Version": "000",
+      "ComponentId": "9c3d767e-9c61-4c1b-8fc5-270d919648f6",
+      "BoardComponentId": "33980c37-d5c1-490e-96ee-63cbc64f70d8",
+      "RelayName": "Relay4",
+      "ConfigList": [
+        {
+          "TypeName": "relay.control.config",
+          "Version": "000",
+          "ChannelName": "secondary-pump-hack-relay",
+          "ActorName": "secondary-pump-hack-relay",
+          "WiringConfig": "NormallyOpen",
+          "EventType": "change.relay.state",
+          "DeEnergizingEvent": "OpenRelay",
+          "EnergizingEvent": "CloseRelay",
+          "StateType": "relay.closed.or.open",
+          "DeEnergizedState": "RelayOpen",
+          "EnergizedState": "RelayClosed"
+        }
+      ],
+      "DisplayName": "Secondary Pump Hack Relay"
     }
   ],
   "DeviceTypes": [

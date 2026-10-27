@@ -436,6 +436,7 @@ def test_axiom_32_command_node_declared_under_lc(vanilla: dict[str, Any]) -> Non
         set_handle("hp-boss", "auto.lc.n.hp-boss")(d)
         set_handle("hp-scada-ops-relay", "auto.lc.n.hp-boss.hp-scada-ops-relay")(d)
         set_handle("secondary-pump-relay", "auto.lc.n.hp-boss.secondary-pump-relay")(d)
+        set_handle("secondary-pump-hack-relay", "auto.lc.n.hp-boss.secondary-pump-hack-relay")(d)
 
     reject(vanilla, mutate, "Axiom 32")
 
@@ -450,6 +451,19 @@ def test_axiom_32_fixed_relay_declared_flat(vanilla: dict[str, Any]) -> None:
 
 def test_axiom_9_secondary_pump_relay_is_required(vanilla: dict[str, Any]) -> None:
     reject(vanilla, drop_nodes({"secondary-pump-relay"}), "Axiom 9")
+
+
+def test_axiom_9_secondary_pump_hack_relay_is_required(vanilla: dict[str, Any]) -> None:
+    """The relay whose contacts the pump's feed still passes through."""
+    reject(vanilla, drop_nodes({"secondary-pump-hack-relay"}), "Axiom 9")
+
+
+def test_axiom_32_secondary_pump_hack_relay_is_hp_bosss(vanilla: dict[str, Any]) -> None:
+    reject(
+        vanilla,
+        set_handle("secondary-pump-hack-relay", "auto.secondary-pump-hack-relay"),
+        "Axiom 32",
+    )
 
 
 def test_axiom_5_primary_flow_is_measured(vanilla: dict[str, Any]) -> None:

@@ -397,8 +397,9 @@ class GwHouse0NoSieg(SemaType):
         """
         Axiom 9: RequiredActuators a. ShNodes SHALL include nodes named "vdc-relay",
         "tstat-common-relay", "charge-discharge-relay", "hp-failsafe-relay",
-        "hp-scada-ops-relay", "aquastat-ctrl-relay", "store-pump-relay", and
-        "secondary-pump-relay", each with ActorClass "Relay", and nodes named
+        "hp-scada-ops-relay", "aquastat-ctrl-relay", "store-pump-relay",
+        "secondary-pump-relay", and "secondary-pump-hack-relay", each with
+        ActorClass "Relay", and nodes named
         "dist-010v" and "store-010v", each with ActorClass
         "ZeroTenOutputer". b. Each circuit's FailsafeRelayNode and OpsRelayNode in
         Hydronic.ZoneCallCircuits SHALL name a ShNode in ShNodes with ActorClass
@@ -431,6 +432,7 @@ class GwHouse0NoSieg(SemaType):
             "aquastat-ctrl-relay",
             "store-pump-relay",
             "secondary-pump-relay",
+            "secondary-pump-hack-relay",
         ):
             class_or_raise(required, "Relay", "plant relay")
         for required in ("dist-010v", "store-010v"):
@@ -1096,6 +1098,7 @@ class GwHouse0NoSieg(SemaType):
             "aquastat-ctrl-relay",
             "store-pump-relay",
             "secondary-pump-relay",
+            "secondary-pump-hack-relay",
         ]
         for circuit in self.hydronic.zone_call_circuits or []:
             relays.extend((circuit.failsafe_relay_node, circuit.ops_relay_node))
@@ -1230,8 +1233,9 @@ class GwHouse0NoSieg(SemaType):
         "backup" → "auto.lc.backup" "cold-override" → "auto.lc.cold-override"
         "scada-blind" → "auto.lc.scada-blind" "standby" → "auto.lc.standby" "hp-boss" →
         "auto.hp-boss" "hp-scada-ops-relay" → "auto.hp-boss.hp-scada-ops-relay"
-        "secondary-pump-relay" → "auto.hp-boss.secondary-pump-relay" Every other ShNode
-        whose ActorClass is Relay or ZeroTenOutputer SHALL have the effective handle
+        "secondary-pump-relay" → "auto.hp-boss.secondary-pump-relay"
+        "secondary-pump-hack-relay" → "auto.hp-boss.secondary-pump-hack-relay" Every
+        other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the effective handle
         "auto.<Name>".
         """
         expected = {
@@ -1247,6 +1251,7 @@ class GwHouse0NoSieg(SemaType):
             "hp-boss": "auto.hp-boss",
             "hp-scada-ops-relay": "auto.hp-boss.hp-scada-ops-relay",
             "secondary-pump-relay": "auto.hp-boss.secondary-pump-relay",
+            "secondary-pump-hack-relay": "auto.hp-boss.secondary-pump-hack-relay",
         }
         for n in self.sh_nodes or []:
             effective = n.handle if n.handle is not None else n.name

@@ -10,7 +10,9 @@ description: >
   Krida I2C relay banks, DFRobot 0-10V DACs, an eGauge power meter, TSnap
   (ADS111x) multipurpose sensors, pico flow meters, and store + buffer tank
   modules. Where the plant has a heat exchanger between the heat pump and the
-  house, hp-boss owns the secondary pump's relay.
+  house, hp-boss owns the secondary pump's relay and, beside it,
+  secondary-pump-hack-relay: the relay whose contacts the pump's feed still
+  passes through, energized with the pump until it is wired out.
 
   Like gw.nolan.layout, the layout binds identity (GNodes), topology (ShNodes),
   telemetry (DataChannels + DerivedChannels), hardware (Components), per-family
@@ -237,7 +239,8 @@ x-gridworks:
           "hp-scada-ops-relay",
           "aquastat-ctrl-relay",
           "store-pump-relay",
-          and "secondary-pump-relay",
+          "secondary-pump-relay",
+          and "secondary-pump-hack-relay",
         each with ActorClass "Relay", and nodes named
           "dist-010v"
           and "store-010v",
@@ -435,6 +438,7 @@ x-gridworks:
           "hp-boss"                 → "auto.hp-boss"
           "hp-scada-ops-relay"      → "auto.hp-boss.hp-scada-ops-relay"
           "secondary-pump-relay"    → "auto.hp-boss.secondary-pump-relay"
+          "secondary-pump-hack-relay" → "auto.hp-boss.secondary-pump-hack-relay"
         Every other ShNode whose ActorClass is Relay or ZeroTenOutputer SHALL have the
         effective handle "auto.<Name>".
     - number: 33
