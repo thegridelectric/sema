@@ -223,16 +223,6 @@
     {
       "TypeName": "spaceheat.node.gt",
       "Version": "303",
-      "Name": "hp-idu",
-      "ActorClass": "NoActor",
-      "DisplayName": "Hp Idu",
-      "ComponentId": "e92971f0-6bad-43d2-b134-a16559638f62",
-      "NameplatePowerW": 4000,
-      "ShNodeId": "5623ec7c-f7a5-43c7-81b1-e868ff5ecc72"
-    },
-    {
-      "TypeName": "spaceheat.node.gt",
-      "Version": "303",
       "Name": "dist-pump",
       "ActorClass": "NoActor",
       "DisplayName": "Dist Pump",
@@ -854,18 +844,6 @@
       "Quantity": "Power",
       "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta",
       "Id": "edfd1299-c165-45fa-87cc-ea2642292029"
-    },
-    {
-      "TypeName": "data.channel.gt",
-      "Version": "004",
-      "Name": "hp-idu-pwr",
-      "DisplayName": "HP IDU PWR",
-      "AboutNodeName": "hp-idu",
-      "CapturedByNodeName": "power-meter",
-      "TelemetryName": "PowerW",
-      "Quantity": "Power",
-      "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta",
-      "Id": "7f0767f1-78e3-44e0-995e-91b76ffe5a16"
     },
     {
       "TypeName": "data.channel.gt",
@@ -1705,8 +1683,7 @@
       "CreatedByNodeName": "power-meter",
       "Strategy": "transactive-power",
       "InputChannelNames": [
-        "hp-odu-pwr",
-        "hp-idu-pwr"
+        "hp-odu-pwr"
       ],
       "OutputUnit": "Watts",
       "OutputQuantity": "Power",
@@ -2103,21 +2080,6 @@
         {
           "TypeName": "electric.meter.channel.config",
           "Version": "000",
-          "ChannelName": "hp-idu-pwr",
-          "EgaugeRegisterConfig": {
-            "TypeName": "egauge.register.config",
-            "Version": "000",
-            "Address": 9002,
-            "Name": "hp-idu",
-            "Description": "change in value",
-            "Type": "f32",
-            "Denominator": 1,
-            "Unit": "W"
-          }
-        },
-        {
-          "TypeName": "electric.meter.channel.config",
-          "Version": "000",
           "ChannelName": "dist-pump-pwr",
           "EgaugeRegisterConfig": {
             "TypeName": "egauge.register.config",
@@ -2232,13 +2194,6 @@
       "ComponentId": "5db1b916-bd4b-492f-886c-e88072b1848a",
       "DeviceType": "MitsubishiWUZSA48NMZ",
       "DisplayName": "Maple Mitsubishi Ecodan outdoor unit"
-    },
-    {
-      "TypeName": "device.component.gt",
-      "Version": "000",
-      "ComponentId": "e92971f0-6bad-43d2-b134-a16559638f62",
-      "DeviceType": "MitsubishiERSFNM6E",
-      "DisplayName": "Maple Mitsubishi Ecodan hydrobox indoor unit"
     },
     {
       "TypeName": "web.server.component.gt",

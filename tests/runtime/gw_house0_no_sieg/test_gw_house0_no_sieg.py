@@ -64,7 +64,6 @@ def test_vanilla_fixture_is_a_gw_house0_no_sieg(vanilla: dict[str, Any]) -> None
     "name",
     [
         "hp-odu-pwr",
-        "hp-idu-pwr",
         "primary-pump-pwr",
         "store-pump-pwr",
         "dist-pump-pwr",

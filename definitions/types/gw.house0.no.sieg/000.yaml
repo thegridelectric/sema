@@ -200,7 +200,6 @@ x-gridworks:
       statement: >
         For each of the names
           "hp-odu-pwr",
-          "hp-idu-pwr",
           "primary-pump-pwr",
           "store-pump-pwr",
           "dist-pump-pwr",
@@ -251,16 +250,15 @@ x-gridworks:
     - number: 10
       name: "RequiredHeatpumpEquipment"
       statement: >
-        ShNodes SHALL include nodes named "hp-odu" and "hp-idu" (the indoor unit exchanges
-        refrigerant heat with the water), each with a ComponentId equal to the ComponentId
-        of a Component in Components, and each with ActorClass "NoActor" unless it is the
-        node Hydronic.HpCommandNodeName names, whose ActorClass CommandableHeatPump
+        ShNodes SHALL include a node named "hp-odu" with a ComponentId equal to the
+        ComponentId of a Component in Components, and with ActorClass "NoActor" unless it
+        is the node Hydronic.HpCommandNodeName names, whose ActorClass CommandableHeatPump
         governs.
     - number: 11
       name: "CommandableHeatPump"
       statement: >
         a. If Hydronic.HpCommandNodeName is present, it SHALL equal the Name of a ShNode in
-        ShNodes named "hp-odu", "hp-idu" or "hp-ctrl-box", whose ComponentId equals the
+        ShNodes named "hp-odu" or "hp-ctrl-box", whose ComponentId equals the
         ComponentId of a Component in Components, whose ActorClass is "HpTwin", and whose
         effective handle (Handle if present, otherwise Name) has the effective handle of the
         ShNode named "hp-boss" as its parent prefix.
@@ -414,7 +412,7 @@ x-gridworks:
       name: "PrimaryPumpRecordAgreement"
       statement: >
         Let the joined records be the hp.device.type.gt records in DeviceTypes whose
-        DeviceType equals the DeviceType of the Component that "hp-odu" or "hp-idu" binds.
+        DeviceType equals the DeviceType of the Component that "hp-odu" binds.
         If Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
         PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
         ships inside the unit and cannot be overridden is under the unit's control.

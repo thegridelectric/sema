@@ -307,7 +307,7 @@ class GwHouse0NoSieg(SemaType):
     @model_validator(mode="after")
     def check_axiom_7(self) -> Self:
         """
-        Axiom 7: RequiredSensing For each of the names "hp-odu-pwr", "hp-idu-pwr",
+        Axiom 7: RequiredSensing For each of the names "hp-odu-pwr",
         "primary-pump-pwr", "store-pump-pwr", "dist-pump-pwr", "hp-lwt", "hp-ewt",
         "dist-swt", "dist-rwt", "store-hot-pipe", "store-cold-pipe", "buffer-hot-pipe",
         "dist-flow", "store-flow", "secondary-flow", "secondary-lwt", "secondary-ewt",
@@ -322,7 +322,6 @@ class GwHouse0NoSieg(SemaType):
         }
         required = {
             "hp-odu-pwr",
-            "hp-idu-pwr",
             "primary-pump-pwr",
             "store-pump-pwr",
             "dist-pump-pwr",
@@ -459,15 +458,14 @@ class GwHouse0NoSieg(SemaType):
     @model_validator(mode="after")
     def check_axiom_10(self) -> Self:
         """
-        Axiom 10: RequiredHeatpumpEquipment ShNodes SHALL include nodes named "hp-odu"
-        and "hp-idu" (the indoor unit exchanges refrigerant heat with the water), each
+        Axiom 10: RequiredHeatpumpEquipment ShNodes SHALL include a node named "hp-odu"
         with a ComponentId equal to the ComponentId of a Component in Components, and
-        each with ActorClass "NoActor" unless it is the node Hydronic.HpCommandNodeName
+        with ActorClass "NoActor" unless it is the node Hydronic.HpCommandNodeName
         names, whose ActorClass CommandableHeatPump governs.
         """
         component_ids = {c.component_id for c in (self.components or [])}
         nodes = {n.name: n for n in (self.sh_nodes or [])}
-        for name in ("hp-odu", "hp-idu"):
+        for name in ("hp-odu",):
             node = nodes.get(name)
             if node is None:
                 raise ValueError(
@@ -491,8 +489,8 @@ class GwHouse0NoSieg(SemaType):
     def check_axiom_11(self) -> Self:
         """
         Axiom 11: CommandableHeatPump a. If Hydronic.HpCommandNodeName is present, it
-        SHALL equal the Name of a ShNode in ShNodes named "hp-odu", "hp-idu" or
-        "hp-ctrl-box", whose ComponentId equals the ComponentId of a Component in
+        SHALL equal the Name of a ShNode in ShNodes named "hp-odu" or "hp-ctrl-box",
+        whose ComponentId equals the ComponentId of a Component in
         Components, whose ActorClass is "HpTwin", and whose effective handle (Handle if
         present, otherwise Name) has the effective handle of the ShNode named "hp-boss"
         as its parent prefix. b. Every ShNode with ActorClass "HpTwin" SHALL be the node
@@ -503,10 +501,10 @@ class GwHouse0NoSieg(SemaType):
         nodes = {n.name: n for n in (self.sh_nodes or [])}
         if declared is not None:
             node = nodes.get(declared)
-            if node is None or declared not in ("hp-odu", "hp-idu", "hp-ctrl-box"):
+            if node is None or declared not in ("hp-odu", "hp-ctrl-box"):
                 raise ValueError(
                     f"Axiom 11 (CommandableHeatPump) failed: HpCommandNodeName {declared!r} "
-                    "is not an ShNode named hp-odu, hp-idu or hp-ctrl-box."
+                    "is not an ShNode named hp-odu or hp-ctrl-box."
                 )
             component_ids = {c.component_id for c in (self.components or [])}
             if node.component_id is None or node.component_id not in component_ids:
@@ -1192,7 +1190,7 @@ class GwHouse0NoSieg(SemaType):
         """
         Axiom 31: PrimaryPumpRecordAgreement Let the joined records be the
         hp.device.type.gt records in DeviceTypes whose DeviceType equals the DeviceType
-        of the Component that "hp-odu" or "hp-idu" binds. If
+        of the Component that "hp-odu" binds. If
         Hydronic.PrimaryPumpOwner is "Scada", no joined record SHALL have
         PrimaryPumpFactoryInstalled true with PrimaryPumpOverridable false: a pump that
         ships inside the unit and cannot be overridden is under the unit's control.
@@ -1202,7 +1200,7 @@ class GwHouse0NoSieg(SemaType):
         component_by_id = {c.component_id: c for c in (self.components or [])}
         device_types = set()
         for n in self.sh_nodes or []:
-            if n.name in ("hp-odu", "hp-idu") and n.component_id in component_by_id:
+            if n.name == "hp-odu" and n.component_id in component_by_id:
                 device_type = getattr(
                     component_by_id[n.component_id], "device_type", None
                 )
