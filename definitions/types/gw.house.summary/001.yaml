@@ -1,0 +1,132 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.house.summary/001"
+
+title: "gw.house.summary"
+type: object
+description: >
+  One house as a dashboard login sees it: the login's role, the house's
+  registry identity, its current layout and operating status, and the
+  facts of its latest snapshot. Reassembled per request from the journal's
+  projections. Nothing about a person is here.
+
+properties:
+
+  Role:
+    $ref: "https://schemas.electricity.works/enums/gw.dashboard.role/000"
+    description: >
+      What the requesting login may do with this house.
+
+  TaGNodeId:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      The GNodeId of the house's TerminalAsset, the key every store and
+      role table uses for the house.
+
+  GNodeAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The house's GNodeAlias, under which its scada and LTN send.
+
+  DisplayName:
+    type: string
+    description: >
+      The registry's display name for the house's TerminalAsset.
+
+  Layout:
+    oneOf:
+      - $ref: "https://schemas.electricity.works/types/layout.lite/011"
+      - $ref: "https://schemas.electricity.works/types/layout.lite/012"
+      - $ref: "https://schemas.electricity.works/types/layout.lite/013"
+    description: >
+      The house's current layout, in the form its scada last sent. Absent
+      for a house whose layout the journal has not yet seen.
+
+  OperatingStatus:
+    $ref: "https://schemas.electricity.works/types/gw.house.operating.status/000"
+    description: >
+      How the house is operating now. Absent for a house with no status
+      row yet.
+
+  LatestSnapshotTime:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      When the house's latest snapshot was taken. Absent when no snapshot
+      arrived in the last day, which means the house is not reporting.
+
+  LongestRunningZoneName:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The zone whose heat call has been on the longest, among the zones
+      calling now.
+
+  LongestRunningZoneStartTime:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      When that zone's heat call turned on.
+
+  ScadaCommit:
+    $ref: "https://schemas.electricity.works/formats/git.commit"
+    description: >
+      The commit of the scada code the house's scada announced for its
+      current run. Absent when the scada has announced none.
+
+  SendTimeMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      The backend's clock when this summary was assembled for the
+      response.
+
+  TypeName:
+    const: "gw.house.summary"
+
+  Version:
+    const: "001"
+
+required:
+  - Role
+  - TaGNodeId
+  - GNodeAlias
+  - SendTimeMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Role": "Viewer",
+      "TaGNodeId": "5d3e8f14-7a2b-4c6e-9f10-2b8d4e6a1c3f",
+      "GNodeAlias": "hw1.isone.me.versant.keene.beech",
+      "SendTimeMs": 1792014000000,
+      "TypeName": "gw.house.summary",
+      "Version": "001"
+    }
+  - |
+    {
+      "Role": "Admin",
+      "TaGNodeId": "5d3e8f14-7a2b-4c6e-9f10-2b8d4e6a1c3f",
+      "GNodeAlias": "hw1.isone.me.versant.keene.beech",
+      "DisplayName": "Beech",
+      "ScadaCommit": "e55faa2d3b1c4f6a8d9e0f1a2b3c4d5e6f7a8b9c",
+      "SendTimeMs": 1792014000000,
+      "TypeName": "gw.house.summary",
+      "Version": "001"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "ZonePairTogether"
+      statement: >
+        LongestRunningZoneName and LongestRunningZoneStartTime SHALL be
+        present together or absent together.
+
+  extended_description: >
+    The summary is a read response, so its layout and status are the
+    journal's projections of what the scada last said, not fresh reports;
+    each nested instance keeps its own sender clock. Layout widens by a
+    new summary version as layout words arrive; a reader branches on the
+    nested instance's own TypeName and Version.

@@ -661,9 +661,11 @@ types:
         summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + CreatedMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
 
   gw.house.summary:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "Adds optional ScadaCommit (git.commit): the commit the house's scada announced for its current run, absent when it announced none."
       "000":
         summary: "Initial version. Role (gw.dashboard.role) + TaGNodeId + GNodeAlias + DisplayName + Layout (a union of layout.lite 011 through 013) + OperatingStatus (gw.house.operating.status) + LatestSnapshotTime + the longest-running zone pair (axiom 1: together or not at all) + SendTimeMs (the sender-time standard: a reassembled read response)."
 

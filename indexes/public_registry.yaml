@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-29T12:25:00Z'
+  last_updated: '2026-10-29T14:40:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3267,13 +3267,32 @@ types:
           - ta.validation.state:000
           - utc.milliseconds
   gw.house.summary:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One house as a dashboard login sees it: role, registry identity,
       current layout, operating status and the latest snapshot''s facts; reassembled
       per request, nothing about a person.'
     versions:
+      '001':
+        status: published
+        schema_url: https://schemas.electricity.works/types/gw.house.summary/001
+        created: '2026-10-29T13:55:00Z'
+        summary: 'Adds optional ScadaCommit (git.commit): the commit the house''s
+          scada announced for its current run, absent when it announced none.'
+        direct_dependencies:
+          structural:
+          - git.commit
+          - gw.dashboard.role:000
+          - gw.house.operating.status:000
+          - layout.lite:011
+          - layout.lite:012
+          - layout.lite:013
+          - left.right.dot
+          - spaceheat.name
+          - utc.iso8601.seconds
+          - utc.milliseconds
+          - uuid4.str
       '000':
         status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/000

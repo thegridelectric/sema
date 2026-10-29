@@ -219,6 +219,7 @@ types:
     '000':
       used_by:
       - gw.house.summary:000
+      - gw.house.summary:001
   gw.house0.family.params:
     '000':
       used_by:
@@ -530,14 +531,17 @@ types:
     '011':
       used_by:
       - gw.house.summary:000
+      - gw.house.summary:001
       - layout.bundle:000
     '012':
       used_by:
       - gw.house.summary:000
+      - gw.house.summary:001
       - layout.bundle:000
     '013':
       used_by:
       - gw.house.summary:000
+      - gw.house.summary:001
   machine.states:
     '000':
       used_by:
@@ -856,6 +860,7 @@ enums:
     '000':
       used_by:
       - gw.house.summary:000
+      - gw.house.summary:001
   gw.dispatch.refusal.reason:
     '000':
       used_by:
@@ -1266,6 +1271,7 @@ formats:
     - tank.module.params:210
   git.commit:
     used_by:
+    - gw.house.summary:001
     - gw.scada.commit:000
   handle.name:
     used_by:
@@ -1350,6 +1356,7 @@ formats:
     - gw.hack.alert.silences:000
     - gw.house.operating.status:000
     - gw.house.summary:000
+    - gw.house.summary:001
     - gw.operational.params:000
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
@@ -1720,6 +1727,7 @@ formats:
     - gw.experiment.run:000
     - gw.experiment.run:001
     - gw.house.summary:000
+    - gw.house.summary:001
     - gw.house0.layout:000
     - gw.house0.no.sieg:000
     - gw.hydronic:000
@@ -1794,6 +1802,7 @@ formats:
   utc.iso8601.seconds:
     used_by:
     - gw.house.summary:000
+    - gw.house.summary:001
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002
@@ -1847,6 +1856,7 @@ formats:
     - gw.experiment.run:001
     - gw.house.operating.status:000
     - gw.house.summary:000
+    - gw.house.summary:001
     - gw.opsgenie.alert:000
     - gw.readings:000
     - gw.readings:001
@@ -1991,6 +2001,7 @@ formats:
     - gw.dispatch.ack:000
     - gw.dispatch.nack:000
     - gw.house.summary:000
+    - gw.house.summary:001
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
     - gw.opsgenie.alert:000

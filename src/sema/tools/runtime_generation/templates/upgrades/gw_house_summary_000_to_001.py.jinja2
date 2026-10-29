@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ gw_house_summary_001_class_name }}:
+        """
+        Adds optional ScadaCommit (git.commit): the commit the house's scada announced for its current run, absent when it announced none.
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ gw_house_summary_001_class_name }}.model_validate(data)

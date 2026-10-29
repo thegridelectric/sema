@@ -1097,6 +1097,78 @@ types:
       - spaceheat.telemetry.quantity.projection:000
       - spaceheat.telemetry.quantity.projection:001
       versionless_types: []
+    '001':
+      enums:
+      - change.relay.state:000
+      - gpm.from.hz.method:000
+      - gw.dashboard.role:000
+      - gw.dispatch.refusal.reason:000
+      - gw.standby.posture:000
+      - gw.top.state:000
+      - gw1.actor.class:009
+      - gw1.actor.class:011
+      - gw1.actor.class:014
+      - gw1.emission.method:000
+      - gw1.quantity:000
+      - gw1.quantity:003
+      - gw1.seasonal.storage.mode:000
+      - gw1.service.mode:000
+      - gw1.system.mode:000
+      - gw1.unit:000
+      - gw1.unit:003
+      - hz.calc.method:001
+      - relay.closed.or.open:000
+      - relay.wiring.config:000
+      - spaceheat.make.model:007
+      - spaceheat.telemetry.name:006
+      - spaceheat.telemetry.name:007
+      - spaceheat.unit:001
+      - ta.validation.state:000
+      - temp.calc.method:000
+      formats:
+      - git.commit
+      - handle.name
+      - left.right.dot
+      - non.empty.string
+      - positive.int
+      - positive.int.as.str
+      - sema.version
+      - spaceheat.name
+      - utc.iso8601.seconds
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - channel.config:000
+      - data.channel.gt:001
+      - data.channel.gt:002
+      - data.channel.gt:004
+      - derived.channel.gt:000
+      - derived.channel.gt:001
+      - derived.channel.gt:003
+      - gw.house.operating.status:000
+      - gw.state.machine:000
+      - gw1.tank.temp.calibration.map:000
+      - gw1.tank.temp.calibration:000
+      - gw1.unit.quantity.projection:001
+      - ha1.params:004
+      - ha1.params:005
+      - ha1.params:006
+      - i2c.multichannel.dt.relay.component.gt:002
+      - i2c.multichannel.dt.relay.component.gt:003
+      - layout.lite:011
+      - layout.lite:012
+      - layout.lite:013
+      - pico.flow.module.component.gt:000
+      - pico.tank.module.component.gt:011
+      - relay.actor.config:002
+      - sim.pico.tank.module.component.gt:000
+      - spaceheat.node.gt:300
+      - spaceheat.node.gt:301
+      - spaceheat.node.gt:303
+      - spaceheat.telemetry.quantity.projection:000
+      - spaceheat.telemetry.quantity.projection:001
+      versionless_types: []
   gw.house0.family.params:
     '000':
       enums:

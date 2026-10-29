@@ -325,6 +325,7 @@ types:
     '000': sha256:04360f242f6ff7ccb7f53feb377b520d9a4cef9912cd84ddc8e06ecd1d16230e
   gw.house.summary:
     '000': sha256:8556a099ee72360af4b11926e00fade7d9b65f4fe0e155a954e8358edf1d5d95
+    '001': sha256:25f85e4dd1501e42c1795c6aed97e7e68045e6a1068a4e1039b4b1fe924d8825
   gw.opsgenie.alert:
     '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a
   gw.opsgenie.alert.close:

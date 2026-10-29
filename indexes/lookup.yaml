@@ -427,9 +427,10 @@ types:
     versions:
       '000': definitions/types/gw.house.operating.status/000.yaml
   gw.house.summary:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.house.summary/001.yaml
       '000': definitions/types/gw.house.summary/000.yaml
   gw.house0.layout:
     latest_version: '000'

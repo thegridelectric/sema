@@ -2,6 +2,7 @@ from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import GwDashboardRole
+from sema.runtime.property_format import GitCommit
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UTCMilliseconds
@@ -14,7 +15,7 @@ from sema.runtime.types.old_versions.layout_lite_012 import LayoutLite012
 
 
 class GwHouseSummary(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.house.summary/000"""
+    """Sema: https://schemas.electricity.works/types/gw.house.summary/001"""
 
     role: GwDashboardRole
     ta_g_node_id: UUID4Str
@@ -25,9 +26,10 @@ class GwHouseSummary(SemaType):
     latest_snapshot_time: UtcIso8601Seconds | None = None
     longest_running_zone_name: SpaceheatName | None = None
     longest_running_zone_start_time: UtcIso8601Seconds | None = None
+    scada_commit: GitCommit | None = None
     send_time_ms: UTCMilliseconds
     type_name: Literal["gw.house.summary"] = "gw.house.summary"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwHouseSummary":
