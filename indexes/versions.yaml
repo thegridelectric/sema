@@ -568,9 +568,13 @@ types:
         summary: "Initial version."
 
   gw.command.interface:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - AdminMayTake (boolean, required) added: whether admin may take the
+            node out from under its owner for an admin session; false on upgrade
       "000":
         summary: "Initial version."
 
@@ -1597,9 +1601,14 @@ types:
         summary: "- Initial version. ComponentId, DeviceType (gw1.device.type board kind), optional I2cAddressList (field-chosen addresses, index-aligned with the record's Expanders), DisplayName, HwUid."
 
   scada.control.capabilities:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: >
+          - CommandInterfaces[]: gw.command.interface 000 -> 001
+          - A relay under an interior command node whose interface has
+            AdminMayTake true is in the cover (axiom 4)
       "002":
         summary: >
           - ControlChannels[]: data.channel.gt 003 -> 004

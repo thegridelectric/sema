@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ scada_control_capabilities_003_class_name }}:
+        """
+        - CommandInterfaces[]: gw.command.interface 000 -> 001
+        - A relay under an interior command node whose interface has
+          AdminMayTake true is in the cover (axiom 4)
+        """
+        data = self.model_dump()
+        data["command_interfaces"] = [i.upgrade().model_dump() for i in self.command_interfaces]
+        data["version"] = "003"
+        return {{ scada_control_capabilities_003_class_name }}.model_validate(data)

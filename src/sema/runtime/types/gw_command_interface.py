@@ -13,14 +13,15 @@ from sema.runtime.types.gw_command_transition import GwCommandTransition
 
 
 class GwCommandInterface(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.command.interface/000"""
+    """Sema: https://schemas.electricity.works/types/gw.command.interface/001"""
 
     actor_name: SpaceheatName
     event_type: LeftRightDot
     state_type: LeftRightDot
     commands: list[GwCommandTransition]
+    admin_may_take: bool
     type_name: Literal["gw.command.interface"] = "gw.command.interface"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwCommandInterface":

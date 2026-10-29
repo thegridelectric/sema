@@ -4,10 +4,14 @@ from sema.runtime.base import SemaType
 from sema.runtime.enums.old_versions.gw1_actor_class_012 import Gw1ActorClass012
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import UTCMilliseconds
-from sema.runtime.types.gw_command_interface import GwCommandInterface
 from sema.runtime.types.old_versions.data_channel_gt_003 import DataChannelGt003
+from sema.runtime.types.old_versions.gw_command_interface_000 import (
+    GwCommandInterface000,
+)
+from sema.runtime.types.old_versions.scada_control_capabilities_002 import (
+    ScadaControlCapabilities002,
+)
 from sema.runtime.types.old_versions.spaceheat_node_gt_302 import SpaceheatNodeGt302
-from sema.runtime.types.scada_control_capabilities import ScadaControlCapabilities
 
 
 class ScadaControlCapabilities001(SemaType):
@@ -19,7 +23,7 @@ class ScadaControlCapabilities001(SemaType):
     dac_nodes: list[SpaceheatNodeGt302]
     command_nodes: list[SpaceheatNodeGt302]
     control_channels: list[DataChannelGt003]
-    command_interfaces: list[GwCommandInterface]
+    command_interfaces: list[GwCommandInterface000]
     type_name: Literal["scada.control.capabilities"] = "scada.control.capabilities"
     version: Literal["001"] = "001"
 
@@ -124,7 +128,7 @@ class ScadaControlCapabilities001(SemaType):
             )
         return self
 
-    def upgrade(self) -> ScadaControlCapabilities:
+    def upgrade(self) -> ScadaControlCapabilities002:
         """
         - ControlChannels[]: data.channel.gt 003 -> 004
         - RelayNodes[], DacNodes[], CommandNodes[]: spaceheat.node.gt:302 -> 303
@@ -139,4 +143,4 @@ class ScadaControlCapabilities001(SemaType):
             for node in data[key]:
                 node["version"] = "303"
         data["version"] = "002"
-        return ScadaControlCapabilities.model_validate(data)
+        return ScadaControlCapabilities002.model_validate(data)

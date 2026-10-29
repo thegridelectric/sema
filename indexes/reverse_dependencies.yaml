@@ -87,6 +87,7 @@ types:
       - gw.readings:001
       - layout.lite:013
       - scada.control.capabilities:002
+      - scada.control.capabilities:003
   derived.channel.gt:
     '000':
       used_by:
@@ -200,10 +201,14 @@ types:
       used_by:
       - scada.control.capabilities:001
       - scada.control.capabilities:002
+    '001':
+      used_by:
+      - scada.control.capabilities:003
   gw.command.transition:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
   gw.dispatch.hold:
     '000':
       used_by:
@@ -738,6 +743,7 @@ types:
       - layout.lite:013
       - new.command.tree:003
       - scada.control.capabilities:002
+      - scada.control.capabilities:003
   spaceheat.telemetry.quantity.projection:
     '000':
       used_by:
@@ -787,6 +793,7 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
       - relay.actor.config:001
       - relay.actor.config:002
       - relay.actor.config:003
@@ -957,6 +964,7 @@ enums:
       - gw.nolan.layout:000
       - new.command.tree:003
       - scada.control.capabilities:002
+      - scada.control.capabilities:003
       - spaceheat.node.gt:303
   gw1.emission.method:
     '000':
@@ -1053,6 +1061,7 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
   hz.calc.method:
     '001':
       used_by:
@@ -1142,6 +1151,7 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
   pico.reset.cause:
     '000':
       used_by:
@@ -1150,10 +1160,12 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
   relay.closed.or.open:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
       - machine.states:000
       - relay.actor.config:002
       - relay.actor.config:003
@@ -1248,6 +1260,7 @@ enums:
     '000':
       used_by:
       - gw.command.interface:000
+      - gw.command.interface:001
   zone.circuit.governance.event:
     '000':
       used_by:
@@ -1351,6 +1364,7 @@ formats:
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
     - gw.command.interface:000
+    - gw.command.interface:001
     - gw.experiment.run:000
     - gw.experiment.run:001
     - gw.hack.alert.silences:000
@@ -1418,6 +1432,7 @@ formats:
     - scada.control.capabilities:000
     - scada.control.capabilities:001
     - scada.control.capabilities:002
+    - scada.control.capabilities:003
     - scada.params:000
     - scada.params:001
     - scada.params:002
@@ -1723,6 +1738,7 @@ formats:
     - gw.channel.noise.stats:000
     - gw.circulator:000
     - gw.command.interface:000
+    - gw.command.interface:001
     - gw.element.backup:000
     - gw.experiment.run:000
     - gw.experiment.run:001
@@ -1894,6 +1910,7 @@ formats:
     - scada.control.capabilities:000
     - scada.control.capabilities:001
     - scada.control.capabilities:002
+    - scada.control.capabilities:003
     - scada.params:000
     - scada.params:001
     - scada.params:002

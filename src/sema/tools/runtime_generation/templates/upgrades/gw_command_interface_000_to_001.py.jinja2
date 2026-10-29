@@ -1,0 +1,9 @@
+    def upgrade(self) -> {{ gw_command_interface_001_class_name }}:
+        """
+        - AdminMayTake (boolean, required) added: whether admin may take the
+          node out from under its owner for an admin session; false on upgrade
+        """
+        data = self.model_dump()
+        data["admin_may_take"] = False
+        data["version"] = "001"
+        return {{ gw_command_interface_001_class_name }}.model_validate(data)

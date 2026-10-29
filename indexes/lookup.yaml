@@ -361,9 +361,10 @@ types:
     versions:
       '000': definitions/types/gw.channel.noise.stats/000.yaml
   gw.command.interface:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.command.interface/001.yaml
       '000': definitions/types/gw.command.interface/000.yaml
   gw.command.transition:
     latest_version: '000'
@@ -1010,9 +1011,10 @@ types:
     versions:
       '000': definitions/types/scada.board.component.gt/000.yaml
   scada.control.capabilities:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/scada.control.capabilities/003.yaml
       '002': definitions/types/scada.control.capabilities/002.yaml
       '001': definitions/types/scada.control.capabilities/001.yaml
       '000': definitions/types/scada.control.capabilities/000.yaml
