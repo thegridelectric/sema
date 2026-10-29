@@ -921,6 +921,14 @@ types:
       - utc.milliseconds
       types: []
       versionless_types: []
+  gw.circulator:
+    '000':
+      enums:
+      - gw.circulator.role:000
+      formats:
+      - spaceheat.name
+      types: []
+      versionless_types: []
   gw.command.interface:
     '000':
       enums:
@@ -1105,6 +1113,7 @@ types:
       - g.node.status:000
       - gpio.sense.mode:000
       - gpm.from.hz.method:000
+      - gw.circulator.role:000
       - gw.primary.flow.source:000
       - gw.primary.pump.owner:000
       - gw.refrigerant.cycle:000
@@ -1158,6 +1167,7 @@ types:
       - gpio.relay.component.gt:000
       - gpio.sensor.component.gt:000
       - gw.boiler.backup:000
+      - gw.circulator:000
       - gw.element.backup:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
@@ -1207,6 +1217,7 @@ types:
       - g.node.status:000
       - gpio.sense.mode:000
       - gpm.from.hz.method:000
+      - gw.circulator.role:000
       - gw.primary.flow.source:000
       - gw.primary.pump.owner:000
       - gw.refrigerant.cycle:000
@@ -1260,6 +1271,7 @@ types:
       - gpio.relay.component.gt:000
       - gpio.sensor.component.gt:000
       - gw.boiler.backup:000
+      - gw.circulator:000
       - gw.element.backup:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000
@@ -1311,6 +1323,7 @@ types:
   gw.hydronic:
     '000':
       enums:
+      - gw.circulator.role:000
       - gw.primary.flow.source:000
       - gw.primary.pump.owner:000
       - gw.refrigerant.cycle:000
@@ -1323,6 +1336,7 @@ types:
       - uuid4.str
       types:
       - gw.boiler.backup:000
+      - gw.circulator:000
       - gw.element.backup:000
       - gw.water.store:000
       - gw1.hvac.zone:000
@@ -1353,6 +1367,7 @@ types:
       - g.node.status:000
       - gpio.sense.mode:000
       - gpm.from.hz.method:000
+      - gw.circulator.role:000
       - gw.primary.flow.source:000
       - gw.primary.pump.owner:000
       - gw.refrigerant.cycle:000
@@ -1401,6 +1416,7 @@ types:
       - gpio.relay.component.gt:000
       - gpio.sensor.component.gt:000
       - gw.boiler.backup:000
+      - gw.circulator:000
       - gw.element.backup:000
       - gw.hydronic:000
       - gw.native.gpio.pin:000

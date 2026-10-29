@@ -89,6 +89,7 @@ from sema.runtime.types.gw_boiler_backup import GwBoilerBackup
 from sema.runtime.types.gw_channel_gap_stats import GwChannelGapStats
 from sema.runtime.types.gw_channel_jump_stats import GwChannelJumpStats
 from sema.runtime.types.gw_channel_noise_stats import GwChannelNoiseStats
+from sema.runtime.types.gw_circulator import GwCirculator
 from sema.runtime.types.gw_command_interface import GwCommandInterface
 from sema.runtime.types.gw_command_transition import GwCommandTransition
 from sema.runtime.types.gw_dispatch_ack import GwDispatchAck
@@ -330,6 +331,7 @@ __all__ = [
     "GwChannelGapStats",
     "GwChannelJumpStats",
     "GwChannelNoiseStats",
+    "GwCirculator",
     "GwCommandInterface",
     "GwCommandTransition",
     "GwDispatchAck",

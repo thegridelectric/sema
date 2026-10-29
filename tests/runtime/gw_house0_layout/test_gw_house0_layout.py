@@ -671,3 +671,67 @@ def test_axiom_38_boiler_relay_is_not_a_relay(vanilla: dict[str, Any]) -> None:
         d["Hydronic"]["Backup"]["AquastatCtrlRelayName"] = "backup"
 
     reject(vanilla, mutate, "Axiom 38")
+
+
+def running_channel(d: dict[str, Any], name: str) -> dict[str, Any]:
+    return next(c for c in d["DerivedChannels"] if c["Name"] == name)
+
+
+def test_axiom_39_a_running_channel_is_required(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DerivedChannels"].remove(running_channel(d, "dist-pump-running"))
+
+    reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_39_a_wrong_strategy(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        running_channel(d, "dist-pump-running")["Strategy"] = "sum"
+
+    reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_39_b_input_is_the_declared_power_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        running_channel(d, "dist-pump-running")["InputChannelNames"] = ["hp-odu-pwr"]
+
+    reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_39_b_declared_input_is_not_a_derived_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circ = next(
+            c for c in d["Hydronic"]["Circulators"] if c["PumpNodeName"] == "dist-pump"
+        )
+        circ["PowerChannelName"] = "store-pump-running"
+        running_channel(d, "dist-pump-running")["InputChannelNames"] = [
+            "store-pump-running"
+        ]
+
+    reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_39_b_ct_input_when_no_power_channel(vanilla: dict[str, Any]) -> None:
+    """A circulator with only a CT reads the CT; reading the power channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        circ = next(
+            c for c in d["Hydronic"]["Circulators"] if c["PumpNodeName"] == "dist-pump"
+        )
+        del circ["PowerChannelName"]
+        circ["CtChannelName"] = "dist-pump-ct"
+        d["DataChannels"].append(
+            {
+                **next(c for c in d["DataChannels"] if c["Name"] == "dist-pump-pwr"),
+                "Name": "dist-pump-ct",
+                "TelemetryName": "VoltsTimes100",
+                "Quantity": "Voltage",
+                "Id": "7d2e6c1a-5b3f-4a8e-9c0d-1e2f3a4b5c6d",
+            }
+        )
+
+    reject(vanilla, mutate, "Axiom 39")

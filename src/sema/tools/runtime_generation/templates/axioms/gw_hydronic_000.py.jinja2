@@ -93,3 +93,17 @@
                     "are not distinct."
                 )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_5(self) -> Self:
+        """
+        Axiom 5: CirculatorDistinctness
+        No two circulators SHALL share a PumpNodeName.
+        """
+        names = [c.pump_node_name for c in (self.circulators or [])]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                f"Axiom 5 (CirculatorDistinctness) failed: PumpNodeName values {names} "
+                "are not distinct."
+            )
+        return self

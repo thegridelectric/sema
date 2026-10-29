@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-28T17:45:00Z'
+  last_updated: '2026-10-29T12:25:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -427,6 +427,17 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.primary.pump.owner/000
         created: '2026-09-24T17:50:00Z'
+        status: staging
+  gw.circulator.role:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'The hydronic loop a circulator pump serves: Dist, Primary, Store
+      or Secondary; Unknown is the default.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.circulator.role/000
+        created: '2026-10-29T12:25:00Z'
         status: staging
   gw.refrigerant.cycle:
     latest_version: '000'
@@ -3292,7 +3303,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-10-28T17:45:00Z'
+        created: '2026-10-29T12:25:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -3304,7 +3315,9 @@ types:
           is identical across layout words where the axiom name is shared. The cold-override
           command node is required; the backup command node exists if and only if
           Hydronic.Backup is present, and the relays a backup names are Relay ShNodes
-          (axiom BackupRelays).'
+          (axiom BackupRelays). Axiom CirculatorRunningChannels: every circulator
+          in Hydronic.Circulators has its running channel on the circulator-running
+          strategy reading its declared power or CT input.'
         direct_dependencies:
           structural:
           - ads111x.based.component.gt:000
@@ -3355,7 +3368,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.no.sieg/000
-        created: '2026-10-28T17:45:00Z'
+        created: '2026-10-29T12:25:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home with no
           Siegenthaler loop (elm, fir, oak): every collection and Hydronic required.
@@ -3374,7 +3387,10 @@ types:
           required; the backup command node exists if and only if Hydronic.Backup
           is present, and the relays a backup names are Relay ShNodes (axiom BackupRelays).
           Axiom 39 HpWatchNode: an hp-watch node, whose sensed running state hp-boss
-          runs the secondary pump from.'
+          runs the secondary pump from. Axiom 38 CirculatorRunningChannels replaces
+          the secondary-pump special case: every circulator in Hydronic.Circulators
+          has its running channel on the circulator-running strategy reading its declared
+          power or CT input.'
         direct_dependencies:
           structural:
           - ads111x.based.component.gt:000
@@ -3433,16 +3449,36 @@ types:
         direct_dependencies:
           structural:
           - gw1.seasonal.storage.mode:000
+  gw.circulator:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'One circulator pump of a hydronic layout: its node, role, running
+      channel, and the optional flow, power, CT channels and 0-10V node.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.circulator/000
+        created: '2026-10-29T12:25:00Z'
+        status: staging
+        summary: 'PumpNodeName and RunningChannelName (spaceheat.name) and Role (gw.circulator.role)
+          required; FlowChannelName, PowerChannelName, CtChannelName and ZeroTenNodeName
+          optional. Axiom InputDeclared: at least one of PowerChannelName and CtChannelName
+          is present. Relays are not here. Carried by gw.hydronic as Circulators.'
+        direct_dependencies:
+          structural:
+          - gw.circulator.role:000
+          - spaceheat.name
   gw.hydronic:
     latest_version: '000'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: 'Hydronic / flow-topology config: zones, zone-call circuits, water
-      store, backup heat, primary-flow source, primary-pump owner, refrigerant cycle.'
+    description: 'Hydronic / flow-topology config: zones, zone-call circuits, circulators,
+      water store, backup heat, primary-flow source, primary-pump owner, refrigerant
+      cycle.'
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-10-06T18:10:00Z'
+        created: '2026-10-29T12:25:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -3467,10 +3503,13 @@ types:
           names a circuit serving that zone, and that circuit carries a setpoint channel.
           CircuitDistinctness axiom: no two circuits share a Name, a whitewire channel,
           a setpoint channel, a temperature channel or a relay node. CircuitResolution
-          d is dropped: PrimaryCircuit implies every zone is served.'
+          d is dropped: PrimaryCircuit implies every zone is served. - Circulators
+          (required list of gw.circulator): the circulator pumps with their roles
+          and channels; axiom CirculatorDistinctness: no two share a PumpNodeName.'
         direct_dependencies:
           structural:
           - gw.boiler.backup:000
+          - gw.circulator:000
           - gw.element.backup:000
           - gw.primary.flow.source:000
           - gw.primary.pump.owner:000
@@ -3520,7 +3559,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-10-28T17:45:00Z'
+        created: '2026-10-29T12:25:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType
@@ -3529,7 +3568,9 @@ types:
           layout invariants; wording is identical across layout words where the axiom
           name is shared. The cold-override command node is required; the backup command
           node exists if and only if Hydronic.Backup is present, and the relays a
-          backup names are Relay ShNodes (axiom BackupRelays).'
+          backup names are Relay ShNodes (axiom BackupRelays). Axiom CirculatorRunningChannels:
+          every circulator in Hydronic.Circulators has its running channel on the
+          circulator-running strategy reading its declared power or CT input.'
         direct_dependencies:
           structural:
           - ads111x.based.device.type.gt:000

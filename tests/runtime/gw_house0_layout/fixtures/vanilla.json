@@ -2097,6 +2097,69 @@
       },
       "DisplayName": "Tank3 Depth3 Effective Temperature",
       "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta"
+    },
+    {
+      "TypeName": "derived.channel.gt",
+      "Version": "003",
+      "Id": "0ce73766-122d-4caf-8553-baf215518313",
+      "Name": "dist-pump-running",
+      "CreatedByNodeName": "derived-generator",
+      "Strategy": "circulator-running",
+      "InputChannelNames": [
+        "dist-pump-pwr"
+      ],
+      "OutputUnit": "Unitless",
+      "OutputQuantity": "Unitless",
+      "EmissionMethod": "AsyncAndPeriodic",
+      "AsyncEmitDelta": 1,
+      "EmitPeriodS": 300,
+      "Parameters": {
+        "ThresholdW": 10
+      },
+      "DisplayName": "Dist Pump Running",
+      "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta"
+    },
+    {
+      "TypeName": "derived.channel.gt",
+      "Version": "003",
+      "Id": "cb627ae9-1438-4620-9a98-876ebe318422",
+      "Name": "primary-pump-running",
+      "CreatedByNodeName": "derived-generator",
+      "Strategy": "circulator-running",
+      "InputChannelNames": [
+        "primary-pump-pwr"
+      ],
+      "OutputUnit": "Unitless",
+      "OutputQuantity": "Unitless",
+      "EmissionMethod": "AsyncAndPeriodic",
+      "AsyncEmitDelta": 1,
+      "EmitPeriodS": 300,
+      "Parameters": {
+        "ThresholdW": 10
+      },
+      "DisplayName": "Primary Pump Running",
+      "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta"
+    },
+    {
+      "TypeName": "derived.channel.gt",
+      "Version": "003",
+      "Id": "dcdceb8e-7959-479c-9e34-6af3b534c0ee",
+      "Name": "store-pump-running",
+      "CreatedByNodeName": "derived-generator",
+      "Strategy": "circulator-running",
+      "InputChannelNames": [
+        "store-pump-pwr"
+      ],
+      "OutputUnit": "Unitless",
+      "OutputQuantity": "Unitless",
+      "EmissionMethod": "AsyncAndPeriodic",
+      "AsyncEmitDelta": 1,
+      "EmitPeriodS": 300,
+      "Parameters": {
+        "ThresholdW": 10
+      },
+      "DisplayName": "Store Pump Running",
+      "TerminalAssetAlias": "hw1.isone.me.versant.keene.maple.ta"
     }
   ],
   "Components": [
@@ -3603,6 +3666,38 @@
         "FailsafeRelayNode": "zone2-bedroom-failsafe-relay",
         "OpsRelayNode": "zone2-bedroom-ops-relay",
         "EmitterType": "Other"
+      }
+    ],
+    "Circulators": [
+      {
+        "PumpNodeName": "dist-pump",
+        "Role": "Dist",
+        "RunningChannelName": "dist-pump-running",
+        "FlowChannelName": "dist-flow",
+        "PowerChannelName": "dist-pump-pwr",
+        "ZeroTenNodeName": "dist-010v",
+        "TypeName": "gw.circulator",
+        "Version": "000"
+      },
+      {
+        "PumpNodeName": "primary-pump",
+        "Role": "Primary",
+        "RunningChannelName": "primary-pump-running",
+        "FlowChannelName": "primary-flow",
+        "PowerChannelName": "primary-pump-pwr",
+        "ZeroTenNodeName": "primary-010v",
+        "TypeName": "gw.circulator",
+        "Version": "000"
+      },
+      {
+        "PumpNodeName": "store-pump",
+        "Role": "Store",
+        "RunningChannelName": "store-pump-running",
+        "FlowChannelName": "store-flow",
+        "PowerChannelName": "store-pump-pwr",
+        "ZeroTenNodeName": "store-010v",
+        "TypeName": "gw.circulator",
+        "Version": "000"
       }
     ],
     "WaterStore": {

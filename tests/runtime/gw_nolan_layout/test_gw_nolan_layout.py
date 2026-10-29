@@ -395,7 +395,9 @@ def test_axiom_30_fixed_relay_declared_flat(vanilla: dict[str, Any]) -> None:
 
 def test_axiom_30_secondary_pump_declared_flat(vanilla: dict[str, Any]) -> None:
     reject(
-        vanilla, set_handle("secondary-pump-relay", "auto.secondary-pump-relay"), "Axiom 30"
+        vanilla,
+        set_handle("secondary-pump-relay", "auto.secondary-pump-relay"),
+        "Axiom 30",
     )
 
 
@@ -704,3 +706,67 @@ def test_axiom_35_backup_names_a_missing_node(vanilla: dict[str, Any]) -> None:
         d["Hydronic"]["Backup"]["ElementRelayNames"] = ["elt-nowhere-relay"]
 
     reject(vanilla, mutate, "Axiom 35")
+
+
+def running_channel(d: dict[str, Any], name: str) -> dict[str, Any]:
+    return next(c for c in d["DerivedChannels"] if c["Name"] == name)
+
+
+def test_axiom_36_a_running_channel_is_required(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        d["DerivedChannels"].remove(running_channel(d, "dist-pump-running"))
+
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_axiom_36_a_wrong_strategy(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        running_channel(d, "dist-pump-running")["Strategy"] = "sum"
+
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_axiom_36_b_input_is_the_declared_power_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        running_channel(d, "dist-pump-running")["InputChannelNames"] = ["hp-odu-pwr"]
+
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_axiom_36_b_declared_input_is_not_a_derived_channel(
+    vanilla: dict[str, Any],
+) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        circ = next(
+            c for c in d["Hydronic"]["Circulators"] if c["PumpNodeName"] == "dist-pump"
+        )
+        circ["PowerChannelName"] = "store-pump-running"
+        running_channel(d, "dist-pump-running")["InputChannelNames"] = [
+            "store-pump-running"
+        ]
+
+    reject(vanilla, mutate, "Axiom 36")
+
+
+def test_axiom_36_b_ct_input_when_no_power_channel(vanilla: dict[str, Any]) -> None:
+    """A circulator with only a CT reads the CT; reading the power channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        circ = next(
+            c for c in d["Hydronic"]["Circulators"] if c["PumpNodeName"] == "dist-pump"
+        )
+        del circ["PowerChannelName"]
+        circ["CtChannelName"] = "dist-pump-ct"
+        d["DataChannels"].append(
+            {
+                **next(c for c in d["DataChannels"] if c["Name"] == "dist-pump-pwr"),
+                "Name": "dist-pump-ct",
+                "TelemetryName": "VoltsTimes100",
+                "Quantity": "Voltage",
+                "Id": "7d2e6c1a-5b3f-4a8e-9c0d-1e2f3a4b5c6d",
+            }
+        )
+
+    reject(vanilla, mutate, "Axiom 36")

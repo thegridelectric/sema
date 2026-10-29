@@ -436,7 +436,9 @@ def test_axiom_32_command_node_declared_under_lc(vanilla: dict[str, Any]) -> Non
         set_handle("hp-boss", "auto.lc.n.hp-boss")(d)
         set_handle("hp-scada-ops-relay", "auto.lc.n.hp-boss.hp-scada-ops-relay")(d)
         set_handle("secondary-pump-relay", "auto.lc.n.hp-boss.secondary-pump-relay")(d)
-        set_handle("secondary-pump-hack-relay", "auto.lc.n.hp-boss.secondary-pump-hack-relay")(d)
+        set_handle(
+            "secondary-pump-hack-relay", "auto.lc.n.hp-boss.secondary-pump-hack-relay"
+        )(d)
 
     reject(vanilla, mutate, "Axiom 32")
 
@@ -458,7 +460,9 @@ def test_axiom_9_secondary_pump_hack_relay_is_required(vanilla: dict[str, Any]) 
     reject(vanilla, drop_nodes({"secondary-pump-hack-relay"}), "Axiom 9")
 
 
-def test_axiom_32_secondary_pump_hack_relay_is_hp_bosss(vanilla: dict[str, Any]) -> None:
+def test_axiom_32_secondary_pump_hack_relay_is_hp_bosss(
+    vanilla: dict[str, Any],
+) -> None:
     reject(
         vanilla,
         set_handle("secondary-pump-hack-relay", "auto.secondary-pump-hack-relay"),
@@ -700,36 +704,74 @@ def test_axiom_37_boiler_relay_is_not_a_relay(vanilla: dict[str, Any]) -> None:
     reject(vanilla, mutate, "Axiom 37")
 
 
-def pump_running(d: dict[str, Any]) -> dict[str, Any]:
-    return next(
-        c for c in d["DerivedChannels"] if c["Name"] == "secondary-pump-running"
-    )
+def running_channel(d: dict[str, Any], name: str) -> dict[str, Any]:
+    return next(c for c in d["DerivedChannels"] if c["Name"] == name)
 
 
-def test_axiom_38_a_secondary_pump_running_is_required(vanilla: dict[str, Any]) -> None:
+def test_axiom_38_a_running_channel_is_required(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        d["DerivedChannels"].remove(pump_running(d))
+        d["DerivedChannels"].remove(running_channel(d, "secondary-pump-running"))
 
     reject(vanilla, mutate, "Axiom 38")
 
 
 def test_axiom_38_a_wrong_strategy(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        pump_running(d)["Strategy"] = "sum"
+        running_channel(d, "secondary-pump-running")["Strategy"] = "sum"
 
     reject(vanilla, mutate, "Axiom 38")
 
 
-def test_axiom_38_b_input_is_the_pump_power(vanilla: dict[str, Any]) -> None:
+def test_axiom_38_b_input_is_the_declared_power_channel(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        pump_running(d)["InputChannelNames"] = ["dist-pump-pwr"]
+        running_channel(d, "secondary-pump-running")["InputChannelNames"] = [
+            "hp-odu-pwr"
+        ]
 
     reject(vanilla, mutate, "Axiom 38")
 
 
-def test_axiom_38_c_threshold_is_a_positive_integer(vanilla: dict[str, Any]) -> None:
+def test_axiom_38_b_declared_input_is_not_a_derived_channel(
+    vanilla: dict[str, Any],
+) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        pump_running(d)["Parameters"] = {"ThresholdW": 0}
+        circ = next(
+            c
+            for c in d["Hydronic"]["Circulators"]
+            if c["PumpNodeName"] == "secondary-pump"
+        )
+        circ["PowerChannelName"] = "store-pump-running"
+        running_channel(d, "secondary-pump-running")["InputChannelNames"] = [
+            "store-pump-running"
+        ]
+
+    reject(vanilla, mutate, "Axiom 38")
+
+
+def test_axiom_38_b_ct_input_when_no_power_channel(vanilla: dict[str, Any]) -> None:
+    """A circulator with only a CT reads the CT; reading the power channel fails."""
+
+    def mutate(d: dict[str, Any]) -> None:
+        circ = next(
+            c
+            for c in d["Hydronic"]["Circulators"]
+            if c["PumpNodeName"] == "secondary-pump"
+        )
+        del circ["PowerChannelName"]
+        circ["CtChannelName"] = "secondary-pump-ct"
+        d["DataChannels"].append(
+            {
+                **next(
+                    c for c in d["DataChannels"] if c["Name"] == "secondary-pump-pwr"
+                ),
+                "Name": "secondary-pump-ct",
+                "TelemetryName": "VoltsTimes100",
+                "Quantity": "Voltage",
+                "Id": "7d2e6c1a-5b3f-4a8e-9c0d-1e2f3a4b5c6d",
+            }
+        )
 
     reject(vanilla, mutate, "Axiom 38")
 

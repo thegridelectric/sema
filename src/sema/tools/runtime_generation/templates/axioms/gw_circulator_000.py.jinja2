@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> Self:
+        """
+        Axiom 1: InputDeclared
+        At least one of PowerChannelName and CtChannelName SHALL be present.
+        """
+        if self.power_channel_name is None and self.ct_channel_name is None:
+            raise ValueError(
+                "Axiom 1 (InputDeclared) failed: circulator "
+                f"{self.pump_node_name!r} declares neither PowerChannelName nor "
+                "CtChannelName."
+            )
+        return self

@@ -8,6 +8,7 @@ from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.gw1_hvac_zone import Gw1HvacZone
 from sema.runtime.types.gw1_zone_call_circuit import Gw1ZoneCallCircuit
 from sema.runtime.types.gw_boiler_backup import GwBoilerBackup
+from sema.runtime.types.gw_circulator import GwCirculator
 from sema.runtime.types.gw_element_backup import GwElementBackup
 from sema.runtime.types.gw_water_store import GwWaterStore
 
@@ -17,6 +18,7 @@ class GwHydronic(SemaType):
 
     zones: list[Gw1HvacZone]
     zone_call_circuits: list[Gw1ZoneCallCircuit]
+    circulators: list[GwCirculator]
     water_store: GwWaterStore | None = None
     backup: GwBoilerBackup | GwElementBackup | None = None
     primary_flow_source: GwPrimaryFlowSource
@@ -123,4 +125,18 @@ class GwHydronic(SemaType):
                     f"Axiom 4 (CircuitDistinctness) failed: {field} values {values} "
                     "are not distinct."
                 )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_5(self) -> Self:
+        """
+        Axiom 5: CirculatorDistinctness
+        No two circulators SHALL share a PumpNodeName.
+        """
+        names = [c.pump_node_name for c in (self.circulators or [])]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                f"Axiom 5 (CirculatorDistinctness) failed: PumpNodeName values {names} "
+                "are not distinct."
+            )
         return self
