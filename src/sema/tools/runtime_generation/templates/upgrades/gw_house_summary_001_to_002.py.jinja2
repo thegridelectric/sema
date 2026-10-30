@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ gw_house_summary_002_class_name }}:
+        """
+        Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit stands against the scada repository's main head, derived by the backend; axiom 2: absent when ScadaCommit is absent.
+        """
+        data = self.model_dump()
+        data["version"] = "002"
+        return {{ gw_house_summary_002_class_name }}.model_validate(data)

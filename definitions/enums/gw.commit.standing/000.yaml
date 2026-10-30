@@ -1,0 +1,43 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.commit.standing/000"
+
+title: "gw.commit.standing"
+type: "string"
+
+description: >
+  Where a commit a program announced for its run stands against the head
+  of its repository's main branch.
+
+enum:
+  - "Unknown"
+  - "OnMainHead"
+  - "BehindMain"
+  - "OffMain"
+  - "Dirty"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "000"
+
+  value_descriptions:
+    "Unknown": >
+      The standing could not be determined: the repository did not answer,
+      or the commit is not one it knows. The default, so a standing this
+      version does not know asserts nothing.
+
+    "OnMainHead": >
+      The commit is the head of main: the program runs the newest code
+      on the branch it deploys from.
+
+    "BehindMain": >
+      The commit is on main and main has moved past it.
+
+    "OffMain": >
+      The commit is not on main: a branch deploy or a commit main never
+      took.
+
+    "Dirty": >
+      The program announced a commit with uncommitted changes on top, so
+      no committed state describes the code it runs.

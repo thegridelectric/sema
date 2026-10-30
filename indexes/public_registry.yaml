@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-10-29T21:45:00Z'
+  last_updated: '2026-10-30T00:20:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -1433,6 +1433,18 @@ enums:
         schema_url: https://schemas.electricity.works/enums/zone.setpoint.source/000
         created: '2026-08-11T15:55:00Z'
         status: staging
+  gw.commit.standing:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: 'Where a program''s announced commit stands against its repository''s
+      main head: OnMainHead, BehindMain, OffMain or Dirty; default Unknown asserts
+      nothing.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/gw.commit.standing/000
+        created: '2026-10-30T00:05:00Z'
+        status: published
 types:
   ads.channel.config:
     latest_version: '000'
@@ -3285,13 +3297,34 @@ types:
           - ta.validation.state:000
           - utc.milliseconds
   gw.house.summary:
-    latest_version: '001'
+    latest_version: '002'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One house as a dashboard login sees it: role, registry identity,
       current layout, operating status and the latest snapshot''s facts; reassembled
       per request, nothing about a person.'
     versions:
+      '002':
+        status: published
+        schema_url: https://schemas.electricity.works/types/gw.house.summary/002
+        created: '2026-10-30T00:05:00Z'
+        summary: 'Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit
+          stands against the scada repository''s main head, derived by the backend;
+          axiom 2: absent when ScadaCommit is absent.'
+        direct_dependencies:
+          structural:
+          - git.commit
+          - gw.commit.standing:000
+          - gw.dashboard.role:000
+          - gw.house.operating.status:000
+          - layout.lite:011
+          - layout.lite:012
+          - layout.lite:013
+          - left.right.dot
+          - spaceheat.name
+          - utc.iso8601.seconds
+          - utc.milliseconds
+          - uuid4.str
       '001':
         status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/001

@@ -665,9 +665,11 @@ types:
         summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + CreatedMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
 
   gw.house.summary:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: "Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit stands against the scada repository's main head, derived by the backend; axiom 2: absent when ScadaCommit is absent."
       "001":
         summary: "Adds optional ScadaCommit (git.commit): the commit the house's scada announced for its current run, absent when it announced none."
       "000":
@@ -2648,6 +2650,12 @@ enums:
       "000": {}
 
   zone.setpoint.source:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  gw.commit.standing:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

@@ -188,6 +188,8 @@ enums:
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
   valve.open.or.closed: sha256:6d597f8c42190e1f2b71ae13ec9931607986a360c822e0cd88b000f77a9fa76e
   zone.call.source: sha256:3f0ad484d9f528de60e235ff6a773e9e8ed0e4a00818c7e117cde1d74512d067
+  gw.commit.standing:
+    '000': sha256:606e0cb089e43d60e7487211301ce75cf627588d380ec98c08197a7e0845f315
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -327,6 +329,7 @@ types:
   gw.house.summary:
     '000': sha256:8556a099ee72360af4b11926e00fade7d9b65f4fe0e155a954e8358edf1d5d95
     '001': sha256:25f85e4dd1501e42c1795c6aed97e7e68045e6a1068a4e1039b4b1fe924d8825
+    '002': sha256:7ebd967204735ac48d02250f3f7d850728babf6d88185155cb82f96106b19b0c
   gw.opsgenie.alert:
     '000': sha256:c42bf68f06ae1cefb47561915be41dc82e5f261e51225f04c7ef5506806b2d1a
   gw.opsgenie.alert.close:

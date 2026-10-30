@@ -5,10 +5,12 @@ import pytest
 
 from sema.runtime.base import SemaError
 from sema.runtime.codec import default_codec
+from sema.runtime.enums.gw_commit_standing import GwCommitStanding
 from sema.runtime.enums.gw_dashboard_role import GwDashboardRole
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
 from sema.runtime.types.gw_house_summary import GwHouseSummary
 from sema.runtime.types.old_versions.gw_house_summary_000 import GwHouseSummary000
+from sema.runtime.types.old_versions.gw_house_summary_001 import GwHouseSummary001
 
 
 def load_fixture(name: str, version_dir: str) -> dict:
@@ -34,20 +36,54 @@ def operating_status() -> dict:
     }
 
 
-def test_latest_version_is_001() -> None:
-    assert GwHouseSummary.version_value() == "001"
+def test_latest_version_is_002() -> None:
+    assert GwHouseSummary.version_value() == "002"
 
 
-def test_v001_loads_with_scada_commit() -> None:
-    decoded = default_codec.from_dict(load_fixture("default.json", "v001"))
+def test_v002_loads_with_commit_and_standing() -> None:
+    decoded = default_codec.from_dict(load_fixture("default.json", "v002"))
 
     assert isinstance(decoded, GwHouseSummary)
     assert decoded.role is GwDashboardRole.Admin
     assert decoded.scada_commit == "e55faa2d3b1c4f6a8d9e0f1a2b3c4d5e6f7a8b9c"
+    assert decoded.scada_commit_standing is GwCommitStanding.OnMainHead
 
 
-def test_v001_scada_commit_takes_the_dirty_suffix_and_refuses_a_short_hash() -> None:
-    raw = load_fixture("default.json", "v001")
+def test_unknown_standing_decodes_to_unknown() -> None:
+    raw = load_fixture("default.json", "v002")
+    raw["ScadaCommitStanding"] = "AheadOfMain"
+    decoded = default_codec.from_dict(raw)
+    assert isinstance(decoded, GwHouseSummary)
+    assert decoded.scada_commit_standing is GwCommitStanding.Unknown
+
+
+def test_axiom_2_standing_without_commit_refused() -> None:
+    raw = load_fixture("default.json", "v002")
+    del raw["ScadaCommit"]
+    with pytest.raises(SemaError, match="(?i)axiom 2"):
+        default_codec.from_dict(raw)
+
+
+def test_commit_without_standing_loads() -> None:
+    raw = load_fixture("default.json", "v002")
+    del raw["ScadaCommitStanding"]
+    decoded = default_codec.from_dict(raw)
+    assert isinstance(decoded, GwHouseSummary)
+    assert decoded.scada_commit_standing is None
+
+
+def test_v001_loads_and_upgrades_without_a_standing() -> None:
+    decoded = default_codec.from_dict(load_fixture("default.json", "v001"), auto_upgrade=False)
+    assert isinstance(decoded, GwHouseSummary001)
+
+    upgraded = decoded.upgrade()
+    assert isinstance(upgraded, GwHouseSummary)
+    assert upgraded.scada_commit == "e55faa2d3b1c4f6a8d9e0f1a2b3c4d5e6f7a8b9c"
+    assert upgraded.scada_commit_standing is None
+
+
+def test_v002_scada_commit_takes_the_dirty_suffix_and_refuses_a_short_hash() -> None:
+    raw = load_fixture("default.json", "v002")
     raw["ScadaCommit"] = raw["ScadaCommit"] + "-dirty"
     decoded = default_codec.from_dict(raw)
     assert isinstance(decoded, GwHouseSummary)
@@ -63,13 +99,14 @@ def test_v000_minimal_loads_and_upgrades() -> None:
     decoded = default_codec.from_dict(load_fixture("default.json", "v000"), auto_upgrade=False)
     assert isinstance(decoded, GwHouseSummary000)
 
-    upgraded = decoded.upgrade()
+    upgraded = decoded.upgrade().upgrade()
     assert isinstance(upgraded, GwHouseSummary)
     assert upgraded.role is GwDashboardRole.Viewer
     assert upgraded.layout is None
     assert upgraded.operating_status is None
     assert upgraded.longest_running_zone_name is None
     assert upgraded.scada_commit is None
+    assert upgraded.scada_commit_standing is None
 
 
 def test_nested_operating_status_decodes() -> None:

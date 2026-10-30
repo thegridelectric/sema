@@ -47,6 +47,7 @@ from sema.runtime.enums.gw_alert_category import GwAlertCategory
 from sema.runtime.enums.gw_alert_state import GwAlertState
 from sema.runtime.enums.gw_channel_kind import GwChannelKind
 from sema.runtime.enums.gw_circulator_role import GwCirculatorRole
+from sema.runtime.enums.gw_commit_standing import GwCommitStanding
 from sema.runtime.enums.gw_dashboard_role import GwDashboardRole
 from sema.runtime.enums.gw_dispatch_refusal_reason import GwDispatchRefusalReason
 from sema.runtime.enums.gw_experiment_verdict import GwExperimentVerdict
@@ -159,6 +160,7 @@ __all__ = [
     "GwAlertState",
     "GwChannelKind",
     "GwCirculatorRole",
+    "GwCommitStanding",
     "GwDashboardRole",
     "GwDispatchRefusalReason",
     "GwExperimentVerdict",

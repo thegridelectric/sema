@@ -1,0 +1,28 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_house_summary_002_class_name }}":
+        """
+        Axiom 1: ZonePairTogether
+        LongestRunningZoneName and LongestRunningZoneStartTime SHALL be present
+        together or absent together.
+        """
+        if (self.longest_running_zone_name is None) != (
+            self.longest_running_zone_start_time is None
+        ):
+            raise ValueError(
+                "Axiom 1 (ZonePairTogether) failed: LongestRunningZoneName and "
+                "LongestRunningZoneStartTime are present together or absent together."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ gw_house_summary_002_class_name }}":
+        """
+        Axiom 2: StandingNeedsCommit
+        ScadaCommitStanding SHALL be absent when ScadaCommit is absent.
+        """
+        if self.scada_commit is None and self.scada_commit_standing is not None:
+            raise ValueError(
+                "Axiom 2 (StandingNeedsCommit) failed: ScadaCommitStanding is "
+                "present with no ScadaCommit."
+            )
+        return self

@@ -8,8 +8,8 @@ from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
-from sema.runtime.types.gw_house_summary import GwHouseSummary
 from sema.runtime.types.layout_lite import LayoutLite
+from sema.runtime.types.old_versions.gw_house_summary_001 import GwHouseSummary001
 from sema.runtime.types.old_versions.layout_lite_011 import LayoutLite011
 from sema.runtime.types.old_versions.layout_lite_012 import LayoutLite012
 
@@ -46,10 +46,10 @@ class GwHouseSummary000(SemaType):
             )
         return self
 
-    def upgrade(self) -> GwHouseSummary:
+    def upgrade(self) -> GwHouseSummary001:
         """
         Adds optional ScadaCommit (git.commit): the commit the house's scada announced for its current run, absent when it announced none.
         """
         data = self.model_dump()
         data["version"] = "001"
-        return GwHouseSummary.model_validate(data)
+        return GwHouseSummary001.model_validate(data)
