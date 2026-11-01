@@ -173,6 +173,16 @@ types:
     versions:
       '001': definitions/types/fis.instance.authorization.event/001.yaml
       '000': definitions/types/fis.instance.authorization.event/000.yaml
+  flo.optimal.path:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.optimal.path/000.yaml
+  flo.params:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.params/000.yaml
   flo.params.house0:
     latest_version: '007'
     versioning_strategy: literal
@@ -185,6 +195,21 @@ types:
       '002': definitions/types/flo.params.house0/002.yaml
       '001': definitions/types/flo.params.house0/001.yaml
       '000': definitions/types/flo.params.house0/000.yaml
+  flo.recommendation:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.recommendation/000.yaml
+  flo.tuning.alice:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.tuning.alice/000.yaml
+  flo.tuning.bruce:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.tuning.bruce/000.yaml
   flow.hall.params:
     latest_version: '210'
     versioning_strategy: literal
@@ -545,9 +570,10 @@ types:
       '001': definitions/types/gw.weather.create.cmd/001.yaml
       '000': definitions/types/gw.weather.create.cmd/000.yaml
   gw.weather.forecast:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/gw.weather.forecast/002.yaml
       '001': definitions/types/gw.weather.forecast/001.yaml
       '000': definitions/types/gw.weather.forecast/000.yaml
   gw.weather.forecast.binding:

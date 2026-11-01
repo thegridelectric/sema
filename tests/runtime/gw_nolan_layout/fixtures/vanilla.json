@@ -4384,6 +4384,8 @@
     ],
     "WaterStore": {
       "TotalStoreTanks": 1,
+      "GallonsPerTank": 120,
+      "TempSensorsPerTank": 3,
       "TypeName": "gw.water.store",
       "Version": "000"
     },

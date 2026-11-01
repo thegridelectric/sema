@@ -94,3 +94,20 @@
                 f"SiegLoopStrategy HoldFullSend, got {family.sieg_loop_strategy}."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> "{{ gw_operational_params_000_class_name }}":
+        """
+        Axiom 6: AliceHoldsDispatch
+        If FloTuning.TypeName is flo.tuning.alice, DispatchHold.OperatorHold
+        SHALL be true.
+        """
+        if (
+            isinstance(self.flo_tuning, {{ flo_tuning_alice_000_class_name }})
+            and not self.dispatch_hold.operator_hold
+        ):
+            raise ValueError(
+                "Axiom 6 (AliceHoldsDispatch) failed: flo.tuning.alice requires "
+                "DispatchHold.OperatorHold."
+            )
+        return self

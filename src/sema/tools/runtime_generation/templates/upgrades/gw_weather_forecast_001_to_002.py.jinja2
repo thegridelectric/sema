@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ gw_weather_forecast_002_class_name }}:
+        """
+        - ForecastUid: add (uuid4.str, required), the forecast's identity minted by the service before the send
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ gw_weather_forecast_001_class_name }} cannot be upgraded to "
+            "{{ gw_weather_forecast_002_class_name }} without context: v002 requires "
+            "ForecastUid, which only the emitting service mints; it SHALL NOT be "
+            "fabricated."
+        )

@@ -21,7 +21,7 @@ def test_default_v000_loads_as_gw_operational_params() -> None:
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("gw.operational.params", "000") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("gw.operational.params", "000") == {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
 
 
 def test_axiom_5_refuses_standby_house0_loop_not_at_full_send() -> None:
@@ -52,3 +52,18 @@ def test_axiom_4_d_refuses_no_sieg_no_heating_without_its_relays() -> None:
         p["EnergizedStandbyRelays"] = []
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 4)
+
+
+def test_axiom_6_refuses_alice_without_operator_hold() -> None:
+    def mutate(p: dict) -> None:
+        p["DispatchHold"]["OperatorHold"] = False
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 6)
+
+
+def test_bruce_runs_without_operator_hold() -> None:
+    def mutate(p: dict) -> None:
+        p["FloTuning"] = example("flo.tuning.bruce", "000")
+        p["DispatchHold"]["OperatorHold"] = False
+
+    default_codec.from_dict(mutated(EXAMPLE, mutate))

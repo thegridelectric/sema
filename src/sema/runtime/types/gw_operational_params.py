@@ -2,6 +2,7 @@ from typing import Literal
 from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.enums import Gw1ServiceMode
+from sema.runtime.enums import GwMarketProductName
 from sema.runtime.enums import GwStandbyPosture
 from sema.runtime.enums import SiegLoopStrategy
 from sema.runtime.property_format import LeftRightDot
@@ -11,6 +12,8 @@ from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.capture_tuning import CaptureTuning
 from sema.runtime.types.cop_curve import CopCurve
+from sema.runtime.types.flo_tuning_alice import FloTuningAlice
+from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.gw_dispatch_hold import GwDispatchHold
 from sema.runtime.types.gw_house0_family_params import GwHouse0FamilyParams
 from sema.runtime.types.gw_house0_no_sieg_family_params import (
@@ -43,6 +46,9 @@ class GwOperationalParams(SemaType):
     load_overestimation_percent: NonNegativeInt
     uses_backup_when_cold: bool
     horizon_hours: PositiveInt
+    market_maker_alias: LeftRightDot
+    market_product_name: GwMarketProductName
+    flo_tuning: FloTuningAlice | FloTuningBruce
     weather_bundle_name: LeftRightDot
     tariff: GwTouTariff
     type_name: Literal["gw.operational.params"] = "gw.operational.params"
@@ -145,5 +151,22 @@ class GwOperationalParams(SemaType):
             raise ValueError(
                 "Axiom 5 (StandbyHoldsFullSend) failed: Standby requires "
                 f"SiegLoopStrategy HoldFullSend, got {family.sieg_loop_strategy}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> "GwOperationalParams":
+        """
+        Axiom 6: AliceHoldsDispatch
+        If FloTuning.TypeName is flo.tuning.alice, DispatchHold.OperatorHold
+        SHALL be true.
+        """
+        if (
+            isinstance(self.flo_tuning, FloTuningAlice)
+            and not self.dispatch_hold.operator_hold
+        ):
+            raise ValueError(
+                "Axiom 6 (AliceHoldsDispatch) failed: flo.tuning.alice requires "
+                "DispatchHold.OperatorHold."
             )
         return self

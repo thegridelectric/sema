@@ -3,19 +3,21 @@ from pydantic import model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import UTCMilliseconds
+from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
 from sema.runtime.types.gw_weather_forecast_series import GwWeatherForecastSeries
 
 
 class GwWeatherForecast(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.weather.forecast/001"""
+    """Sema: https://schemas.electricity.works/types/gw.weather.forecast/002"""
 
+    forecast_uid: UUID4Str
     bundle_name: LeftRightDot
     message_created_ms: UTCMilliseconds
     first_slice_start: UtcIso8601Seconds
     series_list: list[GwWeatherForecastSeries]
     type_name: Literal["gw.weather.forecast"] = "gw.weather.forecast"
-    version: Literal["001"] = "001"
+    version: Literal["002"] = "002"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwWeatherForecast":

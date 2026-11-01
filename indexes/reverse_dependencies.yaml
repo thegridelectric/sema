@@ -140,6 +140,21 @@ types:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
       - gw.nolan.layout:000
+  flo.optimal.path:
+    '000':
+      used_by:
+      - flo.params:000
+      - flo.recommendation:000
+  flo.tuning.alice:
+    '000':
+      used_by:
+      - flo.params:000
+      - gw.operational.params:000
+  flo.tuning.bruce:
+    '000':
+      used_by:
+      - flo.params:000
+      - gw.operational.params:000
   fsm.atomic.report:
     '000':
       used_by:
@@ -304,6 +319,7 @@ types:
     '000':
       used_by:
       - gw.weather.forecast:001
+      - gw.weather.forecast:002
   gw.weather.location.gt:
     '000':
       used_by:
@@ -629,6 +645,7 @@ types:
       - atn.bid:001
       - atn.bid:002
       - bid:000
+      - flo.recommendation:000
   relay.actor.config:
     '001':
       used_by:
@@ -899,6 +916,10 @@ enums:
     '001':
       used_by:
       - gw.alert:001
+  gw.market.product.name:
+    '000':
+      used_by:
+      - gw.operational.params:000
   gw.opsgenie.alert.status:
     '000':
       used_by:
@@ -1012,6 +1033,7 @@ enums:
   gw1.seasonal.storage.mode:
     '000':
       used_by:
+      - flo.params:000
       - gw.house.operating.status:000
       - gw.house0.family.params:000
       - gw.house0.no.sieg.family.params:000
@@ -1136,6 +1158,7 @@ enums:
       - flo.params.house0:005
       - flo.params.house0:006
       - flo.params.house0:007
+      - flo.recommendation:000
       - latest.price:000
   market.quantity.unit:
     '000':
@@ -1143,6 +1166,7 @@ enums:
       - atn.bid:001
       - atn.bid:002
       - bid:000
+      - flo.recommendation:000
       - market.product:000
   pico.board.variant:
     '000':
@@ -1293,6 +1317,7 @@ formats:
     - tank.module.params:210
   git.commit:
     used_by:
+    - flo.recommendation:000
     - gw.house.summary:001
     - gw.house.summary:002
     - gw.scada.commit:000
@@ -1349,6 +1374,8 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - flo.params:000
+    - flo.recommendation:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -1402,6 +1429,7 @@ formats:
     - gw.weather.forecast.series:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
+    - gw.weather.forecast:002
     - gw.weather.location.gt:000
     - gw.weather.location.gt:001
     - gw.weather.observation.reading:000
@@ -1490,6 +1518,7 @@ formats:
     - fis.connect.claims:000
     - fis.instance.authorization.event:000
     - fis.instance.authorization.event:001
+    - flo.recommendation:000
     - gw.channel.noise.stats:000
     - gw.command.transition:000
     - gw.experiment.run:000
@@ -1513,6 +1542,7 @@ formats:
     - relay.control.config:000
   non.negative.int:
     used_by:
+    - flo.tuning.bruce:000
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.native.gpio.pin:000
@@ -1620,6 +1650,7 @@ formats:
     - electric.meter.component.gt:001
     - electric.meter.device.type.gt:000
     - energy.instruction:000
+    - flo.optimal.path:000
     - flo.params.house0:000
     - flo.params.house0:001
     - flo.params.house0:002
@@ -1628,6 +1659,7 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - flo.params:000
     - flow.hall.params:101
     - flow.hall.params:200
     - flow.hall.params:210
@@ -1842,6 +1874,7 @@ formats:
     - gw.weather.forecast.series:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
+    - gw.weather.forecast:002
     - gw.weather.observation:000
     - gw.weather.observation:001
     - gw.weather.seasonal.template.gt:000
@@ -1858,6 +1891,8 @@ formats:
     - energy.instruction:000
     - fis.instance.authorization.event:000
     - fis.instance.authorization.event:001
+    - flo.params:000
+    - flo.recommendation:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -1893,6 +1928,7 @@ formats:
     - gw.scada.commit:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
+    - gw.weather.forecast:002
     - i2c.result:000
     - i2c.result:001
     - layout.bundle:000
@@ -1954,6 +1990,7 @@ formats:
     - data.channel.gt:003
     - data.channel.gt:004
     - energy.instruction:000
+    - flo.optimal.path:000
     - flo.params.house0:000
     - flo.params.house0:001
     - flo.params.house0:002
@@ -1962,6 +1999,7 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - flo.params:000
     - gw.stopgap.price.forecast:000
     - heating.forecast:000
     - report:001
@@ -2003,6 +2041,7 @@ formats:
     - flo.params.house0:005
     - flo.params.house0:006
     - flo.params.house0:007
+    - flo.params:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -2045,6 +2084,7 @@ formats:
     - gw.weather.forecast.bundle.gt:001
     - gw.weather.forecast.bundle.gt:002
     - gw.weather.forecast.channel.gt:000
+    - gw.weather.forecast:002
     - gw.weather.location.gt:000
     - gw.weather.location.gt:001
     - gw.weather.seasonal.template.gt:000

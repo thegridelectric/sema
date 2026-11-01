@@ -5,7 +5,7 @@ from sema.runtime.enums import GwWeatherForecastFidelity
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UtcIso8601Seconds
-from sema.runtime.types.gw_weather_forecast import GwWeatherForecast
+from sema.runtime.types.old_versions.gw_weather_forecast_001 import GwWeatherForecast001
 
 
 class GwWeatherForecast000(SemaType):
@@ -84,14 +84,14 @@ class GwWeatherForecast000(SemaType):
                 )
         return self
 
-    def upgrade(self) -> GwWeatherForecast:
+    def upgrade(self) -> GwWeatherForecast001:
         """
         - SourceUpdatedTime, Fidelity, TempChannelName, TempValues, WindSpeedChannelName, WindSpeedValues: removed
         - SeriesList: add (gw.weather.forecast.series 000, one per bound channel)
         """
         raise SemaType.upgrade_requires_context(
             "GwWeatherForecast000 cannot be upgraded to "
-            "GwWeatherForecast without context: v001 holds "
+            "GwWeatherForecast001 without context: v001 holds "
             "exactly the series its bundle binds, and only the emitting "
             "service's bundle record and forecasters hold them; they SHALL NOT "
             "be fabricated."
