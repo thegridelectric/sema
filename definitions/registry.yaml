@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-02T17:45:00Z"
+  last_updated: "2026-11-02T18:20:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -2326,7 +2326,7 @@ types:
       "001":
         schema_url: "https://schemas.electricity.works/types/flo.params/001"
         created: "2026-11-02T17:45:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Tuning: flo.tuning.bruce 000 -> 001, NumLayers assigned as TanksModeled times TempSensorsPerTank
         direct_dependencies:
@@ -2547,7 +2547,7 @@ types:
       "001":
         schema_url: "https://schemas.electricity.works/types/flo.tuning.bruce/001"
         created: "2026-11-02T17:45:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - NumLayers: add
         direct_dependencies:
