@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-01T19:25:00Z'
+  last_updated: '2026-11-02T08:05:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3789,7 +3789,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-01T17:05:00Z'
+        created: '2026-11-02T08:05:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -3813,7 +3813,11 @@ types:
           \ / flo.tuning.bruce, discriminated by TypeName): the optimizer this house\
           \ runs and its knobs; the LTN copies it into each flo.params request. Axiom\
           \ 6: alice holds dispatch (DispatchHold.OperatorHold true), since alice\
-          \ is the empty tuning of a house with no optimizer."
+          \ is the empty tuning of a house with no optimizer. Axiom 7: the tuning\
+          \ admits the family (a FLO models the plant as operated): bruce on a House0\
+          \ family excludes SiegLoopStrategy LwtControl, since bruce models one heat\
+          \ pump charging one stratified store and a loop that targets its own leaving\
+          \ temperature is not that plant."
         direct_dependencies:
           structural:
           - capture.tuning:000

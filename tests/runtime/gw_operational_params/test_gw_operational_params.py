@@ -21,7 +21,7 @@ def test_default_v000_loads_as_gw_operational_params() -> None:
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("gw.operational.params", "000") == {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+    assert axioms("gw.operational.params", "000") == {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: ["a"]}
 
 
 def test_axiom_5_refuses_standby_house0_loop_not_at_full_send() -> None:
@@ -65,5 +65,21 @@ def test_bruce_runs_without_operator_hold() -> None:
     def mutate(p: dict) -> None:
         p["FloTuning"] = example("flo.tuning.bruce", "000")
         p["DispatchHold"]["OperatorHold"] = False
+
+    default_codec.from_dict(mutated(EXAMPLE, mutate))
+
+
+def test_axiom_7_a_refuses_bruce_on_house0_loop_at_lwt_control() -> None:
+    def mutate(p: dict) -> None:
+        p["FloTuning"] = example("flo.tuning.bruce", "000")
+        p["DispatchHold"]["OperatorHold"] = False
+        p["FamilyParams"]["SiegLoopStrategy"] = "LwtControl"
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 7)
+
+
+def test_alice_runs_on_house0_loop_at_lwt_control() -> None:
+    def mutate(p: dict) -> None:
+        p["FamilyParams"]["SiegLoopStrategy"] = "LwtControl"
 
     default_codec.from_dict(mutated(EXAMPLE, mutate))
