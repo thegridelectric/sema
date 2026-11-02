@@ -144,16 +144,21 @@ types:
     '000':
       used_by:
       - flo.params:000
+      - flo.params:001
       - flo.recommendation:000
   flo.tuning.alice:
     '000':
       used_by:
       - flo.params:000
+      - flo.params:001
       - gw.operational.params:000
   flo.tuning.bruce:
     '000':
       used_by:
       - flo.params:000
+    '001':
+      used_by:
+      - flo.params:001
       - gw.operational.params:000
   fsm.atomic.report:
     '000':
@@ -1034,6 +1039,7 @@ enums:
     '000':
       used_by:
       - flo.params:000
+      - flo.params:001
       - gw.house.operating.status:000
       - gw.house0.family.params:000
       - gw.house0.no.sieg.family.params:000
@@ -1375,6 +1381,7 @@ formats:
     - flo.params.house0:006
     - flo.params.house0:007
     - flo.params:000
+    - flo.params:001
     - flo.recommendation:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
@@ -1543,6 +1550,7 @@ formats:
   non.negative.int:
     used_by:
     - flo.tuning.bruce:000
+    - flo.tuning.bruce:001
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.native.gpio.pin:000
@@ -1660,6 +1668,8 @@ formats:
     - flo.params.house0:006
     - flo.params.house0:007
     - flo.params:000
+    - flo.params:001
+    - flo.tuning.bruce:001
     - flow.hall.params:101
     - flow.hall.params:200
     - flow.hall.params:210
@@ -1892,6 +1902,7 @@ formats:
     - fis.instance.authorization.event:000
     - fis.instance.authorization.event:001
     - flo.params:000
+    - flo.params:001
     - flo.recommendation:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
@@ -2000,6 +2011,7 @@ formats:
     - flo.params.house0:006
     - flo.params.house0:007
     - flo.params:000
+    - flo.params:001
     - gw.stopgap.price.forecast:000
     - heating.forecast:000
     - report:001
@@ -2042,6 +2054,7 @@ formats:
     - flo.params.house0:006
     - flo.params.house0:007
     - flo.params:000
+    - flo.params:001
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000

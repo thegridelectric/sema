@@ -1,0 +1,12 @@
+    def upgrade(self) -> {{ flo_params_001_class_name }}:
+        """
+        - Tuning: flo.tuning.bruce 000 -> 001, NumLayers assigned as
+          TanksModeled times TempSensorsPerTank
+        """
+        data = self.model_dump()
+        tuning = data["tuning"]
+        if tuning["type_name"] == "flo.tuning.bruce":
+            tuning["num_layers"] = data["tanks_modeled"] * data["temp_sensors_per_tank"]
+            tuning["version"] = "001"
+        data["version"] = "001"
+        return {{ flo_params_001_class_name }}.model_validate(data)

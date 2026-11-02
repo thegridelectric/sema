@@ -1,0 +1,80 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> Self:
+        """
+        Axiom 1: StepListLengths
+        StepDurationMinutes, LmpUsdMwhList, DistUsdMwhList, OatFList,
+        LoadKwhList and RswtFList SHALL be non-empty and of the same length.
+        """
+        lengths = {
+            "StepDurationMinutes": len(self.step_duration_minutes),
+            "LmpUsdMwhList": len(self.lmp_usd_mwh_list),
+            "DistUsdMwhList": len(self.dist_usd_mwh_list),
+            "OatFList": len(self.oat_f_list),
+            "LoadKwhList": len(self.load_kwh_list),
+            "RswtFList": len(self.rswt_f_list),
+        }
+        if len(set(lengths.values())) != 1 or lengths["StepDurationMinutes"] == 0:
+            raise ValueError(
+                "Axiom 1 (StepListLengths) failed: the per-step lists must be "
+                f"non-empty and of one length; got {lengths!r}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> Self:
+        """
+        Axiom 2: ThermoclinesWithinTheStore
+        InitialThermocline1 SHALL be at most InitialThermocline2, and
+        InitialThermocline2 SHALL be at most TempSensorsPerTank times
+        TanksModeled.
+        """
+        top = self.temp_sensors_per_tank * self.tanks_modeled
+        if not (self.initial_thermocline1 <= self.initial_thermocline2 <= top):
+            raise ValueError(
+                "Axiom 2 (ThermoclinesWithinTheStore) failed: need "
+                f"InitialThermocline1 ({self.initial_thermocline1}) <= "
+                f"InitialThermocline2 ({self.initial_thermocline2}) <= "
+                f"TempSensorsPerTank * TanksModeled ({top})."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> Self:
+        """
+        Axiom 3: BufferIsOneTank
+        If SeasonalStorageMode is BufferOnly, TanksModeled SHALL be 1.
+        """
+        if self.seasonal_storage_mode.value == "BufferOnly" and self.tanks_modeled != 1:
+            raise ValueError(
+                "Axiom 3 (BufferIsOneTank) failed: BufferOnly models one tank; "
+                f"got TanksModeled {self.tanks_modeled}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_4(self) -> Self:
+        """
+        Axiom 4: PriceBounds
+        PriceMinUsdMwh SHALL be less than PriceMaxUsdMwh.
+        """
+        if not self.price_min_usd_mwh < self.price_max_usd_mwh:
+            raise ValueError(
+                f"Axiom 4 (PriceBounds) failed: PriceMinUsdMwh ({self.price_min_usd_mwh}) "
+                f"must be less than PriceMaxUsdMwh ({self.price_max_usd_mwh})."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_5(self) -> Self:
+        """
+        Axiom 5: PreviousRunTogether
+        PreviousOptimalPath and PreviousEstimateElecUsdMwhNow SHALL be
+        both present or both absent.
+        """
+        if (self.previous_optimal_path is None) != (self.previous_estimate_elec_usd_mwh_now is None):
+            raise ValueError(
+                "Axiom 5 (PreviousRunTogether) failed: PreviousOptimalPath and "
+                "PreviousEstimateElecUsdMwhNow must be both present or both absent."
+            )
+        return self
+

@@ -1,14 +1,14 @@
-"""flo.tuning.bruce 000: the RWT line per load bucket, proved by mutation of the example."""
+"""flo.tuning.bruce 001: the RWT line per load bucket, proved by mutation of the example."""
 
 from sema.runtime.codec import default_codec
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.tuning.bruce", "000")
+EXAMPLE = example("flo.tuning.bruce", "001")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.tuning.bruce", "000") == {1: [], 2: []}
+    assert axioms("flo.tuning.bruce", "001") == {1: [], 2: []}
 
 
 def test_example_round_trips() -> None:

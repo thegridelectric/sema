@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ flo_tuning_bruce_001_class_name }}:
+        """
+        - NumLayers: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ flo_tuning_bruce_000_class_name }} cannot be upgraded to "
+            "{{ flo_tuning_bruce_001_class_name }} without context: 001 adds "
+            "NumLayers, which a 000 tuning takes from the store of the "
+            "flo.params it sits in (TanksModeled times TempSensorsPerTank); "
+            "upgrade the enclosing flo.params instead."
+        )

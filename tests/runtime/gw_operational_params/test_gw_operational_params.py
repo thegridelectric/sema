@@ -63,7 +63,7 @@ def test_axiom_6_refuses_alice_without_operator_hold() -> None:
 
 def test_bruce_runs_without_operator_hold() -> None:
     def mutate(p: dict) -> None:
-        p["FloTuning"] = example("flo.tuning.bruce", "000")
+        p["FloTuning"] = example("flo.tuning.bruce", "001")
         p["DispatchHold"]["OperatorHold"] = False
 
     default_codec.from_dict(mutated(EXAMPLE, mutate))
@@ -71,7 +71,7 @@ def test_bruce_runs_without_operator_hold() -> None:
 
 def test_axiom_7_a_refuses_bruce_on_house0_loop_at_lwt_control() -> None:
     def mutate(p: dict) -> None:
-        p["FloTuning"] = example("flo.tuning.bruce", "000")
+        p["FloTuning"] = example("flo.tuning.bruce", "001")
         p["DispatchHold"]["OperatorHold"] = False
         p["FamilyParams"]["SiegLoopStrategy"] = "LwtControl"
 
