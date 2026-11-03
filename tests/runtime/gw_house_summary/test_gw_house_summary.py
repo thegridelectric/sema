@@ -73,7 +73,9 @@ def test_commit_without_standing_loads() -> None:
 
 
 def test_v001_loads_and_upgrades_without_a_standing() -> None:
-    decoded = default_codec.from_dict(load_fixture("default.json", "v001"), auto_upgrade=False)
+    decoded = default_codec.from_dict(
+        load_fixture("default.json", "v001"), auto_upgrade=False
+    )
     assert isinstance(decoded, GwHouseSummary001)
 
     upgraded = decoded.upgrade()
@@ -96,7 +98,9 @@ def test_v002_scada_commit_takes_the_dirty_suffix_and_refuses_a_short_hash() -> 
 
 
 def test_v000_minimal_loads_and_upgrades() -> None:
-    decoded = default_codec.from_dict(load_fixture("default.json", "v000"), auto_upgrade=False)
+    decoded = default_codec.from_dict(
+        load_fixture("default.json", "v000"), auto_upgrade=False
+    )
     assert isinstance(decoded, GwHouseSummary000)
 
     upgraded = decoded.upgrade().upgrade()
