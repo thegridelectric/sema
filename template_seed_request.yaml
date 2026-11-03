@@ -12,6 +12,7 @@
 #                              (published-only builds: every published one).
 #   versions: ["001", "003"]   Include explicit versions. For types, seed
 #                              expansion also fills in intermediate versions.
+# A published-only build fails if a named word has no published version.
 
 initial_targets:
   types:

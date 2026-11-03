@@ -129,30 +129,6 @@ def get_registry_dependencies(registry):
     return dependencies
 
 
-def find_named_type_dependencies(selected_types, registry_dependencies):
-    """Recursively find all named type dependencies"""
-    all_deps = set(selected_types)
-    to_process = list(selected_types)
-
-    while to_process:
-        current_type = to_process.pop(0)
-        deps = registry_dependencies.get(current_type, [])
-
-        for dep in deps:
-            # Check if it's a named type dependency (format: "type.name:version" or just "type.name")
-            if ":" in dep:
-                dep_type = dep.split(":")[0]
-            else:
-                dep_type = dep
-
-            # Only include if it's a named type (not formats, enums, etc.)
-            if dep_type in registry_dependencies and dep_type not in all_deps:
-                all_deps.add(dep_type)
-                to_process.append(dep_type)
-
-    return list(all_deps)
-
-
 def generate_html():
     """Generate HTML table of types"""
     registry = load_registry()
@@ -163,9 +139,6 @@ def generate_html():
 
     # Sort types alphabetically
     type_names.sort()
-
-    # Count stable types
-    stable_types = [name for name in type_names if types[name].get("stable", False)]
 
     # Get Python file contents for all types
     python_files = {}
@@ -178,11 +151,6 @@ def generate_html():
 
     # Get registry dependencies
     registry_dependencies = get_registry_dependencies(registry)
-
-    # Find named type dependencies
-    named_type_dependencies = find_named_type_dependencies(
-        type_names, registry_dependencies
-    )
 
     # Generate HTML
     html_content = """<!DOCTYPE html>

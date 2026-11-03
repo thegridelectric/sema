@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from sema.tools.build_seed_expanded import expand_seed
+from sema.tools.build_seed_expanded import ROOT, expand_seed
 
 
 def expand_request(
@@ -42,6 +42,70 @@ def test_published_only_include_all_passes_over_staging(tmp_path: Path) -> None:
     versions = set(expanded["worklist"]["types"]["pico.tank.module.component.gt"])
     assert "011" in versions
     assert "012" not in versions
+
+
+def _staging_only_versioned_type() -> tuple[str, str]:
+    registry = yaml.safe_load((ROOT / "indexes" / "public_registry.yaml").read_text())
+    for name, entry in sorted(registry["types"].items()):
+        if entry.get("versioning_strategy") == "none":
+            continue
+        versions = entry.get("versions") or {}
+        if versions and all(
+            version.get("status") == "staging" for version in versions.values()
+        ):
+            return name, max(versions, key=int)
+    pytest.skip("no staging-only versioned type in the registry")
+
+
+def test_published_only_include_all_refuses_a_staging_only_word(tmp_path: Path) -> None:
+    name, version = _staging_only_versioned_type()
+    with pytest.raises(ValueError, match="will not skip") as excinfo:
+        expand_request(
+            tmp_path,
+            f"""
+initial_targets:
+  types:
+    {name}:
+      include_all_versions: true
+""",
+            published_only=True,
+        )
+    message = str(excinfo.value)
+    assert name in message
+    assert version in message
+
+
+def test_published_only_bare_target_refuses_a_staging_only_word(tmp_path: Path) -> None:
+    name, version = _staging_only_versioned_type()
+    with pytest.raises(ValueError, match="will not skip") as excinfo:
+        expand_request(
+            tmp_path,
+            f"""
+initial_targets:
+  types:
+    {name}: {{}}
+""",
+            published_only=True,
+        )
+    message = str(excinfo.value)
+    assert name in message
+    assert version in message
+
+
+def test_include_all_keeps_a_staging_only_word_without_published_only(
+    tmp_path: Path,
+) -> None:
+    name, version = _staging_only_versioned_type()
+    expanded = expand_request(
+        tmp_path,
+        f"""
+initial_targets:
+  types:
+    {name}:
+      include_all_versions: true
+""",
+    )
+    assert version in expanded["worklist"]["types"][name]
 
 
 def test_published_only_keeps_an_explicit_staging_version(tmp_path: Path) -> None:

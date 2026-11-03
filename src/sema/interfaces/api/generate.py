@@ -1,10 +1,21 @@
+import shutil
+import tempfile
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
+
 from sema.generator.seed_builder import SeedBuilder
-import tempfile
-import shutil
 
 app = FastAPI()
+
+
+class GenerateRequest(BaseModel):
+    selected_types: list[str]
+    selected_enums: list[str]
+    package_name: str
+    repo_name: str
 
 
 @app.post("/api/generate")

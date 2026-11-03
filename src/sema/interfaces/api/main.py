@@ -1,6 +1,9 @@
-# api/main.py
-import yaml
 from pathlib import Path
+
+import yaml
+from fastapi import FastAPI
+
+app = FastAPI()
 
 # Load registry from YAML at startup
 registry_path = Path("../type_definitions/registry.yaml")
