@@ -57,6 +57,7 @@
     "DdRswtF": 150,
     "DdDeltaTF": 20,
     "MaxEwtF": 170,
+    "MassFlowKgH": 426.0,
     "TypeName": "heating.curve",
     "Version": "000"
   },

@@ -17,5 +17,6 @@ class HeatingCurve(SemaType):
     dd_rswt_f: PositiveInt
     dd_delta_t_f: PositiveInt
     max_ewt_f: PositiveInt
+    mass_flow_kg_h: PositiveFloat
     type_name: Literal["heating.curve"] = "heating.curve"
     version: Literal["000"] = "000"

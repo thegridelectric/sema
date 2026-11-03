@@ -63,6 +63,11 @@ properties:
       The maximum entering water temperature, in degrees F, the distribution
       system tolerates.
 
+  MassFlowKgH:
+    $ref: "https://schemas.electricity.works/formats/positive.float"
+    description: >
+      Nominal hydronic mass flow rate, in kilograms per hour.
+
   TypeName:
     const: "heating.curve"
 
@@ -79,6 +84,7 @@ required:
   - DdRswtF
   - DdDeltaTF
   - MaxEwtF
+  - MassFlowKgH
   - TypeName
   - Version
 
@@ -96,6 +102,7 @@ examples:
       "DdRswtF": 150,
       "DdDeltaTF": 20,
       "MaxEwtF": 170,
+      "MassFlowKgH": 426.0,
       "TypeName": "heating.curve",
       "Version": "000"
     }
