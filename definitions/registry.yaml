@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-02T18:20:00Z"
+  last_updated: "2026-11-03T21:05:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -7085,7 +7085,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/slow.contract.rejection/000"
         created: "2026-10-13T11:00:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version. FromGNodeAlias + ContractId + Reason (gw.dispatch.refusal.reason) + MessageCreatedMs."
         direct_dependencies:
           structural:
