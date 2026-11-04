@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-03T21:05:00Z'
+  last_updated: '2026-11-04T07:40:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -377,11 +377,18 @@ enums:
         created: '2026-09-16T17:45:00Z'
         status: published
   gw.g.node.class:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     enum_type: versioned
     description: GridWorks-specific functional classification for GNodes
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/enums/gw.g.node.class/001
+        created: '2026-11-04T07:15:00Z'
+        status: published
+        added_values:
+        - TimeCoordinator
+        - Flo
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.g.node.class/000
         created: '2026-02-23T17:08:00Z'

@@ -1323,8 +1323,9 @@ enums:
       '000': definitions/enums/gw.fleet.alert.kind/000.yaml
   gw.g.node.class:
     enum_type: versioned
-    latest_version: '000'
+    latest_version: '001'
     versions:
+      '001': definitions/enums/gw.g.node.class/001.yaml
       '000': definitions/enums/gw.g.node.class/000.yaml
   gw.house.alert.kind:
     enum_type: versioned
