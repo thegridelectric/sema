@@ -33,7 +33,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFINITIONS_DIR = REPO_ROOT / "definitions"
 
 
-def load_registry(path: str) -> dict[str, Any]:
+def load_registry(path: Path) -> dict[str, Any]:
     with open(path, "r") as f:
         return yaml.safe_load(f)
 

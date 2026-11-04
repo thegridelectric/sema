@@ -205,7 +205,7 @@ def select_initial_versions(
     if not isinstance(versions, list) or not versions:
         raise ValueError(f"{category}.{name}.versions must be a non-empty list.")
 
-    selected: list[str] = []
+    selected: list[str | None] = []
     available_set = {version for version in available if version is not None}
     for version in versions:
         if not isinstance(version, str) or not VERSION_KEY_PATTERN.fullmatch(version):

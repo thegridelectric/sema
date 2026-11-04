@@ -46,7 +46,9 @@ def test_market_product_decode_is_maker_agnostic() -> None:
     assert decoded.slot_duration_minutes == 60
 
     # GridWorks's own vocabulary is just one valid value of ProductNameEnum.
-    gw = default_codec.from_dict(_instance("gw.market.product.name", "rt60gate5"))
+    gw = default_codec.from_dict(
+        _instance("gw.market.product.name", "rt60gate5"), expect=MarketProduct
+    )
     assert gw.product_name_enum == "gw.market.product.name"
 
 

@@ -34,6 +34,13 @@ dev = [
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.6.14",
     "mypy>=1.16.1",
+    "pyright>=1.1.411",
     "pytest>=8.4.1",
     "ruff>=0.12.0",
 ]
+
+[tool.pyright]
+include = ["src", "tests"]
+# The generated runtime is excluded until OPS-651 makes the generator's
+# output pyright-clean; its gate is snapshot_lint (ruff + mypy).
+exclude = ["src/sema/runtime"]
