@@ -44,6 +44,8 @@ enums:
     '000': sha256:5877ed059fd9caeff77f29a8dc3c6389591f926571af57e60c43c2f0c66e67ca
   five.v.boss.state:
     '000': sha256:c77cb7ab68696ebe5d1597feaf4b0e5dd9b1b821a9d0aa8fb2a2c2745b15a8ce
+  flo.refusal.reason:
+    '000': sha256:2f4a430b236053a51592d9890773b15c903fc1085dc92c6ac2a0c95c0cebb21a
   fsm.report.type: sha256:6827c748cd5b4118a570c92639bc0ffeeb5fb26bd1e3fc800ac539e6ac93e4cf
   g.node.instance.status:
     '000': sha256:b8eb871eb2017c18efd9ccf187838ed390a86e3116a8c2f9990ef791e48bd067
@@ -251,6 +253,8 @@ types:
     '007': sha256:f6815669324c9da51f9b5cd6bcc89c38f301d4667f64f456f350461bf18c80e6
   flo.recommendation:
     '000': sha256:a4739d3eafa191401248721deda107bd47fb1674ac9d12059f7e3aaa7ed6e579
+  flo.refusal:
+    '000': sha256:d5b1583971bb3e00364ec7cdab32a9586eb0a36f237396c8d760662c87f1982a
   flo.tuning.alice:
     '000': sha256:297d844216449c39c958e3b7e77b18cf39d8a1b31588cf62dd61d178eff83143
   flo.tuning.bruce:
@@ -539,6 +543,8 @@ types:
   slow.contract.heartbeat:
     '001': sha256:fc7516f59f79f6f7bc27c9025b355489b6c9ad04927af68b4b2b09c8c45bb3fb
     '002': sha256:5b65bd85b637e268c56a97d1fed82aa739fd736f6e1fb7a0110d6c9be894728b
+  slow.contract.rejection:
+    '000': sha256:9ea791f03a2569bad0555e3646dc2fbc9dc4cfcc853077fce3f27d8288c39500
   slow.dispatch.contract:
     '000': sha256:de811035a1c2ba0a28c8811fcf79aefcd1baf3e8f85e45f54666e2363c2929a6
   snapshot.spaceheat:
@@ -580,5 +586,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  slow.contract.rejection:
-    '000': sha256:9ea791f03a2569bad0555e3646dc2fbc9dc4cfcc853077fce3f27d8288c39500
