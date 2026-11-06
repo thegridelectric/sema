@@ -32,7 +32,15 @@ def test_default_v001_loads_as_gw_operational_params() -> None:
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("gw.operational.params", "001") == {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: ["a"]}
+    assert axioms("gw.operational.params", "001") == {
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        7: ["a"],
+    }
 
 
 def test_axiom_5_refuses_standby_house0_loop_not_at_full_send() -> None:
