@@ -393,12 +393,19 @@ enums:
         status: "published"
 
   gw.g.node.class:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     enum_type: "versioned"
     description: "GridWorks-specific functional classification for GNodes"
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/enums/gw.g.node.class/001"
+        created: "2026-11-04T07:15:00Z"
+        status: "published"
+        added_values:
+          - "TimeCoordinator"
+          - "Flo"
       "000":
         schema_url: "https://schemas.electricity.works/enums/gw.g.node.class/000"
         created: "2026-02-23T17:08:00Z"
@@ -7135,7 +7142,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/slow.contract.rejection/000"
         created: "2026-10-13T11:00:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial Sema version. FromGNodeAlias + ContractId + Reason (gw.dispatch.refusal.reason) + MessageCreatedMs."
         direct_dependencies:
           structural:

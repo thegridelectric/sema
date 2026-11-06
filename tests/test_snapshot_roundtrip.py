@@ -33,6 +33,7 @@ def _load_harness(tmp_path: Path):
     module_path = tmp_path / "roundtrip_under_test.py"
     module_path.write_text(module_text)
     spec = importlib.util.spec_from_file_location("roundtrip_under_test", module_path)
+    assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     # Register before exec: the frozen dataclass resolves its module via
     # sys.modules at class-definition time.

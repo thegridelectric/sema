@@ -10,7 +10,7 @@ from sema.tools.runtime_generation.scaffold_upgrade_template import (
     scaffold_upgrade_template,
     scaffold_upgrade_templates_for_seed,
 )
-from sema.tools.runtime_generation.types import _render_upgrade_method
+from sema.tools.runtime_generation.types import TypeContext, _render_upgrade_method
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -245,17 +245,17 @@ def test_render_upgrade_method_errors_when_template_missing() -> None:
     node = ("type", "example.type", "000")
     next_node = ("type", "example.type", "001")
     dag = SimpleNamespace(upgrades={node: next_node})
-    dag_max = {("type", "example.type"): "001"}
+    dag_max: dict[tuple[str, str], str | None] = {("type", "example.type"): "001"}
     registry = {
         "types": {"example.type": {"versions": {"000": {}, "001": {}}}},
         "enums": {},
     }
 
-    ctx = SimpleNamespace(
+    ctx = TypeContext(
         import_root="sema.runtime",
         dag_max=dag_max,
-        local_names=None,
-        imports=set(),
+        type_registry=registry["types"],
+        enum_registry=registry["enums"],
     )
 
     with pytest.raises(

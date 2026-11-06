@@ -80,6 +80,8 @@ def available_versions(
     over. A versionless type or literal enum carries its status at the word
     level and is returned regardless; the snapshot's closure check refuses
     it when it is staging, so a staging word named outright still fails.
+    An empty list means the word has no version a published-only selection
+    can take — the caller must refuse that, not drop the word.
     """
     if category == "types":
         if name not in registry["types"]:
@@ -127,6 +129,29 @@ def latest_version(
     return published[-1]
 
 
+def _refused_empty_selection(
+    category: str, name: str, registry: dict, *, published_only: bool
+) -> str:
+    """A seed-named word contributed no version. Published-only must say
+    why (the word is staging) and must not look like a successful skip."""
+    kind = category[:-1]
+    if not published_only:
+        return f"{kind} {name} is named in the seed but has no versions to include."
+    versions = registry[category][name].get("versions") or {}
+    staging = sorted(
+        version
+        for version, entry in versions.items()
+        if entry.get("status") == "staging"
+    )
+    staging_list = ", ".join(staging) if staging else "none"
+    return (
+        f"{kind} {name} is named in the seed but has no published version "
+        f"(staging: {staging_list}). A published-only snapshot will not skip "
+        f"a word the seed names. Pass --allow-staged to build a dev-only "
+        f"snapshot, or publish the word."
+    )
+
+
 def select_initial_versions(
     category: str,
     name: str,
@@ -154,22 +179,33 @@ def select_initial_versions(
 
     # An explicit `versions` list is taken as written: a staging version
     # listed outright reaches the snapshot's closure check and fails there.
+    # A bare target or include_all_versions under published_only passes over
+    # staging versions, but a word the seed names must still contribute at
+    # least one version — a staging-only word is refused, not dropped.
     available = available_versions(category, name, registry)
-    if not options:
-        return [latest_version(category, name, registry, published_only=published_only)]
-
-    if has_include_all:
-        if options["include_all_versions"] is not True:
+    if not options or has_include_all:
+        if has_include_all and options["include_all_versions"] is not True:
             raise ValueError(f"{category}.{name}.include_all_versions must be true.")
-        return available_versions(
+        selected = available_versions(
             category, name, registry, published_only=published_only
         )
+        if not selected:
+            raise ValueError(
+                _refused_empty_selection(
+                    category, name, registry, published_only=published_only
+                )
+            )
+        if not options:
+            return [
+                latest_version(category, name, registry, published_only=published_only)
+            ]
+        return selected
 
     versions = options["versions"]
     if not isinstance(versions, list) or not versions:
         raise ValueError(f"{category}.{name}.versions must be a non-empty list.")
 
-    selected: list[str] = []
+    selected: list[str | None] = []
     available_set = {version for version in available if version is not None}
     for version in versions:
         if not isinstance(version, str) or not VERSION_KEY_PATTERN.fullmatch(version):
@@ -234,7 +270,8 @@ def expand_seed(
     """Expand a seed request into the worklist. With ``published_only`` a
     bare target means the latest published version and
     ``include_all_versions`` the published versions, so a published-only
-    seed needs no edit when a word stages a new version."""
+    seed needs no edit when a word stages a new version. A word the seed
+    names that has no published version is refused rather than omitted."""
     registry = load_yaml(REGISTRY_PATH)
     lookup = load_yaml(LOOKUP_PATH)
     closure = load_yaml(CLOSURE_PATH)

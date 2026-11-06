@@ -4,6 +4,7 @@ import argparse
 import copy
 import re
 import shutil
+from typing import Any
 from pathlib import Path
 
 import yaml
@@ -113,7 +114,7 @@ def _copy_definition_path(definitions_root: Path, relative_path: str) -> None:
 
 
 def build_restricted_registry(seed: dict, registry: dict) -> dict:
-    restricted: dict[str, object] = {
+    restricted: dict[str, dict[str, Any]] = {
         "metadata": copy.deepcopy(registry["metadata"]),
         "formats": {},
         "enums": {},
@@ -555,7 +556,8 @@ def build_restricted_versions_text(registry: dict) -> str:
 
 def _split_dep(dep: str) -> tuple[str, str | None]:
     if ":" in dep:
-        return dep.rsplit(":", 1)
+        head, tail = dep.rsplit(":", 1)
+        return head, tail
     return dep, None
 
 

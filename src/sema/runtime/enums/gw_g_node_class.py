@@ -4,7 +4,7 @@ from sema.runtime.enums.gw_str_enum import SemaEnum
 
 
 class GwGNodeClass(SemaEnum):
-    """Sema: https://schemas.electricity.works/enums/gw.g.node.class/000"""
+    """Sema: https://schemas.electricity.works/enums/gw.g.node.class/001"""
 
     Unknown = auto()
     TerminalAsset = auto()
@@ -14,6 +14,8 @@ class GwGNodeClass(SemaEnum):
     Scada = auto()
     PriceForecastService = auto()
     WeatherForecastService = auto()
+    TimeCoordinator = auto()
+    Flo = auto()
 
     @classmethod
     def default(cls) -> "GwGNodeClass":
@@ -29,4 +31,4 @@ class GwGNodeClass(SemaEnum):
 
     @classmethod
     def enum_version(cls) -> str:
-        return "000"
+        return "001"

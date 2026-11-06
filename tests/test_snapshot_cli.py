@@ -38,6 +38,33 @@ def test_snapshot_prepare_rejects_staging_by_default(
     assert word in str(excinfo.value)
 
 
+def test_published_only_prepare_refuses_a_staging_only_seed_word(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # include_all_versions on a word with no published version must fail the
+    # published-only default and name the word, rather than omit it.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    registry = yaml.safe_load((ROOT / "indexes" / "public_registry.yaml").read_text())
+    name = None
+    for candidate, entry in sorted(registry["types"].items()):
+        versions = entry.get("versions") or {}
+        if entry.get("versioning_strategy") == "none" or not versions:
+            continue
+        if all(version.get("status") == "staging" for version in versions.values()):
+            name = candidate
+            break
+    if name is None:
+        pytest.skip("no staging-only versioned type in the registry")
+    seed = tmp_path / "seed_request.yaml"
+    seed.write_text(
+        f"initial_targets:\n  types:\n    {name}:\n      include_all_versions: true\n"
+    )
+    with pytest.raises(ValueError, match="will not skip") as excinfo:
+        snapshot.prepare_snapshot(seed)
+    assert name in str(excinfo.value)
+    assert not (tmp_path / "output").exists()
+
+
 def test_published_only_prepare_passes_over_staging_versions(
     monkeypatch, tmp_path: Path
 ) -> None:

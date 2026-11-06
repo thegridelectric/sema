@@ -304,6 +304,8 @@ For each type or enum target:
 - `include_all_versions: true` selects every registry-declared version
 - `versions: ["011", "013"]` selects explicit versions; intermediate type versions are added during expansion
 
+A published-only prepare (the default) takes published versions, and fails if a named word has none.
+
 Build a snapshot in two steps:
 
 ```bash

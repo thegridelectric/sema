@@ -68,6 +68,7 @@ enums:
     '000': sha256:d3300159974505bbe8e304f5f07cfbc90324f7e37121811c18e4e5bf0d052521
   gw.g.node.class:
     '000': sha256:492ac9defec62dc025adc0dccf8d2198acd9fb22d1c21f56ac33f07c06fbbee2
+    '001': sha256:e4758ededa2d890a7e6537d004604b75fb303fad857108f7b5a9b9875711dbc5
   gw.house.alert.kind:
     '000': sha256:9cd693bdf720bb4262df43e7ece4e35d8bb52b04311dfc3ba4f418e286faf383
     '001': sha256:87bb9beae383669aed670f502ea8146c3bf49150dcf6d1eb592fb5ce145721b3
@@ -579,3 +580,5 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
+  slow.contract.rejection:
+    '000': sha256:9ea791f03a2569bad0555e3646dc2fbc9dc4cfcc853077fce3f27d8288c39500
