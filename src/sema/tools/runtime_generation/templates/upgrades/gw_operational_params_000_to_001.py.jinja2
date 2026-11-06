@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ gw_operational_params_001_class_name }}:
+        """
+        - HeatingCurve: heating.curve 000 -> 001
+        """
+        data = self.model_dump()
+        data["heating_curve"] = self.heating_curve.upgrade().model_dump()
+        data["version"] = "001"
+        return {{ gw_operational_params_001_class_name }}.model_validate(data)

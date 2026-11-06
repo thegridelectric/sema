@@ -1,0 +1,21 @@
+    def upgrade(self) -> {{ heating_curve_001_class_name }}:
+        """
+        - AlphaTimes10 -> BaselineAlphaTimes10
+        - BetaTimes100 -> BaselineBetaTimes100
+        - GammaEx6 -> BaselineGammaEx6
+        - AlphaEx6: add
+        - BetaEx6: add
+        - GammaEx6: add
+        - DeltaEx6: add
+        - EpsilonEx6: add
+        - ZetaEx6: add
+        - EtaEx6: add
+        - RhoTimes100: add
+        - DdRoomTempF: add
+        - MassFlowKgH: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "heating.curve:000 -> 001 needs the new load-forecast coefficients "
+            "(AlphaEx6…RhoTimes100), DdRoomTempF, and MassFlowKgH that v000 does not carry; "
+            "supply a v001 HeatingCurve from deployment or re-tune."
+        )

@@ -21,6 +21,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   channel.config:
     '000':
       used_by:
@@ -54,6 +55,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   dac.output.config:
     '000':
       used_by:
@@ -152,6 +154,7 @@ types:
       - flo.params:000
       - flo.params:001
       - gw.operational.params:000
+      - gw.operational.params:001
   flo.tuning.bruce:
     '000':
       used_by:
@@ -160,6 +163,7 @@ types:
       used_by:
       - flo.params:001
       - gw.operational.params:000
+      - gw.operational.params:001
   fsm.atomic.report:
     '000':
       used_by:
@@ -233,6 +237,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.element.backup:
     '000':
       used_by:
@@ -250,10 +255,12 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.house0.no.sieg.family.params:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.hydronic:
     '000':
       used_by:
@@ -268,6 +275,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.state.machine:
     '000':
       used_by:
@@ -276,6 +284,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.tou.window:
     '000':
       used_by:
@@ -441,6 +450,9 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+    '001':
+      used_by:
+      - gw.operational.params:001
   hp.control.box.device.type.gt:
     '000':
       used_by:
@@ -804,6 +816,7 @@ types:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
 enums:
   base.g.node.class:
     '000':
@@ -925,6 +938,7 @@ enums:
     '000':
       used_by:
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.opsgenie.alert.status:
     '000':
       used_by:
@@ -960,6 +974,7 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - gw.operational.params:000
+      - gw.operational.params:001
   gw.top.state:
     '000':
       used_by:
@@ -1054,6 +1069,7 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - gw.operational.params:000
+      - gw.operational.params:001
   gw1.slow.dispatch.contract.status:
     '000':
       used_by:
@@ -1232,6 +1248,7 @@ enums:
       used_by:
       - gw.house0.family.params:000
       - gw.operational.params:000
+      - gw.operational.params:001
   spaceheat.make.model:
     '007':
       used_by:
@@ -1417,6 +1434,7 @@ formats:
     - gw.house.summary:001
     - gw.house.summary:002
     - gw.operational.params:000
+    - gw.operational.params:001
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
     - gw.readings:000
@@ -1555,6 +1573,7 @@ formats:
     - gw.channel.jump.stats:000
     - gw.native.gpio.pin:000
     - gw.operational.params:000
+    - gw.operational.params:001
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002
@@ -1631,7 +1650,9 @@ formats:
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.operational.params:000
+    - gw.operational.params:001
     - heating.curve:000
+    - heating.curve:001
     - hp.control.box.device.type.gt:000
     - hp.device.type.gt:000
     - i2c.ct.interface.capability:000
@@ -1680,6 +1701,7 @@ formats:
     - gw.channel.noise.stats:000
     - gw.nolan.family.params:000
     - gw.operational.params:000
+    - gw.operational.params:001
     - gw.opsgenie.alert:000
     - gw.water.store:000
     - gw.weather.channel.gt:000
@@ -1695,6 +1717,7 @@ formats:
     - gw108.gpio.sensor.component.gt:001
     - gw108.vdc.relay.component.gt:001
     - heating.curve:000
+    - heating.curve:001
     - hp.device.type.gt:000
     - hubitat.poller.gt:000
     - hubitat.poller.gt:001
@@ -1803,6 +1826,7 @@ formats:
     - gw.hydronic:000
     - gw.nolan.layout:000
     - gw.operational.params:000
+    - gw.operational.params:001
     - gw.state.machine:000
     - gw1.hvac.zone:000
     - gw1.zone.call.circuit:000
