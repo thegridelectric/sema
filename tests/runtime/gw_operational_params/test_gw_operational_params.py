@@ -5,34 +5,23 @@ from sema.runtime.codec import default_codec
 from sema.runtime.types.gw_operational_params import GwOperationalParams
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("gw.operational.params", "001")
+EXAMPLE = example("gw.operational.params", "000")
 
 
 def test_default_v000_loads_as_gw_operational_params() -> None:
     fixture = Path(__file__).parent / "fixtures" / "v000" / "default.json"
     payload = json.loads(fixture.read_text())
 
-    from sema.runtime.types.old_versions.gw_operational_params_000 import (
-        GwOperationalParams000,
-    )
+    decoded = default_codec.from_dict(payload)
 
-    decoded = GwOperationalParams000.model_validate(payload)
-    assert decoded.version == "000"
-
-
-def test_default_v001_loads_as_gw_operational_params() -> None:
-    fixture = Path(__file__).parent / "fixtures" / "v001" / "default.json"
-    payload = json.loads(fixture.read_text())
-
-    decoded = GwOperationalParams.model_validate(payload)
-
+    assert isinstance(decoded, GwOperationalParams)
     assert decoded.type_name == "gw.operational.params"
-    assert decoded.version == "001"
+    assert decoded.version == "000"
     assert decoded.standby is False
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("gw.operational.params", "001") == {
+    assert axioms("gw.operational.params", "000") == {
         1: [],
         2: [],
         3: [],

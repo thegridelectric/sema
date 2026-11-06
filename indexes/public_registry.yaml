@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-06T09:50:00Z'
+  last_updated: '2026-11-06T20:35:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3813,44 +3813,16 @@ types:
           - gw2.lc.top.state:000
           - zone.setpoint.source:000
   gw.operational.params:
-    latest_version: '001'
+    latest_version: '000'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'Operational/optimization parameters for one home: the fields every
       layout family tunes, plus a FamilyParams block (oneOf the <family>.family.params
       words) for the knobs that presume a layout feature.'
     versions:
-      '001':
-        schema_url: https://schemas.electricity.works/types/gw.operational.params/001
-        created: '2026-11-04T00:00:00Z'
-        status: staging
-        summary: '- HeatingCurve: heating.curve 000 -> 001'
-        direct_dependencies:
-          structural:
-          - capture.tuning:000
-          - cop.curve:000
-          - flo.tuning.alice:000
-          - flo.tuning.bruce:001
-          - gw.dispatch.hold:000
-          - gw.house0.family.params:000
-          - gw.house0.no.sieg.family.params:000
-          - gw.market.product.name:000
-          - gw.nolan.family.params:000
-          - gw.standby.posture:000
-          - gw.tou.tariff:000
-          - gw1.service.mode:000
-          - heating.curve:001
-          - left.right.dot
-          - non.negative.int
-          - positive.float
-          - positive.int
-          - spaceheat.name
-          - zero.ten.power.on:000
-          axiom:
-          - sieg.loop.strategy:000
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-02T17:45:00Z'
+        created: '2026-11-06T20:35:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -4812,32 +4784,24 @@ types:
           structural:
           - hex.char
   heating.curve:
-    latest_version: '001'
+    latest_version: '000'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'A house''s thermal / required-source-water-temperature model: quadratic
       heat-loss coefficients (scaled integers) + the intermediate and design-day anchor
       points + the max entering water temperature.'
     versions:
-      '001':
-        schema_url: https://schemas.electricity.works/types/heating.curve/001
-        created: '2026-11-04T00:00:00Z'
-        status: staging
-        summary: '- AlphaTimes10 -> BaselineAlphaTimes10 - BetaTimes100 -> BaselineBetaTimes100
-          - GammaEx6 -> BaselineGammaEx6 - AlphaEx6: add - BetaEx6: add - GammaEx6:
-          add - DeltaEx6: add - EpsilonEx6: add - ZetaEx6: add - EtaEx6: add - RhoTimes100:
-          add - DdRoomTempF: add - MassFlowKgH: add'
-        direct_dependencies:
-          structural:
-          - positive.float
-          - positive.int
       '000':
         schema_url: https://schemas.electricity.works/types/heating.curve/000
-        created: '2026-07-09T21:30:00Z'
+        created: '2026-11-06T20:35:00Z'
         status: staging
-        summary: "Initial version (AlphaTimes10, BetaTimes100, GammaEx6, IntermediatePowerKw,\
-          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdDeltaTF, MaxEwtF) \u2014 the\
-          \ house thermal model migrated out of scada deployment config into operational\
+        summary: "Initial version: the baseline quadratic heat-load model (BaselineAlphaTimes10,\
+          \ BaselineBetaTimes100, BaselineGammaEx6), the regression load-forecast\
+          \ model (AlphaEx6, BetaEx6, GammaEx6, DeltaEx6, EpsilonEx6, ZetaEx6, EtaEx6,\
+          \ RhoTimes100), the intermediate and design-day anchor points (IntermediatePowerKw,\
+          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdRoomTempF, DdDeltaTF), MaxEwtF\
+          \ and MassFlowKgH for the constant-flow radiator model \u2014 the house\
+          \ thermal model migrated out of scada deployment config into operational\
           \ params."
         direct_dependencies:
           structural:
