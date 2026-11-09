@@ -491,6 +491,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.hydronic/000.yaml
+  gw.katahdin.layout:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.katahdin.layout/000.yaml
   gw.native.gpio.pin:
     latest_version: '000'
     versioning_strategy: literal

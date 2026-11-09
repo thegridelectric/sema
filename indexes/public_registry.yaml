@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-06T20:20:00Z'
+  last_updated: '2026-11-09T01:50:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3755,6 +3755,70 @@ types:
           - gw1.hvac.zone:000
           - gw1.zone.call.circuit:000
           - spaceheat.name
+  gw.katahdin.layout:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'Katahdin hydronic layout schema: monobloc, heat exchanger, valve-charged
+      multi-tank store, no buffer, no iso valve, no store pump.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.katahdin.layout/000
+        created: '2026-11-09T01:50:00Z'
+        status: staging
+        summary: 'The complete deployable artifact for a Katahdin home (schematic
+          D1116): monobloc heat pump, plate heat exchanger, secondary pump, a water
+          store of one to six tanks (Hydronic.WaterStore required; the bound is gw.water.store
+          TankCount) charged through the V2 hot-top / V3 cold-top valve pair and discharged
+          by the distribution pump, the gw108 board. A copy of gw.nolan.layout 000
+          with the buffer, the iso valve and the store pump removed: RequiredActuators
+          names vdc-relay, secondary-pump-relay, hp-scada-ops-relay and the four FCM
+          valve relays v1-hx-house-relay, v2-store-hot-relay, v3-store-cold-relay,
+          v4-house-return-relay, plus v5-boiler-relay where Hydronic.Backup is a boiler;
+          both 0-10 V outputs secondary-010v and dist-010v; RequiredSensing is the
+          four BTU meters (primary, secondary, store, dist) and the heat-pump and
+          pump powers. No BufferTank or SingleStoreTank axiom; element relays come
+          from Hydronic.Backup through BackupRelays. This is the first layout with
+          no store-pump-relay: scada code that requires one (HydronicSpaceheatNodeNames.store_pump_relay,
+          the store_pump_relay layout accessor, the store pump monitor and doctor)
+          does not hold for this family. Every other axiom keeps the Nolan wording
+          verbatim, renumbered from 1.'
+        direct_dependencies:
+          structural:
+          - ads111x.based.device.type.gt:000
+          - data.channel.gt:004
+          - derived.channel.gt:003
+          - device.component.gt:000
+          - electric.meter.component.gt:001
+          - electric.meter.device.type.gt:000
+          - g.node.gt:006
+          - gpio.relay.component.gt:000
+          - gpio.sensor.component.gt:000
+          - gw.hydronic:000
+          - gw1.scada.device.type.gt:000
+          - hp.control.box.device.type.gt:000
+          - hp.device.type.gt:000
+          - i2c.dac.output.component.gt:000
+          - i2c.relay.component.gt:000
+          - i2c.thermistor.reader.component.gt:000
+          - pico.btu.meter.component.gt:000
+          - pico.tank.module.component.gt:012
+          - scada.board.component.gt:000
+          - sim.pico.btu.meter.component.gt:000
+          - sim.pico.flow.module.component.gt:000
+          - sim.pico.tank.module.component.gt:001
+          - sim.sensor.component.gt:000
+          - spaceheat.name
+          - spaceheat.node.gt:303
+          - web.server.component.gt:001
+          axiom:
+          - gw.boiler.backup:000
+          - gw.element.backup:000
+          - gw.zone.emitter.type:000
+          - gw1.actor.class:014
+          - gw1.quantity:003
+          - gw2.lc.top.state:000
+          - zone.setpoint.source:000
   gw.native.gpio.pin:
     latest_version: '000'
     owner: gridworks-energy

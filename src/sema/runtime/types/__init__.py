@@ -113,6 +113,7 @@ from sema.runtime.types.gw_house0_no_sieg_family_params import (
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
 from sema.runtime.types.gw_house_summary import GwHouseSummary
 from sema.runtime.types.gw_hydronic import GwHydronic
+from sema.runtime.types.gw_katahdin_layout import GwKatahdinLayout
 from sema.runtime.types.gw_native_gpio_pin import GwNativeGpioPin
 from sema.runtime.types.gw_nolan_family_params import GwNolanFamilyParams
 from sema.runtime.types.gw_nolan_layout import GwNolanLayout
@@ -359,6 +360,7 @@ __all__ = [
     "GwHouseOperatingStatus",
     "GwHouseSummary",
     "GwHydronic",
+    "GwKatahdinLayout",
     "GwNativeGpioPin",
     "GwNolanFamilyParams",
     "GwNolanLayout",
