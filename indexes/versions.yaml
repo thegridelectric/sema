@@ -334,6 +334,13 @@ types:
       "000":
         summary: "Bid fields (BidderAlias, PqPairs, PriceUnit, QuantityUnit), OptimalPathList index-linked to PqPairs, FloName, FloRepo, FloGitCommit, CreatedMs; axioms AtLeastOnePair, PathPerPair, FirstStepIsTheBid, PairsDescend, PathsStartTogether."
 
+  flo.refusal:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "BidderAlias and StartUnixS pair the refusal with its request as the recommendation does; Reason (flo.refusal.reason), optional Detail, CreatedMs."
+
   flo.tuning.alice:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -756,6 +763,13 @@ types:
           - Backup (optional, one of gw.boiler.backup or gw.element.backup): the backup heat; absent for a layout with no backup.
           - CircuitResolution b: a circuit's CircuitPosition is its 1-based place in ZoneCallCircuits. PrimaryCircuit axiom: each zone's PrimaryCircuitPosition names a circuit serving that zone, and that circuit carries a setpoint channel. CircuitDistinctness axiom: no two circuits share a Name, a whitewire channel, a setpoint channel, a temperature channel or a relay node. CircuitResolution d is dropped: PrimaryCircuit implies every zone is served.
           - Circulators (required list of gw.circulator): the circulator pumps with their roles and channels; axiom CirculatorDistinctness: no two share a PumpNodeName.
+
+  gw.katahdin.layout:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "The complete deployable artifact for a Katahdin home (schematic D1116): monobloc heat pump, plate heat exchanger, secondary pump, a water store of one to six tanks (Hydronic.WaterStore required; the bound is gw.water.store TankCount) charged through the V2 hot-top / V3 cold-top valve pair and discharged by the distribution pump, the gw108 board. A copy of gw.nolan.layout 000 with the buffer, the iso valve and the store pump removed: RequiredActuators names vdc-relay, secondary-pump-relay, hp-scada-ops-relay and the four FCM valve relays v1-hx-house-relay, v2-store-hot-relay, v3-store-cold-relay, v4-house-return-relay, plus v5-boiler-relay where Hydronic.Backup is a boiler; both 0-10 V outputs secondary-010v and dist-010v; RequiredSensing is the four BTU meters (primary, secondary, store, dist) and the heat-pump and pump powers. No BufferTank or SingleStoreTank axiom; element relays come from Hydronic.Backup through BackupRelays. This is the first layout with no store-pump-relay: scada code that requires one (HydronicSpaceheatNodeNames.store_pump_relay, the store_pump_relay layout accessor, the store pump monitor and doctor) does not hold for this family. Every other axiom keeps the Nolan wording verbatim, renumbered from 1."
 
   gw.native.gpio.pin:
     latest_version: "000"
@@ -2033,6 +2047,12 @@ enums:
       "000": {}
 
   five.v.boss.state:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  flo.refusal.reason:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

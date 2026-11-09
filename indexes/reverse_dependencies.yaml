@@ -16,6 +16,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   capture.tuning:
     '000':
@@ -83,6 +84,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - gw.readings:001
       - layout.lite:013
@@ -107,6 +109,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - gw.readings:001
       - layout.lite:013
@@ -115,6 +118,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   dfr.config:
     '000':
@@ -133,12 +137,14 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   electric.meter.device.type.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   flo.optimal.path:
     '000':
@@ -192,18 +198,21 @@ types:
       - g.node.reparent.cmd:002
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gpio.relay.component.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gpio.sensor.component.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw.boiler.backup:
     '000':
@@ -211,6 +220,7 @@ types:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
       - gw.hydronic:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw.circulator:
     '000':
@@ -239,6 +249,7 @@ types:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
       - gw.hydronic:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw.house.operating.status:
     '000':
@@ -259,6 +270,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw.native.gpio.pin:
     '000':
@@ -365,6 +377,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw1.tank.temp.calibration:
     '000':
@@ -444,12 +457,14 @@ types:
   hp.control.box.device.type.gt:
     '000':
       used_by:
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   hp.device.type.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   hubitat.component.gt:
     '000':
@@ -496,6 +511,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   i2c.expander:
     '000':
@@ -539,6 +555,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   i2c.thermistor.channel.config:
     '000':
@@ -553,6 +570,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   layout.lite:
     '011':
@@ -594,6 +612,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   pico.flow.module.component.gt:
     '000':
@@ -640,6 +659,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   price.quantity.unitless:
     '000':
@@ -684,18 +704,21 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   sim.pico.btu.meter.component.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   sim.pico.flow.module.component.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   sim.pico.tank.module.component.gt:
     '000':
@@ -709,12 +732,14 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   sim.sensor.component.gt:
     '000':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   single.machine.state:
     '000':
@@ -765,6 +790,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - layout.lite:013
       - new.command.tree:003
@@ -799,6 +825,7 @@ types:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   zero.ten.power.on:
     '000':
@@ -838,6 +865,10 @@ enums:
       used_by:
       - fis.instance.authorization.event:000
       - fis.instance.authorization.event:001
+  flo.refusal.reason:
+    '000':
+      used_by:
+      - flo.refusal:000
   fsm.report.type:
     '000':
       used_by:
@@ -974,6 +1005,7 @@ enums:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - gw1.zone.call.circuit:000
   gw1.actor.class:
@@ -996,6 +1028,7 @@ enums:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - new.command.tree:003
       - scada.control.capabilities:002
@@ -1028,6 +1061,7 @@ enums:
       - derived.channel.gt:003
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - gw.weather.channel.gt:001
       - gw.weather.channel.gt:002
@@ -1093,6 +1127,7 @@ enums:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
   hp.boss.state:
     '000':
@@ -1309,6 +1344,7 @@ enums:
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
+      - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - gw1.zone.call.circuit:000
 formats:
@@ -1383,6 +1419,7 @@ formats:
     - flo.params:000
     - flo.params:001
     - flo.recommendation:000
+    - flo.refusal:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -1526,6 +1563,7 @@ formats:
     - fis.instance.authorization.event:000
     - fis.instance.authorization.event:001
     - flo.recommendation:000
+    - flo.refusal:000
     - gw.channel.noise.stats:000
     - gw.command.transition:000
     - gw.experiment.run:000
@@ -1801,6 +1839,7 @@ formats:
     - gw.house0.layout:000
     - gw.house0.no.sieg:000
     - gw.hydronic:000
+    - gw.katahdin.layout:000
     - gw.nolan.layout:000
     - gw.operational.params:000
     - gw.state.machine:000
@@ -1904,6 +1943,7 @@ formats:
     - flo.params:000
     - flo.params:001
     - flo.recommendation:000
+    - flo.refusal:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000
@@ -2012,6 +2052,7 @@ formats:
     - flo.params.house0:007
     - flo.params:000
     - flo.params:001
+    - flo.refusal:000
     - gw.stopgap.price.forecast:000
     - heating.forecast:000
     - report:001
