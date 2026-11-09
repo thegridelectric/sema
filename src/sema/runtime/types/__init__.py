@@ -32,8 +32,11 @@ from sema.runtime.types.fis_instance_authorization_event import (
 from sema.runtime.types.flo_optimal_path import FloOptimalPath
 from sema.runtime.types.flo_params import FloParams
 from sema.runtime.types.flo_params_house0 import FloParamsHouse0
+from sema.runtime.types.flo_path_penalties_bruce import FloPathPenaltiesBruce
+from sema.runtime.types.flo_previous_run import FloPreviousRun
 from sema.runtime.types.flo_recommendation import FloRecommendation
 from sema.runtime.types.flo_refusal import FloRefusal
+from sema.runtime.types.flo_tank_store_path import FloTankStorePath
 from sema.runtime.types.flo_tuning_alice import FloTuningAlice
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.flow_hall_params import FlowHallParams
@@ -293,8 +296,11 @@ __all__ = [
     "FloOptimalPath",
     "FloParams",
     "FloParamsHouse0",
+    "FloPathPenaltiesBruce",
+    "FloPreviousRun",
     "FloRecommendation",
     "FloRefusal",
+    "FloTankStorePath",
     "FloTuningAlice",
     "FloTuningBruce",
     "FlowHallParams",

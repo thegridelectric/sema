@@ -151,7 +151,17 @@ types:
       used_by:
       - flo.params:000
       - flo.params:001
+      - flo.previous.run:000
       - flo.recommendation:000
+      - flo.recommendation:001
+  flo.path.penalties.bruce:
+    '000':
+      used_by:
+      - flo.recommendation:001
+  flo.tank.store.path:
+    '000':
+      used_by:
+      - flo.recommendation:001
   flo.tuning.alice:
     '000':
       used_by:
@@ -670,7 +680,9 @@ types:
       - atn.bid:001
       - atn.bid:002
       - bid:000
+      - flo.previous.run:000
       - flo.recommendation:000
+      - flo.recommendation:001
   relay.actor.config:
     '001':
       used_by:
@@ -1199,7 +1211,9 @@ enums:
       - flo.params.house0:005
       - flo.params.house0:006
       - flo.params.house0:007
+      - flo.previous.run:000
       - flo.recommendation:000
+      - flo.recommendation:001
       - latest.price:000
   market.quantity.unit:
     '000':
@@ -1207,7 +1221,9 @@ enums:
       - atn.bid:001
       - atn.bid:002
       - bid:000
+      - flo.previous.run:000
       - flo.recommendation:000
+      - flo.recommendation:001
       - market.product:000
   pico.board.variant:
     '000':
@@ -1360,6 +1376,7 @@ formats:
   git.commit:
     used_by:
     - flo.recommendation:000
+    - flo.recommendation:001
     - gw.house.summary:001
     - gw.house.summary:002
     - gw.scada.commit:000
@@ -1419,6 +1436,7 @@ formats:
     - flo.params:000
     - flo.params:001
     - flo.recommendation:000
+    - flo.recommendation:001
     - flo.refusal:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
@@ -1563,6 +1581,7 @@ formats:
     - fis.instance.authorization.event:000
     - fis.instance.authorization.event:001
     - flo.recommendation:000
+    - flo.recommendation:001
     - flo.refusal:000
     - gw.channel.noise.stats:000
     - gw.command.transition:000
@@ -1587,6 +1606,7 @@ formats:
     - relay.control.config:000
   non.negative.int:
     used_by:
+    - flo.previous.run:000
     - flo.tuning.bruce:000
     - flo.tuning.bruce:001
     - gw.channel.gap.stats:000
@@ -1707,6 +1727,7 @@ formats:
     - flo.params.house0:007
     - flo.params:000
     - flo.params:001
+    - flo.tank.store.path:000
     - flo.tuning.bruce:001
     - flow.hall.params:101
     - flow.hall.params:200
@@ -1942,7 +1963,9 @@ formats:
     - fis.instance.authorization.event:001
     - flo.params:000
     - flo.params:001
+    - flo.previous.run:000
     - flo.recommendation:000
+    - flo.recommendation:001
     - flo.refusal:000
     - fsm.atomic.report:000
     - fsm.atomic.report:001
