@@ -444,6 +444,21 @@ types:
       - flo.tuning.alice:000
       - flo.tuning.bruce:001
       versionless_types: []
+    '002':
+      enums:
+      - gw1.seasonal.storage.mode:000
+      formats:
+      - left.right.dot
+      - non.negative.int
+      - positive.int
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - flo.optimal.path:000
+      - flo.tuning.alice:000
+      - flo.tuning.bruce:001
+      versionless_types: []
   flo.params.house0:
     '000':
       enums:
@@ -1837,7 +1852,7 @@ types:
     '000':
       enums:
       - day.of.week:000
-      - gw.market.product.name:000
+      - gw.market.product.name:001
       - gw.standby.posture:000
       - gw1.seasonal.storage.mode:000
       - gw1.service.mode:000
@@ -1892,6 +1907,18 @@ types:
       formats:
       - left.right.dot
       - non.empty.string
+      - uuid4.str
+      types: []
+      versionless_types: []
+  gw.price.forecast:
+    '000':
+      enums:
+      - gw.market.product.name:001
+      - market.price.unit:000
+      formats:
+      - left.right.dot
+      - utc.milliseconds
+      - utc.seconds
       - uuid4.str
       types: []
       versionless_types: []
@@ -2901,6 +2928,18 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+    '001':
+      enums:
+      - market.price.unit:000
+      - price.component.name:000
+      formats:
+      - left.right.dot
+      - market.slot.name
+      - utc.milliseconds
+      - uuid4.str
+      types:
+      - price.component:000
+      versionless_types: []
   layout.bundle:
     '000':
       enums:
@@ -3649,6 +3688,13 @@ types:
   power.watts:
     '000':
       enums: []
+      formats: []
+      types: []
+      versionless_types: []
+  price.component:
+    '000':
+      enums:
+      - price.component.name:000
       formats: []
       types: []
       versionless_types: []

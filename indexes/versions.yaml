@@ -266,9 +266,13 @@ types:
         summary: "StartUnixS, StepDurationMinutes, HpAvgWList (W), StoreWhList (Wh); axiom StepListLengths."
 
   flo.params:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: >
+          - PriceUsdMwhList: add, in place of LmpUsdMwhList and DistUsdMwhList
+          - PriceForecastId: add
       "001":
         summary: "- Tuning: flo.tuning.bruce 000 -> 001, NumLayers assigned as TanksModeled times TempSensorsPerTank"
       "000":
@@ -863,6 +867,13 @@ types:
       "000":
         summary: "Initial version: FromGNodeAlias, PNodeAlias, TariffAlias (left.right.dot), HourStartS (utc.seconds list), LmpList, DistList (USD/MWh numbers), PriceUid (uuid4.str), ForecastCreatedS (utc.seconds). Axioms 1-3: equal list lengths, HourStartS strictly increasing, ForecastCreatedS before the first hour."
 
+  gw.price.forecast:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
+
   gw.tou.tariff:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -1408,9 +1419,15 @@ types:
         summary: "Initial Sema version"
 
   latest.price:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - PriceTimes1000: renamed PriceX1000
+          - Components: add, assigned as one Unknown component with the whole price
+          - TariffAlias: add (optional)
+          - CreatedMs: add (optional)
       "000":
         summary: "Initial Sema version"
 
@@ -1621,6 +1638,13 @@ types:
         summary: "Rename PriceTimes1000/QuantityTimes1000 to PriceX1000/QuantityX1000."
       "000":
         summary: "Integer price/quantity pair, values x1000 (PriceTimes1000/QuantityTimes1000)."
+
+  price.component:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
 
   relay.actor.config:
     latest_version: "003"
@@ -2185,6 +2209,9 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "001":
+        added_values:
+          - "rt60gate1"
       "000": {}
 
   gw.platform.alert.kind:
@@ -2525,6 +2552,12 @@ enums:
       "000": {}
 
   market.price.unit:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  price.component.name:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

@@ -38,6 +38,7 @@ enums:
   change.heatcall.source: sha256:4089a28148abe7224cbff18fbb74642a777af10fdabb8cd7615cc3a47bbcd50a
   change.relay.pin: sha256:9917b91acdb9edbe686feb6dc6b4b1f0391cd054bbe6f2498a6b320ee59bc2cd
   change.relay.state: sha256:b1e51227bc8f0408e1707da1e232b607f9a297f13e12e4e0f8fa0a9ab3251841
+  day.of.week: sha256:fa3fa3731be58b764c3601c66226de720bb8775e8df367b3f43326a12f6b439b
   fis.authorization.decision:
     '000': sha256:1b659fa4e9cbdf5ce5f5662ba078e94bce8cd0b48ec423207c1e8bbf63288f7c
   fis.authorization.reason:
@@ -193,7 +194,6 @@ enums:
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
   valve.open.or.closed: sha256:6d597f8c42190e1f2b71ae13ec9931607986a360c822e0cd88b000f77a9fa76e
   zone.call.source: sha256:3f0ad484d9f528de60e235ff6a773e9e8ed0e4a00818c7e117cde1d74512d067
-  day.of.week: sha256:fa3fa3731be58b764c3601c66226de720bb8775e8df367b3f43326a12f6b439b
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -252,11 +252,17 @@ types:
     '005': sha256:c7b885dc47a82c6f325fe163821ee745cafc18abb1cd0e290786f102549d7c18
     '006': sha256:92419603aa11d932176ee8600dfd477199a508aedcc546b4d10bcd853ffbbb13
     '007': sha256:f6815669324c9da51f9b5cd6bcc89c38f301d4667f64f456f350461bf18c80e6
+  flo.path.penalties.bruce:
+    '000': sha256:76c483c2f3c2410e8958fa2a3154beb5844e7c8660fd6c8ce53e587bdd24b2b4
+  flo.previous.run:
+    '000': sha256:4eee8f285de90993a424242a4156b03058df3592563446a14b2c2fe6c069ae31
   flo.recommendation:
     '000': sha256:a4739d3eafa191401248721deda107bd47fb1674ac9d12059f7e3aaa7ed6e579
     '001': sha256:b68c76e890da02b1debe4b4f0e5dc60b2085cac7c4431f44f17dc98d757a26bd
   flo.refusal:
     '000': sha256:d5b1583971bb3e00364ec7cdab32a9586eb0a36f237396c8d760662c87f1982a
+  flo.tank.store.path:
+    '000': sha256:752ecdcd2574963575c9def7b5ac4cbbce5505be4f6bb6d955bc942772456980
   flo.tuning.alice:
     '000': sha256:297d844216449c39c958e3b7e77b18cf39d8a1b31588cf62dd61d178eff83143
   flo.tuning.bruce:
@@ -363,6 +369,10 @@ types:
     '000': sha256:70b99e254a72c31c6f2d642d5424a35d219dd91ce946e52eb827cdecf60c0ee1
   gw.stopgap.price.forecast:
     '000': sha256:b0a259f269a2308f3be680d540e01144543c45b8115d913794c90d0ff1ba24a7
+  gw.tou.tariff:
+    '000': sha256:9489d47aa14b289cb247aaf3c966e7af87091c318251ce8744523c95da243325
+  gw.tou.window:
+    '000': sha256:bfbd012b11bb1784f256f87741c84f310aa5dff9346ce08bbc87c1256bba45c1
   gw.weather.channel.gt:
     '000': sha256:9aa447f00597c9696d4c3cea92cf27066d486a545248f7ccbe5ed92cc0f02209
     '001': sha256:3ceda53c51d0f6269c4e629440ab84f6580aba0094d272976624ac79085aa1dc
@@ -453,7 +463,7 @@ types:
   keyparam.change.log:
     '000': sha256:9dd996221cd074d001df2a069bdab3e46a3ad6fdc37a2a9feea5475b6b626cf8
   latest.price:
-    '000': sha256:a0d294e1cc6dd83d2bfbef32a393a42b882dbc6017c0987a224daa06939c0726
+    '000': sha256:b7d00486dd4511bb791a502373a84cad1a4e2cc34f4e2338d7aa208138da55f9
   layout.lite:
     '001': sha256:368cbac4fd8e3ad9267636728b1c145626949613a65cd15b121bc332e0ef8609
     '002': sha256:28be902340186a1f881aa9a84495cc8dd21b8f0abff5a81a62482a1b5bce6aae
@@ -588,13 +598,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  flo.tank.store.path:
-    '000': sha256:752ecdcd2574963575c9def7b5ac4cbbce5505be4f6bb6d955bc942772456980
-  flo.path.penalties.bruce:
-    '000': sha256:76c483c2f3c2410e8958fa2a3154beb5844e7c8660fd6c8ce53e587bdd24b2b4
-  flo.previous.run:
-    '000': sha256:4eee8f285de90993a424242a4156b03058df3592563446a14b2c2fe6c069ae31
-  gw.tou.window:
-    '000': sha256:bfbd012b11bb1784f256f87741c84f310aa5dff9346ce08bbc87c1256bba45c1
-  gw.tou.tariff:
-    '000': sha256:9489d47aa14b289cb247aaf3c966e7af87091c318251ce8744523c95da243325
