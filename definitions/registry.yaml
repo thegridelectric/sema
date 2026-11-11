@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-10T12:25:00Z"
+  last_updated: "2026-11-11T15:25:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -254,7 +254,7 @@ enums:
     description: "Day of the civil week, for schedules that bind behavior to particular days (e.g. time-of-use windows)."
     schema_url: "https://schemas.electricity.works/enums/day.of.week/000"
     created: "2026-08-12T22:15:00Z"
-    status: "staging"
+    status: "published"
 
   fis.authorization.decision:
     latest_version: "000"
@@ -4280,7 +4280,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.tou.tariff/000"
         created: "2026-09-17T20:10:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version: Alias (left.right.dot), DisplayName, TimezoneStr (iana.timezone.str, the new format word replacing a bare string), OnPeakWindows (gw.tou.window list). Axiom 1: per-day window non-overlap (moved here from the two operational-params words)."
         direct_dependencies:
           structural:
@@ -4298,7 +4298,7 @@ types:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.tou.window/000"
         created: "2026-08-12T22:15:00Z"
-        status: "staging"
+        status: "published"
         summary: "Initial version: Start (inclusive) and End (exclusive) hh.mm plus Days (day.of.week list). Axioms: Start strictly before End (no midnight wrap); Days non-empty and duplicate-free."
         direct_dependencies:
           structural:
