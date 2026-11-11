@@ -3992,7 +3992,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-02T17:45:00Z'
+        created: '2026-11-06T20:35:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -4963,11 +4963,15 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/heating.curve/000
-        created: '2026-07-09T21:30:00Z'
+        created: '2026-11-06T20:35:00Z'
         status: staging
-        summary: "Initial version (AlphaTimes10, BetaTimes100, GammaEx6, IntermediatePowerKw,\
-          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdDeltaTF, MaxEwtF) \u2014 the\
-          \ house thermal model migrated out of scada deployment config into operational\
+        summary: "Initial version: the baseline quadratic heat-load model (BaselineAlphaTimes10,\
+          \ BaselineBetaTimes100, BaselineGammaEx6), the regression load-forecast\
+          \ model (AlphaEx6, BetaEx6, GammaEx6, DeltaEx6, EpsilonEx6, ZetaEx6, EtaEx6,\
+          \ RhoTimes100), the intermediate and design-day anchor points (IntermediatePowerKw,\
+          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdRoomTempF, DdDeltaTF), MaxEwtF\
+          \ and MassFlowKgH for the constant-flow radiator model \u2014 the house\
+          \ thermal model migrated out of scada deployment config into operational\
           \ params."
         direct_dependencies:
           structural:
