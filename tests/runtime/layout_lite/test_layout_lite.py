@@ -8,15 +8,15 @@ from sema.runtime.codec import default_codec
 from sema.runtime.types.layout_lite import LayoutLite
 
 
-def test_layout_lite_latest_version_is_013() -> None:
-    assert LayoutLite.version_value() == "013"
+def test_layout_lite_latest_version_is_014() -> None:
+    assert LayoutLite.version_value() == "014"
 
 
 def test_real_beech_v011_to_latest_requires_context() -> None:
     # 012 -> 013 migrates the embedded components cac_id -> DeviceType (and the
     # SystemMode -> ActuationAuthority x ServiceMode split), a context-dependent
     # upgrade, so a standalone old projection cannot climb to latest without the
-    # source layout. The scada instead emits a fresh /013 on boot.
+    # source layout. The scada instead emits a fresh latest version on boot.
     fixture = Path(__file__).parent / "fixtures" / "v011" / "real_beech.json"
     payload = json.loads(fixture.read_text())
     with pytest.raises(UpgradeRequiresContext):

@@ -1,0 +1,10 @@
+    def upgrade(self) -> "{{ layout_lite_014_class_name }}":
+        """
+        - Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home is billed on, as the running scada's operational params state it; a reader lays its on-peak windows over any time range without a hand-kept copy.
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ layout_lite_013_class_name }} cannot be upgraded to "
+            "{{ layout_lite_014_class_name }} without the running scada's context: "
+            "Tariff comes from the scada's operational params, which a standalone "
+            "projection does not carry."
+        )

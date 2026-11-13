@@ -88,6 +88,7 @@ types:
       - gw.nolan.layout:000
       - gw.readings:001
       - layout.lite:013
+      - layout.lite:014
       - scada.control.capabilities:002
       - scada.control.capabilities:003
   derived.channel.gt:
@@ -113,6 +114,7 @@ types:
       - gw.nolan.layout:000
       - gw.readings:001
       - layout.lite:013
+      - layout.lite:014
   device.component.gt:
     '000':
       used_by:
@@ -270,6 +272,7 @@ types:
       - gw.house.summary:000
       - gw.house.summary:001
       - gw.house.summary:002
+      - gw.house.summary:003
   gw.house0.family.params:
     '000':
       used_by:
@@ -297,10 +300,12 @@ types:
     '000':
       used_by:
       - layout.lite:013
+      - layout.lite:014
   gw.tou.tariff:
     '000':
       used_by:
       - gw.operational.params:000
+      - layout.lite:014
   gw.tou.window:
     '000':
       used_by:
@@ -591,18 +596,24 @@ types:
       - gw.house.summary:000
       - gw.house.summary:001
       - gw.house.summary:002
+      - gw.house.summary:003
       - layout.bundle:000
     '012':
       used_by:
       - gw.house.summary:000
       - gw.house.summary:001
       - gw.house.summary:002
+      - gw.house.summary:003
       - layout.bundle:000
     '013':
       used_by:
       - gw.house.summary:000
       - gw.house.summary:001
       - gw.house.summary:002
+      - gw.house.summary:003
+    '014':
+      used_by:
+      - gw.house.summary:003
   machine.states:
     '000':
       used_by:
@@ -812,6 +823,7 @@ types:
       - gw.katahdin.layout:000
       - gw.nolan.layout:000
       - layout.lite:013
+      - layout.lite:014
       - new.command.tree:003
       - scada.control.capabilities:002
       - scada.control.capabilities:003
@@ -943,12 +955,14 @@ enums:
     '000':
       used_by:
       - gw.house.summary:002
+      - gw.house.summary:003
   gw.dashboard.role:
     '000':
       used_by:
       - gw.house.summary:000
       - gw.house.summary:001
       - gw.house.summary:002
+      - gw.house.summary:003
   gw.dispatch.refusal.reason:
     '000':
       used_by:
@@ -1395,6 +1409,7 @@ formats:
     - flo.recommendation:001
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.scada.commit:000
   handle.name:
     used_by:
@@ -1488,6 +1503,7 @@ formats:
     - gw.house.summary:000
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.operational.params:000
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
@@ -1532,6 +1548,7 @@ formats:
     - layout.lite:011
     - layout.lite:012
     - layout.lite:013
+    - layout.lite:014
     - machine.states:000
     - market.product:000
     - new.command.tree:000
@@ -1878,6 +1895,7 @@ formats:
     - gw.house.summary:000
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.house0.layout:000
     - gw.house0.no.sieg:000
     - gw.hydronic:000
@@ -1955,6 +1973,7 @@ formats:
     - gw.house.summary:000
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002
@@ -2018,6 +2037,7 @@ formats:
     - gw.house.summary:000
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.opsgenie.alert:000
     - gw.price.forecast:000
     - gw.readings:000
@@ -2043,6 +2063,7 @@ formats:
     - layout.lite:011
     - layout.lite:012
     - layout.lite:013
+    - layout.lite:014
     - machine.states:000
     - new.command.tree:000
     - new.command.tree:001
@@ -2177,6 +2198,7 @@ formats:
     - gw.house.summary:000
     - gw.house.summary:001
     - gw.house.summary:002
+    - gw.house.summary:003
     - gw.opsgenie.alert.close:000
     - gw.opsgenie.alert.create:000
     - gw.opsgenie.alert:000
@@ -2233,6 +2255,7 @@ formats:
     - layout.lite:011
     - layout.lite:012
     - layout.lite:013
+    - layout.lite:014
     - market.product:000
     - pico.btu.meter.component.gt:000
     - pico.flow.module.component.gt:000

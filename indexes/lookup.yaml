@@ -477,9 +477,10 @@ types:
     versions:
       '000': definitions/types/gw.house.operating.status/000.yaml
   gw.house.summary:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/gw.house.summary/003.yaml
       '002': definitions/types/gw.house.summary/002.yaml
       '001': definitions/types/gw.house.summary/001.yaml
       '000': definitions/types/gw.house.summary/000.yaml
@@ -930,9 +931,10 @@ types:
     versions:
       '000': definitions/types/layout.bundle/000.yaml
   layout.lite:
-    latest_version: '013'
+    latest_version: '014'
     versioning_strategy: literal
     versions:
+      '014': definitions/types/layout.lite/014.yaml
       '013': definitions/types/layout.lite/013.yaml
       '012': definitions/types/layout.lite/012.yaml
       '011': definitions/types/layout.lite/011.yaml

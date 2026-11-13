@@ -8,7 +8,6 @@ from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.types.ha1_params import Ha1Params
-from sema.runtime.types.layout_lite import LayoutLite
 from sema.runtime.types.old_versions.data_channel_gt_002 import DataChannelGt002
 from sema.runtime.types.old_versions.derived_channel_gt_001 import DerivedChannelGt001
 from sema.runtime.types.old_versions.gw1_tank_temp_calibration_map_000 import (
@@ -17,6 +16,7 @@ from sema.runtime.types.old_versions.gw1_tank_temp_calibration_map_000 import (
 from sema.runtime.types.old_versions.i2c_multichannel_dt_relay_component_gt_003 import (
     I2cMultichannelDtRelayComponentGt003,
 )
+from sema.runtime.types.old_versions.layout_lite_013 import LayoutLite013
 from sema.runtime.types.old_versions.pico_flow_module_component_gt_000 import (
     PicoFlowModuleComponentGt000,
 )
@@ -128,7 +128,7 @@ class LayoutLite012(SemaType):
                 )
         return self
 
-    def upgrade(self) -> "LayoutLite":
+    def upgrade(self) -> "LayoutLite013":
         """
         - ShNodes: spaceheat.node.gt:301 -> 303
         - DataChannels: data.channel.gt:002 -> 004
@@ -142,7 +142,7 @@ class LayoutLite012(SemaType):
         """
         raise SemaType.upgrade_requires_context(
             "LayoutLite012 cannot be upgraded to "
-            "LayoutLite without the running scada's context: "
+            "LayoutLite013 without the running scada's context: "
             "StateMachines is declared from the machines the scada hosts, which a standalone "
             "projection does not carry."
         )

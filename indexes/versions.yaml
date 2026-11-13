@@ -740,9 +740,11 @@ types:
         summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + CreatedMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
 
   gw.house.summary:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: "Layout accepts layout.lite 014."
       "002":
         summary: "Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit stands against the scada repository's main head, derived by the backend; axiom 2: absent when ScadaCommit is absent."
       "001":
@@ -1439,9 +1441,11 @@ types:
         summary: "Initial version. Layouts is a union of the layout.lite versions the deployed fleet sends (011, 012); SendTimeMs is the sender-time standard; Proof is the distributed-authority seam."
 
   layout.lite:
-    latest_version: "013"
+    latest_version: "014"
     versioning_strategy: "literal"
     versions:
+      "014":
+        summary: "- Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home is billed on, as the running scada's operational params state it; a reader lays its on-peak windows over any time range without a hand-kept copy."
       "013":
         summary: >
           - ShNodes: spaceheat.node.gt:301 -> 303

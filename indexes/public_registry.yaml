@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-13T14:30:00Z'
+  last_updated: '2026-11-13T17:25:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3572,13 +3572,33 @@ types:
           - ta.validation.state:000
           - utc.milliseconds
   gw.house.summary:
-    latest_version: '002'
+    latest_version: '003'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One house as a dashboard login sees it: role, registry identity,
       current layout, operating status and the latest snapshot''s facts; reassembled
       per request, nothing about a person.'
     versions:
+      '003':
+        status: staging
+        schema_url: https://schemas.electricity.works/types/gw.house.summary/003
+        created: '2026-11-13T17:25:00Z'
+        summary: Layout accepts layout.lite 014.
+        direct_dependencies:
+          structural:
+          - git.commit
+          - gw.commit.standing:000
+          - gw.dashboard.role:000
+          - gw.house.operating.status:000
+          - layout.lite:011
+          - layout.lite:012
+          - layout.lite:013
+          - layout.lite:014
+          - left.right.dot
+          - spaceheat.name
+          - utc.iso8601.seconds
+          - utc.milliseconds
+          - uuid4.str
       '002':
         status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/002
@@ -4026,7 +4046,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-13T14:30:00Z'
+        created: '2026-11-13T16:55:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -5769,12 +5789,29 @@ types:
           - layout.lite:012
           - utc.milliseconds
   layout.lite:
-    latest_version: '013'
+    latest_version: '014'
     owner: gridworks-energy
     versioning_strategy: literal
     description: Runtime projection of the active SCADA context used to interpret
       reports, snapshots, and control-adjacent messages.
     versions:
+      '014':
+        schema_url: https://schemas.electricity.works/types/layout.lite/014
+        created: '2026-11-13T17:25:00Z'
+        status: staging
+        summary: '- Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home
+          is billed on, as the running scada''s operational params state it; a reader
+          lays its on-peak windows over any time range without a hand-kept copy.'
+        direct_dependencies:
+          structural:
+          - data.channel.gt:004
+          - derived.channel.gt:003
+          - gw.state.machine:000
+          - gw.tou.tariff:000
+          - left.right.dot
+          - spaceheat.node.gt:303
+          - utc.milliseconds
+          - uuid4.str
       '013':
         schema_url: https://schemas.electricity.works/types/layout.lite/013
         created: '2026-10-22T20:10:00Z'

@@ -36,8 +36,8 @@ def operating_status() -> dict:
     }
 
 
-def test_latest_version_is_002() -> None:
-    assert GwHouseSummary.version_value() == "002"
+def test_latest_version_is_003() -> None:
+    assert GwHouseSummary.version_value() == "003"
 
 
 def test_v002_loads_with_commit_and_standing() -> None:
@@ -78,7 +78,7 @@ def test_v001_loads_and_upgrades_without_a_standing() -> None:
     )
     assert isinstance(decoded, GwHouseSummary001)
 
-    upgraded = decoded.upgrade()
+    upgraded = decoded.upgrade().upgrade()
     assert isinstance(upgraded, GwHouseSummary)
     assert upgraded.scada_commit == "e55faa2d3b1c4f6a8d9e0f1a2b3c4d5e6f7a8b9c"
     assert upgraded.scada_commit_standing is None
@@ -103,7 +103,7 @@ def test_v000_minimal_loads_and_upgrades() -> None:
     )
     assert isinstance(decoded, GwHouseSummary000)
 
-    upgraded = decoded.upgrade().upgrade()
+    upgraded = decoded.upgrade().upgrade().upgrade()
     assert isinstance(upgraded, GwHouseSummary)
     assert upgraded.role is GwDashboardRole.Viewer
     assert upgraded.layout is None

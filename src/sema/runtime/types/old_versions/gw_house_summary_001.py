@@ -9,10 +9,10 @@ from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.property_format import UtcIso8601Seconds
 from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
-from sema.runtime.types.gw_house_summary import GwHouseSummary
-from sema.runtime.types.layout_lite import LayoutLite
+from sema.runtime.types.old_versions.gw_house_summary_002 import GwHouseSummary002
 from sema.runtime.types.old_versions.layout_lite_011 import LayoutLite011
 from sema.runtime.types.old_versions.layout_lite_012 import LayoutLite012
+from sema.runtime.types.old_versions.layout_lite_013 import LayoutLite013
 
 
 class GwHouseSummary001(SemaType):
@@ -22,7 +22,7 @@ class GwHouseSummary001(SemaType):
     ta_g_node_id: UUID4Str
     g_node_alias: LeftRightDot
     display_name: str | None = None
-    layout: LayoutLite011 | LayoutLite012 | LayoutLite | None = None
+    layout: LayoutLite011 | LayoutLite012 | LayoutLite013 | None = None
     operating_status: GwHouseOperatingStatus | None = None
     latest_snapshot_time: UtcIso8601Seconds | None = None
     longest_running_zone_name: SpaceheatName | None = None
@@ -48,10 +48,10 @@ class GwHouseSummary001(SemaType):
             )
         return self
 
-    def upgrade(self) -> GwHouseSummary:
+    def upgrade(self) -> GwHouseSummary002:
         """
         Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit stands against the scada repository's main head, derived by the backend; axiom 2: absent when ScadaCommit is absent.
         """
         data = self.model_dump()
         data["version"] = "002"
-        return GwHouseSummary.model_validate(data)
+        return GwHouseSummary002.model_validate(data)

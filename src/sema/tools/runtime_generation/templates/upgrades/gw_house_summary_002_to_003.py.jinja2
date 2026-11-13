@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ gw_house_summary_003_class_name }}:
+        """
+        Layout accepts layout.lite 014.
+        """
+        data = self.model_dump()
+        data["version"] = "003"
+        return {{ gw_house_summary_003_class_name }}.model_validate(data)
