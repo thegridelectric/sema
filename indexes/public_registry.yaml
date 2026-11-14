@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-13T17:25:00Z'
+  last_updated: '2026-11-14T16:55:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -4046,7 +4046,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-13T16:55:00Z'
+        created: '2026-11-14T16:55:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -5032,18 +5032,23 @@ types:
     latest_version: '000'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: 'A house''s thermal / required-source-water-temperature model: quadratic
-      heat-loss coefficients (scaled integers) + the intermediate and design-day anchor
-      points + the max entering water temperature.'
+    description: 'A house''s thermal / required-source-water-temperature model: the
+      baseline heat-load coefficients and the regression load-forecast coefficients
+      (scaled integers), the intermediate and design-day anchor points, the hydronic
+      mass flow and the max entering water temperature.'
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/heating.curve/000
-        created: '2026-07-09T21:30:00Z'
+        created: '2026-11-14T16:55:00Z'
         status: staging
-        summary: "Initial version (AlphaTimes10, BetaTimes100, GammaEx6, IntermediatePowerKw,\
-          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdDeltaTF, MaxEwtF) \u2014 the\
-          \ house thermal model migrated out of scada deployment config into operational\
-          \ params."
+        summary: "Initial version: the baseline heat-load model (BaselineAlphaTimes10,\
+          \ BaselineBetaTimes100, BaselineGammaEx6), the regression load-forecast\
+          \ model (AlphaEx6, BetaEx6, GammaEx6, DeltaEx6, EpsilonEx6, ZetaEx6, EtaEx6,\
+          \ RhoTimes100), the intermediate and design-day anchor points (IntermediatePowerKw,\
+          \ IntermediateRswtF, DdPowerKw, DdRswtF, DdRoomTempF, DdDeltaTF), MaxEwtF\
+          \ and MassFlowKgH for the constant-flow radiator model \u2014 the house\
+          \ thermal model migrated out of scada deployment config into operational\
+          \ params. Axiom 1: DdRswtF >= IntermediateRswtF. Axiom 2: DdPowerKw >= IntermediatePowerKw."
         direct_dependencies:
           structural:
           - positive.float
