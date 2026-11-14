@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-14T16:55:00Z'
+  last_updated: '2026-11-14T22:30:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -478,7 +478,7 @@ enums:
       '001':
         schema_url: https://schemas.electricity.works/enums/gw.market.product.name/001
         created: '2026-11-13T14:30:00Z'
-        status: staging
+        status: published
         added_values:
         - rt60gate1
       '000':
@@ -1096,7 +1096,7 @@ enums:
       '000':
         schema_url: https://schemas.electricity.works/enums/price.component.name/000
         created: '2026-11-11T20:25:00Z'
-        status: staging
+        status: published
   market.quantity.unit:
     latest_version: '000'
     owner: gridworks-energy
@@ -2224,7 +2224,7 @@ types:
       '002':
         schema_url: https://schemas.electricity.works/types/flo.params/002
         created: '2026-11-13T00:25:00Z'
-        status: staging
+        status: published
         summary: '- PriceUsdMwhList: add, in place of LmpUsdMwhList and DistUsdMwhList
           - PriceForecastId: add'
         direct_dependencies:
@@ -3580,7 +3580,7 @@ types:
       per request, nothing about a person.'
     versions:
       '003':
-        status: staging
+        status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/003
         created: '2026-11-13T17:25:00Z'
         summary: Layout accepts layout.lite 014.
@@ -4213,7 +4213,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.price.forecast/000
         created: '2026-11-13T14:30:00Z'
-        status: staging
+        status: published
         summary: Initial version.
         direct_dependencies:
           structural:
@@ -5749,7 +5749,7 @@ types:
       '001':
         schema_url: https://schemas.electricity.works/types/latest.price/001
         created: '2026-11-13T13:40:00Z'
-        status: staging
+        status: published
         summary: '- PriceTimes1000: renamed PriceX1000 - Components: add, assigned
           as one Unknown component with the whole price - TariffAlias: add (optional)
           - CreatedMs: add (optional)'
@@ -5803,7 +5803,7 @@ types:
       '014':
         schema_url: https://schemas.electricity.works/types/layout.lite/014
         created: '2026-11-13T17:25:00Z'
-        status: staging
+        status: published
         summary: '- Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home
           is billed on, as the running scada''s operational params state it; a reader
           lays its on-peak windows over any time range without a hand-kept copy.'
@@ -6528,7 +6528,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/price.component/000
         created: '2026-11-13T13:40:00Z'
-        status: staging
+        status: published
         summary: Initial version.
         direct_dependencies:
           structural:
