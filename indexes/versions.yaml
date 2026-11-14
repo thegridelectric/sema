@@ -266,9 +266,13 @@ types:
         summary: "StartUnixS, StepDurationMinutes, HpAvgWList (W), StoreWhList (Wh); axiom StepListLengths."
 
   flo.params:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: >
+          - PriceUsdMwhList: add, in place of LmpUsdMwhList and DistUsdMwhList
+          - PriceForecastId: add
       "001":
         summary: "- Tuning: flo.tuning.bruce 000 -> 001, NumLayers assigned as TanksModeled times TempSensorsPerTank"
       "000":
@@ -327,10 +331,28 @@ types:
       "000":
         summary: "Earliest wire shape (single shape, seen 2025-01-04 to 2025-01-06), back-filled from S3 evidence. As v001 but without CopMin, CopMinOatF, HpIsOff, HpTurnOnMinutes and the v001-era optional fields (BufferAvailableKwh, HouseAvailableKwh, InitialBottomTempF, DischargingDdDeltaTF)."
 
-  flo.recommendation:
+  flo.path.penalties.bruce:
     latest_version: "000"
     versioning_strategy: "literal"
     versions:
+      "000":
+        summary: "RswtPenaltyUsdList, StabilityPenaltyUsdList, ShortCyclePenaltyUsdList (USD per step), TerminalCostUsd, TerminalCostEmptyStoreUsd, PathCostUsd; axioms PenaltyListLengths, TerminalCostBound."
+
+  flo.previous.run:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Path (flo.optimal.path), ClearedPairIndex, ClearedPair with PriceUnit and QuantityUnit, NextSlotPriceX1000, CreatedMs; axiom PathStartsAtTheBid."
+
+  flo.recommendation:
+    latest_version: "001"
+    versioning_strategy: "literal"
+    versions:
+      "001":
+        summary: >
+          - StoreStateList: add (optional, oneOf flo.tank.store.path)
+          - PathPenaltiesList: add (optional, oneOf flo.path.penalties.bruce)
       "000":
         summary: "Bid fields (BidderAlias, PqPairs, PriceUnit, QuantityUnit), OptimalPathList index-linked to PqPairs, FloName, FloRepo, FloGitCommit, CreatedMs; axioms AtLeastOnePair, PathPerPair, FirstStepIsTheBid, PairsDescend, PathsStartTogether."
 
@@ -340,6 +362,13 @@ types:
     versions:
       "000":
         summary: "BidderAlias and StartUnixS pair the refusal with its request as the recommendation does; Reason (flo.refusal.reason), optional Detail, CreatedMs."
+
+  flo.tank.store.path:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "StoreLayers, TopFList, MiddleFList, BottomFList (F), Thermocline1List, Thermocline2List (layer index from the top), EmptyStoreWh, FullStoreWh; axioms StepListLengths, ThermoclinesWithinTheStore, EmptyBelowFull."
 
   flo.tuning.alice:
     latest_version: "000"
@@ -711,9 +740,11 @@ types:
         summary: "Initial version. ScadaAlias + ValidationState (from the deed) + Standby x StandbyPosture + SeasonalStorageMode + ServiceMode + AcceptsDispatch x DispatchRefusalReason (the derived answer, present iff refusing, axiom 1; Standby refuses as OperatorHold, axiom 2) + TopState + ScadaBlind + LtnDispatching + CreatedMs. The slow facts of the LTN-scada agreement; nothing that cycles inside a healthy hour."
 
   gw.house.summary:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: "Layout accepts layout.lite 014."
       "002":
         summary: "Adds optional ScadaCommitStanding (gw.commit.standing): where ScadaCommit stands against the scada repository's main head, derived by the backend; axiom 2: absent when ScadaCommit is absent."
       "001":
@@ -837,6 +868,13 @@ types:
     versions:
       "000":
         summary: "Initial version: FromGNodeAlias, PNodeAlias, TariffAlias (left.right.dot), HourStartS (utc.seconds list), LmpList, DistList (USD/MWh numbers), PriceUid (uuid4.str), ForecastCreatedS (utc.seconds). Axioms 1-3: equal list lengths, HourStartS strictly increasing, ForecastCreatedS before the first hour."
+
+  gw.price.forecast:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
 
   gw.tou.tariff:
     latest_version: "000"
@@ -1383,9 +1421,15 @@ types:
         summary: "Initial Sema version"
 
   latest.price:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - PriceTimes1000: renamed PriceX1000
+          - Components: add, assigned as one Unknown component with the whole price
+          - TariffAlias: add (optional)
+          - CreatedMs: add (optional)
       "000":
         summary: "Initial Sema version"
 
@@ -1397,9 +1441,11 @@ types:
         summary: "Initial version. Layouts is a union of the layout.lite versions the deployed fleet sends (011, 012); SendTimeMs is the sender-time standard; Proof is the distributed-authority seam."
 
   layout.lite:
-    latest_version: "013"
+    latest_version: "014"
     versioning_strategy: "literal"
     versions:
+      "014":
+        summary: "- Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home is billed on, as the running scada's operational params state it; a reader lays its on-peak windows over any time range without a hand-kept copy."
       "013":
         summary: >
           - ShNodes: spaceheat.node.gt:301 -> 303
@@ -1596,6 +1642,13 @@ types:
         summary: "Rename PriceTimes1000/QuantityTimes1000 to PriceX1000/QuantityX1000."
       "000":
         summary: "Integer price/quantity pair, values x1000 (PriceTimes1000/QuantityTimes1000)."
+
+  price.component:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial version."
 
   relay.actor.config:
     latest_version: "003"
@@ -2160,6 +2213,9 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "001":
+        added_values:
+          - "rt60gate1"
       "000": {}
 
   gw.platform.alert.kind:
@@ -2500,6 +2556,12 @@ enums:
       "000": {}
 
   market.price.unit:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  price.component.name:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

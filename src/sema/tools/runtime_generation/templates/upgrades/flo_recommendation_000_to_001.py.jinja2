@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ flo_recommendation_001_class_name }}:
+        """
+        - StoreStateList: add (optional, oneOf flo.tank.store.path)
+        - PathPenaltiesList: add (optional, oneOf flo.path.penalties.bruce)
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ flo_recommendation_001_class_name }}.model_validate(data)

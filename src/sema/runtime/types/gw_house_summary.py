@@ -13,16 +13,17 @@ from sema.runtime.types.gw_house_operating_status import GwHouseOperatingStatus
 from sema.runtime.types.layout_lite import LayoutLite
 from sema.runtime.types.old_versions.layout_lite_011 import LayoutLite011
 from sema.runtime.types.old_versions.layout_lite_012 import LayoutLite012
+from sema.runtime.types.old_versions.layout_lite_013 import LayoutLite013
 
 
 class GwHouseSummary(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.house.summary/002"""
+    """Sema: https://schemas.electricity.works/types/gw.house.summary/003"""
 
     role: GwDashboardRole
     ta_g_node_id: UUID4Str
     g_node_alias: LeftRightDot
     display_name: str | None = None
-    layout: LayoutLite011 | LayoutLite012 | LayoutLite | None = None
+    layout: LayoutLite011 | LayoutLite012 | LayoutLite013 | LayoutLite | None = None
     operating_status: GwHouseOperatingStatus | None = None
     latest_snapshot_time: UtcIso8601Seconds | None = None
     longest_running_zone_name: SpaceheatName | None = None
@@ -31,7 +32,7 @@ class GwHouseSummary(SemaType):
     scada_commit_standing: GwCommitStanding | None = None
     send_time_ms: UTCMilliseconds
     type_name: Literal["gw.house.summary"] = "gw.house.summary"
-    version: Literal["002"] = "002"
+    version: Literal["003"] = "003"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwHouseSummary":

@@ -179,9 +179,10 @@ types:
     versions:
       '000': definitions/types/flo.optimal.path/000.yaml
   flo.params:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/flo.params/002.yaml
       '001': definitions/types/flo.params/001.yaml
       '000': definitions/types/flo.params/000.yaml
   flo.params.house0:
@@ -196,16 +197,32 @@ types:
       '002': definitions/types/flo.params.house0/002.yaml
       '001': definitions/types/flo.params.house0/001.yaml
       '000': definitions/types/flo.params.house0/000.yaml
-  flo.recommendation:
+  flo.path.penalties.bruce:
     latest_version: '000'
     versioning_strategy: literal
     versions:
+      '000': definitions/types/flo.path.penalties.bruce/000.yaml
+  flo.previous.run:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.previous.run/000.yaml
+  flo.recommendation:
+    latest_version: '001'
+    versioning_strategy: literal
+    versions:
+      '001': definitions/types/flo.recommendation/001.yaml
       '000': definitions/types/flo.recommendation/000.yaml
   flo.refusal:
     latest_version: '000'
     versioning_strategy: literal
     versions:
       '000': definitions/types/flo.refusal/000.yaml
+  flo.tank.store.path:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.tank.store.path/000.yaml
   flo.tuning.alice:
     latest_version: '000'
     versioning_strategy: literal
@@ -460,9 +477,10 @@ types:
     versions:
       '000': definitions/types/gw.house.operating.status/000.yaml
   gw.house.summary:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/gw.house.summary/003.yaml
       '002': definitions/types/gw.house.summary/002.yaml
       '001': definitions/types/gw.house.summary/001.yaml
       '000': definitions/types/gw.house.summary/000.yaml
@@ -542,6 +560,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.stopgap.price.forecast/000.yaml
+  gw.price.forecast:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.price.forecast/000.yaml
   gw.tou.tariff:
     latest_version: '000'
     versioning_strategy: literal
@@ -897,9 +920,10 @@ types:
     versions:
       '000': definitions/types/keyparam.change.log/000.yaml
   latest.price:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/latest.price/001.yaml
       '000': definitions/types/latest.price/000.yaml
   layout.bundle:
     latest_version: '000'
@@ -907,9 +931,10 @@ types:
     versions:
       '000': definitions/types/layout.bundle/000.yaml
   layout.lite:
-    latest_version: '013'
+    latest_version: '014'
     versioning_strategy: literal
     versions:
+      '014': definitions/types/layout.lite/014.yaml
       '013': definitions/types/layout.lite/013.yaml
       '012': definitions/types/layout.lite/012.yaml
       '011': definitions/types/layout.lite/011.yaml
@@ -1017,6 +1042,11 @@ types:
     versions:
       '001': definitions/types/price.quantity.unitless/001.yaml
       '000': definitions/types/price.quantity.unitless/000.yaml
+  price.component:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/price.component/000.yaml
   relay.actor.config:
     latest_version: '003'
     versioning_strategy: literal
@@ -1370,8 +1400,9 @@ enums:
       '000': definitions/enums/gw.refrigerant.cycle/000.yaml
   gw.market.product.name:
     enum_type: versioned
-    latest_version: '000'
+    latest_version: '001'
     versions:
+      '001': definitions/enums/gw.market.product.name/001.yaml
       '000': definitions/enums/gw.market.product.name/000.yaml
   gw.platform.alert.kind:
     enum_type: versioned
@@ -1614,6 +1645,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/market.price.unit/000.yaml
+  price.component.name:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/price.component.name/000.yaml
   market.quantity.unit:
     enum_type: versioned
     latest_version: '000'

@@ -1,4 +1,4 @@
-"""flo.params 001: one request to a FLO, proved by mutation of the example."""
+"""flo.params 002: one request to a FLO, proved by mutation of the example."""
 
 import pytest
 
@@ -8,15 +8,16 @@ from sema.runtime.types.flo_params import FloParams
 from sema.runtime.types.flo_tuning_alice import FloTuningAlice
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.old_versions.flo_params_000 import FloParams000
+from sema.runtime.types.old_versions.flo_params_001 import FloParams001
 from sema.runtime.types.old_versions.flo_tuning_bruce_000 import FloTuningBruce000
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.params", "001")
+EXAMPLE = example("flo.params", "002")
 PATH = example("flo.optimal.path", "000")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.params", "001") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("flo.params", "002") == {1: [], 2: [], 3: [], 4: [], 5: []}
 
 
 def test_example_round_trips_with_bruce_tuning() -> None:
@@ -94,6 +95,20 @@ def test_a_000_request_upgrades_with_the_layers_it_modeled() -> None:
     assert upgraded.tuning.num_layers == old["TanksModeled"] * old["TempSensorsPerTank"]
     assert upgraded.version == "001"
     assert upgraded.tuning.version == "001"
+
+
+def test_a_001_request_refuses_to_upgrade_for_want_of_its_price_forecast() -> None:
+    old = example("flo.params", "001")
+    with pytest.raises(UpgradeRequiresContext):
+        FloParams001.model_validate(old).upgrade()
+
+
+def test_a_request_without_its_price_forecast_id_is_refused() -> None:
+    def mutate(p: dict) -> None:
+        del p["PriceForecastId"]
+
+    with pytest.raises(ValueError, match="PriceForecastId"):
+        FloParams.model_validate(mutated(EXAMPLE, mutate))
 
 
 def test_a_000_tuning_alone_refuses_to_upgrade() -> None:

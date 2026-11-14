@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-09T01:50:00Z'
+  last_updated: '2026-11-13T17:25:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -253,7 +253,7 @@ enums:
       days (e.g. time-of-use windows).
     schema_url: https://schemas.electricity.works/enums/day.of.week/000
     created: '2026-08-12T22:15:00Z'
-    status: staging
+    status: published
   fis.authorization.decision:
     latest_version: '000'
     owner: jessica-millar
@@ -469,12 +469,18 @@ enums:
         created: '2026-09-24T17:50:00Z'
         status: staging
   gw.market.product.name:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     enum_type: versioned
     description: GridWorks's market-product vocabulary; each token names a product
       whose slot timing is encoded in the token
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/enums/gw.market.product.name/001
+        created: '2026-11-13T14:30:00Z'
+        status: staging
+        added_values:
+        - rt60gate1
       '000':
         schema_url: https://schemas.electricity.works/enums/gw.market.product.name/000
         created: '2026-06-08T00:00:00Z'
@@ -1080,6 +1086,17 @@ enums:
         schema_url: https://schemas.electricity.works/enums/market.price.unit/000
         created: '2024-12-05T19:25:00Z'
         status: published
+  price.component.name:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: The named parts a market price divides into; the parts sum to the
+      price.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/price.component.name/000
+        created: '2026-11-11T20:25:00Z'
+        status: staging
   market.quantity.unit:
     latest_version: '000'
     owner: gridworks-energy
@@ -2197,13 +2214,30 @@ types:
           - positive.int
           - utc.seconds
   flo.params:
-    latest_version: '001'
+    latest_version: '002'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One request to a FLO for one market slot: bidder, step grid, price
       and weather forecasts, the modeled store and its state, heat pump facts, market
       price bounds, and the tuning whose TypeName names the optimizer.'
     versions:
+      '002':
+        schema_url: https://schemas.electricity.works/types/flo.params/002
+        created: '2026-11-13T00:25:00Z'
+        status: staging
+        summary: '- PriceUsdMwhList: add, in place of LmpUsdMwhList and DistUsdMwhList
+          - PriceForecastId: add'
+        direct_dependencies:
+          structural:
+          - flo.optimal.path:000
+          - flo.tuning.alice:000
+          - flo.tuning.bruce:001
+          - gw1.seasonal.storage.mode:000
+          - left.right.dot
+          - positive.int
+          - utc.milliseconds
+          - utc.seconds
+          - uuid4.str
       '001':
         schema_url: https://schemas.electricity.works/types/flo.params/001
         created: '2026-11-02T17:45:00Z'
@@ -2360,14 +2394,70 @@ types:
           - positive.int
           - utc.seconds
           - uuid4.str
-  flo.recommendation:
+  flo.path.penalties.bruce:
     latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: The penalties the bruce optimizer charged along one flo.optimal.path,
+      per step, and the cost it assigned to the path's final state.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/flo.path.penalties.bruce/000
+        created: '2026-11-09T20:20:00Z'
+        status: published
+        summary: RswtPenaltyUsdList, StabilityPenaltyUsdList, ShortCyclePenaltyUsdList
+          (USD per step), TerminalCostUsd, TerminalCostEmptyStoreUsd, PathCostUsd;
+          axioms PenaltyListLengths, TerminalCostBound.
+        direct_dependencies:
+          structural: []
+  flo.previous.run:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'What a bidder keeps from one slot''s recommendation once the market
+      clears, for its next request: the cleared pair, the path it led to, and the
+      price forecast for the slot after.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/flo.previous.run/000
+        created: '2026-11-09T15:40:00Z'
+        status: published
+        summary: Path (flo.optimal.path), ClearedPairIndex, ClearedPair with PriceUnit
+          and QuantityUnit, NextSlotPriceX1000, CreatedMs; axiom PathStartsAtTheBid.
+        direct_dependencies:
+          structural:
+          - flo.optimal.path:000
+          - market.price.unit:000
+          - market.quantity.unit:000
+          - non.negative.int
+          - price.quantity.unitless:001
+          - utc.milliseconds
+  flo.recommendation:
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'A FLO''s answer to one flo.params request: the bid curve to submit
       for the slot and, per price-quantity pair, the optimal path that quantity leads
       to, with the FLO''s provenance.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/flo.recommendation/001
+        created: '2026-11-09T20:20:00Z'
+        status: published
+        summary: '- StoreStateList: add (optional, oneOf flo.tank.store.path) - PathPenaltiesList:
+          add (optional, oneOf flo.path.penalties.bruce)'
+        direct_dependencies:
+          structural:
+          - flo.optimal.path:000
+          - flo.path.penalties.bruce:000
+          - flo.tank.store.path:000
+          - git.commit
+          - left.right.dot
+          - market.price.unit:000
+          - market.quantity.unit:000
+          - non.empty.string
+          - price.quantity.unitless:001
+          - utc.milliseconds
       '000':
         schema_url: https://schemas.electricity.works/types/flo.recommendation/000
         created: '2026-11-01T15:50:00Z'
@@ -2406,6 +2496,24 @@ types:
           - non.empty.string
           - utc.milliseconds
           - utc.seconds
+  flo.tank.store.path:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'The state of a store of stratified water tanks at the end of each
+      step of one flo.optimal.path: layer count, the three band temperatures and the
+      two thermoclines as layer indices.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/flo.tank.store.path/000
+        created: '2026-11-09T20:20:00Z'
+        status: published
+        summary: StoreLayers, TopFList, MiddleFList, BottomFList (F), Thermocline1List,
+          Thermocline2List (layer index from the top), EmptyStoreWh, FullStoreWh;
+          axioms StepListLengths, ThermoclinesWithinTheStore, EmptyBelowFull.
+        direct_dependencies:
+          structural:
+          - positive.int
   flo.tuning.alice:
     latest_version: '000'
     owner: gridworks-energy
@@ -3464,13 +3572,33 @@ types:
           - ta.validation.state:000
           - utc.milliseconds
   gw.house.summary:
-    latest_version: '002'
+    latest_version: '003'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One house as a dashboard login sees it: role, registry identity,
       current layout, operating status and the latest snapshot''s facts; reassembled
       per request, nothing about a person.'
     versions:
+      '003':
+        status: staging
+        schema_url: https://schemas.electricity.works/types/gw.house.summary/003
+        created: '2026-11-13T17:25:00Z'
+        summary: Layout accepts layout.lite 014.
+        direct_dependencies:
+          structural:
+          - git.commit
+          - gw.commit.standing:000
+          - gw.dashboard.role:000
+          - gw.house.operating.status:000
+          - layout.lite:011
+          - layout.lite:012
+          - layout.lite:013
+          - layout.lite:014
+          - left.right.dot
+          - spaceheat.name
+          - utc.iso8601.seconds
+          - utc.milliseconds
+          - uuid4.str
       '002':
         status: published
         schema_url: https://schemas.electricity.works/types/gw.house.summary/002
@@ -3918,7 +4046,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.operational.params/000
-        created: '2026-11-06T20:35:00Z'
+        created: '2026-11-13T16:55:00Z'
         status: staging
         summary: "Initial version. ScadaAlias (the applying Scada's identity \u2014\
           \ stored/emitted instances self-identify; the layout holds the full GNodes)\
@@ -3956,7 +4084,7 @@ types:
           - gw.dispatch.hold:000
           - gw.house0.family.params:000
           - gw.house0.no.sieg.family.params:000
-          - gw.market.product.name:000
+          - gw.market.product.name:001
           - gw.nolan.family.params:000
           - gw.standby.posture:000
           - gw.tou.tariff:000
@@ -4074,6 +4202,27 @@ types:
           - left.right.dot
           - utc.seconds
           - uuid4.str
+  gw.price.forecast:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'A forecast of one MarketMaker''s price for one market over a run
+      of slots: for each slot, the price the MarketMaker is expected to publish in
+      its latest.price.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/gw.price.forecast/000
+        created: '2026-11-13T14:30:00Z'
+        status: staging
+        summary: Initial version.
+        direct_dependencies:
+          structural:
+          - gw.market.product.name:001
+          - left.right.dot
+          - market.price.unit:000
+          - utc.milliseconds
+          - utc.seconds
+          - uuid4.str
   gw.tou.tariff:
     latest_version: '000'
     owner: gridworks-energy
@@ -4085,7 +4234,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.tou.tariff/000
         created: '2026-09-17T20:10:00Z'
-        status: staging
+        status: published
         summary: 'Initial version: Alias (left.right.dot), DisplayName, TimezoneStr
           (iana.timezone.str, the new format word replacing a bare string), OnPeakWindows
           (gw.tou.window list). Axiom 1: per-day window non-overlap (moved here from
@@ -4105,7 +4254,7 @@ types:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.tou.window/000
         created: '2026-08-12T22:15:00Z'
-        status: staging
+        status: published
         summary: 'Initial version: Start (inclusive) and End (exclusive) hh.mm plus
           Days (day.of.week list). Axioms: Start strictly before End (no midnight
           wrap); Days non-empty and duplicate-free.'
@@ -5590,12 +5739,29 @@ types:
           structural:
           - left.right.dot
   latest.price:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: Latest cleared market price for a market slot, published by the MarketMaker
-      (currently by the LeafTransactiveNode, pre-MarketMaker).
+    description: The price of one market slot, published by the MarketMaker that runs
+      the slot's market.
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/latest.price/001
+        created: '2026-11-13T13:40:00Z'
+        status: staging
+        summary: '- PriceTimes1000: renamed PriceX1000 - Components: add, assigned
+          as one Unknown component with the whole price - TariffAlias: add (optional)
+          - CreatedMs: add (optional)'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - market.price.unit:000
+          - market.slot.name
+          - price.component:000
+          - utc.milliseconds
+          - uuid4.str
+          axiom:
+          - price.component.name:000
       '000':
         schema_url: https://schemas.electricity.works/types/latest.price/000
         created: '2026-05-13T00:00:00Z'
@@ -5627,12 +5793,29 @@ types:
           - layout.lite:012
           - utc.milliseconds
   layout.lite:
-    latest_version: '013'
+    latest_version: '014'
     owner: gridworks-energy
     versioning_strategy: literal
     description: Runtime projection of the active SCADA context used to interpret
       reports, snapshots, and control-adjacent messages.
     versions:
+      '014':
+        schema_url: https://schemas.electricity.works/types/layout.lite/014
+        created: '2026-11-13T17:25:00Z'
+        status: staging
+        summary: '- Tariff: add (gw.tou.tariff 000), the time-of-use tariff the home
+          is billed on, as the running scada''s operational params state it; a reader
+          lays its on-peak windows over any time range without a hand-kept copy.'
+        direct_dependencies:
+          structural:
+          - data.channel.gt:004
+          - derived.channel.gt:003
+          - gw.state.machine:000
+          - gw.tou.tariff:000
+          - left.right.dot
+          - spaceheat.node.gt:303
+          - utc.milliseconds
+          - uuid4.str
       '013':
         schema_url: https://schemas.electricity.works/types/layout.lite/013
         created: '2026-10-22T20:10:00Z'
@@ -6334,6 +6517,21 @@ types:
         summary: Integer price/quantity pair, values x1000 (PriceTimes1000/QuantityTimes1000).
         direct_dependencies:
           structural: []
+  price.component:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: 'One named part of one market price: a price.component.name and its
+      amount as an integer times 1000.'
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/price.component/000
+        created: '2026-11-13T13:40:00Z'
+        status: staging
+        summary: Initial version.
+        direct_dependencies:
+          structural:
+          - price.component.name:000
   relay.actor.config:
     latest_version: '003'
     owner: gridworks-energy

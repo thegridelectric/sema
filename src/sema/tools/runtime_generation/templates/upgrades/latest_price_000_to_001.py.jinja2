@@ -1,0 +1,19 @@
+    def upgrade(self) -> {{ latest_price_001_class_name }}:
+        """
+        - PriceTimes1000: renamed PriceX1000
+        - Components: add, assigned as one Unknown component with the whole price
+        - TariffAlias: add (optional)
+        - CreatedMs: add (optional)
+        """
+        data = self.model_dump()
+        data["price_x1000"] = data.pop("price_times1000")
+        data["components"] = [
+            {
+                "name": "Unknown",
+                "price_x1000": data["price_x1000"],
+                "type_name": "price.component",
+                "version": "000",
+            }
+        ]
+        data["version"] = "001"
+        return {{ latest_price_001_class_name }}.model_validate(data)

@@ -1,0 +1,12 @@
+    def upgrade(self) -> {{ flo_params_002_class_name }}:
+        """
+        - PriceUsdMwhList: add, in place of LmpUsdMwhList and DistUsdMwhList
+        - PriceForecastId: add
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ flo_params_001_class_name }} cannot be upgraded to "
+            "{{ flo_params_002_class_name }} without context: v002 adds the "
+            "required PriceForecastId, the identity of the price forecast the "
+            "price list was read from, which a v001 message does not state "
+            "and which SHALL NOT be fabricated."
+        )
