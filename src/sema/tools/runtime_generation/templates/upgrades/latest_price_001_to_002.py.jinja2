@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ latest_price_002_class_name }}:
+        """
+        - PriceStage: add, assigned Final
+        """
+        data = self.model_dump()
+        data["price_stage"] = "Final"
+        data["version"] = "002"
+        return {{ latest_price_002_class_name }}.model_validate(data)

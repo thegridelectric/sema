@@ -5,7 +5,7 @@ from sema.runtime.enums import MarketPriceUnit
 from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import MarketSlotName
 from sema.runtime.property_format import UUID4Str
-from sema.runtime.types.latest_price import LatestPrice
+from sema.runtime.types.old_versions.latest_price_001 import LatestPrice001
 
 
 class LatestPrice000(SemaType):
@@ -19,7 +19,7 @@ class LatestPrice000(SemaType):
     type_name: Literal["latest.price"] = "latest.price"
     version: Literal["000"] = "000"
 
-    def upgrade(self) -> LatestPrice:
+    def upgrade(self) -> LatestPrice001:
         """
         - PriceTimes1000: renamed PriceX1000
         - Components: add, assigned as one Unknown component with the whole price
@@ -37,4 +37,4 @@ class LatestPrice000(SemaType):
             }
         ]
         data["version"] = "001"
-        return LatestPrice.model_validate(data)
+        return LatestPrice001.model_validate(data)

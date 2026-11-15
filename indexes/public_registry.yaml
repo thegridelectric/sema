@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-15T15:45:00Z'
+  last_updated: '2026-11-15T16:50:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -1097,6 +1097,16 @@ enums:
         schema_url: https://schemas.electricity.works/enums/price.component.name/000
         created: '2026-11-11T20:25:00Z'
         status: published
+  price.stage:
+    latest_version: '000'
+    owner: gridworks-energy
+    enum_type: versioned
+    description: The stage of a MarketMaker's commitment to a market slot's price.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/enums/price.stage/000
+        created: '2026-11-15T16:50:00Z'
+        status: staging
   market.quantity.unit:
     latest_version: '000'
     owner: gridworks-energy
@@ -5759,12 +5769,28 @@ types:
           structural:
           - left.right.dot
   latest.price:
-    latest_version: '001'
+    latest_version: '002'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: The price of one market slot, published by the MarketMaker that runs
-      the slot's market.
+    description: The price of one market slot at one stage, published by the MarketMaker
+      that runs the slot's market.
     versions:
+      '002':
+        schema_url: https://schemas.electricity.works/types/latest.price/002
+        created: '2026-11-15T16:50:00Z'
+        status: staging
+        summary: '- PriceStage: add, assigned Final'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - market.price.unit:000
+          - market.slot.name
+          - price.component:000
+          - price.stage:000
+          - utc.milliseconds
+          - uuid4.str
+          axiom:
+          - price.component.name:000
       '001':
         schema_url: https://schemas.electricity.works/types/latest.price/001
         created: '2026-11-13T13:40:00Z'

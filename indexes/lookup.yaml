@@ -925,9 +925,10 @@ types:
     versions:
       '000': definitions/types/keyparam.change.log/000.yaml
   latest.price:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/latest.price/002.yaml
       '001': definitions/types/latest.price/001.yaml
       '000': definitions/types/latest.price/000.yaml
   layout.bundle:
@@ -1655,6 +1656,11 @@ enums:
     latest_version: '000'
     versions:
       '000': definitions/enums/price.component.name/000.yaml
+  price.stage:
+    enum_type: versioned
+    latest_version: '000'
+    versions:
+      '000': definitions/enums/price.stage/000.yaml
   market.quantity.unit:
     enum_type: versioned
     latest_version: '000'

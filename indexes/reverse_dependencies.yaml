@@ -689,6 +689,7 @@ types:
     '000':
       used_by:
       - latest.price:001
+      - latest.price:002
   price.quantity.unitless:
     '000':
       used_by:
@@ -1240,6 +1241,7 @@ enums:
       - gw.price.forecast:000
       - latest.price:000
       - latest.price:001
+      - latest.price:002
   market.quantity.unit:
     '000':
       used_by:
@@ -1275,7 +1277,12 @@ enums:
     '000':
       used_by:
       - latest.price:001
+      - latest.price:002
       - price.component:000
+  price.stage:
+    '000':
+      used_by:
+      - latest.price:002
   reboot.picos:
     '000':
       used_by:
@@ -1536,6 +1543,7 @@ formats:
     - keyparam.change.log:000
     - latest.price:000
     - latest.price:001
+    - latest.price:002
     - layout.lite:001
     - layout.lite:002
     - layout.lite:003
@@ -1614,6 +1622,7 @@ formats:
     - bid:000
     - latest.price:000
     - latest.price:001
+    - latest.price:002
   non.empty.string:
     used_by:
     - fis.connect.claims:000
@@ -2053,6 +2062,7 @@ formats:
     - i2c.result:000
     - i2c.result:001
     - latest.price:001
+    - latest.price:002
     - layout.bundle:000
     - layout.lite:001
     - layout.lite:002
@@ -2246,6 +2256,7 @@ formats:
     - i2c.write.reg:000
     - latest.price:000
     - latest.price:001
+    - latest.price:002
     - layout.lite:001
     - layout.lite:002
     - layout.lite:003

@@ -1428,9 +1428,11 @@ types:
         summary: "Initial Sema version"
 
   latest.price:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: "- PriceStage: add, assigned Final"
       "001":
         summary: >
           - PriceTimes1000: renamed PriceX1000
@@ -2569,6 +2571,12 @@ enums:
       "000": {}
 
   price.component.name:
+    enum_type: "versioned"
+    note: "This enum is versioned; new versions are additive only."
+    versions:
+      "000": {}
+
+  price.stage:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:

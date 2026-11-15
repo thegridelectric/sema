@@ -1,13 +1,18 @@
-"""latest.price 001: one slot's price and the named parts it divides into,
-proved by mutation of the example."""
+"""latest.price 002: one slot's price at one stage and the named parts it
+divides into, proved by mutation of the example."""
+
+import pytest
+from pydantic import ValidationError
 
 from sema.runtime.codec import default_codec
 from sema.runtime.enums.price_component_name import PriceComponentName
+from sema.runtime.enums.price_stage import PriceStage
 from sema.runtime.types.latest_price import LatestPrice
 from sema.runtime.types.old_versions.latest_price_000 import LatestPrice000
+from sema.runtime.types.old_versions.latest_price_001 import LatestPrice001
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("latest.price", "001")
+EXAMPLE = example("latest.price", "002")
 
 
 def component(name: str, price_x1000: int) -> dict:
@@ -20,7 +25,7 @@ def component(name: str, price_x1000: int) -> dict:
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("latest.price", "001") == {1: ["a", "b"], 2: [], 3: ["a", "b"]}
+    assert axioms("latest.price", "002") == {1: ["a", "b"], 2: [], 3: ["a", "b"]}
 
 
 def test_example_round_trips() -> None:
@@ -36,6 +41,22 @@ def test_two_unknown_components_are_valid() -> None:
         del p["TariffAlias"]
 
     LatestPrice.model_validate(mutated(EXAMPLE, mutate))
+
+
+def test_a_stage_from_a_later_enum_version_decodes_to_provisional() -> None:
+    def mutate(p: dict) -> None:
+        p["PriceStage"] = "Verified"
+
+    price = LatestPrice.model_validate(mutated(EXAMPLE, mutate))
+    assert price.price_stage == PriceStage.Provisional
+
+
+def test_a_price_without_a_stage_is_refused() -> None:
+    def mutate(p: dict) -> None:
+        del p["PriceStage"]
+
+    with pytest.raises(ValidationError):
+        LatestPrice.model_validate(mutated(EXAMPLE, mutate))
 
 
 def test_a_name_from_a_later_enum_version_decodes_to_unknown_and_still_sums() -> None:
@@ -96,3 +117,14 @@ def test_a_000_price_upgrades_to_one_unknown_component_with_the_whole_price() ->
     ]
     assert upgraded.tariff_alias is None
     assert upgraded.created_ms is None
+
+
+def test_a_001_price_upgrades_with_the_stage_final() -> None:
+    old = example("latest.price", "001")
+    upgraded = LatestPrice001.model_validate(old).upgrade()
+    assert upgraded.version == "002"
+    assert upgraded.price_stage == PriceStage.Final
+    assert upgraded.price_x1000 == old["PriceX1000"]
+    assert [c.name for c in upgraded.components] == [
+        c.name for c in LatestPrice001.model_validate(old).components
+    ]
