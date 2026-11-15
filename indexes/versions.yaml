@@ -897,6 +897,13 @@ types:
       "000":
         summary: "TotalStoreTanks (positive.int), at most 6 (axiom TankCount); GallonsPerTank and TempSensorsPerTank (positive.int). gw.hydronic holds it as the optional WaterStore."
 
+  gw.weather.archive.cmd:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "- Initial version"
+
   gw.weather.channel.gt:
     latest_version: "002"
     versioning_strategy: "literal"

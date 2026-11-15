@@ -133,6 +133,7 @@ from sema.runtime.types.gw_stopgap_price_forecast import GwStopgapPriceForecast
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
 from sema.runtime.types.gw_tou_window import GwTouWindow
 from sema.runtime.types.gw_water_store import GwWaterStore
+from sema.runtime.types.gw_weather_archive_cmd import GwWeatherArchiveCmd
 from sema.runtime.types.gw_weather_channel_gt import GwWeatherChannelGt
 from sema.runtime.types.gw_weather_cmd_ack import GwWeatherCmdAck
 from sema.runtime.types.gw_weather_cmd_nack import GwWeatherCmdNack
@@ -385,6 +386,7 @@ __all__ = [
     "GwTouTariff",
     "GwTouWindow",
     "GwWaterStore",
+    "GwWeatherArchiveCmd",
     "GwWeatherChannelGt",
     "GwWeatherCmdAck",
     "GwWeatherCmdNack",

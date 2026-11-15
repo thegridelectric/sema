@@ -609,3 +609,5 @@ types:
     '000': sha256:a99688adfb22cf729c29448002d688f626a3a6da37f8103bceee7f6ae18a5258
   gw.price.forecast:
     '000': sha256:8d52c3ec8e1ca4d5ec6ebb2503c4bacda23e98585d035ee1aa45bc9ec92d6871
+  gw.weather.archive.cmd:
+    '000': sha256:b9f8a65cefe8defca7f43dceb7a3fc76a6b34ee1c88440742608265bb6538b94

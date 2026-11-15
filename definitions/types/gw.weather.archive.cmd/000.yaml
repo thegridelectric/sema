@@ -1,0 +1,178 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.weather.archive.cmd/000"
+
+title: "gw.weather.archive.cmd"
+type: object
+description: >
+  Command to fill one station's observed channels with history from an
+  outside source over a window of past time. The weather service pulls
+  the whole series for the window through the adapter the Method names,
+  bins or shifts it onto each channel's grid, and publishes one
+  gw.weather.observation per grid point on the station's radio channel,
+  Interpolated false, so the history travels the bus as live observations
+  do. The service replies direct to the sender with gw.weather.cmd.ack
+  or gw.weather.cmd.nack, correlated by the command's content hash as
+  for gw.weather.create.cmd.
+
+properties:
+
+  StationAlias:
+    $ref: "https://schemas.electricity.works/formats/lowercase.token"
+    description: >
+      Alias of the gw.weather.station.gt whose channels are filled. The
+      station must already be an active record; the readings are
+      published as that station's observations.
+
+  ChannelNameList:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Names of the gw.weather.channel.gt records on the station to fill,
+      one per quantity. Each must be an active record on the station,
+      and the Method's product must serve each channel's Quantity.
+
+  Method:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The long pull this command runs, named as on
+      gw.weather.forecast.channel.gt: a dotted name the service maps to
+      one adapter function and the product it fetches. A live pull
+      fetches the newest product for the hours ahead; a long pull fetches
+      a whole series over past time from a different endpoint at the
+      same source. Examples: open.meteo.historical.forecast.hourly (past
+      forecasts stitched from the most recent run for each hour, so each
+      value is the shortest-lead forecast; serves temperature, wind speed
+      and irradiance for a model gridpoint), open.meteo.era5.hourly (ERA5
+      reanalysis at a point, a different instrument and so a different
+      station), noaa.uscrn.hourly (a measured USCRN station's hourly
+      files), weather.com.pws.history (a personal station's five-minute
+      history, binned to the hour). A Method the service has no adapter
+      for is refused with a nack.
+
+  SourceLocator:
+    type: string
+    description: >
+      The adapter's own encoding of where to pull at the source, read by
+      that adapter alone, as on gw.weather.forecast.channel.gt. For the
+      Open-Meteo methods it is "<lat>,<lon>" in decimal degrees; for a
+      USCRN method the station's file identifier; for a personal station
+      its network id.
+
+  Start:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      First observation time of the window, inclusive.
+
+  End:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      End of the window, exclusive: no observation at or after End is
+      published.
+
+  CreatedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      The sender's clock when the command was composed.
+
+  Proof:
+    type: string
+    description: >
+      Optional placeholder for a verifiable authorization artifact for
+      this command. Its format is machinery of the authority substrate
+      and is deliberately not fixed by this word; absent while write
+      authority is the authenticated connection.
+
+  TypeName:
+    const: "gw.weather.archive.cmd"
+
+  Version:
+    const: "000"
+
+required:
+  - StationAlias
+  - ChannelNameList
+  - Method
+  - SourceLocator
+  - Start
+  - End
+  - CreatedMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "StationAlias": "ommillinocket",
+      "ChannelNameList": [
+        "ommillinocket.temperature",
+        "ommillinocket.windspeed",
+        "ommillinocket.irradiance"
+      ],
+      "Method": "open.meteo.historical.forecast.hourly",
+      "SourceLocator": "45.6478,-68.6856",
+      "Start": "2024-10-01T00:00:00Z",
+      "End": "2026-10-25T00:00:00Z",
+      "CreatedMs": 1794754200000,
+      "TypeName": "gw.weather.archive.cmd",
+      "Version": "000"
+    }
+  - |
+    {
+      "StationAlias": "era5millinocket",
+      "ChannelNameList": [
+        "era5millinocket.temperature"
+      ],
+      "Method": "open.meteo.era5.hourly",
+      "SourceLocator": "45.6478,-68.6856",
+      "Start": "2024-10-01T00:00:00Z",
+      "End": "2025-04-01T00:00:00Z",
+      "CreatedMs": 1794754200000,
+      "TypeName": "gw.weather.archive.cmd",
+      "Version": "000"
+    }
+  - |
+    {
+      "StationAlias": "uscrnoldtown",
+      "ChannelNameList": [
+        "uscrnoldtown.temperature",
+        "uscrnoldtown.irradiance"
+      ],
+      "Method": "noaa.uscrn.hourly",
+      "SourceLocator": "CRNH0203-ME_Old_Town_2_W",
+      "Start": "2025-11-01T00:00:00Z",
+      "End": "2026-04-01T00:00:00Z",
+      "CreatedMs": 1794754200000,
+      "TypeName": "gw.weather.archive.cmd",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "WindowOrder"
+      statement: >
+        End SHALL be later than Start.
+    - number: 2
+      name: "StationNaming"
+      statement: >
+        Every element of ChannelNameList SHALL begin with StationAlias
+        followed by ".".
+    - number: 3
+      name: "DistinctChannels"
+      statement: >
+        Elements of ChannelNameList SHALL be distinct.
+
+  extended_description: >
+    The station and channel words name no source: the path readings
+    arrive by is provenance per reading, and this command is where that
+    provenance is stated for a backfill. The command and its ack travel
+    the bus, so the ear's capture holds, beside the observations it
+    produced, which endpoint produced the window and who asked. A re-run
+    over the same window publishes the same observations again.
+    Forecasts as issued are not observations and are outside this
+    command.

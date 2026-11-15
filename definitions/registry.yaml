@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-14T22:30:00Z"
+  last_updated: "2026-11-15T15:45:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -4399,6 +4399,26 @@ types:
         direct_dependencies:
           structural:
             - "positive.int"
+
+  gw.weather.archive.cmd:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "Command to fill one station's observed channels with history from an outside source over a window; the service pulls through the Method's adapter and publishes one observation per grid point, replying ack or nack."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.weather.archive.cmd/000"
+        created: "2026-11-15T14:50:00Z"
+        status: "published"
+        summary: >-
+          - Initial version
+        direct_dependencies:
+          structural:
+            - "left.right.dot"
+            - "lowercase.token"
+            - "utc.iso8601.seconds"
+            - "utc.milliseconds"
 
   gw.weather.channel.gt:
     latest_version: "002"

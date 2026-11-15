@@ -1,0 +1,40 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_weather_archive_cmd_000_class_name }}":
+        """
+        Axiom 1: WindowOrder
+        End SHALL be later than Start.
+        """
+        if self.end <= self.start:
+            raise ValueError(
+                "Axiom 1 (WindowOrder) failed: End must be later than Start; "
+                f"got Start={self.start}, End={self.end}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ gw_weather_archive_cmd_000_class_name }}":
+        """
+        Axiom 2: StationNaming
+        Every element of ChannelNameList SHALL begin with StationAlias followed by ".".
+        """
+        prefix = f"{self.station_alias}."
+        for name in self.channel_name_list:
+            if not name.startswith(prefix):
+                raise ValueError(
+                    "Axiom 2 (StationNaming) failed: every ChannelNameList element "
+                    f"must begin with {prefix!r}; got {name!r}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_3(self) -> "{{ gw_weather_archive_cmd_000_class_name }}":
+        """
+        Axiom 3: DistinctChannels
+        Elements of ChannelNameList SHALL be distinct.
+        """
+        if len(set(self.channel_name_list)) != len(self.channel_name_list):
+            raise ValueError(
+                "Axiom 3 (DistinctChannels) failed: ChannelNameList elements must be "
+                f"distinct; got {self.channel_name_list}."
+            )
+        return self

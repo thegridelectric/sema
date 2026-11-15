@@ -580,6 +580,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/gw.water.store/000.yaml
+  gw.weather.archive.cmd:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/gw.weather.archive.cmd/000.yaml
   gw.weather.channel.gt:
     latest_version: '002'
     versioning_strategy: literal

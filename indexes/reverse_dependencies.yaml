@@ -1515,6 +1515,7 @@ formats:
     - gw.state.machine:000
     - gw.stopgap.price.forecast:000
     - gw.tou.tariff:000
+    - gw.weather.archive.cmd:000
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002
@@ -1597,6 +1598,7 @@ formats:
     - weather:000
   lowercase.token:
     used_by:
+    - gw.weather.archive.cmd:000
     - gw.weather.channel.gt:002
     - gw.weather.observation:001
     - gw.weather.station.gt:000
@@ -1974,6 +1976,7 @@ formats:
     - gw.house.summary:001
     - gw.house.summary:002
     - gw.house.summary:003
+    - gw.weather.archive.cmd:000
     - gw.weather.channel.gt:000
     - gw.weather.channel.gt:001
     - gw.weather.channel.gt:002
@@ -2043,6 +2046,7 @@ formats:
     - gw.readings:000
     - gw.readings:001
     - gw.scada.commit:000
+    - gw.weather.archive.cmd:000
     - gw.weather.forecast:000
     - gw.weather.forecast:001
     - gw.weather.forecast:002
