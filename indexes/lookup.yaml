@@ -132,6 +132,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/dfr.config/000.yaml
+  dispatch.terms.first.isone.hack:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/dispatch.terms.first.isone.hack/000.yaml
   egauge.register.config:
     latest_version: '000'
     versioning_strategy: literal

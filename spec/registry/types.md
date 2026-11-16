@@ -52,6 +52,13 @@ Examples: `"000"`, `"001"`, `"013"`.
 `"000"` SHOULD be used as the initial version of a versioned type, but
 this is not required.
 
+### Constant Types
+
+A constant type (`x-gridworks.constant: true`, see
+[../authoring/types.md](../authoring/types.md) "Constant Types") SHALL
+have exactly one version, `"000"`, and SHALL NOT gain another. A changed
+value is a new constant with a new name.
+
 ## Versioned Type Structure
 
 A versioned type entry SHALL include the following fields:

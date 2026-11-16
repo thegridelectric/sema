@@ -733,6 +733,8 @@ def test_const_usage_restricted(all_schemas):
                 walk(item, schema_name, path)
 
     for schema_name, schema in all_schemas.items():
+        if schema.get("x-gridworks", {}).get("constant") is True:
+            continue  # every field of a constant type is const by definition
         walk(schema, schema_name)
 
 

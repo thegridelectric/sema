@@ -322,7 +322,7 @@ def _render_field(
     if "const" in prop_schema:
         ctx.needs_literal = True
         const_value = prop_schema["const"]
-        return f'{field_name}: Literal["{const_value}"] = "{const_value}"'
+        return f"{field_name}: Literal[{const_value!r}] = {const_value!r}"
 
     annotation = _annotation_for_schema(
         prop_schema,

@@ -19,11 +19,13 @@ x-gridworks:
   owner: "<owner-id>"
 ```
 
-Optional fields include `axioms` and `extended_description`.
+Optional fields include `constant`, `axioms` and `extended_description`.
+`constant: true` marks a constant type (see
+[types.md](types.md) "Constant Types").
 
 Within `x-gridworks`, fields SHALL appear in the following order when
-present: `owner`, `supersedes` (if applicable), `projection` (if any),
-`axioms` (if any), `extended_description` (if any).
+present: `owner`, `constant` (if true), `supersedes` (if applicable),
+`projection` (if any), `axioms` (if any), `extended_description` (if any).
 
 ## Projections
 

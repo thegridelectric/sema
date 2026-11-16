@@ -182,7 +182,37 @@ appropriate.
 
 If a value is invariant across all instances of a type, it SHOULD NOT be
 modeled as a data field. Instead, it SHOULD either be omitted or encoded
-as part of the type's identity.
+as part of the type's identity. The one exception is a constant type,
+every one of whose fields is `const` by definition (see "Constant Types").
+
+## Constant Types
+
+A constant type is a type whose every valid instance is the same JSON.
+Its name is the name of a value, and registration makes that name
+unique: two parties who validate an instance against the type hold
+identical bytes. A constant is how Sema is the authority for a fixed
+fact that several parties act on, such as the terms a market runs
+under.
+
+A constant type SHALL:
+
+- declare `constant: true` under `x-gridworks`, directly after `owner`;
+- declare every property with `const` and list every property in
+  `required`;
+- declare `additionalProperties: false`;
+- have exactly one version, `"000"`, with `versioning_strategy`
+  `"literal"`. A constant SHALL NOT gain a second version: a changed
+  value is a new constant with a new name.
+
+Each `const` value SHALL be a JSON string, number, boolean or null. A
+constant SHALL NOT carry `$ref`, `oneOf`, inline objects or axioms:
+there is nothing to validate beyond equality, and the value's
+vocabulary (an enum value, a format) is named in the property's
+description.
+
+A family of constants SHARES a name prefix, for example
+`dispatch.terms.<agreement>`, so the family can be listed and a reader
+knows what kind of value each member names.
 
 ## Inline Object Properties
 

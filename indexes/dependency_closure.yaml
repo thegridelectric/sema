@@ -313,6 +313,12 @@ types:
       - spaceheat.name
       types: []
       versionless_types: []
+  dispatch.terms.first.isone.hack:
+    '000':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   egauge.register.config:
     '000':
       enums: []

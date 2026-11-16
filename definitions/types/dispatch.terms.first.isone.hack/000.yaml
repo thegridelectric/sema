@@ -1,0 +1,88 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/dispatch.terms.first.isone.hack/000"
+
+title: "dispatch.terms.first.isone.hack"
+type: object
+description: >
+  The first slow dispatch terms: the standing agreement between the
+  party responsible for a scada and the party responsible for its LTN
+  under which every hourly slow.dispatch.contract in the Keene market
+  is an instance. A constant: every instance is this JSON, and the
+  name is the agreement's name.
+
+properties:
+
+  MarketMakerAlias:
+    const: "hw1.isone.me.versant.keene"
+    description: >
+      GNode alias of the MarketMaker whose market these terms govern
+      (format left.right.dot).
+
+  MarketProductName:
+    const: "rt60gate1"
+    description: >
+      The market product these terms govern (enum
+      gw.market.product.name).
+
+  FinalDeadlineS:
+    const: 240
+    description: >
+      Seconds after a slot opens by which the MarketMaker publishes the
+      slot's Final price. Past it, the Provisional price is the Final
+      and the contract binds at it.
+
+  AmendmentsAllowed:
+    const: 1
+    description: >
+      How many times the hour's slow.dispatch.contract may be amended
+      after the offer, at the Final price.
+
+  BindingStage:
+    const: "Final"
+    description: >
+      The stage of the MarketMaker's price at which the hour's contract
+      binds and settles (enum price.stage).
+
+  TypeName:
+    const: "dispatch.terms.first.isone.hack"
+
+  Version:
+    const: "000"
+
+required:
+  - MarketMakerAlias
+  - MarketProductName
+  - FinalDeadlineS
+  - AmendmentsAllowed
+  - BindingStage
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "MarketMakerAlias": "hw1.isone.me.versant.keene",
+      "MarketProductName": "rt60gate1",
+      "FinalDeadlineS": 240,
+      "AmendmentsAllowed": 1,
+      "BindingStage": "Final",
+      "TypeName": "dispatch.terms.first.isone.hack",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+  constant: true
+
+  extended_description: >
+    Under these terms the LTN's party settles each hour at the
+    MarketMaker's Final price for the slot at the quantity its bid
+    cleared, and the scada's party holds the house's average electrical
+    power to the contract. A Provisional price at the slot's open is
+    acted on only toward less consumption; a Final price arrives by
+    FinalDeadlineS or the Provisional is the Final; the hour's contract
+    may be amended once, at the Final; the contract binds at the Final.
+    The signed text of the agreement, its parties and its hash are
+    added before these terms are published.

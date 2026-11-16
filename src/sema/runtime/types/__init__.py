@@ -19,6 +19,9 @@ from sema.runtime.types.derived_channel_gt import DerivedChannelGt
 from sema.runtime.types.device_component_gt import DeviceComponentGt
 from sema.runtime.types.dfr_component_gt import DfrComponentGt
 from sema.runtime.types.dfr_config import DfrConfig
+from sema.runtime.types.dispatch_terms_first_isone_hack import (
+    DispatchTermsFirstIsoneHack,
+)
 from sema.runtime.types.egauge_register_config import EgaugeRegisterConfig
 from sema.runtime.types.electric_meter_cac_gt import ElectricMeterCacGt
 from sema.runtime.types.electric_meter_channel_config import ElectricMeterChannelConfig
@@ -288,6 +291,7 @@ __all__ = [
     "DeviceComponentGt",
     "DfrComponentGt",
     "DfrConfig",
+    "DispatchTermsFirstIsoneHack",
     "EgaugeRegisterConfig",
     "ElectricMeterCacGt",
     "ElectricMeterChannelConfig",
