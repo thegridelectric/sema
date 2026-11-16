@@ -266,6 +266,8 @@ types:
     '001': sha256:b68c76e890da02b1debe4b4f0e5dc60b2085cac7c4431f44f17dc98d757a26bd
   flo.refusal:
     '000': sha256:d5b1583971bb3e00364ec7cdab32a9586eb0a36f237396c8d760662c87f1982a
+  flo.rerun.request:
+    '000': sha256:158e4379adca3706ec623f1b5ebf38a095f6a45f001202a6d53e6090d826c4aa
   flo.tank.store.path:
     '000': sha256:752ecdcd2574963575c9def7b5ac4cbbce5505be4f6bb6d955bc942772456980
   flo.tuning.alice:
