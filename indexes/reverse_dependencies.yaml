@@ -157,6 +157,13 @@ types:
       - flo.previous.run:000
       - flo.recommendation:000
       - flo.recommendation:001
+  flo.params:
+    '001':
+      used_by:
+      - flo.rerun.request:000
+    '002':
+      used_by:
+      - flo.rerun.request:000
   flo.path.penalties.bruce:
     '000':
       used_by:
@@ -1666,6 +1673,7 @@ formats:
   non.negative.int:
     used_by:
     - flo.previous.run:000
+    - flo.rerun.request:000
     - flo.tuning.bruce:000
     - flo.tuning.bruce:001
     - gw.channel.gap.stats:000

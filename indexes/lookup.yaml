@@ -223,6 +223,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/flo.refusal/000.yaml
+  flo.rerun.request:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/flo.rerun.request/000.yaml
   flo.tank.store.path:
     latest_version: '000'
     versioning_strategy: literal
