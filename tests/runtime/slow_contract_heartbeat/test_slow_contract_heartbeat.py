@@ -74,6 +74,7 @@ def test_a_002_reader_refuses_an_amendment() -> None:
     def mutate(p: dict) -> None:
         amended(p)
         del p["Contract"]["DispatchTerms"]
+        p["Contract"]["OilBoilerOn"] = False
         p["Contract"]["Version"] = "000"
         p["Version"] = "002"
 

@@ -15,7 +15,7 @@ EXAMPLE = example("slow.dispatch.contract", "001")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("slow.dispatch.contract", "001") == {1: [], 2: []}
+    assert axioms("slow.dispatch.contract", "001") == {1: []}
 
 
 def test_example_round_trips() -> None:

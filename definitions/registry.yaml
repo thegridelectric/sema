@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-16T06:25:00Z"
+  last_updated: "2026-11-16T07:20:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -7431,7 +7431,7 @@ types:
     versions:
       "003":
         schema_url: "https://schemas.electricity.works/types/slow.contract.heartbeat/003"
-        created: "2026-11-16T06:20:00Z"
+        created: "2026-11-16T07:20:00Z"
         status: "published"
         summary: "- Contract: slow.dispatch.contract 000 -> 001, lifted by the nested upgrade - PreviousStatus, Status: gw1.slow.dispatch.contract.status 000 -> 001, with Amended an LTN status (axiom 2a) that takes a Cause (axiom 3)"
         direct_dependencies:
@@ -7491,14 +7491,14 @@ types:
     latest_version: "001"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "A slow dispatch contract between an LTN and a scada: one window from a five-minute boundary over which the scada holds average electrical power to AvgPowerWatts, or runs the oil boiler instead; an instance of the dispatch terms it names."
+    description: "A slow dispatch contract between an LTN and a scada: one window from a five-minute boundary over which the scada holds average electrical power to AvgPowerWatts; an instance of the dispatch terms it names."
 
     versions:
       "001":
         schema_url: "https://schemas.electricity.works/types/slow.dispatch.contract/001"
-        created: "2026-11-16T06:20:00Z"
+        created: "2026-11-16T07:20:00Z"
         status: "published"
-        summary: "- DispatchTerms: add, the name of the dispatch terms constant the contract is an instance of; a 000 contract does not state it, so the upgrade requires context"
+        summary: "- DispatchTerms: add, the name of the dispatch terms constant the contract is an instance of; a 000 contract does not state it, so the upgrade requires context - OilBoilerOn: remove, with axiom 2; the contract states electrical power only"
         direct_dependencies:
           structural:
             - "left.right.dot"

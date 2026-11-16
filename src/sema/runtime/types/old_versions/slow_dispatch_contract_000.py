@@ -51,6 +51,8 @@ class SlowDispatchContract000(SemaType):
         - DispatchTerms: add, the name of the dispatch terms constant the contract
           is an instance of; a 000 contract does not state it, so the upgrade
           requires context
+        - OilBoilerOn: remove, with axiom 2; the contract states electrical
+          power only
         """
         raise SemaType.upgrade_requires_context(
             "SlowDispatchContract000 cannot be upgraded to "

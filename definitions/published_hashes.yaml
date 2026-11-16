@@ -164,6 +164,8 @@ enums:
     '000': sha256:8056fb8f0b470a69862583c01f68992d5c4b1d722edde049063a917df68ec6dd
   pico.reset.cause:
     '000': sha256:7414880107b2d67fcab59cd08643b87e3f257610c380e8622a8e97e286b88bf2
+  price.component.name:
+    '000': sha256:391a91c338e2c2c822edcf4c814a75a436f5245c08cb7605a5f07918a224176d
   primary.pump.control: sha256:a73456a82dc1ffba1dade8f1b4fc0baa430e1b6a80f02ecc675ca3398f38f320
   reboot.picos: sha256:7a3b4ab84f2e0ee3248f56d193df419d1c566a93d1ca6cd1e113bb36c0f376a7
   relay.closed.or.open: sha256:84aac238f3b62c2fc5f8eaff3ed93c968c01c9928533e11989bc86a1549f6667
@@ -196,8 +198,6 @@ enums:
   turn.hp.on.off: sha256:e2e8cea2c30509358ef0713a41dd4fd3168ed705856f0ea8ff6ed0a82edd5b8d
   valve.open.or.closed: sha256:6d597f8c42190e1f2b71ae13ec9931607986a360c822e0cd88b000f77a9fa76e
   zone.call.source: sha256:3f0ad484d9f528de60e235ff6a773e9e8ed0e4a00818c7e117cde1d74512d067
-  price.component.name:
-    '000': sha256:391a91c338e2c2c822edcf4c814a75a436f5245c08cb7605a5f07918a224176d
 types:
   analog.dispatch:
     '000': sha256:c8b3a6e411bd7e612fcaf1d824f0707c312eebb8d4092382ca98d1adf1b5e4f1
@@ -367,6 +367,8 @@ types:
     '000': sha256:f8f66b65508cf948c99209d2343a2c8503c5b0990a26059811cece6efd502464
   gw.opsgenie.alert.create:
     '000': sha256:b0f464c07e7984ddd289d6b0590fd7a9eb58f4ca739e33b9732f00ae88a11d32
+  gw.price.forecast:
+    '000': sha256:8d52c3ec8e1ca4d5ec6ebb2503c4bacda23e98585d035ee1aa45bc9ec92d6871
   gw.readings:
     '000': sha256:8d045c857d2c696f61ae7c16b7a61231d2aafce56f5b8b55dc7f9dbb416fd127
   gw.scada.commit:
@@ -379,6 +381,8 @@ types:
     '000': sha256:9489d47aa14b289cb247aaf3c966e7af87091c318251ce8744523c95da243325
   gw.tou.window:
     '000': sha256:bfbd012b11bb1784f256f87741c84f310aa5dff9346ce08bbc87c1256bba45c1
+  gw.weather.archive.cmd:
+    '000': sha256:b9f8a65cefe8defca7f43dceb7a3fc76a6b34ee1c88440742608265bb6538b94
   gw.weather.channel.gt:
     '000': sha256:9aa447f00597c9696d4c3cea92cf27066d486a545248f7ccbe5ed92cc0f02209
     '001': sha256:3ceda53c51d0f6269c4e629440ab84f6580aba0094d272976624ac79085aa1dc
@@ -492,6 +496,8 @@ types:
     '000': sha256:751e3825ac1d733b164eb7ebf1d80aaff4b076f2d4af55a128e651b3e114a19a
   market.product:
     '000': sha256:b0eabecc24170c2fd5013a2abea2dae753c7706bdef87b6c84f1d54f077eafb2
+  market.terms:
+    '000': sha256:00910e4ade7529d65012fe3daac091cf066f5b3bbf43b4fc6e55368449805766
   microvolts:
     '100': sha256:09cb327aed41ba28d2f7822b02298a6803562b75d489e446b4ee0b2650b54270
   multichannel.snapshot:
@@ -519,6 +525,8 @@ types:
     '000': sha256:0152226314e1a7f963d59d17afaa2c2c774ac2a36213b0adab96eb29d7e69d49
   power.watts:
     '000': sha256:4df82a50075ca35495fe4d9192be6fc0460bc581c8403bdf15e2b5dfb139c79f
+  price.component:
+    '000': sha256:a99688adfb22cf729c29448002d688f626a3a6da37f8103bceee7f6ae18a5258
   price.quantity.unitless:
     '000': sha256:24abd439eeee36995bbc2097beda9aa94daf8f8c9036a40e6989f0f4f5fea919
     '001': sha256:874dfd7fde7583b73afe517dd7d7b1e07b3cc7fc49e49ccca800f9d959fe1904
@@ -563,12 +571,12 @@ types:
   slow.contract.heartbeat:
     '001': sha256:fc7516f59f79f6f7bc27c9025b355489b6c9ad04927af68b4b2b09c8c45bb3fb
     '002': sha256:5b65bd85b637e268c56a97d1fed82aa739fd736f6e1fb7a0110d6c9be894728b
-    '003': sha256:1cc8a1e0a913bbf0d6757e5ac8a43e74afc98a1ce8d8d07b724706f1d5b02ee6
+    '003': sha256:8aa9fb1fbd5614ec4ff85eb17ae76aeb3114aee6a4727200f49083cd750882c8
   slow.contract.rejection:
     '000': sha256:9ea791f03a2569bad0555e3646dc2fbc9dc4cfcc853077fce3f27d8288c39500
   slow.dispatch.contract:
     '000': sha256:de811035a1c2ba0a28c8811fcf79aefcd1baf3e8f85e45f54666e2363c2929a6
-    '001': sha256:c17273414d1b4aa583a6b71eaad06b204b7c9b73487e50a33e72864116b595cb
+    '001': sha256:e689bcb39beb819f435abe38570a86ba02ebd3322743828144afe78e835eed3f
   snapshot.spaceheat:
     '001': sha256:2b1943737f8e764fa31feb3f8c28313281f52cb2a5d42d9483121cbc471ab6a5
     '002': sha256:a14aad4d3bc6bb224aa26bba139490f368b91155f8c2ead3109d8419e2aa54cd
@@ -608,11 +616,3 @@ types:
     '000': sha256:0505741db7f3ba845fe0b7dfb9e5f88eca9f3cc6e9e7510b22f3e73b0103e8fe
   weather.forecast:
     '000': sha256:d5898d35fd8250e8c80811e6df2c90c66cddc316efaf4ca36bc4fdd38c931601
-  price.component:
-    '000': sha256:a99688adfb22cf729c29448002d688f626a3a6da37f8103bceee7f6ae18a5258
-  gw.price.forecast:
-    '000': sha256:8d52c3ec8e1ca4d5ec6ebb2503c4bacda23e98585d035ee1aa45bc9ec92d6871
-  gw.weather.archive.cmd:
-    '000': sha256:b9f8a65cefe8defca7f43dceb7a3fc76a6b34ee1c88440742608265bb6538b94
-  market.terms:
-    '000': sha256:00910e4ade7529d65012fe3daac091cf066f5b3bbf43b4fc6e55368449805766

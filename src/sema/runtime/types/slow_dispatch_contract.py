@@ -14,7 +14,6 @@ class SlowDispatchContract(SemaType):
     start_s: UTCSeconds
     duration_minutes: PositiveInt
     avg_power_watts: StrictInt
-    oil_boiler_on: bool
     contract_id: UUID4Str
     dispatch_terms: LeftRightDot
     type_name: Literal["slow.dispatch.contract"] = "slow.dispatch.contract"
@@ -30,18 +29,5 @@ class SlowDispatchContract(SemaType):
             raise ValueError(
                 "Axiom 1 (StartOnFiveMinutes) failed: StartS must be a multiple "
                 f"of 300, got {self.start_s}."
-            )
-        return self
-
-    @model_validator(mode="after")
-    def check_axiom_2(self) -> "SlowDispatchContract":
-        """
-        Axiom 2: OilBoilerDrawsNoPower
-        If OilBoilerOn is true, AvgPowerWatts SHALL be 0.
-        """
-        if self.oil_boiler_on and self.avg_power_watts != 0:
-            raise ValueError(
-                "Axiom 2 (OilBoilerDrawsNoPower) failed: OilBoilerOn requires "
-                f"AvgPowerWatts 0, got {self.avg_power_watts}."
             )
         return self
