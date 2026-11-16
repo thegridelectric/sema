@@ -1,21 +1,27 @@
 from typing import Literal
 from pydantic import StrictInt, model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.enums import Gw1SlowDispatchContractStatus
+from sema.runtime.enums.old_versions.gw1_slow_dispatch_contract_status_000 import (
+    Gw1SlowDispatchContractStatus000,
+)
 from sema.runtime.property_format import DecimalDigit
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.property_format import UTCMilliseconds
-from sema.runtime.types.slow_contract_heartbeat import SlowContractHeartbeat
-from sema.runtime.types.slow_dispatch_contract import SlowDispatchContract
+from sema.runtime.types.old_versions.slow_contract_heartbeat_002 import (
+    SlowContractHeartbeat002,
+)
+from sema.runtime.types.old_versions.slow_dispatch_contract_000 import (
+    SlowDispatchContract000,
+)
 
 
 class SlowContractHeartbeat001(SemaType):
     """Sema: https://schemas.electricity.works/types/slow.contract.heartbeat/001"""
 
     from_node: SpaceheatName
-    contract: SlowDispatchContract
-    previous_status: Gw1SlowDispatchContractStatus | None = None
-    status: Gw1SlowDispatchContractStatus
+    contract: SlowDispatchContract000
+    previous_status: Gw1SlowDispatchContractStatus000 | None = None
+    status: Gw1SlowDispatchContractStatus000
     message_created_ms: UTCMilliseconds
     cause: str | None = None
     is_authoritative: bool
@@ -33,7 +39,7 @@ class SlowContractHeartbeat001(SemaType):
         If Status is Created, MessageCreatedMs / 1000 SHALL be no more than 10 seconds
         after Contract.StartS.
         """
-        if self.status is Gw1SlowDispatchContractStatus.Created:
+        if self.status is Gw1SlowDispatchContractStatus000.Created:
             late_s = self.message_created_ms / 1000 - self.contract.start_s
             if late_s > 10:
                 raise ValueError(
@@ -53,7 +59,7 @@ class SlowContractHeartbeat001(SemaType):
         c. If Status is CompletedSuccess, CompletedFailureByLtn or
            CompletedFailureByScada, IsAuthoritative SHALL be false.
         """
-        status = Gw1SlowDispatchContractStatus
+        status = Gw1SlowDispatchContractStatus000
         if self.status in (status.Created, status.Confirmed, status.TerminatedByLtn):
             if self.from_node != "ltn" or not self.is_authoritative:
                 raise ValueError(
@@ -85,7 +91,7 @@ class SlowContractHeartbeat001(SemaType):
         Cause SHALL be present if and only if Status is TerminatedByLtn, TerminatedByScada,
         CompletedUnknownOutcome, CompletedFailureByLtn or CompletedFailureByScada.
         """
-        status = Gw1SlowDispatchContractStatus
+        status = Gw1SlowDispatchContractStatus000
         needs_cause = self.status in (
             status.TerminatedByLtn,
             status.TerminatedByScada,
@@ -132,19 +138,19 @@ class SlowContractHeartbeat001(SemaType):
             )
         return self
 
-    def upgrade(self) -> "SlowContractHeartbeat":
+    def upgrade(self) -> "SlowContractHeartbeat002":
         """
         Reason (gw.dispatch.refusal.reason) beside the free Cause, present iff
         Status is TerminatedByScada (axiom 6), so a terminating heartbeat names
         why in the scada's one refusal vocabulary.
         """
-        if self.status is Gw1SlowDispatchContractStatus.TerminatedByScada:
+        if self.status is Gw1SlowDispatchContractStatus000.TerminatedByScada:
             raise SemaType.upgrade_requires_context(
                 "SlowContractHeartbeat001 cannot be upgraded to "
-                "SlowContractHeartbeat without context: a "
+                "SlowContractHeartbeat002 without context: a "
                 "TerminatedByScada heartbeat needs a Reason, which only the "
                 "terminating scada knows, and it SHALL NOT be fabricated."
             )
         data = self.model_dump()
         data["version"] = "002"
-        return SlowContractHeartbeat.model_validate(data)
+        return SlowContractHeartbeat002.model_validate(data)

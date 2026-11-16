@@ -1,0 +1,10 @@
+    def upgrade(self) -> "{{ slow_contract_heartbeat_003_class_name }}":
+        """
+        - Contract: slow.dispatch.contract 000 -> 001, lifted by the nested upgrade
+        - PreviousStatus, Status: gw1.slow.dispatch.contract.status 000 -> 001, with
+          Amended an LTN status (axiom 2a) that takes a Cause (axiom 3)
+        """
+        data = self.model_dump()
+        data["contract"] = self.contract.upgrade().model_dump()
+        data["version"] = "003"
+        return {{ slow_contract_heartbeat_003_class_name }}.model_validate(data)

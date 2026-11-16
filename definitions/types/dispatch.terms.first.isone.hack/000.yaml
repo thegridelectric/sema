@@ -8,7 +8,9 @@ description: >
   party responsible for a scada and the party responsible for its LTN
   under which every hourly slow.dispatch.contract in the Keene market
   is an instance. A constant: every instance is this JSON, and the
-  name is the agreement's name.
+  name is the agreement's name. The properties are the handful of terms
+  a program acts on; the agreement in full is the signed text, named
+  here by its hash and locator once it is signed.
 
 properties:
 
@@ -43,6 +45,13 @@ properties:
       The stage of the MarketMaker's price at which the hour's contract
       binds and settles (enum price.stage).
 
+  ProvisionalAction:
+    const: "ReduceOnly"
+    description: >
+      What a bidder may do on the MarketMaker's Provisional price for a
+      slot: reduce its consumption below the previous slot's, or hold
+      it; an increase waits for the Final.
+
   TypeName:
     const: "dispatch.terms.first.isone.hack"
 
@@ -55,6 +64,7 @@ required:
   - FinalDeadlineS
   - AmendmentsAllowed
   - BindingStage
+  - ProvisionalAction
   - TypeName
   - Version
 
@@ -68,6 +78,7 @@ examples:
       "FinalDeadlineS": 240,
       "AmendmentsAllowed": 1,
       "BindingStage": "Final",
+      "ProvisionalAction": "ReduceOnly",
       "TypeName": "dispatch.terms.first.isone.hack",
       "Version": "000"
     }
@@ -82,7 +93,8 @@ x-gridworks:
     cleared, and the scada's party holds the house's average electrical
     power to the contract. A Provisional price at the slot's open is
     acted on only toward less consumption; a Final price arrives by
-    FinalDeadlineS or the Provisional is the Final; the hour's contract
-    may be amended once, at the Final; the contract binds at the Final.
-    The signed text of the agreement, its parties and its hash are
+    FinalDeadlineS or the Provisional is the Final; the MarketMaker
+    states each stage once per slot; the hour's contract may be amended
+    once, at the Final; the contract binds at the Final. The signed
+    text of the agreement, its parties, its hash and its locator are
     added before these terms are published.

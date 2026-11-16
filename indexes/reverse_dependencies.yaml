@@ -788,6 +788,9 @@ types:
       used_by:
       - slow.contract.heartbeat:001
       - slow.contract.heartbeat:002
+    '001':
+      used_by:
+      - slow.contract.heartbeat:003
   spaceheat.node.gt:
     '200':
       used_by:
@@ -969,6 +972,7 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - slow.contract.heartbeat:002
+      - slow.contract.heartbeat:003
       - slow.contract.rejection:000
   gw.experiment.verdict:
     '000':
@@ -991,6 +995,7 @@ enums:
       used_by:
       - gw.operational.params:000
       - gw.price.forecast:000
+      - market.terms:000
   gw.opsgenie.alert.status:
     '000':
       used_by:
@@ -1129,6 +1134,9 @@ enums:
       used_by:
       - slow.contract.heartbeat:001
       - slow.contract.heartbeat:002
+    '001':
+      used_by:
+      - slow.contract.heartbeat:003
   gw1.system.mode:
     '000':
       used_by:
@@ -1405,6 +1413,7 @@ formats:
     used_by:
     - slow.contract.heartbeat:001
     - slow.contract.heartbeat:002
+    - slow.contract.heartbeat:003
   firmware.commit:
     used_by:
     - async.btu.params:110
@@ -1560,6 +1569,7 @@ formats:
     - layout.lite:014
     - machine.states:000
     - market.product:000
+    - market.terms:000
     - new.command.tree:000
     - new.command.tree:001
     - new.command.tree:002
@@ -1592,6 +1602,7 @@ formats:
     - single.machine.state:000
     - slow.contract.rejection:000
     - slow.dispatch.contract:000
+    - slow.dispatch.contract:001
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
     - snapshot.spaceheat:003
@@ -1845,6 +1856,7 @@ formats:
     - sim.pico.tank.module.component.gt:000
     - sim.pico.tank.module.component.gt:001
     - slow.dispatch.contract:000
+    - slow.dispatch.contract:001
     - spaceheat.node.gt:200
     - spaceheat.node.gt:300
     - spaceheat.node.gt:301
@@ -1954,6 +1966,7 @@ formats:
     - single.reading:000
     - slow.contract.heartbeat:001
     - slow.contract.heartbeat:002
+    - slow.contract.heartbeat:003
     - spaceheat.node.gt:200
     - spaceheat.node.gt:300
     - spaceheat.node.gt:301
@@ -2079,6 +2092,7 @@ formats:
     - layout.lite:013
     - layout.lite:014
     - machine.states:000
+    - market.terms:000
     - new.command.tree:000
     - new.command.tree:001
     - new.command.tree:002
@@ -2108,6 +2122,7 @@ formats:
     - single.reading:000
     - slow.contract.heartbeat:001
     - slow.contract.heartbeat:002
+    - slow.contract.heartbeat:003
     - slow.contract.rejection:000
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
@@ -2139,12 +2154,14 @@ formats:
     - gw.price.forecast:000
     - gw.stopgap.price.forecast:000
     - heating.forecast:000
+    - market.terms:000
     - report:001
     - report:002
     - report:003
     - sim.ready:000
     - sim.timestep:000
     - slow.dispatch.contract:000
+    - slow.dispatch.contract:001
     - ta.deed:000
     - weather.forecast:000
     - weather:000
@@ -2302,6 +2319,7 @@ formats:
     - sim.timestep:000
     - slow.contract.rejection:000
     - slow.dispatch.contract:000
+    - slow.dispatch.contract:001
     - snapshot.spaceheat:001
     - snapshot.spaceheat:002
     - snapshot.spaceheat:003

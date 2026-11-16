@@ -1,0 +1,23 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ market_terms_000_class_name }}":
+        """
+        Axiom 1: EffectiveOnSlotBoundary
+        EffectiveS SHALL be a multiple of the slot length, in seconds, that
+        MarketProductName encodes, so no slot runs under two terms.
+        """
+        import re  # local: the generator renders no module-level imports for axiom bodies
+
+        token = self.market_product_name.value
+        match = re.match(r"^(?:rt|da)(\d+)", token)
+        if match is None:
+            raise ValueError(
+                "Axiom 1 (EffectiveOnSlotBoundary) failed: MarketProductName "
+                f"{token} encodes no slot length."
+            )
+        slot_s = int(match.group(1)) * 60
+        if self.effective_s % slot_s != 0:
+            raise ValueError(
+                "Axiom 1 (EffectiveOnSlotBoundary) failed: EffectiveS must be a "
+                f"multiple of {slot_s} for {token}, got {self.effective_s}."
+            )
+        return self

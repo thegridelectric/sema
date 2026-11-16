@@ -3631,6 +3631,16 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+  market.terms:
+    '000':
+      enums:
+      - gw.market.product.name:001
+      formats:
+      - left.right.dot
+      - utc.milliseconds
+      - utc.seconds
+      types: []
+      versionless_types: []
   microvolts:
     '100':
       enums: []
@@ -4367,6 +4377,21 @@ types:
       types:
       - slow.dispatch.contract:000
       versionless_types: []
+    '003':
+      enums:
+      - gw.dispatch.refusal.reason:000
+      - gw1.slow.dispatch.contract.status:001
+      formats:
+      - decimal.digit
+      - left.right.dot
+      - positive.int
+      - spaceheat.name
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - slow.dispatch.contract:001
+      versionless_types: []
   slow.contract.rejection:
     '000':
       enums:
@@ -4379,6 +4404,15 @@ types:
       versionless_types: []
   slow.dispatch.contract:
     '000':
+      enums: []
+      formats:
+      - left.right.dot
+      - positive.int
+      - utc.seconds
+      - uuid4.str
+      types: []
+      versionless_types: []
+    '001':
       enums: []
       formats:
       - left.right.dot

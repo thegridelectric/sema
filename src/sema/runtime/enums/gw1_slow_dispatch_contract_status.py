@@ -4,7 +4,7 @@ from sema.runtime.enums.gw_str_enum import SemaEnum
 
 
 class Gw1SlowDispatchContractStatus(SemaEnum):
-    """Sema: https://schemas.electricity.works/enums/gw1.slow.dispatch.contract.status/000"""
+    """Sema: https://schemas.electricity.works/enums/gw1.slow.dispatch.contract.status/001"""
 
     Unknown = auto()
     Created = auto()
@@ -17,6 +17,7 @@ class Gw1SlowDispatchContractStatus(SemaEnum):
     CompletedSuccess = auto()
     CompletedFailureByScada = auto()
     CompletedFailureByLtn = auto()
+    Amended = auto()
 
     @classmethod
     def default(cls) -> "Gw1SlowDispatchContractStatus":
@@ -32,4 +33,4 @@ class Gw1SlowDispatchContractStatus(SemaEnum):
 
     @classmethod
     def enum_version(cls) -> str:
-        return "000"
+        return "001"

@@ -8,7 +8,7 @@ from sema.runtime.property_format import UUID4Str
 
 
 class SlowDispatchContract(SemaType):
-    """Sema: https://schemas.electricity.works/types/slow.dispatch.contract/000"""
+    """Sema: https://schemas.electricity.works/types/slow.dispatch.contract/001"""
 
     scada_alias: LeftRightDot
     start_s: UTCSeconds
@@ -16,8 +16,9 @@ class SlowDispatchContract(SemaType):
     avg_power_watts: StrictInt
     oil_boiler_on: bool
     contract_id: UUID4Str
+    dispatch_terms: LeftRightDot
     type_name: Literal["slow.dispatch.contract"] = "slow.dispatch.contract"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "SlowDispatchContract":

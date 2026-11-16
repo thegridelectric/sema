@@ -206,6 +206,7 @@ from sema.runtime.types.linear_one_dimensional_calibration import (
 from sema.runtime.types.machine_states import MachineStates
 from sema.runtime.types.maker_api_attribute_gt import MakerApiAttributeGt
 from sema.runtime.types.market_product import MarketProduct
+from sema.runtime.types.market_terms import MarketTerms
 from sema.runtime.types.microvolts import Microvolts
 from sema.runtime.types.multichannel_snapshot import MultichannelSnapshot
 from sema.runtime.types.new_code import NewCode
@@ -448,6 +449,7 @@ __all__ = [
     "MachineStates",
     "MakerApiAttributeGt",
     "MarketProduct",
+    "MarketTerms",
     "Microvolts",
     "MultichannelSnapshot",
     "NewCode",

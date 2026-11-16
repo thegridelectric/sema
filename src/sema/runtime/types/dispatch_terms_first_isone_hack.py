@@ -12,6 +12,7 @@ class DispatchTermsFirstIsoneHack(SemaType):
     final_deadline_s: Literal[240] = 240
     amendments_allowed: Literal[1] = 1
     binding_stage: Literal["Final"] = "Final"
+    provisional_action: Literal["ReduceOnly"] = "ReduceOnly"
     type_name: Literal["dispatch.terms.first.isone.hack"] = (
         "dispatch.terms.first.isone.hack"
     )

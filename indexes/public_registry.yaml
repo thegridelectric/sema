@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-16T05:55:00Z'
+  last_updated: '2026-11-16T06:25:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -883,13 +883,19 @@ enums:
         created: '2026-08-13T11:55:00Z'
         status: published
   gw1.slow.dispatch.contract.status:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     enum_type: versioned
     description: 'Lifecycle status of a slow dispatch contract as stated on a heartbeat:
-      Created, Received, Confirmed, Active, the two terminations, and the completion
-      outcomes. Default Unknown so an unknown status is not acted on.'
+      Created, Received, Confirmed, Active, Amended, the two terminations, and the
+      completion outcomes. Default Unknown so an unknown status is not acted on.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/enums/gw1.slow.dispatch.contract.status/001
+        created: '2026-11-16T06:20:00Z'
+        status: published
+        added_values:
+        - Amended
       '000':
         schema_url: https://schemas.electricity.works/enums/gw1.slow.dispatch.contract.status/000
         created: '2026-01-14T16:15:00Z'
@@ -2046,7 +2052,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/dispatch.terms.first.isone.hack/000
-        created: '2026-11-16T05:55:00Z'
+        created: '2026-11-16T06:20:00Z'
         status: staging
         summary: Initial Sema version
         direct_dependencies:
@@ -6258,6 +6264,26 @@ types:
           - left.right.dot
           - market.quantity.unit:000
           - uuid4.str
+  market.terms:
+    latest_version: '000'
+    owner: gridworks-energy
+    versioning_strategy: literal
+    description: A MarketMaker's statement that from EffectiveS its market in one
+      product runs under the dispatch terms named.
+    versions:
+      '000':
+        schema_url: https://schemas.electricity.works/types/market.terms/000
+        created: '2026-11-16T06:20:00Z'
+        status: published
+        summary: 'Initial Sema version. MarketMakerAlias + MarketProductName + DispatchTerms
+          + EffectiveS + CreatedMs. Axiom 1: EffectiveS on a slot boundary of the
+          product.'
+        direct_dependencies:
+          structural:
+          - gw.market.product.name:001
+          - left.right.dot
+          - utc.milliseconds
+          - utc.seconds
   microvolts:
     latest_version: '100'
     owner: gridworks-energy
@@ -7212,13 +7238,29 @@ types:
           - spaceheat.name
           - utc.milliseconds
   slow.contract.heartbeat:
-    latest_version: '002'
+    latest_version: '003'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'One party''s statement about a slow dispatch contract: the contract,
       its status as that party sees it, and the chained digits and proof tying it
       to the counterparty''s last heartbeat.'
     versions:
+      '003':
+        schema_url: https://schemas.electricity.works/types/slow.contract.heartbeat/003
+        created: '2026-11-16T06:20:00Z'
+        status: published
+        summary: '- Contract: slow.dispatch.contract 000 -> 001, lifted by the nested
+          upgrade - PreviousStatus, Status: gw1.slow.dispatch.contract.status 000
+          -> 001, with Amended an LTN status (axiom 2a) that takes a Cause (axiom
+          3)'
+        direct_dependencies:
+          structural:
+          - decimal.digit
+          - gw.dispatch.refusal.reason:000
+          - gw1.slow.dispatch.contract.status:001
+          - slow.dispatch.contract:001
+          - spaceheat.name
+          - utc.milliseconds
       '002':
         schema_url: https://schemas.electricity.works/types/slow.contract.heartbeat/002
         created: '2026-10-13T11:00:00Z'
@@ -7271,13 +7313,27 @@ types:
           - utc.milliseconds
           - uuid4.str
   slow.dispatch.contract:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'A slow dispatch contract between an LTN and a scada: one window
       from a five-minute boundary over which the scada holds average electrical power
-      to AvgPowerWatts, or runs the oil boiler instead.'
+      to AvgPowerWatts, or runs the oil boiler instead; an instance of the dispatch
+      terms it names.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/slow.dispatch.contract/001
+        created: '2026-11-16T06:20:00Z'
+        status: published
+        summary: '- DispatchTerms: add, the name of the dispatch terms constant the
+          contract is an instance of; a 000 contract does not state it, so the upgrade
+          requires context'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - positive.int
+          - utc.seconds
+          - uuid4.str
       '000':
         schema_url: https://schemas.electricity.works/types/slow.dispatch.contract/000
         created: '2025-03-03T20:40:00Z'

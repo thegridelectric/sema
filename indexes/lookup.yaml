@@ -980,6 +980,11 @@ types:
     versioning_strategy: literal
     versions:
       '000': definitions/types/market.product/000.yaml
+  market.terms:
+    latest_version: '000'
+    versioning_strategy: literal
+    versions:
+      '000': definitions/types/market.terms/000.yaml
   microvolts:
     latest_version: '100'
     versioning_strategy: literal
@@ -1175,9 +1180,10 @@ types:
     versions:
       '000': definitions/types/single.reading/000.yaml
   slow.contract.heartbeat:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/slow.contract.heartbeat/003.yaml
       '002': definitions/types/slow.contract.heartbeat/002.yaml
       '001': definitions/types/slow.contract.heartbeat/001.yaml
   slow.contract.rejection:
@@ -1186,9 +1192,10 @@ types:
     versions:
       '000': definitions/types/slow.contract.rejection/000.yaml
   slow.dispatch.contract:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/slow.dispatch.contract/001.yaml
       '000': definitions/types/slow.dispatch.contract/000.yaml
   snapshot.spaceheat:
     latest_version: '003'
@@ -1575,8 +1582,9 @@ enums:
       '000': definitions/enums/gw1.service.mode/000.yaml
   gw1.slow.dispatch.contract.status:
     enum_type: versioned
-    latest_version: '000'
+    latest_version: '001'
     versions:
+      '001': definitions/enums/gw1.slow.dispatch.contract.status/001.yaml
       '000': definitions/enums/gw1.slow.dispatch.contract.status/000.yaml
   gw1.sim.device.type:
     enum_type: versioned

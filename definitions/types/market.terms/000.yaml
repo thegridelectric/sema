@@ -1,0 +1,78 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/market.terms/000"
+
+title: "market.terms"
+type: object
+description: >
+  A MarketMaker's statement that, from EffectiveS, its market in one
+  product runs under the dispatch terms named. The ordered set of these
+  statements is the history of a market's terms, and the terms in force
+  for a slot are the latest statement whose EffectiveS is at or before
+  the slot's start.
+
+properties:
+
+  MarketMakerAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      GNode alias of the MarketMaker making the statement.
+
+  MarketProductName:
+    $ref: "https://schemas.electricity.works/enums/gw.market.product.name/001"
+    description: >
+      The market product the statement is about.
+
+  DispatchTerms:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      The name of the dispatch terms constant the market runs under
+      from EffectiveS.
+
+  EffectiveS:
+    $ref: "https://schemas.electricity.works/formats/utc.seconds"
+    description: >
+      The slot start from which the terms are in force.
+
+  CreatedMs:
+    $ref: "https://schemas.electricity.works/formats/utc.milliseconds"
+    description: >
+      The MarketMaker's clock when it made the statement.
+
+  TypeName:
+    const: "market.terms"
+
+  Version:
+    const: "000"
+
+required:
+  - MarketMakerAlias
+  - MarketProductName
+  - DispatchTerms
+  - EffectiveS
+  - CreatedMs
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "MarketMakerAlias": "hw1.isone.me.versant.keene",
+      "MarketProductName": "rt60gate1",
+      "DispatchTerms": "dispatch.terms.first.isone.hack",
+      "EffectiveS": 1795060800,
+      "CreatedMs": 1795057234567,
+      "TypeName": "market.terms",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "EffectiveOnSlotBoundary"
+      statement: >
+        EffectiveS SHALL be a multiple of the slot length, in seconds,
+        that MarketProductName encodes, so no slot runs under two terms.
