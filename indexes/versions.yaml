@@ -370,6 +370,13 @@ types:
       "000":
         summary: "BidderAlias and StartUnixS pair the refusal with its request as the recommendation does; Reason (flo.refusal.reason), optional Detail, CreatedMs."
 
+  flo.rerun.request:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Params (oneOf flo.params 001, 002), HpForcedOnSteps and HpForcedOffSteps (non.negative.int, 0 is first step); axioms ForcedStepsWithinHorizon, ForcedOnOffDisjoint."
+
   flo.tank.store.path:
     latest_version: "000"
     versioning_strategy: "literal"

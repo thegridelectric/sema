@@ -39,6 +39,7 @@ from sema.runtime.types.flo_path_penalties_bruce import FloPathPenaltiesBruce
 from sema.runtime.types.flo_previous_run import FloPreviousRun
 from sema.runtime.types.flo_recommendation import FloRecommendation
 from sema.runtime.types.flo_refusal import FloRefusal
+from sema.runtime.types.flo_rerun_request import FloRerunRequest
 from sema.runtime.types.flo_tank_store_path import FloTankStorePath
 from sema.runtime.types.flo_tuning_alice import FloTuningAlice
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
@@ -308,6 +309,7 @@ __all__ = [
     "FloPreviousRun",
     "FloRecommendation",
     "FloRefusal",
+    "FloRerunRequest",
     "FloTankStorePath",
     "FloTuningAlice",
     "FloTuningBruce",
