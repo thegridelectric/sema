@@ -152,7 +152,9 @@ def test_a_001_recommendation_lifts_its_penalties() -> None:
     assert upgraded.path_penalties_list is not None
     for word in upgraded.path_penalties_list:
         assert word.version == "001"
-        assert word.unmet_load_penalty_usd_list == [0.0] * len(word.rswt_penalty_usd_list)
+        assert word.unmet_load_penalty_usd_list == [0.0] * len(
+            word.rswt_penalty_usd_list
+        )
 
 
 def test_a_000_recommendation_upgrades_bare() -> None:

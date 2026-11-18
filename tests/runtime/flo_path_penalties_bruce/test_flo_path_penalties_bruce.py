@@ -2,7 +2,9 @@
 
 from sema.runtime.codec import default_codec
 from sema.runtime.types.flo_path_penalties_bruce import FloPathPenaltiesBruce
-from sema.runtime.types.old_versions.flo_path_penalties_bruce_000 import FloPathPenaltiesBruce000
+from sema.runtime.types.old_versions.flo_path_penalties_bruce_000 import (
+    FloPathPenaltiesBruce000,
+)
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
 EXAMPLE = example("flo.path.penalties.bruce", "001")
@@ -36,7 +38,9 @@ def test_a_000_word_gains_a_zero_unmet_load_list() -> None:
     old = example("flo.path.penalties.bruce", "000")
     upgraded = FloPathPenaltiesBruce000.model_validate(old).upgrade()
     assert upgraded.version == "001"
-    assert upgraded.unmet_load_penalty_usd_list == [0.0] * len(old["RswtPenaltyUsdList"])
+    assert upgraded.unmet_load_penalty_usd_list == [0.0] * len(
+        old["RswtPenaltyUsdList"]
+    )
 
 
 def test_axiom_2_refuses_a_terminal_cost_above_the_empty_store_cost() -> None:
