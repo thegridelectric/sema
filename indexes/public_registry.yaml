@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-18T11:10:00Z'
+  last_updated: '2026-11-18T14:45:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -4868,8 +4868,9 @@ types:
           NativeGpio, Expanders, Muxes, I2cRelays, SupportsPinReadback, RelayEnergizedLevel,
           CtAdc, ThermistorAdcs, Dacs; axioms BusMembership / ExpanderMembership /
           BoardIdentifierUniqueness / MuxConsistency / RelayEnergizedLevelRange /
-          SingleBus). The record describes what is allowed; deployment choices (DIP-selected
-          expander address, chosen wiring) live on the component and layout.
+          BusUniqueness). The record describes what is allowed; deployment choices
+          (DIP-selected expander address, chosen wiring) live on the component and
+          layout.
         direct_dependencies:
           structural:
           - gw.native.gpio.pin:000

@@ -35,7 +35,7 @@ def test_every_axiom_has_a_mutation() -> None:
         3: [],
         4: ["a", "b", "c"],
         5: [],
-        6: [],
+        6: ["a", "b"],
     }
 
 
@@ -91,15 +91,26 @@ def test_axiom_5_refuses_energized_level_out_of_range() -> None:
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 5)
 
 
-def test_axiom_6_refuses_two_buses() -> None:
-    def mutate(p: dict) -> None:
-        p["BusList"].append(
-            {
-                "Name": "SecondBus",
-                "BusNumber": 3,
-                "TypeName": "i2c.bus",
-                "Version": "000",
-            }
-        )
+def second_bus(name: str, number: int) -> dict:
+    return {"Name": name, "BusNumber": number, "TypeName": "i2c.bus", "Version": "000"}
 
-    assert_refused(default_codec, mutated(EXAMPLE, mutate), 6)
+
+def test_two_distinct_buses_are_accepted() -> None:
+    def mutate(p: dict) -> None:
+        p["BusList"].append(second_bus("SecondBus", 3))
+
+    default_codec.from_dict(mutated(EXAMPLE, mutate), mode="strict", auto_upgrade=False)
+
+
+def test_axiom_6a_refuses_a_repeated_bus_name() -> None:
+    def mutate(p: dict) -> None:
+        p["BusList"].append(second_bus(p["BusList"][0]["Name"], 3))
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 6, "a")
+
+
+def test_axiom_6b_refuses_a_repeated_bus_number() -> None:
+    def mutate(p: dict) -> None:
+        p["BusList"].append(second_bus("SecondBus", p["BusList"][0]["BusNumber"]))
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 6, "b")
