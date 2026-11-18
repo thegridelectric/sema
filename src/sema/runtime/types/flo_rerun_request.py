@@ -4,16 +4,17 @@ from sema.runtime.base import SemaType
 from sema.runtime.property_format import NonNegativeInt
 from sema.runtime.types.flo_params import FloParams
 from sema.runtime.types.old_versions.flo_params_001 import FloParams001
+from sema.runtime.types.old_versions.flo_params_002 import FloParams002
 
 
 class FloRerunRequest(SemaType):
-    """Sema: https://schemas.electricity.works/types/flo.rerun.request/000"""
+    """Sema: https://schemas.electricity.works/types/flo.rerun.request/001"""
 
-    params: FloParams001 | FloParams
+    params: FloParams001 | FloParams002 | FloParams
     hp_forced_on_steps: list[NonNegativeInt]
     hp_forced_off_steps: list[NonNegativeInt]
     type_name: Literal["flo.rerun.request"] = "flo.rerun.request"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> Self:

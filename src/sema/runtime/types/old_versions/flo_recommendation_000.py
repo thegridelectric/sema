@@ -8,7 +8,7 @@ from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import NonEmptyString
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.types.flo_optimal_path import FloOptimalPath
-from sema.runtime.types.flo_recommendation import FloRecommendation
+from sema.runtime.types.old_versions.flo_recommendation_001 import FloRecommendation001
 from sema.runtime.types.price_quantity_unitless import PriceQuantityUnitless
 
 
@@ -111,11 +111,11 @@ class FloRecommendation000(SemaType):
                 )
         return self
 
-    def upgrade(self) -> FloRecommendation:
+    def upgrade(self) -> FloRecommendation001:
         """
         - StoreStateList: add (optional, oneOf flo.tank.store.path)
         - PathPenaltiesList: add (optional, oneOf flo.path.penalties.bruce)
         """
         data = self.model_dump()
         data["version"] = "001"
-        return FloRecommendation.model_validate(data)
+        return FloRecommendation001.model_validate(data)

@@ -1,0 +1,8 @@
+    def upgrade(self) -> {{ flo_path_penalties_bruce_001_class_name }}:
+        """
+        - UnmetLoadPenaltyUsdList: add, assigned zeros
+        """
+        data = self.model_dump()
+        data["unmet_load_penalty_usd_list"] = [0.0] * len(self.rswt_penalty_usd_list)
+        data["version"] = "001"
+        return {{ flo_path_penalties_bruce_001_class_name }}.model_validate(data)

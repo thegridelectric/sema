@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flo_rerun_request_001_class_name }}:
+        """
+        - Params: a flo.params 002 is lifted to 003, its unmet-load penalty off
+        """
+        data = self.model_dump()
+        params = self.params
+        if getattr(params, "version", None) == "002":
+            data["params"] = params.upgrade().model_dump()
+        data["version"] = "001"
+        return {{ flo_rerun_request_001_class_name }}.model_validate(data)

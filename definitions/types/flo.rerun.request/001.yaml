@@ -1,0 +1,134 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/flo.rerun.request/001"
+
+title: "flo.rerun.request"
+type: object
+description: >
+  Request to re-solve one market slot: the flo.params (possibly edited), 
+  and which horizon steps force the heat pump on or off.
+
+properties:
+  Params:
+    oneOf:
+      - $ref: "https://schemas.electricity.works/types/flo.params/001"
+      - $ref: "https://schemas.electricity.works/types/flo.params/002"
+      - $ref: "https://schemas.electricity.works/types/flo.params/003"
+    description: >
+      The requested parameters for the slot: the journaled flo.params, 
+      possibly with some parameter values edited.
+  HpForcedOnSteps:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/non.negative.int"
+    description: >
+      Horizon steps where the heat pump is forced on.
+      0 is the first step.
+  HpForcedOffSteps:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/non.negative.int"
+    description: >
+      Horizon steps where the heat pump is forced off.
+      0 is the first step.
+  TypeName:
+    const: "flo.rerun.request"
+  Version:
+    const: "001"
+
+required:
+  - Params
+  - HpForcedOnSteps
+  - HpForcedOffSteps
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Params": {
+        "GNodeAlias": "hw1.isone.me.versant.keene.oak",
+        "CreatedMs": 1762008900000,
+        "StartUnixS": 1762009200,
+        "StepDurationMinutes": [60, 60, 60],
+        "PriceUsdMwhList": [86.696, 87.086, 634.912],
+        "OatFList": [30.0, 29.0, 28.5],
+        "LoadKwhList": [3.5, 3.6, 3.8],
+        "RswtFList": [120.0, 121.0, 122.5],
+        "WeatherForecastId": "5f1c2b3a-8d4e-4f60-9a7b-1c2d3e4f5a6b",
+        "PriceForecastId": "0b6f4c1e-5a3d-4e9b-8f27-6c1d2e3f4a5b",
+        "SeasonalStorageMode": "BufferOnly",
+        "TanksModeled": 1,
+        "GallonsPerTank": 120,
+        "TempSensorsPerTank": 3,
+        "MaxTankTempF": 170,
+        "InitialTopTempF": 120.0,
+        "InitialMiddleTempF": 110.0,
+        "InitialBottomTempF": 100.0,
+        "InitialThermocline1": 1,
+        "InitialThermocline2": 2,
+        "HpCurrentlyOn": false,
+        "HpMaxKwEl": 9.66,
+        "HpTurnOnMinutes": 12,
+        "CopIntercept": 1.5,
+        "CopOatCoeff": 0.015,
+        "CopLwtCoeff": 0,
+        "CopMin": 1.5,
+        "CopMinOatF": 0,
+        "PriceMaxUsdMwh": 2000,
+        "PriceMinUsdMwh": -100,
+        "Tuning": {
+          "NumLayers": 3,
+          "StorageLossesPercent": 0.5,
+          "HpMinKwEl": 0,
+          "HpMaxKwTh": 25,
+          "MaxLoadKwTh": 20,
+          "HpConstantLiftF": 20,
+          "LoadBucketUpperKwhList": [],
+          "RwtInterceptByBucketList": [49.463],
+          "RwtSlopeByBucketList": [0.427],
+          "RwtMinF": 50,
+          "RswtPenaltyEnabled": true,
+          "RswtPenaltyWeight": 0.02,
+          "RswtPenaltyDecay": 0.9,
+          "RswtPenaltyExponentRate": 0.15,
+          "RswtPenaltyDecayMaxHour": 12,
+          "UnmetLoadPenaltyEnabled": true,
+          "UnmetLoadPenaltyWeight": 10.0,
+          "ShortCyclePenaltyEnabled": true,
+          "ShortCyclePenaltyWeight": 6.0,
+          "StabilityPenaltyEnabled": true,
+          "StabilityPenaltyWeight": 0.5,
+          "StabilityPenaltyDecay": 0.75,
+          "StabilityPenaltyThresholdKwh": 10.0,
+          "StabilityPenaltyThresholdPriceMwh": 15.0,
+          "StabilityPenaltyHorizonHours": 20,
+          "TerminalCostEnabled": true,
+          "TerminalCostEndWindowHours": 24,
+          "TypeName": "flo.tuning.bruce",
+          "Version": "002"
+        },
+        "TypeName": "flo.params",
+        "Version": "003"
+      },
+      "HpForcedOnSteps": [],
+      "HpForcedOffSteps": [1],
+      "TypeName": "flo.rerun.request",
+      "Version": "001"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "ForcedStepsWithinHorizon"
+      statement: >
+        Each element of HpForcedOnSteps and HpForcedOffSteps SHALL be an
+        integer in the half-open range from 0 up to but not including the
+        length of Params.StepDurationMinutes.
+    - number: 2
+      name: "ForcedOnOffDisjoint"
+      statement: >
+        No step index SHALL appear in both HpForcedOnSteps and
+        HpForcedOffSteps.
