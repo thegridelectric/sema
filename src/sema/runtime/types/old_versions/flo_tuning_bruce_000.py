@@ -2,7 +2,7 @@ from typing import Literal, Self
 from pydantic import StrictFloat, model_validator
 from sema.runtime.base import SemaType
 from sema.runtime.property_format import NonNegativeInt
-from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
+from sema.runtime.types.old_versions.flo_tuning_bruce_001 import FloTuningBruce001
 
 
 class FloTuningBruce000(SemaType):
@@ -71,13 +71,13 @@ class FloTuningBruce000(SemaType):
             )
         return self
 
-    def upgrade(self) -> FloTuningBruce:
+    def upgrade(self) -> FloTuningBruce001:
         """
         - NumLayers: add
         """
         raise SemaType.upgrade_requires_context(
             "FloTuningBruce000 cannot be upgraded to "
-            "FloTuningBruce without context: 001 adds "
+            "FloTuningBruce001 without context: 001 adds "
             "NumLayers, which a 000 tuning takes from the store of the "
             "flo.params it sits in (TanksModeled times TempSensorsPerTank); "
             "upgrade the enclosing flo.params instead."

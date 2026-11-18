@@ -1,17 +1,18 @@
-"""flo.recommendation 001: the bid curve, its paths and their store-state and
+"""flo.recommendation 002: the bid curve, its paths and their store-state and
 penalty annotations, proved by mutation of the example."""
 
 from sema.runtime.codec import default_codec
 from sema.runtime.types.flo_recommendation import FloRecommendation
 from sema.runtime.types.old_versions.flo_recommendation_000 import FloRecommendation000
+from sema.runtime.types.old_versions.flo_recommendation_001 import FloRecommendation001
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.recommendation", "001")
+EXAMPLE = example("flo.recommendation", "002")
 ANNOTATIONS = ("OptimalPathList", "StoreStateList", "PathPenaltiesList")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.recommendation", "001") == {
+    assert axioms("flo.recommendation", "002") == {
         1: [],
         2: [],
         3: [],
@@ -135,12 +136,23 @@ def test_axiom_7_refuses_penalties_with_another_step_count() -> None:
         penalties = p["PathPenaltiesList"][0]
         for name in (
             "RswtPenaltyUsdList",
+            "UnmetLoadPenaltyUsdList",
             "StabilityPenaltyUsdList",
             "ShortCyclePenaltyUsdList",
         ):
             penalties[name] = [0.0, 0.0]
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 7)
+
+
+def test_a_001_recommendation_lifts_its_penalties() -> None:
+    old = example("flo.recommendation", "001")
+    upgraded = FloRecommendation001.model_validate(old).upgrade()
+    assert upgraded.version == "002"
+    assert upgraded.path_penalties_list is not None
+    for word in upgraded.path_penalties_list:
+        assert word.version == "001"
+        assert word.unmet_load_penalty_usd_list == [0.0] * len(word.rswt_penalty_usd_list)
 
 
 def test_a_000_recommendation_upgrades_bare() -> None:

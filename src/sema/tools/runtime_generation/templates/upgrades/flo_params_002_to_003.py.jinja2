@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flo_params_003_class_name }}:
+        """
+        - Tuning: flo.tuning.bruce 001 -> 002
+        """
+        data = self.model_dump()
+        tuning = self.tuning
+        if tuning.type_name == "flo.tuning.bruce":
+            data["tuning"] = tuning.upgrade().model_dump()
+        data["version"] = "003"
+        return {{ flo_params_003_class_name }}.model_validate(data)

@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flo_recommendation_002_class_name }}:
+        """
+        - PathPenaltiesList: flo.path.penalties.bruce 000 -> 001
+        """
+        data = self.model_dump()
+        penalties = self.path_penalties_list
+        if penalties is not None:
+            data["path_penalties_list"] = [item.upgrade().model_dump() for item in penalties]
+        data["version"] = "002"
+        return {{ flo_recommendation_002_class_name }}.model_validate(data)

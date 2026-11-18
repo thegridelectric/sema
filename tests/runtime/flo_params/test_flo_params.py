@@ -1,4 +1,4 @@
-"""flo.params 002: one request to a FLO, proved by mutation of the example."""
+"""flo.params 003: one request to a FLO, proved by mutation of the example."""
 
 import pytest
 
@@ -9,15 +9,17 @@ from sema.runtime.types.flo_tuning_alice import FloTuningAlice
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.old_versions.flo_params_000 import FloParams000
 from sema.runtime.types.old_versions.flo_params_001 import FloParams001
+from sema.runtime.types.old_versions.flo_params_002 import FloParams002
 from sema.runtime.types.old_versions.flo_tuning_bruce_000 import FloTuningBruce000
+from sema.runtime.types.old_versions.flo_tuning_bruce_001 import FloTuningBruce001
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.params", "002")
+EXAMPLE = example("flo.params", "003")
 PATH = example("flo.optimal.path", "000")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.params", "002") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("flo.params", "003") == {1: [], 2: [], 3: [], 4: [], 5: []}
 
 
 def test_example_round_trips_with_bruce_tuning() -> None:
@@ -91,10 +93,20 @@ def test_axiom_5_refuses_a_lone_previous_path() -> None:
 def test_a_000_request_upgrades_with_the_layers_it_modeled() -> None:
     old = example("flo.params", "000")
     upgraded = FloParams000.model_validate(old).upgrade()
-    assert isinstance(upgraded.tuning, FloTuningBruce)
+    assert isinstance(upgraded.tuning, FloTuningBruce001)
     assert upgraded.tuning.num_layers == old["TanksModeled"] * old["TempSensorsPerTank"]
     assert upgraded.version == "001"
     assert upgraded.tuning.version == "001"
+
+
+def test_a_002_request_upgrades_its_bruce_tuning() -> None:
+    old = example("flo.params", "002")
+    upgraded = FloParams002.model_validate(old).upgrade()
+    assert isinstance(upgraded.tuning, FloTuningBruce)
+    assert upgraded.version == "003"
+    assert upgraded.tuning.version == "002"
+    assert upgraded.tuning.unmet_load_penalty_enabled is False
+    assert upgraded.tuning.unmet_load_penalty_weight == 10
 
 
 def test_a_001_request_refuses_to_upgrade_for_want_of_its_price_forecast() -> None:

@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flo_tuning_bruce_002_class_name }}:
+        """
+        - UnmetLoadPenaltyEnabled: add, assigned false
+        - UnmetLoadPenaltyWeight: add, assigned 10
+        """
+        data = self.model_dump()
+        data["unmet_load_penalty_enabled"] = False
+        data["unmet_load_penalty_weight"] = 10.0
+        data["version"] = "002"
+        return {{ flo_tuning_bruce_002_class_name }}.model_validate(data)

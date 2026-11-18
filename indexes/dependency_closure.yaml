@@ -465,6 +465,21 @@ types:
       - flo.tuning.alice:000
       - flo.tuning.bruce:001
       versionless_types: []
+    '003':
+      enums:
+      - gw1.seasonal.storage.mode:000
+      formats:
+      - left.right.dot
+      - non.negative.int
+      - positive.int
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - flo.optimal.path:000
+      - flo.tuning.alice:000
+      - flo.tuning.bruce:002
+      versionless_types: []
   flo.params.house0:
     '000':
       enums:
@@ -552,6 +567,11 @@ types:
       formats: []
       types: []
       versionless_types: []
+    '001':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   flo.previous.run:
     '000':
       enums:
@@ -599,6 +619,23 @@ types:
       - flo.tank.store.path:000
       - price.quantity.unitless:001
       versionless_types: []
+    '002':
+      enums:
+      - market.price.unit:000
+      - market.quantity.unit:000
+      formats:
+      - git.commit
+      - left.right.dot
+      - non.empty.string
+      - positive.int
+      - utc.milliseconds
+      - utc.seconds
+      types:
+      - flo.optimal.path:000
+      - flo.path.penalties.bruce:001
+      - flo.tank.store.path:000
+      - price.quantity.unitless:001
+      versionless_types: []
   flo.refusal:
     '000':
       enums:
@@ -628,6 +665,25 @@ types:
       - flo.tuning.alice:000
       - flo.tuning.bruce:001
       versionless_types: []
+    '001':
+      enums:
+      - gw1.seasonal.storage.mode:000
+      formats:
+      - left.right.dot
+      - non.negative.int
+      - positive.int
+      - utc.milliseconds
+      - utc.seconds
+      - uuid4.str
+      types:
+      - flo.optimal.path:000
+      - flo.params:001
+      - flo.params:002
+      - flo.params:003
+      - flo.tuning.alice:000
+      - flo.tuning.bruce:001
+      - flo.tuning.bruce:002
+      versionless_types: []
   flo.tank.store.path:
     '000':
       enums: []
@@ -649,6 +705,13 @@ types:
       types: []
       versionless_types: []
     '001':
+      enums: []
+      formats:
+      - non.negative.int
+      - positive.int
+      types: []
+      versionless_types: []
+    '002':
       enums: []
       formats:
       - non.negative.int
@@ -1972,7 +2035,7 @@ types:
       - capture.tuning:000
       - cop.curve:000
       - flo.tuning.alice:000
-      - flo.tuning.bruce:001
+      - flo.tuning.bruce:002
       - gw.dispatch.hold:000
       - gw.house0.family.params:000
       - gw.house0.no.sieg.family.params:000
