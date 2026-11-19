@@ -1,17 +1,20 @@
-"""flo.path.penalties.bruce 001: the per-step penalties, the terminal cost and the path cost, proved by mutation of the example."""
+"""flo.path.penalties.bruce 002: the per-step penalties, the terminal cost and the path cost, proved by mutation of the example."""
 
 from sema.runtime.codec import default_codec
 from sema.runtime.types.flo_path_penalties_bruce import FloPathPenaltiesBruce
 from sema.runtime.types.old_versions.flo_path_penalties_bruce_000 import (
     FloPathPenaltiesBruce000,
 )
+from sema.runtime.types.old_versions.flo_path_penalties_bruce_001 import (
+    FloPathPenaltiesBruce001,
+)
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.path.penalties.bruce", "001")
+EXAMPLE = example("flo.path.penalties.bruce", "002")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.path.penalties.bruce", "001") == {1: [], 2: []}
+    assert axioms("flo.path.penalties.bruce", "002") == {1: [], 2: []}
 
 
 def test_example_round_trips() -> None:
@@ -48,3 +51,13 @@ def test_axiom_2_refuses_a_terminal_cost_above_the_empty_store_cost() -> None:
         p["TerminalCostUsd"] = p["TerminalCostEmptyStoreUsd"] + 0.01
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 2)
+
+
+def test_a_001_word_moves_the_unmet_load_series_into_experimental() -> None:
+    old = example("flo.path.penalties.bruce", "001")
+    upgraded = FloPathPenaltiesBruce001.model_validate(old).upgrade()
+    assert upgraded.version == "002"
+    assert upgraded.experimental == {
+        "UnmetLoadPenaltyUsdList": old["UnmetLoadPenaltyUsdList"]
+    }
+    assert "UnmetLoadPenaltyUsdList" not in upgraded.model_dump(by_alias=True)

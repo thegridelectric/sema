@@ -1,18 +1,19 @@
-"""flo.recommendation 002: the bid curve, its paths and their store-state and
+"""flo.recommendation 003: the bid curve, its paths and their store-state and
 penalty annotations, proved by mutation of the example."""
 
 from sema.runtime.codec import default_codec
 from sema.runtime.types.flo_recommendation import FloRecommendation
 from sema.runtime.types.old_versions.flo_recommendation_000 import FloRecommendation000
 from sema.runtime.types.old_versions.flo_recommendation_001 import FloRecommendation001
+from sema.runtime.types.old_versions.flo_recommendation_002 import FloRecommendation002
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.recommendation", "002")
+EXAMPLE = example("flo.recommendation", "003")
 ANNOTATIONS = ("OptimalPathList", "StoreStateList", "PathPenaltiesList")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.recommendation", "002") == {
+    assert axioms("flo.recommendation", "003") == {
         1: [],
         2: [],
         3: [],
@@ -136,7 +137,6 @@ def test_axiom_7_refuses_penalties_with_another_step_count() -> None:
         penalties = p["PathPenaltiesList"][0]
         for name in (
             "RswtPenaltyUsdList",
-            "UnmetLoadPenaltyUsdList",
             "StabilityPenaltyUsdList",
             "ShortCyclePenaltyUsdList",
         ):
@@ -163,3 +163,17 @@ def test_a_000_recommendation_upgrades_bare() -> None:
     assert upgraded.version == "001"
     assert [p.version for p in upgraded.optimal_path_list] == ["000", "000"]
     assert upgraded.store_state_list is None and upgraded.path_penalties_list is None
+
+
+def test_a_002_recommendation_moves_its_unmet_load_series_into_experimental() -> None:
+    old = example("flo.recommendation", "002")
+    upgraded = FloRecommendation002.model_validate(old).upgrade()
+    assert upgraded.version == "003"
+    assert upgraded.path_penalties_list is not None
+    for word, was in zip(
+        upgraded.path_penalties_list, old["PathPenaltiesList"], strict=True
+    ):
+        assert word.version == "002"
+        assert word.experimental == {
+            "UnmetLoadPenaltyUsdList": was["UnmetLoadPenaltyUsdList"]
+        }
