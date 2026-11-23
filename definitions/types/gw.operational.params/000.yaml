@@ -227,11 +227,8 @@ examples:
         "Version": "000"
       },
       "CopCurve": {
-        "Intercept": 1.02,
-        "OatCoeff": 0.0257,
-        "LwtCoeff": 0,
-        "Min": 1.4,
-        "MinOatF": 15,
+        "Intercept": 2.731,
+        "LwtMinusOatCoeff": -0.007403,
         "TypeName": "cop.curve",
         "Version": "000"
       },

@@ -126,7 +126,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) — the COP model migrated out of scada deployment config into operational params."
+        summary: "Lift-based COP model (Intercept, LwtMinusOatCoeff), the model migrated out of scada deployment config into operational params."
 
   dac.output.config:
     latest_version: "000"
@@ -273,9 +273,11 @@ types:
         summary: "StartUnixS, StepDurationMinutes, HpAvgWList (W), StoreWhList (Wh); axiom StepListLengths."
 
   flo.params:
-    latest_version: "004"
+    latest_version: "005"
     versioning_strategy: "literal"
     versions:
+      "005":
+        summary: "- COP model is lift-based: CopLwtCoeff -> CopLwtMinusOatCoeff; CopOatCoeff, CopMin, CopMinOatF dropped"
       "004":
         summary: "- Tuning: flo.tuning.bruce 002 -> 003"
       "003":

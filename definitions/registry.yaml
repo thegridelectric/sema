@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-23T19:30:00Z"
+  last_updated: "2026-11-23T20:40:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -1936,13 +1936,13 @@ types:
     latest_version: "000"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "A heat pump's coefficient-of-performance model: COP = Intercept + OatCoeff * OatF + LwtCoeff * LwtF, floored at Min below MinOatF."
+    description: "A heat pump's coefficient of performance as a function of the lift from outdoor air to leaving water: COP = Intercept + LwtMinusOatCoeff * max(0, LwtF - OatF)."
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/cop.curve/000"
-        created: "2026-07-09T21:30:00Z"
+        created: "2026-11-23T20:40:00Z"
         status: "staging"
-        summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) — the COP model migrated out of scada deployment config into operational params."
+        summary: "Lift-based COP model (Intercept, LwtMinusOatCoeff), the model migrated out of scada deployment config into operational params."
         direct_dependencies:
           structural: []
 
@@ -2396,12 +2396,30 @@ types:
             - "utc.seconds"
 
   flo.params:
-    latest_version: "004"
+    latest_version: "005"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "One request to a FLO for one market slot: bidder, step grid, price and weather forecasts, the modeled store and its state, heat pump facts, market price bounds, and the tuning whose TypeName names the optimizer."
 
     versions:
+      "005":
+        schema_url: "https://schemas.electricity.works/types/flo.params/005"
+        created: "2026-11-23T20:40:00Z"
+        status: "staging"
+        summary: >-
+          - COP model is lift-based: CopLwtCoeff -> CopLwtMinusOatCoeff;
+          CopOatCoeff, CopMin, CopMinOatF dropped
+        direct_dependencies:
+          structural:
+            - "flo.optimal.path:000"
+            - "flo.tuning.alice:000"
+            - "flo.tuning.bruce:003"
+            - "gw1.seasonal.storage.mode:000"
+            - "left.right.dot"
+            - "positive.int"
+            - "utc.milliseconds"
+            - "utc.seconds"
+            - "uuid4.str"
       "004":
         schema_url: "https://schemas.electricity.works/types/flo.params/004"
         created: "2026-11-19T14:00:00Z"
@@ -4387,7 +4405,7 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.operational.params/000"
-        created: "2026-11-19T14:05:00Z"
+        created: "2026-11-23T20:40:00Z"
         status: "staging"
         summary: "Initial version. ScadaAlias (the applying Scada's identity — stored/emitted instances self-identify; the layout holds the full GNodes) + FamilyParams (oneOf gw.house0.family.params / gw.house0.no.sieg.family.params / gw.nolan.family.params, discriminated by TypeName; the family TypeName pairs the instance with its layout family, so a mismatched pair fails at decode) + CaptureTuningList + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays (the standby machine energizes the listed relays and nothing else; the posture names what the list achieves) + ServiceMode + DispatchHold (gw.dispatch.hold: the operator's hold and the cold latch; one of three authorities over dispatch) + CopCurve + HeatingCurve + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required — no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby implies DispatchHold.OperatorHold. Axiom 4: the posture fixes the relay list (MonitorOnly empty; House0 and House0NoSieg NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 5: Standby holds a House0 loop at full send (SiegLoopStrategy HoldFullSend). FloTuning (oneOf flo.tuning.alice 000 / flo.tuning.bruce 003, discriminated by TypeName): the optimizer this house runs and its knobs; the LTN copies it into each flo.params request. Axiom 6: alice holds dispatch (DispatchHold.OperatorHold true), since alice is the empty tuning of a house with no optimizer. Axiom 7: the tuning admits the family (a FLO models the plant as operated): bruce on a House0 family excludes SiegLoopStrategy LwtControl, since bruce models one heat pump charging one stratified store and a loop that targets its own leaving temperature is not that plant."
         direct_dependencies:

@@ -1,0 +1,11 @@
+    def upgrade(self) -> {{ flo_params_005_class_name }}:
+        """
+        - COP model is lift-based: CopLwtCoeff -> CopLwtMinusOatCoeff;
+          CopOatCoeff, CopMin, CopMinOatF dropped
+        """
+        data = self.model_dump()
+        data["cop_lwt_minus_oat_coeff"] = data.pop("cop_lwt_coeff")
+        for dropped in ("cop_oat_coeff", "cop_min", "cop_min_oat_f"):
+            data.pop(dropped)
+        data["version"] = "005"
+        return {{ flo_params_005_class_name }}.model_validate(data)

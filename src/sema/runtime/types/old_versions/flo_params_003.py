@@ -8,8 +8,8 @@ from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UTCSeconds
 from sema.runtime.property_format import UUID4Str
 from sema.runtime.types.flo_optimal_path import FloOptimalPath
-from sema.runtime.types.flo_params import FloParams
 from sema.runtime.types.flo_tuning_alice import FloTuningAlice
+from sema.runtime.types.old_versions.flo_params_004 import FloParams004
 from sema.runtime.types.old_versions.flo_tuning_bruce_002 import FloTuningBruce002
 
 
@@ -133,7 +133,7 @@ class FloParams003(SemaType):
             )
         return self
 
-    def upgrade(self) -> FloParams:
+    def upgrade(self) -> FloParams004:
         """
         - Tuning: flo.tuning.bruce 002 -> 003
         """
@@ -142,4 +142,4 @@ class FloParams003(SemaType):
         if tuning.type_name == "flo.tuning.bruce":
             data["tuning"] = tuning.upgrade().model_dump()
         data["version"] = "004"
-        return FloParams.model_validate(data)
+        return FloParams004.model_validate(data)

@@ -1,4 +1,4 @@
-"""flo.params 004: one request to a FLO, proved by mutation of the example."""
+"""flo.params 005: one request to a FLO, proved by mutation of the example."""
 
 import pytest
 
@@ -11,17 +11,18 @@ from sema.runtime.types.old_versions.flo_params_000 import FloParams000
 from sema.runtime.types.old_versions.flo_params_001 import FloParams001
 from sema.runtime.types.old_versions.flo_params_002 import FloParams002
 from sema.runtime.types.old_versions.flo_params_003 import FloParams003
+from sema.runtime.types.old_versions.flo_params_004 import FloParams004
 from sema.runtime.types.old_versions.flo_tuning_bruce_000 import FloTuningBruce000
 from sema.runtime.types.old_versions.flo_tuning_bruce_001 import FloTuningBruce001
 from sema.runtime.types.old_versions.flo_tuning_bruce_002 import FloTuningBruce002
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.params", "004")
+EXAMPLE = example("flo.params", "005")
 PATH = example("flo.optimal.path", "000")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.params", "004") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("flo.params", "005") == {1: [], 2: [], 3: [], 4: [], 5: []}
 
 
 def test_example_round_trips_with_bruce_tuning() -> None:
@@ -136,8 +137,21 @@ def test_a_003_request_lifts_its_tuning_to_003() -> None:
     upgraded = FloParams003.model_validate(old).upgrade()
     assert isinstance(upgraded.tuning, FloTuningBruce)
     assert upgraded.version == "004"
+    assert upgraded.cop_lwt_coeff == old["CopLwtCoeff"]
     assert upgraded.tuning.version == "003"
     assert upgraded.tuning.experimental == {
         "UnmetLoadPenaltyEnabled": old["Tuning"]["UnmetLoadPenaltyEnabled"],
         "UnmetLoadPenaltyWeight": old["Tuning"]["UnmetLoadPenaltyWeight"],
     }
+
+
+def test_a_004_request_takes_the_lift_based_cop_model() -> None:
+    old = example("flo.params", "004")
+    upgraded = FloParams004.model_validate(old).upgrade()
+    assert isinstance(upgraded, FloParams)
+    assert upgraded.version == "005"
+    assert upgraded.cop_intercept == old["CopIntercept"]
+    assert upgraded.cop_lwt_minus_oat_coeff == old["CopLwtCoeff"]
+    assert not hasattr(upgraded, "cop_oat_coeff")
+    assert not hasattr(upgraded, "cop_min")
+    assert not hasattr(upgraded, "cop_min_oat_f")

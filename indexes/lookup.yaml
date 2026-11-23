@@ -184,9 +184,10 @@ types:
     versions:
       '000': definitions/types/flo.optimal.path/000.yaml
   flo.params:
-    latest_version: '004'
+    latest_version: '005'
     versioning_strategy: literal
     versions:
+      '005': definitions/types/flo.params/005.yaml
       '004': definitions/types/flo.params/004.yaml
       '003': definitions/types/flo.params/003.yaml
       '002': definitions/types/flo.params/002.yaml

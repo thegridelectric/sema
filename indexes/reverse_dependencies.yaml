@@ -156,6 +156,7 @@ types:
       - flo.params:002
       - flo.params:003
       - flo.params:004
+      - flo.params:005
       - flo.previous.run:000
       - flo.recommendation:000
       - flo.recommendation:001
@@ -203,6 +204,7 @@ types:
       - flo.params:002
       - flo.params:003
       - flo.params:004
+      - flo.params:005
       - gw.operational.params:000
   flo.tuning.bruce:
     '000':
@@ -218,6 +220,7 @@ types:
     '003':
       used_by:
       - flo.params:004
+      - flo.params:005
       - gw.operational.params:000
   fsm.atomic.report:
     '000':
@@ -1159,6 +1162,7 @@ enums:
       - flo.params:002
       - flo.params:003
       - flo.params:004
+      - flo.params:005
       - gw.house.operating.status:000
       - gw.house0.family.params:000
       - gw.house0.no.sieg.family.params:000
@@ -1536,6 +1540,7 @@ formats:
     - flo.params:002
     - flo.params:003
     - flo.params:004
+    - flo.params:005
     - flo.recommendation:000
     - flo.recommendation:001
     - flo.recommendation:002
@@ -1853,6 +1858,7 @@ formats:
     - flo.params:002
     - flo.params:003
     - flo.params:004
+    - flo.params:005
     - flo.tank.store.path:000
     - flo.tuning.bruce:001
     - flo.tuning.bruce:002
@@ -2102,6 +2108,7 @@ formats:
     - flo.params:002
     - flo.params:003
     - flo.params:004
+    - flo.params:005
     - flo.previous.run:000
     - flo.recommendation:000
     - flo.recommendation:001
@@ -2227,6 +2234,7 @@ formats:
     - flo.params:002
     - flo.params:003
     - flo.params:004
+    - flo.params:005
     - flo.refusal:000
     - gw.price.forecast:000
     - gw.stopgap.price.forecast:000
@@ -2277,6 +2285,7 @@ formats:
     - flo.params:002
     - flo.params:003
     - flo.params:004
+    - flo.params:005
     - fsm.atomic.report:000
     - fsm.atomic.report:001
     - fsm.event:000

@@ -13,7 +13,7 @@ from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 
 
 class FloParams(SemaType):
-    """Sema: https://schemas.electricity.works/types/flo.params/004"""
+    """Sema: https://schemas.electricity.works/types/flo.params/005"""
 
     g_node_alias: LeftRightDot
     created_ms: UTCMilliseconds
@@ -39,17 +39,14 @@ class FloParams(SemaType):
     hp_max_kw_el: StrictFloat
     hp_turn_on_minutes: PositiveInt
     cop_intercept: StrictFloat
-    cop_oat_coeff: StrictFloat
-    cop_lwt_coeff: StrictFloat
-    cop_min: StrictFloat
-    cop_min_oat_f: StrictFloat
+    cop_lwt_minus_oat_coeff: StrictFloat
     price_max_usd_mwh: StrictFloat
     price_min_usd_mwh: StrictFloat
     previous_optimal_path: FloOptimalPath | None = None
     previous_estimate_elec_usd_mwh_now: StrictFloat | None = None
     tuning: FloTuningAlice | FloTuningBruce
     type_name: Literal["flo.params"] = "flo.params"
-    version: Literal["004"] = "004"
+    version: Literal["005"] = "005"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> Self:
