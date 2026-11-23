@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-23T17:00:00Z"
+  last_updated: "2026-11-23T19:30:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -2405,7 +2405,7 @@ types:
       "004":
         schema_url: "https://schemas.electricity.works/types/flo.params/004"
         created: "2026-11-19T14:00:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Tuning: flo.tuning.bruce 002 -> 003
         direct_dependencies:
@@ -2640,7 +2640,7 @@ types:
       "002":
         schema_url: "https://schemas.electricity.works/types/flo.path.penalties.bruce/002"
         created: "2026-11-19T13:55:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Experimental: add, an open container for penalty series under tuning
           - UnmetLoadPenaltyUsdList: move into Experimental
@@ -2693,7 +2693,7 @@ types:
       "003":
         schema_url: "https://schemas.electricity.works/types/flo.recommendation/003"
         created: "2026-11-19T14:00:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - PathPenaltiesList: flo.path.penalties.bruce 001 -> 002
         direct_dependencies:
@@ -2791,7 +2791,7 @@ types:
       "002":
         schema_url: "https://schemas.electricity.works/types/flo.rerun.request/002"
         created: "2026-11-19T14:05:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Params: flo.params 004 joins the union; a 003 is lifted to 004
         direct_dependencies:
@@ -2865,7 +2865,7 @@ types:
       "003":
         schema_url: "https://schemas.electricity.works/types/flo.tuning.bruce/003"
         created: "2026-11-19T13:55:00Z"
-        status: "staging"
+        status: "published"
         summary: >-
           - Experimental: add, an open container for knobs under tuning
           - UnmetLoadPenaltyEnabled, UnmetLoadPenaltyWeight: move into Experimental
