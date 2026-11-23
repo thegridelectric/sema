@@ -309,7 +309,16 @@ def test_registry_enum_structure():
                 assert re.match(r"^\d{3}$", v), f"{enum_name}:{v} invalid version"
 
             assert version_keys == sorted(version_keys, reverse=True)
-            assert entry["latest_version"] == version_keys[0]
+
+            # working latest_version = newest ACTIVE (staging or published)
+            # version; drafts are never selected by latest_version
+            active_version_keys = [
+                version
+                for version, version_entry in versions.items()
+                if version_entry["status"] != "draft"
+            ]
+            if active_version_keys:
+                assert entry["latest_version"] == active_version_keys[0]
 
             # -----------------------------------------------------------------
             # Created timestamps

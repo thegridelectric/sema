@@ -1,0 +1,130 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/types/gw.service.channel.gt/000"
+
+title: "gw.service.channel.gt"
+type: object
+description: >
+  A channel a service that is not a GNode declares for the readings it
+  writes: one quantity computed from named input channels by a named
+  strategy, in one unit, about one house when it is about a house. A
+  GNode declares its channels through its own word; this record is for
+  the journal-side services (a journal service's derived series, an
+  hourly aggregator). The declaring service is the channel's authority.
+  Changing a structural fact is a new record (new Id); the Name
+  persists, and Start scopes which record a reading resolves against.
+
+properties:
+  Name:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      The channel's name, persisting across records. An aggregate over a
+      window names the window as its last segment (hp-kwh-el-1hr).
+
+  DisplayName:
+    $ref: "https://schemas.electricity.works/formats/non.empty.string"
+    description: >
+      Human-facing name for display tooling.
+
+  Quantity:
+    $ref: "https://schemas.electricity.works/enums/gw1.quantity/003"
+    description: >
+      The physical or semantic quantity this channel records.
+
+  Unit:
+    $ref: "https://schemas.electricity.works/enums/gw1.unit/003"
+    description: >
+      The scaled-integer unit of every reading on this channel.
+
+  DeclaringServiceAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Alias of the service that declares this channel and writes its
+      readings. The service is not a GNode; its alias is the one it
+      claims on the broker.
+
+  TerminalAssetAlias:
+    $ref: "https://schemas.electricity.works/formats/left.right.dot"
+    description: >
+      Alias of the terminal asset this channel is about. Absent for a
+      channel about no single house.
+
+  InputChannelNames:
+    type: array
+    items:
+      $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Names of the channels this channel is computed from.
+
+  Strategy:
+    $ref: "https://schemas.electricity.works/formats/spaceheat.name"
+    description: >
+      Identifier of the computation that produces this channel from its
+      input channels.
+
+  WindowS:
+    $ref: "https://schemas.electricity.works/formats/positive.int"
+    description: >
+      Length in seconds of the window each reading aggregates, for an
+      aggregate channel (3600 for an hourly channel). A reading's time
+      is the start of its window.
+
+  Start:
+    $ref: "https://schemas.electricity.works/formats/utc.iso8601.seconds"
+    description: >
+      When this record became the active record for Name; a reading
+      resolves against the record active at its time.
+
+  Id:
+    $ref: "https://schemas.electricity.works/formats/uuid4.str"
+    description: >
+      Immutable identifier of this record. A structural change is a
+      new record with a new Id under the persisting Name.
+
+  TypeName:
+    const: "gw.service.channel.gt"
+
+  Version:
+    const: "000"
+
+required:
+  - Name
+  - DisplayName
+  - Quantity
+  - Unit
+  - DeclaringServiceAlias
+  - InputChannelNames
+  - Strategy
+  - Start
+  - Id
+  - TypeName
+  - Version
+
+additionalProperties: false
+
+examples:
+  - |
+    {
+      "Name": "hp-kwh-el-1hr",
+      "DisplayName": "Heat pump electrical energy, hourly",
+      "Quantity": "Energy",
+      "Unit": "WattHours",
+      "DeclaringServiceAlias": "hw1.isone.journal",
+      "TerminalAssetAlias": "hw1.isone.me.versant.keene.beech.ta",
+      "InputChannelNames": ["hp-idu-pwr", "hp-odu-pwr"],
+      "Strategy": "trapezoid-integral",
+      "WindowS": 3600,
+      "Start": "2026-11-23T00:00:00Z",
+      "Id": "7c3f1e9a-2b5d-4a8c-9e1f-6d4b8a2c5e7f",
+      "TypeName": "gw.service.channel.gt",
+      "Version": "000"
+    }
+
+x-gridworks:
+  owner: "gridworks-energy"
+
+  axioms:
+    - number: 1
+      name: "UnitQuantityConsistency"
+      statement: >
+        Quantity SHALL equal the Quantity defined by the canonical
+        gw1.unit.quantity.projection:001 instance for the specified Unit.

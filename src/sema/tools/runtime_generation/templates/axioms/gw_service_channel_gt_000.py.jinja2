@@ -1,0 +1,13 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ gw_service_channel_gt_000_class_name }}":
+        """
+        Axiom 1: UnitQuantityConsistency
+        Quantity SHALL equal the Quantity defined by the canonical
+        gw1.unit.quantity.projection:001 instance for the specified Unit.
+        """
+        expected = {{ gw1_unit_quantity_projection_001_class_name }}.project({{ gw1_unit_003_class_name }}(self.unit.value))
+        if self.quantity != expected:
+            raise ValueError(
+                "Axiom 1 failed: quantity must match the canonical quantity for unit."
+            )
+        return self

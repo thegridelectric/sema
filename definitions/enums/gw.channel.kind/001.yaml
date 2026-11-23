@@ -1,0 +1,74 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/enums/gw.channel.kind/001"
+
+title: "gw.channel.kind"
+type: "string"
+
+description: >
+  What kind of thing a reading channel in a journal records, named by the
+  declaring record or list: a channel the scada's layout declares, a state
+  machine the layout declares, a channel a weather GNode declares by a
+  sent record, a channel a service that is not a GNode declares by a sent
+  record, or a channel a journal service derives for itself.
+
+enum:
+  - "Unknown"
+  - "DataChannel"
+  - "DerivedChannel"
+  - "StateMachine"
+  - "HeatCallSynth"
+  - "WeatherForecast"
+  - "WeatherObserved"
+  - "FloParams"
+  - "ServiceChannel"
+
+default: "Unknown"
+
+x-gridworks:
+  owner: "gridworks-energy"
+  version: "001"
+
+  value_descriptions:
+    "Unknown": >
+      The kind is not known here. A reader does not act on the channel.
+
+    "DataChannel": >
+      A measured quantity the scada's layout declares as a data.channel.gt:
+      a sensor reading or a relay's position.
+
+    "DerivedChannel": >
+      A quantity the scada computes from others and its layout declares in
+      its list of derived channels: a zone's heat call from its thermostat's
+      power draw. The list is of derived.channel.gt from layout.lite 007
+      and of synth.channel.gt before it.
+
+    "StateMachine": >
+      The state of a machine the scada's layout declares as a
+      gw.state.machine. The channel's unit type is the state enum and its
+      unit the enum version; a stored value is the position of the state
+      in that version.
+
+    "HeatCallSynth": >
+      A zone's heat call a journal service derives from the zone's
+      thermostat power draw, for a house whose layout declares no heat-call
+      channel of its own.
+
+    "WeatherForecast": >
+      The first slice of the forecast a house's scada fetched for itself,
+      recorded per house by a journal service from the scada's forecast
+      word, one value per forecast.
+
+    "WeatherObserved": >
+      An observed weather series a weather GNode declares as a
+      gw.weather.channel.gt: one quantity at one station, in the record's
+      unit. The station is the record's.
+
+    "FloParams": >
+      A parameter series a journal service records from the house's FLO
+      parameters.
+
+    "ServiceChannel": >
+      A channel a service that is not a GNode declares as a
+      gw.service.channel.gt, for the readings it writes: a quantity
+      computed from named input channels in the record's unit, about
+      the record's house when it names one.

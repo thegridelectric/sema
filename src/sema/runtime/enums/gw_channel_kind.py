@@ -4,7 +4,7 @@ from sema.runtime.enums.gw_str_enum import SemaEnum
 
 
 class GwChannelKind(SemaEnum):
-    """Sema: https://schemas.electricity.works/enums/gw.channel.kind/000"""
+    """Sema: https://schemas.electricity.works/enums/gw.channel.kind/001"""
 
     Unknown = auto()
     DataChannel = auto()
@@ -14,6 +14,7 @@ class GwChannelKind(SemaEnum):
     WeatherForecast = auto()
     WeatherObserved = auto()
     FloParams = auto()
+    ServiceChannel = auto()
 
     @classmethod
     def default(cls) -> "GwChannelKind":
@@ -29,4 +30,4 @@ class GwChannelKind(SemaEnum):
 
     @classmethod
     def enum_version(cls) -> str:
-        return "000"
+        return "001"

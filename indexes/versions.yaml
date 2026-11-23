@@ -895,6 +895,13 @@ types:
       "000":
         summary: "Initial version. ScadaAlias + GitCommit + MessageCreatedMs."
 
+  gw.service.channel.gt:
+    latest_version: "000"
+    versioning_strategy: "literal"
+    versions:
+      "000":
+        summary: "Initial draft."
+
   gw.state.machine:
     latest_version: "000"
     versioning_strategy: "literal"
@@ -2361,6 +2368,9 @@ enums:
     enum_type: "versioned"
     note: "This enum is versioned; new versions are additive only."
     versions:
+      "001":
+        added_values:
+          - "ServiceChannel"
       "000": {}
 
   gw.house.control.mode:

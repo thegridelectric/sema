@@ -1,10 +1,6 @@
 metadata:
   registry_version: "1.0"
-<<<<<<< HEAD
-  last_updated: "2026-11-19T14:05:00Z"
-=======
-  last_updated: "2026-11-20T18:50:00Z"
->>>>>>> jm/gw108-revc
+  last_updated: "2026-11-23T17:00:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -649,12 +645,19 @@ enums:
         status: "published"
 
   gw.channel.kind:
-    latest_version: "000"
+    latest_version: "001"
     owner: gridworks-energy
     enum_type: "versioned"
-    description: "What kind of thing a reading channel records, named by the declaring list: a layout's DataChannel or DerivedChannel, a layout's StateMachine, or a journal service's HeatCallSynth, WeatherForecast, WeatherObserved or FloParams. Default Unknown so a reader does not act on a kind it does not know."
+    description: "What kind of thing a reading channel records, named by the declaring record or list: a layout's DataChannel or DerivedChannel, a layout's StateMachine, a weather GNode's WeatherObserved, a non-GNode service's ServiceChannel, or a journal service's HeatCallSynth, WeatherForecast or FloParams. Default Unknown so a reader does not act on a kind it does not know."
 
     versions:
+      "001":
+        schema_url: "https://schemas.electricity.works/enums/gw.channel.kind/001"
+        created: "2026-11-23T17:00:00Z"
+        status: "staging"
+        added_values:
+          - "ServiceChannel"
+
       "000":
         schema_url: "https://schemas.electricity.works/enums/gw.channel.kind/000"
         created: "2026-10-25T11:55:00Z"
@@ -4480,6 +4483,31 @@ types:
             - "git.commit"
             - "left.right.dot"
             - "utc.milliseconds"
+
+  gw.service.channel.gt:
+    latest_version: "000"
+    owner: gridworks-energy
+    versioning_strategy: "literal"
+    description: "A channel a service that is not a GNode declares for the readings it writes: a quantity computed from named input channels, with the house it is about when it is about one. A GNode declares its channels through its own word."
+
+    versions:
+      "000":
+        schema_url: "https://schemas.electricity.works/types/gw.service.channel.gt/000"
+        created: "2026-11-23T17:00:00Z"
+        status: "staging"
+        summary: "Initial draft."
+        direct_dependencies:
+          structural:
+            - "gw1.quantity:003"
+            - "gw1.unit:003"
+            - "left.right.dot"
+            - "non.empty.string"
+            - "positive.int"
+            - "spaceheat.name"
+            - "utc.iso8601.seconds"
+            - "uuid4.str"
+          axiom:
+            - "gw1.unit.quantity.projection:001"
 
   gw.state.machine:
     latest_version: "000"

@@ -132,6 +132,7 @@ from sema.runtime.types.gw_price_forecast import GwPriceForecast
 from sema.runtime.types.gw_readings import GwReadings
 from sema.runtime.types.gw_recorded_setpoints import GwRecordedSetpoints
 from sema.runtime.types.gw_scada_commit import GwScadaCommit
+from sema.runtime.types.gw_service_channel_gt import GwServiceChannelGt
 from sema.runtime.types.gw_state_machine import GwStateMachine
 from sema.runtime.types.gw_stopgap_price_forecast import GwStopgapPriceForecast
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
@@ -388,6 +389,7 @@ __all__ = [
     "GwReadings",
     "GwRecordedSetpoints",
     "GwScadaCommit",
+    "GwServiceChannelGt",
     "GwStateMachine",
     "GwStopgapPriceForecast",
     "GwTouTariff",
