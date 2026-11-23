@@ -735,3 +735,10 @@ def test_axiom_39_b_ct_input_when_no_power_channel(vanilla: dict[str, Any]) -> N
         )
 
     reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_38_a_boiler_without_a_failsafe_relay(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]["FailsafeRelayName"]
+
+    reject(vanilla, mutate, "Axiom 38")

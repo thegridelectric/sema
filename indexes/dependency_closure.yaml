@@ -1925,6 +1925,7 @@ types:
       - spaceheat.telemetry.name:007
       - temp.calc.method:000
       - thermostat.kind:000
+      - valve.open.or.closed:000
       - zone.setpoint.source:000
       formats:
       - handle.name

@@ -2,9 +2,13 @@
     def check_axiom_1(self) -> "{{ gw_boiler_backup_000_class_name }}":
         """
         Axiom 1: DistinctRelays
-        FailsafeRelayName SHALL NOT equal AquastatCtrlRelayName.
+        Where FailsafeRelayName is present, it SHALL NOT equal
+        AquastatCtrlRelayName.
         """
-        if self.failsafe_relay_name == self.aquastat_ctrl_relay_name:
+        if (
+            self.failsafe_relay_name is not None
+            and self.failsafe_relay_name == self.aquastat_ctrl_relay_name
+        ):
             raise ValueError(
                 "Axiom 1 (DistinctRelays) failed: FailsafeRelayName and "
                 f"AquastatCtrlRelayName are both {self.failsafe_relay_name}."

@@ -1449,6 +1449,10 @@ enums:
       used_by:
       - gw.command.interface:000
       - gw.command.interface:001
+  valve.open.or.closed:
+    '000':
+      used_by:
+      - gw.katahdin.layout:000
   zone.circuit.governance.event:
     '000':
       used_by:

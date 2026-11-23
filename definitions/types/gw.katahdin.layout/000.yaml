@@ -460,10 +460,12 @@ x-gridworks:
     - number: 32
       name: "BackupRelays"
       statement: >
-        Where Hydronic.Backup is a gw.boiler.backup, its FailsafeRelayName and
-        AquastatCtrlRelayName, and where it is a gw.element.backup, each name in its
-        ElementRelayNames, SHALL equal the Name of an ShNode in ShNodes whose ActorClass
-        is "Relay".
+        a. Where Hydronic.Backup is a gw.boiler.backup, its FailsafeRelayName SHALL be
+        absent: the boiler fires on its own aquastat, and with the scada dead the heat
+        pump is off.
+        b. Where Hydronic.Backup is a gw.boiler.backup, its AquastatCtrlRelayName, and
+        where it is a gw.element.backup, each name in its ElementRelayNames, SHALL equal
+        the Name of an ShNode in ShNodes whose ActorClass is "Relay".
     - number: 33
       name: "CirculatorRunningChannels"
       statement: >
@@ -474,6 +476,19 @@ x-gridworks:
         b. that channel's InputChannelNames SHALL equal [PowerChannelName] when
         PowerChannelName is present and [CtChannelName] otherwise, and the input SHALL be
         the Name of a DataChannel, with TelemetryName "PowerW" when it is PowerChannelName.
+    - number: 34
+      name: "ValveDefaultsFollowBackup"
+      statement: >
+        a. The relay.control.config whose ActorName is "v4-house-return-relay", and
+        where the node exists the one whose ActorName is "v5-boiler-relay", SHALL have
+        StateType "valve.open.or.closed".
+        b. Where Hydronic.Backup is a gw.boiler.backup, v4-house-return-relay's
+        EnergizedState SHALL be "ValveOpen" and v5-boiler-relay's EnergizedState SHALL
+        be "ValveClosed": with every relay at rest V4 is closed and V5 open, the boiler
+        on the house supply and the exchanger valved off.
+        c. Where Hydronic.Backup is a gw.element.backup, v4-house-return-relay's
+        EnergizedState SHALL be "ValveClosed": with every relay at rest V4 is open and
+        the store's elements heat the house.
   extended_description: >
     The first layout word for a plant with no buffer tank, no iso valve and
     no store pump (schematic Katahdin_Schematic_D1116). Heat leaves the

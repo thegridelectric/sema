@@ -791,3 +791,10 @@ def test_axiom_39_hp_watch_wrong_actor_class(vanilla: dict[str, Any]) -> None:
                 del n["ActorHierarchyName"]
 
     reject(vanilla, mutate, "Axiom 39")
+
+
+def test_axiom_37_a_boiler_without_a_failsafe_relay(vanilla: dict[str, Any]) -> None:
+    def mutate(d: dict[str, Any]) -> None:
+        del d["Hydronic"]["Backup"]["FailsafeRelayName"]
+
+    reject(vanilla, mutate, "Axiom 37")

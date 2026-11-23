@@ -14,7 +14,8 @@ properties:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
     description: >
       The relay that gives control of the heat pump to the scada when
-      energized and to the aquastat when de-energized.
+      energized and to the aquastat when de-energized. Absent where the
+      heat pump has no aquastat to fall back to.
 
   AquastatCtrlRelayName:
     $ref: "https://schemas.electricity.works/formats/spaceheat.name"
@@ -35,7 +36,6 @@ properties:
     const: "000"
 
 required:
-  - FailsafeRelayName
   - AquastatCtrlRelayName
   - InService
   - TypeName
@@ -59,4 +59,5 @@ x-gridworks:
     - number: 1
       name: "DistinctRelays"
       statement: >
-        FailsafeRelayName SHALL NOT equal AquastatCtrlRelayName.
+        Where FailsafeRelayName is present, it SHALL NOT equal
+        AquastatCtrlRelayName.

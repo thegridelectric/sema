@@ -1271,8 +1271,10 @@ class GwKatahdinLayout(SemaType):
     @model_validator(mode="after")
     def check_axiom_32(self) -> "GwKatahdinLayout":
         """
-        Axiom 32: BackupRelays Where Hydronic.Backup is a gw.boiler.backup, its
-        FailsafeRelayName and AquastatCtrlRelayName, and where it is a
+        Axiom 32: BackupRelays a. Where Hydronic.Backup is a gw.boiler.backup, its
+        FailsafeRelayName SHALL be absent: the boiler fires on its own aquastat, and
+        with the scada dead the heat pump is off. b. Where Hydronic.Backup is a
+        gw.boiler.backup, its AquastatCtrlRelayName, and where it is a
         gw.element.backup, each name in its ElementRelayNames, SHALL equal the Name of
         an ShNode in ShNodes whose ActorClass is "Relay".
         """
@@ -1280,7 +1282,12 @@ class GwKatahdinLayout(SemaType):
         if backup is None:
             return self
         if backup.type_name == "gw.boiler.backup":
-            names = [backup.failsafe_relay_name, backup.aquastat_ctrl_relay_name]
+            if backup.failsafe_relay_name is not None:
+                raise ValueError(
+                    f"Axiom 32 (BackupRelays) clause a failed: a Katahdin boiler backup "
+                    f"has no heat pump failsafe relay, got {backup.failsafe_relay_name!r}."
+                )
+            names = [backup.aquastat_ctrl_relay_name]
         else:
             names = list(backup.element_relay_names)
         relays = {
@@ -1289,7 +1296,7 @@ class GwKatahdinLayout(SemaType):
         for name in names:
             if name not in relays:
                 raise ValueError(
-                    f"Axiom 32 (BackupRelays) failed: the backup names {name!r}, "
+                    f"Axiom 32 (BackupRelays) clause b failed: the backup names {name!r}, "
                     "which is not an ShNode with ActorClass Relay."
                 )
         return self
@@ -1352,5 +1359,59 @@ class GwKatahdinLayout(SemaType):
                 raise ValueError(
                     f"Axiom 33 (CirculatorRunningChannels) b. failed: PowerChannelName "
                     f"{expected!r} SHALL have TelemetryName PowerW, got {inp.telemetry_name}."
+                )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_34(self) -> Self:
+        """
+        Axiom 34: ValveDefaultsFollowBackup a. The relay.control.config whose ActorName
+        is "v4-house-return-relay", and where the node exists the one whose ActorName is
+        "v5-boiler-relay", SHALL have StateType "valve.open.or.closed". b. Where
+        Hydronic.Backup is a gw.boiler.backup, v4-house-return-relay's EnergizedState
+        SHALL be "ValveOpen" and v5-boiler-relay's EnergizedState SHALL be
+        "ValveClosed": with every relay at rest V4 is closed and V5 open, the boiler on
+        the house supply and the exchanger valved off. c. Where Hydronic.Backup is a
+        gw.element.backup, v4-house-return-relay's EnergizedState SHALL be
+        "ValveClosed": with every relay at rest V4 is open and the store's elements heat
+        the house.
+        """
+        config_by_actor = {
+            cfg.actor_name: cfg
+            for c in (self.components or [])
+            if c.type_name in ("i2c.relay.component.gt", "gpio.relay.component.gt")
+            for cfg in c.config_list
+        }
+        backup = self.hydronic.backup
+        boiler = backup is not None and backup.type_name == "gw.boiler.backup"
+        nodes = {n.name for n in (self.sh_nodes or [])}
+        valves = ["v4-house-return-relay"]
+        if "v5-boiler-relay" in nodes:
+            valves.append("v5-boiler-relay")
+        for valve in valves:
+            cfg = config_by_actor.get(valve)
+            if cfg is None or str(cfg.state_type) != "valve.open.or.closed":
+                raise ValueError(
+                    f"Axiom 34 (ValveDefaultsFollowBackup) clause a failed: {valve} needs "
+                    "a relay.control.config with StateType valve.open.or.closed."
+                )
+        expected: dict[str, str] = {}
+        clause = ""
+        if boiler:
+            expected = {
+                "v4-house-return-relay": "ValveOpen",
+                "v5-boiler-relay": "ValveClosed",
+            }
+            clause = "b"
+        elif backup is not None:
+            expected = {"v4-house-return-relay": "ValveClosed"}
+            clause = "c"
+        for valve, state in expected.items():
+            cfg = config_by_actor.get(valve)
+            if cfg is not None and str(cfg.energized_state) != state:
+                raise ValueError(
+                    f"Axiom 34 (ValveDefaultsFollowBackup) clause {clause} failed: "
+                    f"{valve} EnergizedState is {cfg.energized_state!r}, expected {state!r} "
+                    "for this backup kind."
                 )
         return self
