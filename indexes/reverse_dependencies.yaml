@@ -168,18 +168,25 @@ types:
       - flo.rerun.request:000
       - flo.rerun.request:001
       - flo.rerun.request:002
+      - flo.rerun.request:003
     '002':
       used_by:
       - flo.rerun.request:000
       - flo.rerun.request:001
       - flo.rerun.request:002
+      - flo.rerun.request:003
     '003':
       used_by:
       - flo.rerun.request:001
       - flo.rerun.request:002
+      - flo.rerun.request:003
     '004':
       used_by:
       - flo.rerun.request:002
+      - flo.rerun.request:003
+    '005':
+      used_by:
+      - flo.rerun.request:003
   flo.path.penalties.bruce:
     '000':
       used_by:
@@ -1737,6 +1744,7 @@ formats:
     - flo.rerun.request:000
     - flo.rerun.request:001
     - flo.rerun.request:002
+    - flo.rerun.request:003
     - flo.tuning.bruce:000
     - flo.tuning.bruce:001
     - flo.tuning.bruce:002

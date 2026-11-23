@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-23T21:10:00Z"
+  last_updated: "2026-11-23T21:45:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -1936,13 +1936,13 @@ types:
     latest_version: "000"
     owner: gridworks-energy
     versioning_strategy: "literal"
-    description: "A heat pump's coefficient of performance as a function of the lift from outdoor air to leaving water: COP = Intercept + LwtMinusOatCoeff * max(0, LwtF - OatF)."
+    description: "A heat pump's coefficient-of-performance model: COP = Intercept + OatCoeff * OatF + LwtCoeff * LwtF, floored at Min below MinOatF."
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/cop.curve/000"
-        created: "2026-11-23T20:50:00Z"
+        created: "2026-11-23T21:45:00Z"
         status: "staging"
-        summary: "Lift-based COP model (Intercept, LwtMinusOatCoeff), the model migrated out of scada deployment config into operational params."
+        summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) — the COP model migrated out of scada deployment config into operational params."
         direct_dependencies:
           structural: []
 
@@ -2800,12 +2800,26 @@ types:
             - "utc.seconds"
 
   flo.rerun.request:
-    latest_version: "002"
+    latest_version: "003"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "Request to re-solve one market slot: the flo.params (possibly edited), and which horizon steps force the heat pump on or off."
 
     versions:
+      "003":
+        schema_url: "https://schemas.electricity.works/types/flo.rerun.request/003"
+        created: "2026-11-23T21:45:00Z"
+        status: "staging"
+        summary: >-
+          - Params: flo.params 005 joins the union; a 004 is lifted to 005
+        direct_dependencies:
+          structural:
+            - "flo.params:001"
+            - "flo.params:002"
+            - "flo.params:003"
+            - "flo.params:004"
+            - "flo.params:005"
+            - "non.negative.int"
       "002":
         schema_url: "https://schemas.electricity.works/types/flo.rerun.request/002"
         created: "2026-11-19T14:05:00Z"
@@ -4406,7 +4420,7 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.operational.params/000"
-        created: "2026-11-23T20:50:00Z"
+        created: "2026-11-23T21:45:00Z"
         status: "staging"
         summary: "Initial version: the operator-set parameters of one house, applied by its scada and copied by its LTN into each flo.params request."
         direct_dependencies:

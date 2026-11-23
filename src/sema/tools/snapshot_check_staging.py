@@ -3,7 +3,11 @@
 Shipped into every snapshot as ``check_staging.py`` and run by the consumer's
 CI from the vendored tree alone, with no sema dependency:
 
-    python <vendor-dir>/check_staging.py <committed seed>
+    python -P <vendor-dir>/check_staging.py <committed seed>
+
+``-P`` keeps the vendor dir off ``sys.path``: the snapshot's ``types/``
+package sits beside this file and would otherwise shadow the standard
+library's ``types`` module.
 
 Fails when the snapshot holds a staging word the seed's ``staging.allow``
 list does not name, or when the copy of the seed the snapshot was built from

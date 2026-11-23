@@ -91,8 +91,10 @@ This directory is a **vendored Sema snapshot**: a self-contained, generated
 subset of the Sema vocabulary. **Never hand-edit it.** To change it, edit the
 seed (`../sema_seed_request.yaml`) or the definitions in the sema repo, then
 re-run `uv run sema snapshot regen <seed>` in the sema repo. `check_staging.py`
-here is the consumer's CI check: it fails when this snapshot holds a staging
-word the seed does not allow, or when the seed changed since the build.
+here is the consumer's CI check, run as `python -P check_staging.py <seed>`
+(`-P` keeps this directory's `types/` package from shadowing the standard
+library): it fails when this snapshot holds a staging word the seed does not
+allow, or when the seed changed since the build.
 
 ## What Sema is
 

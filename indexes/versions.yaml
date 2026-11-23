@@ -126,7 +126,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Lift-based COP model (Intercept, LwtMinusOatCoeff), the model migrated out of scada deployment config into operational params."
+        summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) — the COP model migrated out of scada deployment config into operational params."
 
   dac.output.config:
     latest_version: "000"
@@ -387,9 +387,11 @@ types:
         summary: "BidderAlias and StartUnixS pair the refusal with its request as the recommendation does; Reason (flo.refusal.reason), optional Detail, CreatedMs."
 
   flo.rerun.request:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: "- Params: flo.params 005 joins the union; a 004 is lifted to 005"
       "002":
         summary: "- Params: flo.params 004 joins the union; a 003 is lifted to 004"
       "001":

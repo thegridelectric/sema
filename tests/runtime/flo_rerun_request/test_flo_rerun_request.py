@@ -1,4 +1,4 @@
-"""flo.rerun.request 002: laptop re-solve body wrapping flo.params."""
+"""flo.rerun.request 003: laptop re-solve body wrapping flo.params."""
 
 import pytest
 from pydantic import ValidationError
@@ -6,13 +6,14 @@ from pydantic import ValidationError
 from sema.runtime.types.flo_rerun_request import FloRerunRequest
 from sema.runtime.types.old_versions.flo_rerun_request_000 import FloRerunRequest000
 from sema.runtime.types.old_versions.flo_rerun_request_001 import FloRerunRequest001
+from sema.runtime.types.old_versions.flo_rerun_request_002 import FloRerunRequest002
 from tests.runtime.refusal import axioms, example, mutated
 
-EXAMPLE = example("flo.rerun.request", "002")
+EXAMPLE = example("flo.rerun.request", "003")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.rerun.request", "002") == {1: [], 2: []}
+    assert axioms("flo.rerun.request", "003") == {1: [], 2: []}
 
 
 def test_example_round_trips() -> None:
@@ -57,3 +58,13 @@ def test_a_001_request_lifts_params_003_to_004() -> None:
         "UnmetLoadPenaltyEnabled": True,
         "UnmetLoadPenaltyWeight": 10.0,
     }
+
+
+def test_a_002_request_lifts_params_004_to_005() -> None:
+    old = example("flo.rerun.request", "002")
+    upgraded = FloRerunRequest002.model_validate(old).upgrade()
+    assert isinstance(upgraded, FloRerunRequest)
+    assert upgraded.version == "003"
+    assert upgraded.params.version == "005"
+    assert upgraded.params.cop_lwt_minus_oat_coeff == old["Params"]["CopLwtCoeff"]
+    assert not hasattr(upgraded.params, "cop_oat_coeff")

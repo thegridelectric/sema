@@ -1,0 +1,10 @@
+    def upgrade(self) -> {{ flo_rerun_request_003_class_name }}:
+        """
+        - Params: flo.params 005 joins the union; a 004 is lifted to 005
+        """
+        data = self.model_dump()
+        params = self.params
+        if getattr(params, "version", None) == "004":
+            data["params"] = params.upgrade().model_dump()
+        data["version"] = "003"
+        return {{ flo_rerun_request_003_class_name }}.model_validate(data)
