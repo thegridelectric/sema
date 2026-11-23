@@ -37,3 +37,8 @@ examples:
     }
 x-gridworks:
   owner: "gridworks-energy"
+  axioms:
+    - number: 1
+      name: "NonPositiveLiftCoefficient"
+      statement: >
+        LwtMinusOatCoeff SHALL be at most zero.

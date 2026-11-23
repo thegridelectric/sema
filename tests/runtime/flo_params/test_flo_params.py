@@ -22,7 +22,7 @@ PATH = example("flo.optimal.path", "000")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.params", "005") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("flo.params", "005") == {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
 
 
 def test_example_round_trips_with_bruce_tuning() -> None:
@@ -155,3 +155,10 @@ def test_a_004_request_takes_the_lift_based_cop_model() -> None:
     assert not hasattr(upgraded, "cop_oat_coeff")
     assert not hasattr(upgraded, "cop_min")
     assert not hasattr(upgraded, "cop_min_oat_f")
+
+
+def test_a_positive_cop_lift_coefficient_is_refused() -> None:
+    def mutate(p: dict) -> None:
+        p["CopLwtMinusOatCoeff"] = 0.01
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 6)

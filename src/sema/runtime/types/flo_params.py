@@ -128,3 +128,17 @@ class FloParams(SemaType):
                 "PreviousEstimateElecUsdMwhNow must be both present or both absent."
             )
         return self
+
+    @model_validator(mode="after")
+    def check_axiom_6(self) -> Self:
+        """
+        Axiom 6: NonPositiveCopLiftCoefficient
+        CopLwtMinusOatCoeff SHALL be at most zero.
+        """
+        if self.cop_lwt_minus_oat_coeff > 0:
+            raise ValueError(
+                "Axiom 6 (NonPositiveCopLiftCoefficient) failed: "
+                f"CopLwtMinusOatCoeff must be at most zero, got "
+                f"{self.cop_lwt_minus_oat_coeff}."
+            )
+        return self

@@ -278,3 +278,7 @@ x-gridworks:
       statement: >
         PreviousOptimalPath and PreviousEstimateElecUsdMwhNow SHALL be
         both present or both absent.
+    - number: 6
+      name: "NonPositiveCopLiftCoefficient"
+      statement: >
+        CopLwtMinusOatCoeff SHALL be at most zero.
