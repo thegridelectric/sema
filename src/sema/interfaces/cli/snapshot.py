@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 import yaml
@@ -33,6 +34,10 @@ from sema.tools.build_seed_expanded import expand_seed
 from sema.tools.runtime_generation.generate_runtime import generate_runtime_from_dag
 from sema.tools.runtime_generation.helpers import render_local_names_yaml
 from sema.tools.snapshot_lint import lint_generated_tree
+
+_CHECK_STAGING_SOURCE = (
+    Path(__file__).resolve().parents[2] / "tools" / "snapshot_check_staging.py"
+)
 
 # Files and directories the runtime generator owns inside a snapshot. Cleared
 # and rewritten on every build; the prepared `definitions/` and `indexes/` are
@@ -85,7 +90,9 @@ SNAPSHOT_README = """\
 This directory is a **vendored Sema snapshot**: a self-contained, generated
 subset of the Sema vocabulary. **Never hand-edit it.** To change it, edit the
 seed (`../sema_seed_request.yaml`) or the definitions in the sema repo, then
-re-run the repo's `scripts/regen_sema_snapshot.sh`.
+re-run `uv run sema snapshot regen <seed>` in the sema repo. `check_staging.py`
+here is the consumer's CI check: it fails when this snapshot holds a staging
+word the seed does not allow, or when the seed changed since the build.
 
 ## What Sema is
 
@@ -122,9 +129,54 @@ Staging words in this snapshot:
 
 {words}
 
-When these words promote to published, rebuild without `--allow-staged` to
-get a publication-grade snapshot (and this section disappears).
+The seed's `staging.allow` list names the words whose staging versions this
+snapshot may hold. When a word promotes to published, drop it from the list
+and regenerate; the section disappears when the list is empty.
 """
+
+
+@dataclass(frozen=True)
+class SeedPolicy:
+    """What the seed request declares beyond its targets: the staging words
+    the snapshot may hold, and where ``regen`` puts the result."""
+
+    staging_allow: frozenset[str]
+    package_name: str | None
+    vendor_dir: Path | None
+
+
+def seed_policy(seed_request_data: dict, seed_request_path: Path) -> SeedPolicy:
+    """Read and validate the seed's ``staging``, ``package_name`` and
+    ``vendor_dir`` entries. ``staging`` absent means refuse; ``vendor_dir``
+    is relative to the seed file."""
+    staging = seed_request_data.get("staging")
+    allow: frozenset[str] = frozenset()
+    if staging is not None:
+        if not isinstance(staging, dict) or set(staging) != {"allow"}:
+            raise ValueError(
+                "seed `staging` must be a mapping with the single key `allow`"
+            )
+        words = staging["allow"]
+        if not isinstance(words, list) or not all(
+            isinstance(w, str) and w for w in words
+        ):
+            raise ValueError("seed `staging.allow` must be a list of word names")
+        for word in words:
+            if ":" in word:
+                raise ValueError(
+                    f"seed `staging.allow` names words, not versions: {word}"
+                )
+        allow = frozenset(words)
+    package_name = seed_request_data.get("package_name")
+    if package_name is not None and not isinstance(package_name, str):
+        raise ValueError("seed `package_name` must be a string")
+    vendor_dir_raw = seed_request_data.get("vendor_dir")
+    vendor_dir: Path | None = None
+    if vendor_dir_raw is not None:
+        if not isinstance(vendor_dir_raw, str):
+            raise ValueError("seed `vendor_dir` must be a path string")
+        vendor_dir = (seed_request_path.parent / vendor_dir_raw).resolve()
+    return SeedPolicy(allow, package_name, vendor_dir)
 
 
 def _collect_staging_words(seed: dict, public_registry: dict) -> list[str]:
@@ -159,32 +211,51 @@ def _collect_staging_words(seed: dict, public_registry: dict) -> list[str]:
     return sorted(staging)
 
 
+def _word_name(staging_word: str) -> str:
+    """``type flo.params:004`` -> ``flo.params``."""
+    return staging_word.split(" ", 1)[1].split(":", 1)[0]
+
+
 def _validate_staging_closure(
-    seed: dict, public_registry: dict, *, allow_staged: bool
+    seed: dict, public_registry: dict, *, staging_allow: frozenset[str]
 ) -> list[str]:
-    """Published-only is the default: a staging closure refuses the
-    prepare — BEFORE ``output/`` is touched, so a refusal leaves the
-    previous snapshot intact. Returns the staging words for the marker
-    write."""
+    """The seed decides: a staging word in the closure that the seed's
+    ``staging.allow`` does not name refuses the prepare — BEFORE ``output/``
+    is touched, so a refusal leaves the previous snapshot intact. Returns
+    the staging words for the marker write."""
     staging = _collect_staging_words(seed, public_registry)
-    if staging and not allow_staged:
+    disallowed = [w for w in staging if _word_name(w) not in staging_allow]
+    if disallowed:
         raise ValueError(
-            "Snapshot closure contains STAGING words (published-only is the "
-            "default; pass --allow-staged to build a dev-only snapshot):\n  "
-            + "\n  ".join(staging)
+            "Snapshot closure contains STAGING words the seed does not allow "
+            "(name each under `staging.allow` in the seed to build a dev-only "
+            "snapshot):\n  " + "\n  ".join(disallowed)
         )
     return staging
 
 
-def _write_snapshot_readme(target_root: Path, staging: list[str]) -> None:
+def _write_snapshot_readme(
+    target_root: Path, staging: list[str], *, staging_allow: frozenset[str]
+) -> None:
     """Every snapshot gets a README naming what the tree is (generated, never
-    hand-edit), what Sema is, and the working rules. A staged snapshot is
-    additionally marked twice — machine-readably (``indexes/staging.yaml``)
-    and with a warning section at the top of the README."""
+    hand-edit), what Sema is, and the working rules, and ships
+    ``check_staging.py`` for the consumer's CI. A staged snapshot is
+    additionally marked twice — machine-readably (``indexes/staging.yaml``,
+    listing the words held and the words the seed allowed) and with a
+    warning section at the top of the README."""
+    shutil.copyfile(_CHECK_STAGING_SOURCE, target_root / "check_staging.py")
     staging_section = ""
     if staging:
         with (target_root / "indexes" / "staging.yaml").open("w") as handle:
-            yaml.safe_dump({"staging": True, "staging_words": staging}, handle)
+            yaml.safe_dump(
+                {
+                    "staging": True,
+                    "staging_words": staging,
+                    "staging_allow": sorted(staging_allow),
+                },
+                handle,
+                sort_keys=False,
+            )
         staging_section = STAGING_SECTION.format(
             words="\n".join(f"- {word}" for word in staging)
         )
@@ -242,7 +313,7 @@ def _reject_drafts_in_seed_request(seed_request: dict, public_registry: dict) ->
         )
 
 
-def prepare_snapshot(seed_request: Path, *, allow_staged: bool = False) -> Path:
+def prepare_snapshot(seed_request: Path) -> Path:
     # Compute the public registry in memory. This validates:
     #   - status placement (word-level only on versionless / literal /
     #     formats; otherwise version-level)
@@ -268,17 +339,25 @@ def prepare_snapshot(seed_request: Path, *, allow_staged: bool = False) -> Path:
     with seed_request_path.open() as handle:
         seed_request_data = yaml.safe_load(handle)
     _reject_drafts_in_seed_request(seed_request_data, public_registry)
+    policy = seed_policy(seed_request_data, seed_request_path)
 
     # Expand and validate BEFORE touching output/: a refused prepare must
     # leave the previous snapshot intact — a cleared-then-refused output/
     # silently guts whatever a consumer mirrors next (rsync --delete).
     with tempfile.TemporaryDirectory() as tmp_dir:
         expanded_tmp = Path(tmp_dir) / "seed_expanded.yaml"
-        expand_seed(seed_request_path, expanded_tmp, published_only=not allow_staged)
+        passed_over = expand_seed(
+            seed_request_path,
+            expanded_tmp,
+            published_only=True,
+            staging_allow=policy.staging_allow,
+        )
         seed = load_seed(expanded_tmp)
         staging = _validate_staging_closure(
-            seed, public_registry, allow_staged=allow_staged
+            seed, public_registry, staging_allow=policy.staging_allow
         )
+        for word in passed_over:
+            print(f"passed over staging version {word} (seed does not allow it)")
 
         ensure_clean_dir(OUTPUT_DIR)
         target_root = snapshot_root()
@@ -293,7 +372,7 @@ def prepare_snapshot(seed_request: Path, *, allow_staged: bool = False) -> Path:
     # was kept, so the request that built a snapshot had to be reconstructed.)
     shutil.copyfile(seed_request_path, indexes_root / "seed_request.yaml")
 
-    _write_snapshot_readme(target_root, staging)
+    _write_snapshot_readme(target_root, staging, staging_allow=policy.staging_allow)
 
     registry = load_registry()
     copy_seed_definitions(target_root, seed)
@@ -442,12 +521,40 @@ def build_snapshot_runtime(package_name: str, *, strict_lint: bool = False) -> P
 
 def _run_prepare(args: argparse.Namespace) -> None:
     _ensure_clean_checkout()
-    target_root = prepare_snapshot(
-        Path(args.seed_request), allow_staged=args.allow_staged
-    )
+    target_root = prepare_snapshot(Path(args.seed_request))
     print(f"Prepared snapshot at {target_root}")
     print(f"Expanded seed: {target_root / 'indexes' / 'seed_expanded.yaml'}")
     print(f"Local names: {target_root / 'indexes' / 'local_names.yaml'}")
+
+
+def regen_snapshot(seed_request: Path, *, strict_lint: bool = False) -> Path:
+    """prepare, build and mirror into the consumer, driven by the seed alone:
+    ``package_name`` names the generated package and ``vendor_dir`` (relative
+    to the seed) is replaced wholesale with the new snapshot. Returns the
+    vendor dir."""
+    seed_request_path = seed_request.resolve()
+    with seed_request_path.open() as handle:
+        policy = seed_policy(yaml.safe_load(handle), seed_request_path)
+    if policy.package_name is None or policy.vendor_dir is None:
+        raise ValueError(
+            "regen needs `package_name` and `vendor_dir` in the seed request"
+        )
+    prepare_snapshot(seed_request_path)
+    target_root = build_snapshot_runtime(policy.package_name, strict_lint=strict_lint)
+    vendor_dir = policy.vendor_dir
+    if vendor_dir.exists():
+        shutil.rmtree(vendor_dir)
+    shutil.copytree(
+        target_root, vendor_dir, ignore=shutil.ignore_patterns("__pycache__")
+    )
+    return vendor_dir
+
+
+def _run_regen(args: argparse.Namespace) -> None:
+    _ensure_clean_checkout()
+    vendor_dir = regen_snapshot(Path(args.seed_request), strict_lint=args.strict_lint)
+    print(f"Mirrored snapshot into {vendor_dir}")
+    print("Review the diff in the consumer and run its tests.")
 
 
 def _run_build(args: argparse.Namespace) -> None:
@@ -483,15 +590,6 @@ def add_parser(subparsers: argparse._SubParsersAction) -> None:
         ),
     )
     prepare_parser.add_argument("seed_request")
-    prepare_parser.add_argument(
-        "--allow-staged",
-        action="store_true",
-        help=(
-            "Permit STAGING words in the closure (default: published-only). "
-            "The result is a dev-only snapshot, marked in indexes/staging.yaml "
-            "and by a README banner."
-        ),
-    )
     prepare_parser.set_defaults(handler=_run_prepare)
 
     build_parser = snapshot_subparsers.add_parser(
@@ -513,3 +611,21 @@ def add_parser(subparsers: argparse._SubParsersAction) -> None:
         ),
     )
     build_parser.set_defaults(handler=_run_build)
+
+    regen_parser = snapshot_subparsers.add_parser(
+        "regen",
+        help="prepare + build + mirror into the consumer, from the seed alone.",
+        description=(
+            "Read the seed request's `package_name` and `vendor_dir`, run "
+            "prepare and build, and replace the consumer's vendored snapshot "
+            "with the result. The seed's `staging.allow` list is the only "
+            "staging policy; there is no flag."
+        ),
+    )
+    regen_parser.add_argument("seed_request")
+    regen_parser.add_argument(
+        "--strict-lint",
+        action="store_true",
+        help="Treat ruff check / mypy findings on generated code as build failures.",
+    )
+    regen_parser.set_defaults(handler=_run_regen)

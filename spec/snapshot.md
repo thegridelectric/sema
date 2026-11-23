@@ -27,14 +27,18 @@ to the word's published versions and a bare target to its latest
 published version; staging versions are passed over, so a published-only
 seed needs no edit when a word stages a new version. That pass-over
 SHALL NOT drop a word the seed names: if the word has no published
-version, the build fails and names it. A staging version
-listed explicitly, and any staging word the closure reaches, fails the
-build, which lists the staging offenders. An explicit opt-in (`--allow-staged` in the reference
-implementation) permits staging words — never drafts — and the resulting
-snapshot SHALL be marked as a staging snapshot, both machine-readably (a
-marker in the snapshot indexes) and for humans (a README stating the
-snapshot is for dev use only). A staging snapshot SHALL only run against
-dev brokers.
+version, the build fails and names it. The seed request declares
+the snapshot's staging policy. With no `staging` block the snapshot refuses
+staging: a staging version listed explicitly, and any staging word the
+closure reaches, fails the build, which names the staging offenders. A
+`staging.allow` list names the words, by word and not by version, whose
+staging versions the snapshot may hold; a staging word outside the list
+fails the build the same way. The build SHALL report each version it
+passed over. A snapshot that holds a staging word SHALL be marked as a
+staging snapshot, both machine-readably (a marker in the snapshot indexes
+that lists the words held and the words allowed) and for humans (a README
+stating the snapshot is for dev use only). A staging snapshot SHALL only
+run against dev brokers.
 
 ## Determinism (zero-diff regen)
 
@@ -129,3 +133,8 @@ checks over `samples/` in the **consumer's** environment — useful because the
 build-time gate runs in the producer's environment. It is data-plus-loader, not
 a vendored test suite. If a consumer never runs it, the build-time gate remains
 the floor.
+
+A snapshot SHALL ship a check, runnable from the vendored tree alone, that
+fails when the snapshot holds a staging word its seed does not allow or when
+the vendored copy of the seed differs from the consumer's committed seed; a
+consumer's CI runs it.

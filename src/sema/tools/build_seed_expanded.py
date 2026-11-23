@@ -105,6 +105,18 @@ def available_versions(
     return sorted(versions, key=int)
 
 
+def staging_versions(category: str, name: str, registry: dict) -> list[str]:
+    """The staging versions of a versioned word, oldest first; empty for a
+    versionless type or literal enum."""
+    entry = registry[category][name]
+    if category == "types" and entry.get("versioning_strategy") == "none":
+        return []
+    if category == "enums" and entry["enum_type"] == "literal":
+        return []
+    versions = entry.get("versions", {})
+    return sorted((v for v, e in versions.items() if e["status"] == "staging"), key=int)
+
+
 def latest_version(
     category: str, name: str, registry: dict, *, published_only: bool = False
 ) -> str | None:
@@ -147,8 +159,8 @@ def _refused_empty_selection(
     return (
         f"{kind} {name} is named in the seed but has no published version "
         f"(staging: {staging_list}). A published-only snapshot will not skip "
-        f"a word the seed names. Pass --allow-staged to build a dev-only "
-        f"snapshot, or publish the word."
+        f"a word the seed names. Name it under `staging.allow` in the seed to "
+        f"build a dev-only snapshot, or publish the word."
     )
 
 
@@ -159,7 +171,10 @@ def select_initial_versions(
     registry: dict,
     *,
     published_only: bool = False,
-) -> list[str | None]:
+) -> tuple[list[str | None], list[str]]:
+    """The versions a seed target selects, and the staging versions a
+    published-only selection passed over (``name:version``), so the build
+    can report them."""
     if not isinstance(options, dict):
         raise ValueError(f"initial_targets.{category}.{name} must be a mapping.")
 
@@ -196,10 +211,19 @@ def select_initial_versions(
                 )
             )
         if not options:
-            return [
+            selected = [
                 latest_version(category, name, registry, published_only=published_only)
             ]
-        return selected
+        passed_over = (
+            [
+                f"{name}:{version}"
+                for version in staging_versions(category, name, registry)
+                if version not in selected
+            ]
+            if published_only
+            else []
+        )
+        return selected, passed_over
 
     versions = options["versions"]
     if not isinstance(versions, list) or not versions:
@@ -216,12 +240,20 @@ def select_initial_versions(
             raise ValueError(f"Unknown {category[:-1]} target: {name}:{version}")
         if version not in selected:
             selected.append(version)
-    return selected
+    return selected, []
 
 
 def iter_initial_targets(
-    initial_targets: object, registry: dict, *, published_only: bool = False
-) -> list[tuple[str, str, str | None]]:
+    initial_targets: object,
+    registry: dict,
+    *,
+    published_only: bool = False,
+    staging_allow: frozenset[str] = frozenset(),
+) -> tuple[list[tuple[str, str, str | None]], list[str]]:
+    """The seed's initial targets as (category, name, version), and the
+    staging versions passed over. A word in ``staging_allow`` selects its
+    staging versions too; every other word selects published-only when
+    ``published_only`` is set."""
     if not isinstance(initial_targets, dict) or not initial_targets:
         raise ValueError(
             "seed request must contain a non-empty initial_targets mapping."
@@ -235,6 +267,7 @@ def iter_initial_targets(
         )
 
     targets: list[tuple[str, str, str | None]] = []
+    passed_over: list[str] = []
     for category in ("types", "enums"):
         section = initial_targets.get(category, {})
         if section is None:
@@ -244,16 +277,22 @@ def iter_initial_targets(
         for name, options in section.items():
             if not isinstance(name, str):
                 raise ValueError(f"initial_targets.{category} names must be strings.")
-            for version in select_initial_versions(
-                category, name, options, registry, published_only=published_only
-            ):
+            selected, skipped = select_initial_versions(
+                category,
+                name,
+                options,
+                registry,
+                published_only=published_only and name not in staging_allow,
+            )
+            for version in selected:
                 targets.append((category, name, version))
+            passed_over.extend(skipped)
 
     if not targets:
         raise ValueError(
             "seed request initial_targets must include at least one type or enum."
         )
-    return targets
+    return targets, passed_over
 
 
 def resolve_output_name(name: str) -> Path:
@@ -265,21 +304,30 @@ def resolve_output_name(name: str) -> Path:
 
 
 def expand_seed(
-    seed_request_path: Path, output_path: Path, *, published_only: bool = False
-) -> None:
+    seed_request_path: Path,
+    output_path: Path,
+    *,
+    published_only: bool = False,
+    staging_allow: frozenset[str] = frozenset(),
+) -> list[str]:
     """Expand a seed request into the worklist. With ``published_only`` a
     bare target means the latest published version and
     ``include_all_versions`` the published versions, so a published-only
     seed needs no edit when a word stages a new version. A word the seed
-    names that has no published version is refused rather than omitted."""
+    names that has no published version is refused rather than omitted. A
+    word in ``staging_allow`` keeps its staging versions. Returns the
+    staging versions passed over, as ``name:version``."""
     registry = load_yaml(REGISTRY_PATH)
     lookup = load_yaml(LOOKUP_PATH)
     closure = load_yaml(CLOSURE_PATH)
     request = load_yaml(seed_request_path)
 
     initial_targets = request.get("initial_targets")
-    requested_targets = iter_initial_targets(
-        initial_targets, registry, published_only=published_only
+    requested_targets, passed_over = iter_initial_targets(
+        initial_targets,
+        registry,
+        published_only=published_only,
+        staging_allow=staging_allow,
     )
 
     formats: set[str] = set()
@@ -408,6 +456,7 @@ def expand_seed(
         yaml.dump(output, handle, sort_keys=False, default_flow_style=False)
 
     print(f"Wrote expanded seed to {output_path}")
+    return passed_over
 
 
 def parse_args() -> argparse.Namespace:

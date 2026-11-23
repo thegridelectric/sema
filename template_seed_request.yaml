@@ -13,6 +13,15 @@
 #   versions: ["001", "003"]   Include explicit versions. For types, seed
 #                              expansion also fills in intermediate versions.
 # A published-only build fails if a named word has no published version.
+#
+# The seed also declares the snapshot's staging policy and where it lives:
+#   staging:                   Absent means refuse: any staging word the closure
+#     allow: [gw.hydronic]     reaches fails the build, named. `allow` lists the
+#                              words (never versions) whose staging versions the
+#                              snapshot may hold; it must cover the closure.
+#   package_name: gjk          The generated package name, for `regen`.
+#   vendor_dir: ./sema         Where `sema snapshot regen <seed>` mirrors the
+#                              snapshot, relative to this file.
 
 initial_targets:
   types:

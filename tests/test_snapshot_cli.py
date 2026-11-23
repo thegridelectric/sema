@@ -1,3 +1,5 @@
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -24,6 +26,49 @@ def staging_seed(tmp_path: Path) -> tuple[Path, str]:
                 )
                 return seed, f"type {name}:{version}"
     pytest.skip("no staging type version in the registry")
+
+
+def staging_closure_names(word: str) -> list[str]:
+    """The names of ``word`` and every staging word in its dependency
+    closure: what a seed's ``staging.allow`` must list to hold it."""
+    name, _, version = word.split(" ", 1)[1].partition(":")
+    registry = yaml.safe_load((ROOT / "definitions" / "registry.yaml").read_text())
+    closure = yaml.safe_load((ROOT / "indexes" / "dependency_closure.yaml").read_text())
+
+    def flatten(node: object) -> set[str]:
+        if isinstance(node, list):
+            return set(node)
+        if isinstance(node, dict):
+            return set().union(*(flatten(v) for v in node.values()))
+        return set()
+
+    def status(ref: str) -> str:
+        ref_name, _, ref_version = ref.partition(":")
+        for section in ("types", "enums", "formats"):
+            entry = registry[section].get(ref_name)
+            if entry is None:
+                continue
+            if "versions" in entry and ref_version:
+                return entry["versions"][ref_version]["status"]
+            return entry["status"]
+        raise KeyError(ref)
+
+    deps = flatten(closure["types"][name][version])
+    names = {name} | {d.partition(":")[0] for d in deps if status(d) == "staging"}
+    return sorted(names)
+
+
+def allowing_seed(tmp_path: Path, word: str, allow: list[str]) -> Path:
+    """``staging_seed``'s seed with a ``staging.allow`` block."""
+    name, _, version = word.split(" ", 1)[1].partition(":")
+    seed = tmp_path / "allowing_seed_request.yaml"
+    allow_lines = "".join(f"    - {w}\n" for w in allow)
+    seed.write_text(
+        f"initial_targets:\n  types:\n    {name}:\n"
+        f'      versions: ["{version}"]\n'
+        f"staging:\n  allow:\n{allow_lines}"
+    )
+    return seed
 
 
 def test_snapshot_prepare_rejects_staging_by_default(
@@ -92,8 +137,9 @@ def test_refused_prepare_leaves_previous_output_intact(
     # output/ silently guts whatever a consumer mirrors next (rsync --delete).
     output_root = tmp_path / "output"
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", output_root)
-    seed, _ = staging_seed(tmp_path)
-    target_root = snapshot.prepare_snapshot(seed, allow_staged=True)
+    seed, word = staging_seed(tmp_path)
+    allowing = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(allowing)
     before = sorted(p.relative_to(target_root) for p in target_root.rglob("*"))
     assert before
 
@@ -104,18 +150,118 @@ def test_refused_prepare_leaves_previous_output_intact(
     assert after == before
 
 
-def test_staging_closure_with_allow_staged_writes_the_dev_only_markers(
-    monkeypatch, tmp_path: Path
-) -> None:
-    # staging closure + --allow-staged => the dev-only markers, both machine
-    # (indexes/staging.yaml) and human (README banner naming the word)
+def test_seed_allow_writes_the_dev_only_markers(monkeypatch, tmp_path: Path) -> None:
+    # A seed whose staging.allow names the closure's staging words builds,
+    # with the dev-only markers: indexes/staging.yaml listing the words held
+    # and the words allowed, and the README banner naming the word.
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
-    seed, word = staging_seed(tmp_path)
-    target_root = snapshot.prepare_snapshot(seed, allow_staged=True)
-    assert (target_root / "indexes" / "staging.yaml").exists()
+    _, word = staging_seed(tmp_path)
+    allow = staging_closure_names(word)
+    target_root = snapshot.prepare_snapshot(allowing_seed(tmp_path, word, allow))
+    marker = yaml.safe_load((target_root / "indexes" / "staging.yaml").read_text())
+    assert marker["staging"] is True
+    assert word in marker["staging_words"]
+    assert marker["staging_allow"] == allow
     readme = (target_root / "README.md").read_text()
     assert "PLEASE ONLY USE IN DEV" in readme
     assert word in readme
+    assert (target_root / "check_staging.py").exists()
+
+
+def test_seed_allow_must_cover_the_closure(monkeypatch, tmp_path: Path) -> None:
+    # Allowing the root alone is not enough when its closure reaches another
+    # staging word: the refusal names that word, not the root.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    name = word.split(" ", 1)[1].partition(":")[0]
+    allow = staging_closure_names(word)
+    if allow == [name]:
+        pytest.skip("the staging word's closure reaches no other staging word")
+    with pytest.raises(ValueError, match="does not allow") as excinfo:
+        snapshot.prepare_snapshot(allowing_seed(tmp_path, word, [name]))
+    message = str(excinfo.value)
+    assert word not in message
+    assert any(other in message for other in allow if other != name)
+    assert not (tmp_path / "output").exists()
+
+
+def test_seed_allow_names_words_not_versions(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    versioned = word.split(" ", 1)[1]
+    with pytest.raises(ValueError, match="names words, not versions"):
+        snapshot.prepare_snapshot(allowing_seed(tmp_path, word, [versioned]))
+
+
+def test_published_only_prepare_reports_passed_over_versions(
+    monkeypatch, tmp_path: Path, capsys
+) -> None:
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    seed = tmp_path / "seed_request.yaml"
+    seed.write_text(
+        "initial_targets:\n  types:\n    pico.tank.module.component.gt:\n"
+        "      include_all_versions: true\n"
+    )
+    snapshot.prepare_snapshot(seed)
+    out = capsys.readouterr().out
+    assert "passed over staging version pico.tank.module.component.gt:012" in out
+
+
+def run_check(snapshot_root: Path, committed_seed: Path) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [
+            sys.executable,
+            "-I",
+            str(snapshot_root / "check_staging.py"),
+            str(committed_seed),
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+
+def test_shipped_check_passes_a_snapshot_its_seed_allows(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    result = run_check(target_root, seed)
+    assert result.returncode == 0, result.stderr
+    assert "allowed staging words" in result.stdout
+
+
+def test_shipped_check_fails_when_the_committed_seed_changed(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    seed.write_text(seed.read_text() + "# edited after the build\n")
+    result = run_check(target_root, seed)
+    assert result.returncode == 1
+    assert "differs from the seed the snapshot was built from" in result.stderr
+
+
+def test_shipped_check_fails_on_staging_the_seed_does_not_allow(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # The vendored marker and the vendored seed disagree only when a snapshot
+    # was built some other way than prepare; the check still catches it.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    marker = target_root / "indexes" / "staging.yaml"
+    marker.write_text(
+        marker.read_text().replace("staging_allow:", "staging_allow: []\nx_:")
+    )
+    result = run_check(target_root, seed)
+    assert result.returncode == 1
+    assert "does not allow" in result.stderr
+    assert word in result.stderr
 
 
 def test_snapshot_prepare_and_build_write_sema_at_output_root(
@@ -124,9 +270,7 @@ def test_snapshot_prepare_and_build_write_sema_at_output_root(
     output_root = tmp_path / "output"
     monkeypatch.setattr(snapshot, "OUTPUT_DIR", output_root)
 
-    target_root = snapshot.prepare_snapshot(
-        ROOT / "template_seed_request.yaml", allow_staged=True
-    )
+    target_root = snapshot.prepare_snapshot(ROOT / "template_seed_request.yaml")
 
     assert target_root == output_root / "sema"
     assert not (output_root / "gjk").exists()
@@ -147,12 +291,7 @@ def test_snapshot_prepare_and_build_write_sema_at_output_root(
         )
     )
 
-    assert (
-        snapshot.prepare_snapshot(
-            ROOT / "template_seed_request.yaml", allow_staged=True
-        )
-        == target_root
-    )
+    assert snapshot.prepare_snapshot(ROOT / "template_seed_request.yaml") == target_root
     assert not stale_file.exists()
     assert "lite.layout" not in local_names.read_text()
     local_names.write_text(
