@@ -1,7 +1,9 @@
 from typing import Literal, Self
 from pydantic import StrictFloat, model_validator
 from sema.runtime.base import SemaType
-from sema.runtime.types.flo_path_penalties_bruce import FloPathPenaltiesBruce
+from sema.runtime.types.old_versions.flo_path_penalties_bruce_001 import (
+    FloPathPenaltiesBruce001,
+)
 
 
 class FloPathPenaltiesBruce000(SemaType):
@@ -49,11 +51,11 @@ class FloPathPenaltiesBruce000(SemaType):
             )
         return self
 
-    def upgrade(self) -> FloPathPenaltiesBruce:
+    def upgrade(self) -> FloPathPenaltiesBruce001:
         """
         - UnmetLoadPenaltyUsdList: add, assigned zeros
         """
         data = self.model_dump()
         data["unmet_load_penalty_usd_list"] = [0.0] * len(self.rswt_penalty_usd_list)
         data["version"] = "001"
-        return FloPathPenaltiesBruce.model_validate(data)
+        return FloPathPenaltiesBruce001.model_validate(data)

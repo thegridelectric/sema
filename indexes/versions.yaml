@@ -273,9 +273,11 @@ types:
         summary: "StartUnixS, StepDurationMinutes, HpAvgWList (W), StoreWhList (Wh); axiom StepListLengths."
 
   flo.params:
-    latest_version: "003"
+    latest_version: "004"
     versioning_strategy: "literal"
     versions:
+      "004":
+        summary: "- Tuning: flo.tuning.bruce 002 -> 003"
       "003":
         summary: "- Tuning: flo.tuning.bruce 001 -> 002"
       "002":
@@ -341,9 +343,13 @@ types:
         summary: "Earliest wire shape (single shape, seen 2025-01-04 to 2025-01-06), back-filled from S3 evidence. As v001 but without CopMin, CopMinOatF, HpIsOff, HpTurnOnMinutes and the v001-era optional fields (BufferAvailableKwh, HouseAvailableKwh, InitialBottomTempF, DischargingDdDeltaTF)."
 
   flo.path.penalties.bruce:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: >
+          - Experimental: add, an open container for penalty series under tuning
+          - UnmetLoadPenaltyUsdList: move into Experimental
       "001":
         summary: "- UnmetLoadPenaltyUsdList: add, assigned zeros"
       "000":
@@ -357,9 +363,11 @@ types:
         summary: "Path (flo.optimal.path), ClearedPairIndex, ClearedPair with PriceUnit and QuantityUnit, NextSlotPriceX1000, CreatedMs; axiom PathStartsAtTheBid."
 
   flo.recommendation:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: "- PathPenaltiesList: flo.path.penalties.bruce 001 -> 002"
       "002":
         summary: "- PathPenaltiesList: flo.path.penalties.bruce 000 -> 001"
       "001":
@@ -377,9 +385,11 @@ types:
         summary: "BidderAlias and StartUnixS pair the refusal with its request as the recommendation does; Reason (flo.refusal.reason), optional Detail, CreatedMs."
 
   flo.rerun.request:
-    latest_version: "001"
+    latest_version: "002"
     versioning_strategy: "literal"
     versions:
+      "002":
+        summary: "- Params: flo.params 004 joins the union; a 003 is lifted to 004"
       "001":
         summary: "- Params: a flo.params 002 is lifted to 003, its unmet-load penalty off"
       "000":
@@ -400,9 +410,13 @@ types:
         summary: "TypeName and Version only."
 
   flo.tuning.bruce:
-    latest_version: "002"
+    latest_version: "003"
     versioning_strategy: "literal"
     versions:
+      "003":
+        summary: >
+          - Experimental: add, an open container for knobs under tuning
+          - UnmetLoadPenaltyEnabled, UnmetLoadPenaltyWeight: move into Experimental
       "002":
         summary: >
           - UnmetLoadPenaltyEnabled: add, assigned false
@@ -854,7 +868,7 @@ types:
     versioning_strategy: "literal"
     versions:
       "000":
-        summary: "Initial version. ScadaAlias (the applying Scada's identity — stored/emitted instances self-identify; the layout holds the full GNodes) + FamilyParams (oneOf gw.house0.family.params / gw.house0.no.sieg.family.params / gw.nolan.family.params, discriminated by TypeName; the family TypeName pairs the instance with its layout family, so a mismatched pair fails at decode) + CaptureTuningList + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays (the standby machine energizes the listed relays and nothing else; the posture names what the list achieves) + ServiceMode + DispatchHold (gw.dispatch.hold: the operator's hold and the cold latch; one of three authorities over dispatch) + CopCurve + HeatingCurve + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required — no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby implies DispatchHold.OperatorHold. Axiom 4: the posture fixes the relay list (MonitorOnly empty; House0 and House0NoSieg NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 5: Standby holds a House0 loop at full send (SiegLoopStrategy HoldFullSend). FloTuning (oneOf flo.tuning.alice 000 / flo.tuning.bruce 002, discriminated by TypeName): the optimizer this house runs and its knobs; the LTN copies it into each flo.params request. Axiom 6: alice holds dispatch (DispatchHold.OperatorHold true), since alice is the empty tuning of a house with no optimizer. Axiom 7: the tuning admits the family (a FLO models the plant as operated): bruce on a House0 family excludes SiegLoopStrategy LwtControl, since bruce models one heat pump charging one stratified store and a loop that targets its own leaving temperature is not that plant."
+        summary: "Initial version. ScadaAlias (the applying Scada's identity — stored/emitted instances self-identify; the layout holds the full GNodes) + FamilyParams (oneOf gw.house0.family.params / gw.house0.no.sieg.family.params / gw.nolan.family.params, discriminated by TypeName; the family TypeName pairs the instance with its layout family, so a mismatched pair fails at decode) + CaptureTuningList + ZeroTenPowerOnList + Standby x StandbyPosture x EnergizedStandbyRelays (the standby machine energizes the listed relays and nothing else; the posture names what the list achieves) + ServiceMode + DispatchHold (gw.dispatch.hold: the operator's hold and the cold latch; one of three authorities over dispatch) + CopCurve + HeatingCurve + HpTurnOnMinutes + HpMaxKwEl + LoadOverestimationPercent + UsesBackupWhenCold + HorizonHours + WeatherBundleName (the gw.weather.forecast.bundle.gt the LTN relays and the scada pulls) + Tariff (gw.tou.tariff). All required — no assumed defaults. Axioms 1-2: ChannelName unique across CaptureTuningList, NodeName unique across ZeroTenPowerOnList. Axiom 3: Standby implies DispatchHold.OperatorHold. Axiom 4: the posture fixes the relay list (MonitorOnly empty; House0 and House0NoSieg NoHeatingOrCooling = hp-failsafe-relay + aquastat-ctrl-relay; Nolan NoHeatingOrCooling empty). Axiom 5: Standby holds a House0 loop at full send (SiegLoopStrategy HoldFullSend). FloTuning (oneOf flo.tuning.alice 000 / flo.tuning.bruce 003, discriminated by TypeName): the optimizer this house runs and its knobs; the LTN copies it into each flo.params request. Axiom 6: alice holds dispatch (DispatchHold.OperatorHold true), since alice is the empty tuning of a house with no optimizer. Axiom 7: the tuning admits the family (a FLO models the plant as operated): bruce on a House0 family excludes SiegLoopStrategy LwtControl, since bruce models one heat pump charging one stratified store and a loop that targets its own leaving temperature is not that plant."
 
   gw.recorded.setpoints:
     latest_version: "000"

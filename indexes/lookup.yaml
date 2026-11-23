@@ -184,9 +184,10 @@ types:
     versions:
       '000': definitions/types/flo.optimal.path/000.yaml
   flo.params:
-    latest_version: '003'
+    latest_version: '004'
     versioning_strategy: literal
     versions:
+      '004': definitions/types/flo.params/004.yaml
       '003': definitions/types/flo.params/003.yaml
       '002': definitions/types/flo.params/002.yaml
       '001': definitions/types/flo.params/001.yaml
@@ -204,9 +205,10 @@ types:
       '001': definitions/types/flo.params.house0/001.yaml
       '000': definitions/types/flo.params.house0/000.yaml
   flo.path.penalties.bruce:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/flo.path.penalties.bruce/002.yaml
       '001': definitions/types/flo.path.penalties.bruce/001.yaml
       '000': definitions/types/flo.path.penalties.bruce/000.yaml
   flo.previous.run:
@@ -215,9 +217,10 @@ types:
     versions:
       '000': definitions/types/flo.previous.run/000.yaml
   flo.recommendation:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/flo.recommendation/003.yaml
       '002': definitions/types/flo.recommendation/002.yaml
       '001': definitions/types/flo.recommendation/001.yaml
       '000': definitions/types/flo.recommendation/000.yaml
@@ -227,9 +230,10 @@ types:
     versions:
       '000': definitions/types/flo.refusal/000.yaml
   flo.rerun.request:
-    latest_version: '001'
+    latest_version: '002'
     versioning_strategy: literal
     versions:
+      '002': definitions/types/flo.rerun.request/002.yaml
       '001': definitions/types/flo.rerun.request/001.yaml
       '000': definitions/types/flo.rerun.request/000.yaml
   flo.tank.store.path:
@@ -243,9 +247,10 @@ types:
     versions:
       '000': definitions/types/flo.tuning.alice/000.yaml
   flo.tuning.bruce:
-    latest_version: '002'
+    latest_version: '003'
     versioning_strategy: literal
     versions:
+      '003': definitions/types/flo.tuning.bruce/003.yaml
       '002': definitions/types/flo.tuning.bruce/002.yaml
       '001': definitions/types/flo.tuning.bruce/001.yaml
       '000': definitions/types/flo.tuning.bruce/000.yaml

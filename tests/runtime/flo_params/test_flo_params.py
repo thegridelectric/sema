@@ -1,4 +1,4 @@
-"""flo.params 003: one request to a FLO, proved by mutation of the example."""
+"""flo.params 004: one request to a FLO, proved by mutation of the example."""
 
 import pytest
 
@@ -10,16 +10,18 @@ from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.old_versions.flo_params_000 import FloParams000
 from sema.runtime.types.old_versions.flo_params_001 import FloParams001
 from sema.runtime.types.old_versions.flo_params_002 import FloParams002
+from sema.runtime.types.old_versions.flo_params_003 import FloParams003
 from sema.runtime.types.old_versions.flo_tuning_bruce_000 import FloTuningBruce000
 from sema.runtime.types.old_versions.flo_tuning_bruce_001 import FloTuningBruce001
+from sema.runtime.types.old_versions.flo_tuning_bruce_002 import FloTuningBruce002
 from tests.runtime.refusal import assert_refused, axioms, example, mutated
 
-EXAMPLE = example("flo.params", "003")
+EXAMPLE = example("flo.params", "004")
 PATH = example("flo.optimal.path", "000")
 
 
 def test_every_axiom_has_a_mutation() -> None:
-    assert axioms("flo.params", "003") == {1: [], 2: [], 3: [], 4: [], 5: []}
+    assert axioms("flo.params", "004") == {1: [], 2: [], 3: [], 4: [], 5: []}
 
 
 def test_example_round_trips_with_bruce_tuning() -> None:
@@ -102,7 +104,7 @@ def test_a_000_request_upgrades_with_the_layers_it_modeled() -> None:
 def test_a_002_request_upgrades_its_bruce_tuning() -> None:
     old = example("flo.params", "002")
     upgraded = FloParams002.model_validate(old).upgrade()
-    assert isinstance(upgraded.tuning, FloTuningBruce)
+    assert isinstance(upgraded.tuning, FloTuningBruce002)
     assert upgraded.version == "003"
     assert upgraded.tuning.version == "002"
     assert upgraded.tuning.unmet_load_penalty_enabled is False
@@ -127,3 +129,15 @@ def test_a_000_tuning_alone_refuses_to_upgrade() -> None:
     old = example("flo.tuning.bruce", "000")
     with pytest.raises(UpgradeRequiresContext):
         FloTuningBruce000.model_validate(old).upgrade()
+
+
+def test_a_003_request_lifts_its_tuning_to_003() -> None:
+    old = example("flo.params", "003")
+    upgraded = FloParams003.model_validate(old).upgrade()
+    assert isinstance(upgraded.tuning, FloTuningBruce)
+    assert upgraded.version == "004"
+    assert upgraded.tuning.version == "003"
+    assert upgraded.tuning.experimental == {
+        "UnmetLoadPenaltyEnabled": old["Tuning"]["UnmetLoadPenaltyEnabled"],
+        "UnmetLoadPenaltyWeight": old["Tuning"]["UnmetLoadPenaltyWeight"],
+    }

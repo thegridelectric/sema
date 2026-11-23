@@ -1,0 +1,12 @@
+    def upgrade(self) -> {{ flo_tuning_bruce_003_class_name }}:
+        """
+        - Experimental: add, an open container for knobs under tuning
+        - UnmetLoadPenaltyEnabled, UnmetLoadPenaltyWeight: move into Experimental
+        """
+        data = self.model_dump()
+        data["experimental"] = {
+            "UnmetLoadPenaltyEnabled": data.pop("unmet_load_penalty_enabled"),
+            "UnmetLoadPenaltyWeight": data.pop("unmet_load_penalty_weight"),
+        }
+        data["version"] = "003"
+        return {{ flo_tuning_bruce_003_class_name }}.model_validate(data)

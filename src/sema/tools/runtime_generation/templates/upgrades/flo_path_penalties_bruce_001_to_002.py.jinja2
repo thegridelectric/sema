@@ -1,0 +1,9 @@
+    def upgrade(self) -> {{ flo_path_penalties_bruce_002_class_name }}:
+        """
+        - Experimental: add, an open container for penalty series under tuning
+        - UnmetLoadPenaltyUsdList: move into Experimental
+        """
+        data = self.model_dump()
+        data["experimental"] = {"UnmetLoadPenaltyUsdList": data.pop("unmet_load_penalty_usd_list")}
+        data["version"] = "002"
+        return {{ flo_path_penalties_bruce_002_class_name }}.model_validate(data)
