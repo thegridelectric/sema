@@ -2806,6 +2806,11 @@ types:
       formats: []
       types: []
       versionless_types: []
+    '007':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   heartbeat.a:
     '000':
       enums: []

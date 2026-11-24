@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-24T15:20:00Z"
+  last_updated: "2026-11-24T15:40:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -5398,12 +5398,21 @@ types:
             - "uuid4.str"
 
   ha1.params:
-    latest_version: "006"
+    latest_version: "007"
     owner: gridworks-energy
     versioning_strategy: "literal"
     description: "Parameter set used by Spaceheat SCADA and LTN runtime logic for the HA1 heating model."
 
     versions:
+      "007":
+        schema_url: "https://schemas.electricity.works/types/ha1.params/007"
+        created: "2026-11-24T15:40:00Z"
+        status: "staging"
+        summary: >-
+          - COP model is lift-based: CopLwtCoeff -> CopLwtMinusOatCoeff;
+          CopOatCoeff, CopMin, CopMinOatF dropped
+        direct_dependencies:
+          structural: []
       "006":
         schema_url: "https://schemas.electricity.works/types/ha1.params/006"
         created: "2026-02-25T14:23:00Z"

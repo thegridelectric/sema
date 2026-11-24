@@ -1,7 +1,7 @@
 from typing import Literal
 from pydantic import StrictFloat, StrictInt
 from sema.runtime.base import SemaType
-from sema.runtime.types.ha1_params import Ha1Params
+from sema.runtime.types.old_versions.ha1_params_006 import Ha1Params006
 
 
 class Ha1Params005(SemaType):
@@ -26,7 +26,7 @@ class Ha1Params005(SemaType):
     type_name: Literal["ha1.params"] = "ha1.params"
     version: Literal["005"] = "005"
 
-    def upgrade(self) -> Ha1Params:
+    def upgrade(self) -> Ha1Params006:
         """
         HpMaxKwEl replaces HpMaxKwTh, required; the five Cop fields
         required; HpTurnOnMinutes added, required (the shape every scada
@@ -34,7 +34,7 @@ class Ha1Params005(SemaType):
         """
         raise SemaType.upgrade_requires_context(
             "Ha1Params005 cannot be upgraded to "
-            "Ha1Params without context: v006 requires "
+            "Ha1Params006 without context: v006 requires "
             "HpMaxKwEl, which the heat pump's thermal maximum does not give, "
             "and the five Cop fields v005 leaves optional; only the house's "
             "operational params know them, and they SHALL NOT be fabricated."

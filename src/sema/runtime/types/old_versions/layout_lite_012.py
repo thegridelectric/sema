@@ -7,12 +7,12 @@ from sema.runtime.property_format import LeftRightDot
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import UTCMilliseconds
 from sema.runtime.property_format import UUID4Str
-from sema.runtime.types.ha1_params import Ha1Params
 from sema.runtime.types.old_versions.data_channel_gt_002 import DataChannelGt002
 from sema.runtime.types.old_versions.derived_channel_gt_001 import DerivedChannelGt001
 from sema.runtime.types.old_versions.gw1_tank_temp_calibration_map_000 import (
     Gw1TankTempCalibrationMap000,
 )
+from sema.runtime.types.old_versions.ha1_params_006 import Ha1Params006
 from sema.runtime.types.old_versions.i2c_multichannel_dt_relay_component_gt_003 import (
     I2cMultichannelDtRelayComponentGt003,
 )
@@ -49,7 +49,7 @@ class LayoutLite012(SemaType):
         PicoTankModuleComponentGt011 | SimPicoTankModuleComponentGt000
     ]
     flow_module_components: list[PicoFlowModuleComponentGt000]
-    ha1_params: Ha1Params
+    ha1_params: Ha1Params006
     i2c_relay_component: I2cMultichannelDtRelayComponentGt003 | None = None
     t_map: Gw1TankTempCalibrationMap000 | None = None
     type_name: Literal["layout.lite"] = "layout.lite"

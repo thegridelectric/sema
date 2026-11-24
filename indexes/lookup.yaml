@@ -763,9 +763,10 @@ types:
     versions:
       '001': definitions/types/gw108.vdc.relay.component.gt/001.yaml
   ha1.params:
-    latest_version: '006'
+    latest_version: '007'
     versioning_strategy: literal
     versions:
+      '007': definitions/types/ha1.params/007.yaml
       '006': definitions/types/ha1.params/006.yaml
       '005': definitions/types/ha1.params/005.yaml
       '004': definitions/types/ha1.params/004.yaml
