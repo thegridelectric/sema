@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -207,16 +208,27 @@ def test_published_only_prepare_reports_passed_over_versions(
     assert "passed over staging version pico.tank.module.component.gt:012" in out
 
 
-def run_check(snapshot_root: Path, committed_seed: Path) -> subprocess.CompletedProcess:
+def run_check(
+    snapshot_root: Path,
+    committed_seed: Path,
+    *extra: str,
+    github: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess:
+    """Run the shipped check as a consumer's CI does. GitHub Actions' branch
+    variables are cleared so the test's own values, or none, decide."""
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GITHUB_")}
+    env.update(github or {})
     return subprocess.run(
         [
             sys.executable,
             "-I",
             str(snapshot_root / "check_staging.py"),
             str(committed_seed),
+            *extra,
         ],
         capture_output=True,
         text=True,
+        env=env,
     )
 
 
@@ -262,6 +274,53 @@ def test_shipped_check_fails_on_staging_the_seed_does_not_allow(
     assert result.returncode == 1
     assert "does not allow" in result.stderr
     assert word in result.stderr
+
+
+def test_shipped_check_refuses_staging_on_the_deploy_branch(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # The seed allows the word, so the branch-blind check passes; on the
+    # deploy branch (a pull request's target on GitHub Actions) it fails.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    github = {"GITHUB_BASE_REF": "main", "GITHUB_REF_NAME": "42/merge"}
+    assert run_check(target_root, seed, github=github).returncode == 0
+    result = run_check(target_root, seed, "--deploy-branch", "main", github=github)
+    assert result.returncode == 1
+    assert "main is the deploy branch" in result.stderr
+    assert word in result.stderr
+
+
+def test_shipped_check_allows_staging_off_the_deploy_branch(
+    monkeypatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    github = {"GITHUB_REF_NAME": "jm/flo-params-005"}
+    result = run_check(target_root, seed, "--deploy-branch", "main", github=github)
+    assert result.returncode == 0, result.stderr
+
+
+def test_shipped_check_reads_the_deploy_branch_from_the_checkout(
+    monkeypatch, tmp_path: Path
+) -> None:
+    # Off GitHub Actions the branch under test is the committed seed's checkout.
+    monkeypatch.setattr(snapshot, "OUTPUT_DIR", tmp_path / "output")
+    _, word = staging_seed(tmp_path)
+    seed = allowing_seed(tmp_path, word, staging_closure_names(word))
+    target_root = snapshot.prepare_snapshot(seed)
+    git = ["git", "-C", str(seed.parent)]
+    subprocess.run([*git, "init", "-q", "-b", "main"], check=True)
+    result = run_check(target_root, seed, "--deploy-branch", "main")
+    assert result.returncode == 1
+    assert "main is the deploy branch" in result.stderr
+    subprocess.run([*git, "checkout", "-q", "-b", "jm/topic"], check=True)
+    result = run_check(target_root, seed, "--deploy-branch", "main")
+    assert result.returncode == 0, result.stderr
 
 
 def test_snapshot_prepare_and_build_write_sema_at_output_root(
