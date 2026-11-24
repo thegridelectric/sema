@@ -52,7 +52,7 @@ types:
       - g.node.forest:001
       - g.node.forest:002
   cop.curve:
-    '000':
+    '001':
       used_by:
       - gw.operational.params:000
   dac.output.config:

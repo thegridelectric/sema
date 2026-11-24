@@ -1,6 +1,6 @@
 metadata:
   registry_version: "1.0"
-  last_updated: "2026-11-24T11:20:00Z"
+  last_updated: "2026-11-24T15:20:00Z"
   maintainer: "gridworks-energy"
 
 formats:
@@ -4438,13 +4438,13 @@ types:
     versions:
       "000":
         schema_url: "https://schemas.electricity.works/types/gw.operational.params/000"
-        created: "2026-11-23T21:45:00Z"
+        created: "2026-11-24T15:20:00Z"
         status: "staging"
         summary: "Initial version: the operator-set parameters of one house, applied by its scada and copied by its LTN into each flo.params request."
         direct_dependencies:
           structural:
             - "capture.tuning:000"
-            - "cop.curve:000"
+            - "cop.curve:001"
             - "flo.tuning.alice:000"
             - "flo.tuning.bruce:003"
             - "gw.dispatch.hold:000"

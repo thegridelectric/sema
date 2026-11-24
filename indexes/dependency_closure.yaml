@@ -2147,7 +2147,7 @@ types:
       - spaceheat.name
       types:
       - capture.tuning:000
-      - cop.curve:000
+      - cop.curve:001
       - flo.tuning.alice:000
       - flo.tuning.bruce:003
       - gw.dispatch.hold:000
