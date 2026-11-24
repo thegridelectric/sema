@@ -92,9 +92,10 @@ types:
     versions:
       '000': definitions/types/connectivity.edge.gt/000.yaml
   cop.curve:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/cop.curve/001.yaml
       '000': definitions/types/cop.curve/000.yaml
   dac.output.config:
     latest_version: '000'

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-23T21:45:00Z'
+  last_updated: '2026-11-24T00:20:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -1822,16 +1822,25 @@ types:
           - g.node.status:000
           - uuid4.str
   cop.curve:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: 'A heat pump''s coefficient-of-performance model: COP = Intercept
-      + OatCoeff * OatF + LwtCoeff * LwtF, floored at Min below MinOatF.'
+    description: A heat pump's coefficient-of-performance model, as the version states
+      it.
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/cop.curve/001
+        created: '2026-11-24T00:20:00Z'
+        status: staging
+        summary: '- Lift-based model: Intercept + LwtMinusOatCoeff * max(0, LwtF -
+          OatF); OatCoeff, LwtCoeff, Min, MinOatF dropped. A 000 is a different fit
+          and does not upgrade.'
+        direct_dependencies:
+          structural: []
       '000':
         schema_url: https://schemas.electricity.works/types/cop.curve/000
         created: '2026-11-23T21:45:00Z'
-        status: staging
+        status: published
         summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) \u2014\
           \ the COP model migrated out of scada deployment config into operational\
           \ params."

@@ -1,0 +1,13 @@
+    def upgrade(self) -> {{ cop_curve_001_class_name }}:
+        """
+        - Lift-based model: Intercept + LwtMinusOatCoeff * max(0, LwtF - OatF);
+          OatCoeff, LwtCoeff, Min, MinOatF dropped. A 000 is a different fit
+          and does not upgrade.
+        """
+        raise SemaType.upgrade_requires_context(
+            "{{ cop_curve_000_class_name }} cannot be upgraded to "
+            "{{ cop_curve_001_class_name }}: v001 is a regression against the "
+            "lift from outdoor air to leaving water, and its coefficients are "
+            "not derivable from the v000 outdoor-air model; they SHALL NOT be "
+            "fabricated."
+        )

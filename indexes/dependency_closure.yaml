@@ -184,6 +184,11 @@ types:
       formats: []
       types: []
       versionless_types: []
+    '001':
+      enums: []
+      formats: []
+      types: []
+      versionless_types: []
   dac.output.config:
     '000':
       enums:

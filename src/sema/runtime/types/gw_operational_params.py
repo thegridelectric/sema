@@ -11,7 +11,6 @@ from sema.runtime.property_format import PositiveFloat
 from sema.runtime.property_format import PositiveInt
 from sema.runtime.property_format import SpaceheatName
 from sema.runtime.types.capture_tuning import CaptureTuning
-from sema.runtime.types.cop_curve import CopCurve
 from sema.runtime.types.flo_tuning_alice import FloTuningAlice
 from sema.runtime.types.flo_tuning_bruce import FloTuningBruce
 from sema.runtime.types.gw_dispatch_hold import GwDispatchHold
@@ -22,6 +21,7 @@ from sema.runtime.types.gw_house0_no_sieg_family_params import (
 from sema.runtime.types.gw_nolan_family_params import GwNolanFamilyParams
 from sema.runtime.types.gw_tou_tariff import GwTouTariff
 from sema.runtime.types.heating_curve import HeatingCurve
+from sema.runtime.types.old_versions.cop_curve_000 import CopCurve000
 from sema.runtime.types.zero_ten_power_on import ZeroTenPowerOn
 
 
@@ -39,7 +39,7 @@ class GwOperationalParams(SemaType):
     energized_standby_relays: list[SpaceheatName]
     service_mode: Gw1ServiceMode
     dispatch_hold: GwDispatchHold
-    cop_curve: CopCurve
+    cop_curve: CopCurve000
     heating_curve: HeatingCurve
     hp_turn_on_minutes: PositiveInt
     hp_max_kw_el: PositiveFloat

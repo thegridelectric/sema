@@ -122,9 +122,13 @@ types:
         summary: "Initial Sema version"
 
   cop.curve:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: >
+          - Lift-based model: Intercept + LwtMinusOatCoeff * max(0, LwtF
+          - OatF); OatCoeff, LwtCoeff, Min, MinOatF dropped. A 000 is a different fit and does not upgrade.
       "000":
         summary: "Initial version (Intercept, OatCoeff, LwtCoeff, Min, MinOatF) — the COP model migrated out of scada deployment config into operational params."
 
