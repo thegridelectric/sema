@@ -1,0 +1,7 @@
+    def upgrade(self) -> {{ gw_boiler_backup_001_class_name }}:
+        """
+        - FailsafeRelayName becomes optional
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ gw_boiler_backup_001_class_name }}.model_validate(data)

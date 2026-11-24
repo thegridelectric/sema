@@ -413,9 +413,10 @@ types:
       '001': definitions/types/gw.alert/001.yaml
       '000': definitions/types/gw.alert/000.yaml
   gw.boiler.backup:
-    latest_version: '000'
+    latest_version: '001'
     versioning_strategy: literal
     versions:
+      '001': definitions/types/gw.boiler.backup/001.yaml
       '000': definitions/types/gw.boiler.backup/000.yaml
   gw.channel.gap.stats:
     latest_version: '000'

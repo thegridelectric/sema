@@ -5,13 +5,13 @@ from sema.runtime.property_format import SpaceheatName
 
 
 class GwBoilerBackup(SemaType):
-    """Sema: https://schemas.electricity.works/types/gw.boiler.backup/000"""
+    """Sema: https://schemas.electricity.works/types/gw.boiler.backup/001"""
 
     failsafe_relay_name: SpaceheatName | None = None
     aquastat_ctrl_relay_name: SpaceheatName
     in_service: bool
     type_name: Literal["gw.boiler.backup"] = "gw.boiler.backup"
-    version: Literal["000"] = "000"
+    version: Literal["001"] = "001"
 
     @model_validator(mode="after")
     def check_axiom_1(self) -> "GwBoilerBackup":

@@ -663,11 +663,13 @@ types:
         summary: "Initial Sema version. One word for both transitions (State), a Category choosing the Kind enum (axiom 1), House requiring a .ta AboutGNodeAlias (axiom 2), ResolvedMs iff Resolved (axiom 3)."
 
   gw.boiler.backup:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- FailsafeRelayName becomes optional"
       "000":
-        summary: "AquastatCtrlRelayName (spaceheat.name), FailsafeRelayName (spaceheat.name, optional: absent where the heat pump has no aquastat to fall back to; each layout family says whether it is present), InService (boolean). Axiom DistinctRelays where both are present. Carried by gw.hydronic as one kind of the optional Backup."
+        summary: "Initial version."
 
   gw.channel.gap.stats:
     latest_version: "000"

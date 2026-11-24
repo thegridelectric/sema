@@ -3670,7 +3670,7 @@
       "AquastatCtrlRelayName": "aquastat-ctrl-relay",
       "InService": true,
       "TypeName": "gw.boiler.backup",
-      "Version": "000"
+      "Version": "001"
     },
     "PrimaryFlowSource": "Measured",
     "PrimaryPumpOwner": "Scada",

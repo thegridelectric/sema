@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-24T00:20:00Z'
+  last_updated: '2026-11-24T11:20:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3435,22 +3435,26 @@ types:
           - utc.milliseconds
           - uuid4.str
   gw.boiler.backup:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'A boiler held by its aquastat as backup heat: its aquastat-control
       relay, a heat pump failsafe relay where the plant has one, and whether it is
       in service.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/gw.boiler.backup/001
+        created: '2026-11-24T11:10:00Z'
+        status: staging
+        summary: '- FailsafeRelayName becomes optional'
+        direct_dependencies:
+          structural:
+          - spaceheat.name
       '000':
         schema_url: https://schemas.electricity.works/types/gw.boiler.backup/000
         created: '2026-10-06T18:10:00Z'
-        status: staging
-        summary: 'AquastatCtrlRelayName (spaceheat.name), FailsafeRelayName (spaceheat.name,
-          optional: absent where the heat pump has no aquastat to fall back to; each
-          layout family says whether it is present), InService (boolean). Axiom DistinctRelays
-          where both are present. Carried by gw.hydronic as one kind of the optional
-          Backup.'
+        status: published
+        summary: Initial version.
         direct_dependencies:
           structural:
           - spaceheat.name
@@ -3890,7 +3894,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-11-01T15:50:00Z'
+        created: '2026-11-24T11:10:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -3937,7 +3941,7 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
-          - gw.boiler.backup:000
+          - gw.boiler.backup:001
           - gw.element.backup:000
           - gw.zone.emitter.type:000
           - gw0.required.energy.layered:000
@@ -3955,7 +3959,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.no.sieg/000
-        created: '2026-11-01T15:50:00Z'
+        created: '2026-11-24T11:10:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home with no
           Siegenthaler loop (elm, fir, oak): every collection and Hydronic required.
@@ -4010,7 +4014,7 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
-          - gw.boiler.backup:000
+          - gw.boiler.backup:001
           - gw.element.backup:000
           - gw.zone.emitter.type:000
           - gw0.required.energy.layered:000
@@ -4065,7 +4069,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-11-01T15:50:00Z'
+        created: '2026-11-24T11:10:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -4095,7 +4099,7 @@ types:
           and channels; axiom CirculatorDistinctness: no two share a PumpNodeName.'
         direct_dependencies:
           structural:
-          - gw.boiler.backup:000
+          - gw.boiler.backup:001
           - gw.circulator:000
           - gw.element.backup:000
           - gw.primary.flow.source:000
@@ -4114,7 +4118,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.katahdin.layout/000
-        created: '2026-11-09T01:50:00Z'
+        created: '2026-11-24T11:10:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Katahdin home (schematic
           D1116): monobloc heat pump, plate heat exchanger, secondary pump, a water
@@ -4166,7 +4170,7 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
-          - gw.boiler.backup:000
+          - gw.boiler.backup:001
           - gw.element.backup:000
           - gw.zone.emitter.type:000
           - gw1.actor.class:014
@@ -4215,7 +4219,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-11-01T15:50:00Z'
+        created: '2026-11-24T11:10:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType
@@ -4256,7 +4260,7 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
-          - gw.boiler.backup:000
+          - gw.boiler.backup:001
           - gw.element.backup:000
           - gw.zone.emitter.type:000
           - gw1.actor.class:014

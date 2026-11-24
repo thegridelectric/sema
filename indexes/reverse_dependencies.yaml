@@ -278,7 +278,7 @@ types:
       - gw.katahdin.layout:000
       - gw.nolan.layout:000
   gw.boiler.backup:
-    '000':
+    '001':
       used_by:
       - gw.house0.layout:000
       - gw.house0.no.sieg:000
@@ -1993,6 +1993,7 @@ formats:
     - fsm.full.report:001
     - glitch:000
     - gw.boiler.backup:000
+    - gw.boiler.backup:001
     - gw.channel.gap.stats:000
     - gw.channel.jump.stats:000
     - gw.channel.noise.stats:000
