@@ -39,6 +39,8 @@ SEMA_VERSION_PATTERN = re.compile(r"^[0-9]{3}$")
 
 SPACEHEAT_NAME_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 
+UNIVERSE_PATTERN = re.compile(r"^([dh][a-z0-9]*|w)$")
+
 UNIVERSE_RUN_PATTERN = re.compile(r"^[a-z][a-z0-9]*__[1-9][0-9]*$")
 
 UTC_ISO8601_MILLIS_PATTERN = re.compile(
@@ -235,6 +237,19 @@ def is_spaceheat_name(v: str) -> str:
     return v
 
 
+def is_universe(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: Universe must be a string.")
+
+    if not UNIVERSE_PATTERN.fullmatch(v):
+        raise ValueError(
+            f"<{v}>: Fails Universe format: a universe starts with 'd' or 'h', "
+            "or is exactly 'w'."
+        )
+
+    return v
+
+
 def is_universe_run(v: str) -> str:
     if not isinstance(v, str):
         raise ValueError(f"<{v}>: UniverseRun must be a string.")
@@ -409,6 +424,11 @@ SemaVersion = Annotated[
 SpaceheatName = Annotated[
     str,
     BeforeValidator(is_spaceheat_name),
+]
+
+Universe = Annotated[
+    str,
+    BeforeValidator(is_universe),
 ]
 
 UniverseRun = Annotated[

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-24T18:40:00Z'
+  last_updated: '2026-11-25T17:50:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -141,6 +141,13 @@ formats:
     status: published
     description: Single-segment lowercase identifier with optional internal hyphen-separated
       words
+  universe:
+    owner: gridworks-energy
+    schema_url: https://schemas.electricity.works/formats/universe
+    created: '2026-11-25T17:50:00Z'
+    status: published
+    description: A universe token, the first dotted segment of every GNodeAlias in
+      it, constrained to the kinds d, h and exactly w
   universe.run:
     owner: gridworks-energy
     schema_url: https://schemas.electricity.works/formats/universe.run
@@ -7784,12 +7791,24 @@ types:
           - spaceheat.telemetry.name:007
           - uuid4.str
   ta.deed:
-    latest_version: '000'
+    latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
     description: 'A TaValidator''s attestation of a terminal asset: its GNodeId, the
       alias at issue, and the ValidationState every reader consults.'
     versions:
+      '001':
+        schema_url: https://schemas.electricity.works/types/ta.deed/001
+        created: '2026-11-25T17:50:00Z'
+        status: staging
+        summary: '- Axiom 2 (NoRealAssetInDUniverse): a deed whose TaAlias is in a
+          d universe SHALL be UnValidated or ValidatedSimulatedAsset; no field changes'
+        direct_dependencies:
+          structural:
+          - left.right.dot
+          - ta.validation.state:000
+          - utc.seconds
+          - uuid4.str
       '000':
         schema_url: https://schemas.electricity.works/types/ta.deed/000
         created: '2026-09-09T02:05:00Z'

@@ -410,6 +410,29 @@ PositiveFloat = Annotated[
 ]
 """,
     },
+    "universe": {
+        "class_name": "Universe",
+        "pattern": r"^([dh][a-z0-9]*|w)$",
+        "methods": """
+def is_universe(v: str) -> str:
+    if not isinstance(v, str):
+        raise ValueError(f"<{v}>: Universe must be a string.")
+
+    if not UNIVERSE_PATTERN.fullmatch(v):
+        raise ValueError(
+            f"<{v}>: Fails Universe format: a universe starts with 'd' or 'h', "
+            "or is exactly 'w'."
+        )
+
+    return v
+""",
+        "annotated_type": """
+Universe = Annotated[
+    str,
+    BeforeValidator(is_universe),
+]
+""",
+    },
     "universe.run": {
         "class_name": "UniverseRun",
         "pattern": r"^[a-z][a-z0-9]*__[1-9][0-9]*$",

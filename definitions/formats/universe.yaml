@@ -1,0 +1,31 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+$id: "https://schemas.electricity.works/formats/universe"
+
+title: "universe"
+description: |
+  A universe token: the first dotted segment of every GNodeAlias in that
+  universe, and the first segment of its brokers' vhosts. The token's
+  first letter is the universe's kind. "d" is a delete universe: all
+  simulated, its data kept by no one and trusted by no one. "h" is a
+  hybrid universe: real and simulated participants mixed, re-runnable,
+  no real money. "w" is the one production universe, where validation is
+  required and real money moves; it is exactly "w", with no suffix. The
+  token is a namespace, not a GNode.
+
+type: string
+pattern: "^([dh][a-z0-9]*|w)$"
+
+examples:
+  - "d1"
+  - "hw1"
+  - "w"
+
+counterexamples:
+  - "w1"       # the production universe is exactly "w"
+  - "s1"       # no such kind
+  - "d1__1"    # a universe.run, not a universe
+  - "D1"       # uppercase not allowed
+  - "d1.isone" # a GNodeAlias, not its universe segment
+
+x-gridworks:
+  owner: "gridworks-energy"

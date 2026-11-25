@@ -4803,6 +4803,15 @@ types:
       - uuid4.str
       types: []
       versionless_types: []
+    '001':
+      enums:
+      - ta.validation.state:000
+      formats:
+      - left.right.dot
+      - utc.seconds
+      - uuid4.str
+      types: []
+      versionless_types: []
   tank.module.params:
     '110':
       enums: []

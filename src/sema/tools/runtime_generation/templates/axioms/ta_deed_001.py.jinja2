@@ -1,0 +1,35 @@
+    @model_validator(mode="after")
+    def check_axiom_1(self) -> "{{ ta_deed_001_class_name }}":
+        """
+        Axiom 1: SimulatedAssetNeverWorld
+        If ValidationState is ValidatedSimulatedAsset, the first segment of TaAlias SHALL
+        NOT be "w": a simulated asset holds no deed in the world universe.
+        """
+        if (
+            self.validation_state == "ValidatedSimulatedAsset"
+            and self.ta_alias.split(".")[0] == "w"
+        ):
+            raise ValueError(
+                "Axiom 1 (SimulatedAssetNeverWorld) failed: a ValidatedSimulatedAsset "
+                f"deed cannot carry a world-universe alias, got TaAlias {self.ta_alias}."
+            )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_2(self) -> "{{ ta_deed_001_class_name }}":
+        """
+        Axiom 2: NoRealAssetInDUniverse
+        If the first segment of TaAlias begins with "d", ValidationState SHALL be
+        UnValidated or ValidatedSimulatedAsset: a d universe is all simulated and
+        holds no real asset.
+        """
+        if self.ta_alias.split(".")[0].startswith("d") and self.validation_state not in (
+            "UnValidated",
+            "ValidatedSimulatedAsset",
+        ):
+            raise ValueError(
+                "Axiom 2 (NoRealAssetInDUniverse) failed: a d universe holds no real "
+                f"asset, got ValidationState {self.validation_state} on TaAlias "
+                f"{self.ta_alias}."
+            )
+        return self

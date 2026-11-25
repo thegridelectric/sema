@@ -1430,6 +1430,7 @@ enums:
       used_by:
       - gw.house.operating.status:000
       - ta.deed:000
+      - ta.deed:001
   temp.calc.method:
     '000':
       used_by:
@@ -1683,6 +1684,7 @@ formats:
     - synced.readings.bundle:003
     - synth.channel.gt:000
     - ta.deed:000
+    - ta.deed:001
     - ticklist.hall.report:000
     - ticklist.reed.report:000
     - weather.forecast:000
@@ -2261,6 +2263,7 @@ formats:
     - slow.dispatch.contract:000
     - slow.dispatch.contract:001
     - ta.deed:000
+    - ta.deed:001
     - weather.forecast:000
     - weather:000
   uuid4.str:
@@ -2432,6 +2435,7 @@ formats:
     - spaceheat.node.gt:303
     - synth.channel.gt:000
     - ta.deed:000
+    - ta.deed:001
     - weather.forecast:000
     - web.server.component.gt:001
     - zone.circuit.governance.cmd:000

@@ -2031,9 +2031,11 @@ types:
         summary: "Initial Sema version"
 
   ta.deed:
-    latest_version: "000"
+    latest_version: "001"
     versioning_strategy: "literal"
     versions:
+      "001":
+        summary: "- Axiom 2 (NoRealAssetInDUniverse): a deed whose TaAlias is in a d universe SHALL be UnValidated or ValidatedSimulatedAsset; no field changes"
       "000":
         summary: "Initial Sema version"
 

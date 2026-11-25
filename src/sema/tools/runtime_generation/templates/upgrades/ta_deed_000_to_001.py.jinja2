@@ -1,0 +1,9 @@
+    def upgrade(self) -> {{ ta_deed_001_class_name }}:
+        """
+        - Axiom 2 (NoRealAssetInDUniverse): a deed whose TaAlias is in a d
+        universe SHALL be UnValidated or ValidatedSimulatedAsset; no field
+        changes
+        """
+        data = self.model_dump()
+        data["version"] = "001"
+        return {{ ta_deed_001_class_name }}.model_validate(data)
