@@ -27,6 +27,19 @@ ZONES_DAC = {
     "Version": "000",
 }
 
+CT_ADC = {
+    "Name": "Ct",
+    "I2cBus": "DefaultBus",
+    "I2cAddress": 72,
+    "AdcType": "Ads1115",
+    "AdcReferenceVolts": 3.3,
+    "Channels": 4,
+    "MuxName": "DacMux",
+    "MuxChannel": 4,
+    "TypeName": "i2c.ct.interface.capability",
+    "Version": "000",
+}
+
 
 def test_every_axiom_has_a_mutation() -> None:
     assert axioms("gw1.scada.device.type.gt", "000") == {
@@ -80,6 +93,38 @@ def test_axiom_4_c_refuses_dac_bus_unlike_mux_bus() -> None:
         )
         p["Muxes"] = [DAC_MUX]
         p["Dacs"] = [{**ZONES_DAC, "I2cBus": "SecondBus"}]
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="c")
+
+
+def test_ct_adc_behind_mux_is_accepted() -> None:
+    def mutate(p: dict) -> None:
+        p["Muxes"] = [DAC_MUX]
+        p["CtAdc"] = CT_ADC
+
+    default_codec.from_dict(mutated(EXAMPLE, mutate), mode="strict", auto_upgrade=False)
+
+
+def test_axiom_4_a_refuses_ct_adc_mux_not_in_muxes() -> None:
+    def mutate(p: dict) -> None:
+        p["CtAdc"] = {**CT_ADC, "MuxName": "GhostMux"}
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="a")
+
+
+def test_axiom_4_b_refuses_ct_adc_mux_channel_out_of_bounds() -> None:
+    def mutate(p: dict) -> None:
+        p["Muxes"] = [DAC_MUX]
+        p["CtAdc"] = {**CT_ADC, "MuxChannel": 9}
+
+    assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="b")
+
+
+def test_axiom_4_c_refuses_ct_adc_bus_unlike_mux_bus() -> None:
+    def mutate(p: dict) -> None:
+        p["BusList"].append(second_bus("SecondBus", 2))
+        p["Muxes"] = [DAC_MUX]
+        p["CtAdc"] = {**CT_ADC, "I2cBus": "SecondBus"}
 
     assert_refused(default_codec, mutated(EXAMPLE, mutate), 4, clause="c")
 
