@@ -918,6 +918,10 @@ types:
       used_by:
       - gw.operational.params:000
 enums:
+  aquastat.control.state:
+    '000':
+      used_by:
+      - gw.katahdin.layout:000
   base.g.node.class:
     '000':
       used_by:

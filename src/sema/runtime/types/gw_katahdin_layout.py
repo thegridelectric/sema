@@ -1274,7 +1274,7 @@ class GwKatahdinLayout(SemaType):
         Axiom 32: BackupRelays a. Where Hydronic.Backup is a gw.boiler.backup, its
         FailsafeRelayName SHALL be absent: the boiler fires on its own aquastat, and
         with the scada dead the heat pump is off. b. Where Hydronic.Backup is a
-        gw.boiler.backup, its AquastatCtrlRelayName, and where it is a
+        gw.boiler.backup, its InterceptRelayName, and where it is a
         gw.element.backup, each name in its ElementRelayNames, SHALL equal the Name of
         an ShNode in ShNodes whose ActorClass is "Relay".
         """
@@ -1287,7 +1287,7 @@ class GwKatahdinLayout(SemaType):
                     f"Axiom 32 (BackupRelays) clause a failed: a Katahdin boiler backup "
                     f"has no heat pump failsafe relay, got {backup.failsafe_relay_name!r}."
                 )
-            names = [backup.aquastat_ctrl_relay_name]
+            names = [backup.intercept_relay_name]
         else:
             names = list(backup.element_relay_names)
         relays = {
@@ -1414,4 +1414,37 @@ class GwKatahdinLayout(SemaType):
                     f"{valve} EnergizedState is {cfg.energized_state!r}, expected {state!r} "
                     "for this backup kind."
                 )
+        return self
+
+    @model_validator(mode="after")
+    def check_axiom_35(self) -> Self:
+        """
+        Axiom 35: InterceptPassesAtRest Where Hydronic.Backup is a gw.boiler.backup, the
+        relay.control.config whose ActorName equals its InterceptRelayName SHALL have
+        StateType "aquastat.control.state" and DeEnergizedState "Boiler": with the relay
+        at rest the aquastat's signal reaches the boiler.
+        """
+        backup = self.hydronic.backup
+        if backup is None or backup.type_name != "gw.boiler.backup":
+            return self
+        cfg = next(
+            (
+                cfg
+                for c in (self.components or [])
+                if c.type_name in ("i2c.relay.component.gt", "gpio.relay.component.gt")
+                for cfg in c.config_list
+                if cfg.actor_name == backup.intercept_relay_name
+            ),
+            None,
+        )
+        if (
+            cfg is None
+            or str(cfg.state_type) != "aquastat.control.state"
+            or str(cfg.de_energized_state) != "Boiler"
+        ):
+            raise ValueError(
+                "Axiom 35 (InterceptPassesAtRest) failed: "
+                f"{backup.intercept_relay_name} needs a relay.control.config with "
+                "StateType aquastat.control.state and DeEnergizedState Boiler."
+            )
         return self

@@ -1,4 +1,4 @@
-"""gw.boiler.backup: 001 with the optional failsafe, 000 requiring it, their distinctness."""
+"""gw.boiler.backup: 001 with the optional failsafe and the intercept relay, 000 requiring the failsafe, their distinctness."""
 
 import pytest
 from pydantic import ValidationError
@@ -7,12 +7,13 @@ from sema.runtime.types.gw_boiler_backup import GwBoilerBackup
 from sema.runtime.types.old_versions.gw_boiler_backup_000 import GwBoilerBackup000
 
 
-def boiler(
-    failsafe: str, aquastat_ctrl: str, version: str = "001"
-) -> dict[str, object]:
+INTERCEPT_FIELD = {"000": "AquastatCtrlRelayName", "001": "InterceptRelayName"}
+
+
+def boiler(failsafe: str, intercept: str, version: str = "001") -> dict[str, object]:
     return {
         "FailsafeRelayName": failsafe,
-        "AquastatCtrlRelayName": aquastat_ctrl,
+        INTERCEPT_FIELD[version]: intercept,
         "InService": True,
         "TypeName": "gw.boiler.backup",
         "Version": version,
@@ -51,9 +52,10 @@ def test_000_axiom_1_one_relay_for_both_roles() -> None:
         )
 
 
-def test_000_upgrades_to_001_unchanged() -> None:
+def test_000_upgrades_to_001_renaming_the_intercept_relay() -> None:
     b = GwBoilerBackup000.model_validate(
         boiler("hp-failsafe-relay", "aquastat-ctrl-relay", version="000")
     ).upgrade()
     assert isinstance(b, GwBoilerBackup)
     assert b.failsafe_relay_name == "hp-failsafe-relay"
+    assert b.intercept_relay_name == "aquastat-ctrl-relay"

@@ -3,14 +3,14 @@
         """
         Axiom 1: DistinctRelays
         Where FailsafeRelayName is present, it SHALL NOT equal
-        AquastatCtrlRelayName.
+        InterceptRelayName.
         """
         if (
             self.failsafe_relay_name is not None
-            and self.failsafe_relay_name == self.aquastat_ctrl_relay_name
+            and self.failsafe_relay_name == self.intercept_relay_name
         ):
             raise ValueError(
                 "Axiom 1 (DistinctRelays) failed: FailsafeRelayName and "
-                f"AquastatCtrlRelayName are both {self.failsafe_relay_name}."
+                f"InterceptRelayName are both {self.failsafe_relay_name}."
             )
         return self

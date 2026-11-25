@@ -1930,6 +1930,7 @@ types:
   gw.katahdin.layout:
     '000':
       enums:
+      - aquastat.control.state:000
       - base.g.node.class:000
       - change.relay.state:000
       - g.node.status:000

@@ -9,7 +9,7 @@
 
 metadata:
   registry_version: '1.0'
-  last_updated: '2026-11-25T17:50:00Z'
+  last_updated: '2026-11-25T18:20:00Z'
   maintainer: gridworks-energy
 formats:
   decimal.digit:
@@ -3445,15 +3445,15 @@ types:
     latest_version: '001'
     owner: gridworks-energy
     versioning_strategy: literal
-    description: 'A boiler held by its aquastat as backup heat: its aquastat-control
-      relay, a heat pump failsafe relay where the plant has one, and whether it is
-      in service.'
+    description: 'A boiler fired by an aquastat as backup heat: its intercept relay,
+      a heat pump failsafe relay where the plant has one, and whether it is in service.'
     versions:
       '001':
         schema_url: https://schemas.electricity.works/types/gw.boiler.backup/001
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
-        summary: '- FailsafeRelayName becomes optional'
+        summary: '- FailsafeRelayName becomes optional - AquastatCtrlRelayName becomes
+          InterceptRelayName'
         direct_dependencies:
           structural:
           - spaceheat.name
@@ -3901,7 +3901,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.layout/000
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home: every
           collection and Hydronic required. The word MEANS has-a-siegenthaler-loop
@@ -3966,7 +3966,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.house0.no.sieg/000
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
         summary: 'The complete deployable artifact for a House0-fleet home with no
           Siegenthaler loop (elm, fir, oak): every collection and Hydronic required.
@@ -4076,7 +4076,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.hydronic/000
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
         summary: '- Typed hydronic block promoted out of gw.house0.layout''s freeform
           Hydronic: Zones (gw1.hvac.zone list), ZoneCallCircuits (gw1.zone.call.circuit
@@ -4125,7 +4125,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.katahdin.layout/000
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Katahdin home (schematic
           D1116): monobloc heat pump, plate heat exchanger, secondary pump, a water
@@ -4143,11 +4143,12 @@ types:
           to have no FailsafeRelayName (the boiler fires on its own aquastat; a dead
           scada leaves the heat pump off) and ValveDefaultsFollowBackup ties the V4
           and V5 relay configs to the backup kind so the valves rest in the D1116
-          failsafe posture. This is the first layout with no store-pump-relay: scada
-          code that requires one (HydronicSpaceheatNodeNames.store_pump_relay, the
-          store_pump_relay layout accessor, the store pump monitor and doctor) does
-          not hold for this family. Every other axiom keeps the Nolan wording verbatim,
-          renumbered from 1.'
+          failsafe posture. InterceptPassesAtRest requires the intercept relay to
+          pass the aquastat signal to the boiler when de-energized. This is the first
+          layout with no store-pump-relay: scada code that requires one (HydronicSpaceheatNodeNames.store_pump_relay,
+          the store_pump_relay layout accessor, the store pump monitor and doctor)
+          does not hold for this family. Every other axiom keeps the Nolan wording
+          verbatim, renumbered from 1.'
         direct_dependencies:
           structural:
           - ads111x.based.device.type.gt:000
@@ -4177,6 +4178,7 @@ types:
           - spaceheat.node.gt:303
           - web.server.component.gt:001
           axiom:
+          - aquastat.control.state:000
           - gw.boiler.backup:001
           - gw.element.backup:000
           - gw.zone.emitter.type:000
@@ -4226,7 +4228,7 @@ types:
     versions:
       '000':
         schema_url: https://schemas.electricity.works/types/gw.nolan.layout/000
-        created: '2026-11-24T11:10:00Z'
+        created: '2026-11-25T18:20:00Z'
         status: staging
         summary: 'The complete deployable artifact for a Nolan home: monobloc heat
           pump, one store tank, the gw108 board. Components are the cac-free DeviceType

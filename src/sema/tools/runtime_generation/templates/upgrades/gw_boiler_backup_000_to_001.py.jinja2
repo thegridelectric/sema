@@ -1,7 +1,9 @@
     def upgrade(self) -> {{ gw_boiler_backup_001_class_name }}:
         """
         - FailsafeRelayName becomes optional
+        - AquastatCtrlRelayName becomes InterceptRelayName
         """
         data = self.model_dump()
         data["version"] = "001"
+        data["intercept_relay_name"] = data.pop("aquastat_ctrl_relay_name")
         return {{ gw_boiler_backup_001_class_name }}.model_validate(data)

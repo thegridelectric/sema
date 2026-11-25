@@ -30,7 +30,9 @@ class GwBoilerBackup000(SemaType):
     def upgrade(self) -> GwBoilerBackup:
         """
         - FailsafeRelayName becomes optional
+        - AquastatCtrlRelayName becomes InterceptRelayName
         """
         data = self.model_dump()
         data["version"] = "001"
+        data["intercept_relay_name"] = data.pop("aquastat_ctrl_relay_name")
         return GwBoilerBackup.model_validate(data)

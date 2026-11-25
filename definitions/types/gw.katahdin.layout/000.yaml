@@ -463,7 +463,7 @@ x-gridworks:
         a. Where Hydronic.Backup is a gw.boiler.backup, its FailsafeRelayName SHALL be
         absent: the boiler fires on its own aquastat, and with the scada dead the heat
         pump is off.
-        b. Where Hydronic.Backup is a gw.boiler.backup, its AquastatCtrlRelayName, and
+        b. Where Hydronic.Backup is a gw.boiler.backup, its InterceptRelayName, and
         where it is a gw.element.backup, each name in its ElementRelayNames, SHALL equal
         the Name of an ShNode in ShNodes whose ActorClass is "Relay".
     - number: 33
@@ -489,6 +489,13 @@ x-gridworks:
         c. Where Hydronic.Backup is a gw.element.backup, v4-house-return-relay's
         EnergizedState SHALL be "ValveClosed": with every relay at rest V4 is open and
         the store's elements heat the house.
+    - number: 35
+      name: "InterceptPassesAtRest"
+      statement: >
+        Where Hydronic.Backup is a gw.boiler.backup, the relay.control.config whose
+        ActorName equals its InterceptRelayName SHALL have StateType
+        "aquastat.control.state" and DeEnergizedState "Boiler": with the relay at rest
+        the aquastat's signal reaches the boiler.
   extended_description: >
     The first layout word for a plant with no buffer tank, no iso valve and
     no store pump (schematic Katahdin_Schematic_D1116). Heat leaves the

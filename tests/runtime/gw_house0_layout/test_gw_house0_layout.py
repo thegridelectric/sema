@@ -668,7 +668,7 @@ def test_axiom_3_c_backup_node_without_a_backup(vanilla: dict[str, Any]) -> None
 
 def test_axiom_38_boiler_relay_is_not_a_relay(vanilla: dict[str, Any]) -> None:
     def mutate(d: dict[str, Any]) -> None:
-        d["Hydronic"]["Backup"]["AquastatCtrlRelayName"] = "backup"
+        d["Hydronic"]["Backup"]["InterceptRelayName"] = "backup"
 
     reject(vanilla, mutate, "Axiom 38")
 
